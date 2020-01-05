@@ -1,8 +1,10 @@
-package com.jucanos.photomap;
+package com.jucanos.photomap.Acitivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
 
