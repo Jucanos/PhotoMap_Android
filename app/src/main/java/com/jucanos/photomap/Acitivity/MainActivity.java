@@ -11,7 +11,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.jucanos.photomap.Fragment.CustomViewPager;
 import com.jucanos.photomap.Fragment.PagerAdapter;
-import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         TextView mCustomTabTextView1 = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_item, null);
         TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_item, null);
         TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_item, null);
-
 
         mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map , 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView1));
