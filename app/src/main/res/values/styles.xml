@@ -8,4 +8,27 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="TabTheme" parent="AppTheme.NoActionBar">
+        <item name="android:textColorPrimary">#ffffff</item>       <!-- 탭바 선택된 텍스트 -->
+        <item name="android:textColorSecondary">#ffffff</item>     <!-- 탭바 텍스트 -->
+        <item name="colorAccent">#000000</item>
+        <item name="colorPrimary">#ffffff</item>
+        <item name="colorPrimaryDark">#ffffff</item>
+
+        <!-- 하단 움직이는 바 색-->
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+        <item name="colorPrimaryDark">#ffffff</item>
+        <item name="colorPrimary">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

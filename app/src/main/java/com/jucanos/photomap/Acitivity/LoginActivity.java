@@ -8,9 +8,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivitys;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.jucanos.photomap.R;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
