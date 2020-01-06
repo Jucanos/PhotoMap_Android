@@ -2,56 +2,113 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#FFFFFF"
-    >
+    android:orientation="vertical">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical"
-       android:gravity="center"
-    >
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
 
-       <Button
-           android:id="@+id/btn_logout"
-           android:gravity="center"
-           android:layout_width="match_parent"
-           android:layout_height="0dp"
-           android:layout_weight="1"
-           android:text="LogOut"
-           android:background="@color/com_kakao_button_background_press"
-           android:layout_marginTop="100dp"
-           android:layout_marginBottom="100dp"
-           android:layout_marginRight="20dp"
-           android:layout_marginLeft="20dp"
+        <TextView
+            android:id="@+id/textView_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="gjek136@naver.com"
+            android:textColor="#000000"
+            android:textSize="30dp" />
 
-           />
+    </RelativeLayout>
 
-       <Button
-           android:layout_width="match_parent"
-           android:layout_height="0dp"
-           android:layout_weight="1"
-           android:background="@color/com_kakao_button_background_press"
-           android:text="signOut"
-           android:layout_marginTop="100dp"
-           android:layout_marginBottom="100dp"
-           android:layout_marginRight="20dp"
-           android:layout_marginLeft="20dp"
-           />
+    <RelativeLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout1">
+        <RelativeLayout
+            android:id="@+id/layout2_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#d6d5d6">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="앱 정보"
+                android:textSize="20dp" />
+        </RelativeLayout>
 
-       <Button
-           android:id="@+id/btn_test"
-           android:layout_width="match_parent"
-           android:layout_height="0dp"
-           android:layout_weight="1"
-           android:background="@color/com_kakao_button_background_press"
-           android:text="회원정보 삭제(디버깅용)"
-           android:layout_marginTop="100dp"
-           android:layout_marginBottom="100dp"
-           android:layout_marginRight="20dp"
-           android:layout_marginLeft="20dp"
-           />
+        <TextView
+            android:id="@+id/textView_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout2_1"
+            android:layout_margin="10dp"
+            android:text="공지사항"
+            android:textColor="#000000"
+            android:textSize="30dp" />
 
-   </LinearLayout>
+        <TextView
+            android:id="@+id/textView_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_notice"
+            android:layout_margin="10dp"
+            android:text="리뷰 작성하기"
+            android:textColor="#000000"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/textView_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_review"
+            android:layout_margin="10dp"
+            android:text="앱 공유하기"
+            android:textColor="#000000"
+            android:textSize="30dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout2">
+
+        <RelativeLayout
+            android:id="@+id/layout3_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#d6d5d6">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="회원정보관리"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout3_1"
+            android:layout_margin="10dp"
+            android:text="공지사항"
+            android:textColor="#000000"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/textView_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_pwd"
+            android:layout_margin="10dp"
+            android:text="리뷰 작성하기"
+            android:textColor="#000000"
+            android:textSize="30dp" />
+    </RelativeLayout>
 </RelativeLayout>
