@@ -33,4 +33,7 @@ dependencies {
 
     // for Circle image
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+    // for variable shape imageView
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
 }
