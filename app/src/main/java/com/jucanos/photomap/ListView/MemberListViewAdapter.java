@@ -16,15 +16,16 @@ import com.jucanos.photomap.R;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseAdapter {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class MemberListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
+    private ArrayList<MemberListViewItem> listViewItemList = new ArrayList<MemberListViewItem>();
 
     // ListViewAdapter의 생성자
-    public ListViewAdapter() {
+    public MemberListViewAdapter() {
 
     }
-
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
@@ -38,22 +39,26 @@ public class ListViewAdapter extends BaseAdapter {
         final int pos = position;
         final Context context = parent.getContext();
 
-        // "listview_item" Layout을 inflate하여 convertView 참조 획득.
+        // "group_listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.member_listview_item, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView imgView_thumbnail = (ImageView) convertView.findViewById(R.id.imgView_thumbnail);
+        CircleImageView imgView_thumbnail = (CircleImageView) convertView.findViewById(R.id.imgView_thumbnail);
         TextView txtView_groupName = (TextView) convertView.findViewById(R.id.txtView_groupName);
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ListViewItem listViewItem = listViewItemList.get(position);
+        MemberListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
         imgView_thumbnail.setClipToOutline(true);
-        imgView_thumbnail.setImageBitmap(listViewItem.getThumbnail());
-        txtView_groupName.setText(listViewItem.getTitle());
+        if(listViewItem.getThumbnail() == null){
+            imgView_thumbnail.setImageResource(R.drawable.ic_add_button_inside_black_circle);
+        }else{
+            imgView_thumbnail.setImageBitmap(listViewItem.getThumbnail());
+        }
+        txtView_groupName.setText(listViewItem.getName());
         return convertView;
     }
 
@@ -63,19 +68,19 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public ListViewItem getItem(int position) {
+    public MemberListViewItem getItem(int position) {
         return listViewItemList.get(position);
     }
 
     public void addItem(Bitmap thumnail, String title) {
-        ListViewItem item = new ListViewItem();
+        MemberListViewItem item = new MemberListViewItem();
         item.setThumbnail(thumnail);
-        item.setTitle(title);
+        item.setNmae(title);
         listViewItemList.add(item);
     }
 
     public void clear() {
-        listViewItemList = new ArrayList<ListViewItem>();
+        listViewItemList = new ArrayList<MemberListViewItem>();
     }
 
 }
