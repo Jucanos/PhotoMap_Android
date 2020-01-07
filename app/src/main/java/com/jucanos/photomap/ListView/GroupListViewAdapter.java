@@ -16,6 +16,8 @@ import com.jucanos.photomap.R;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class GroupListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<GroupListViewItem> listViewItemList = new ArrayList<GroupListViewItem>();
@@ -38,14 +40,14 @@ public class GroupListViewAdapter extends BaseAdapter {
         final int pos = position;
         final Context context = parent.getContext();
 
-        // "listview_item" Layout을 inflate하여 convertView 참조 획득.
+        // "group_listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.group_listview_item, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView imgView_thumbnail = (ImageView) convertView.findViewById(R.id.imgView_thumbnail);
+        CircleImageView imgView_thumbnail = (CircleImageView) convertView.findViewById(R.id.imgView_thumbnail);
         TextView txtView_groupName = (TextView) convertView.findViewById(R.id.txtView_groupName);
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         GroupListViewItem listViewItem = listViewItemList.get(position);
