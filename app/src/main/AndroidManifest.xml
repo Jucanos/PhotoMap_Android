@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Acitivity.GroupActivity"></activity>
+        <activity android:name=".Activity.StoryActivity"></activity>
+        <activity android:name=".Activity.GroupActivity" />
         <activity
-            android:name=".Acitivity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Acitivity.LoginActivity">
+            android:name=".Activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/item_menu"
-        android:title="더보기"
-        android:icon="@drawable/ic_menu_button_of_three_horizontal_lines"
+        android:id="@+id/item_add"
+        android:title="add"
+        android:icon="@drawable/ic_add_button_inside_black_circle"
         app:showAsAction="always"
         />
 </menu>

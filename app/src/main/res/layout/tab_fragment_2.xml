@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context="com.jucanos.photomap.Acitivity.MainActivity"
+    tools:context="com.jucanos.photomap.Activity.MainActivity"
     android:clipChildren="false">
     <RelativeLayout
         android:id="@+id/container"

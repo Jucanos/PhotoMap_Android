@@ -1,4 +1,4 @@
-package com.jucanos.photomap.Acitivity;
+package com.jucanos.photomap.Activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

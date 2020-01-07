@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 
-import com.jucanos.photomap.Acitivity.GroupActivity;
+import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;

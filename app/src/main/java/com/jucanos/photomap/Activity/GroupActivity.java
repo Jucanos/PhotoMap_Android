@@ -1,7 +1,8 @@
-package com.jucanos.photomap.Acitivity;
+package com.jucanos.photomap.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -137,6 +138,7 @@ public class GroupActivity extends AppCompatActivity {
                     transparency = bm.getPixel(x, y);
                     if (transparency != 0) {
                         Toast.makeText(getApplicationContext(),v.getContentDescription(), Toast.LENGTH_SHORT).show();
+                        redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
                     }
                     break;
                 default:
@@ -159,7 +161,7 @@ public class GroupActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
-            case R.id.menu_menu:
+            case R.id.item_menu:
                 drawerLayout_drawer.openDrawer(Gravity.END);
                 return true;
             // 뒤로가기 버튼
@@ -184,6 +186,12 @@ public class GroupActivity extends AppCompatActivity {
         return px / density;     // dp 값 반환
     }
 
+    public void redirectRegionActivity(int regionCode) {
+        Intent intent = new Intent(this, StoryActivity.class);
+        intent.putExtra("regionPos", regionCode);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
+    }
     // ====================================================================== for test Code
     // ====================================================================== for test Code
     void addGroupTest(){

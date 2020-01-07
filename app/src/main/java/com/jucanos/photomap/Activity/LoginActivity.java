@@ -1,4 +1,4 @@
-package com.jucanos.photomap.Acitivity;
+package com.jucanos.photomap.Activity;
 
 import android.content.Context;
 import android.content.Intent;
