@@ -2,7 +2,7 @@ package com.jucanos.photomap.ListView;
 
 import android.graphics.Bitmap;
 
-public class ListViewItem {
+public class GroupListViewItem {
     private Bitmap thumbnail;
     private String title;
 

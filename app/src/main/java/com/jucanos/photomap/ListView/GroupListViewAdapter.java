@@ -16,12 +16,12 @@ import com.jucanos.photomap.R;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseAdapter {
+public class GroupListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
+    private ArrayList<GroupListViewItem> listViewItemList = new ArrayList<GroupListViewItem>();
 
     // ListViewAdapter의 생성자
-    public ListViewAdapter() {
+    public GroupListViewAdapter() {
 
     }
 
@@ -48,7 +48,7 @@ public class ListViewAdapter extends BaseAdapter {
         ImageView imgView_thumbnail = (ImageView) convertView.findViewById(R.id.imgView_thumbnail);
         TextView txtView_groupName = (TextView) convertView.findViewById(R.id.txtView_groupName);
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ListViewItem listViewItem = listViewItemList.get(position);
+        GroupListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
         imgView_thumbnail.setClipToOutline(true);
@@ -63,19 +63,19 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public ListViewItem getItem(int position) {
+    public GroupListViewItem getItem(int position) {
         return listViewItemList.get(position);
     }
 
     public void addItem(Bitmap thumnail, String title) {
-        ListViewItem item = new ListViewItem();
+        GroupListViewItem item = new GroupListViewItem();
         item.setThumbnail(thumnail);
         item.setTitle(title);
         listViewItemList.add(item);
     }
 
     public void clear() {
-        listViewItemList = new ArrayList<ListViewItem>();
+        listViewItemList = new ArrayList<GroupListViewItem>();
     }
 
 }

@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 
-import com.jucanos.photomap.ListView.ListViewAdapter;
+import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.R;
 
 public class TabFragment1 extends Fragment {
@@ -22,7 +22,7 @@ public class TabFragment1 extends Fragment {
     private ListView listView_group;
 
     private int groupCnt = 0;
-    private ListViewAdapter adapter;
+    private GroupListViewAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_1, fragmentContainer, false);
@@ -31,7 +31,7 @@ public class TabFragment1 extends Fragment {
         imgBtn_addGroup = (ImageButton) view.findViewById(R.id.imgBtn_addGroup);
         listView_group = (ListView) view.findViewById(R.id.listView_group);
         // Adapter 생성
-        adapter = new ListViewAdapter();
+        adapter = new GroupListViewAdapter();
         // 리스트뷰 참조 및 Adapter달기
         listView_group.setAdapter(adapter);
 
