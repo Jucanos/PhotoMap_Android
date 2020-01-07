@@ -36,4 +36,7 @@ dependencies {
 
     // for variable shape imageView
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+
+    // for zooming layout or image
+    implementation files('libs/android-zoom-view.jar')
 }
