@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -7,14 +8,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 
+import com.jucanos.photomap.Acitivity.GroupActivity;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
+import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
+
+import java.security.acl.Group;
 
 public class TabFragment1 extends Fragment {
     private RelativeLayout noGroup, existGroup;
@@ -30,11 +36,13 @@ public class TabFragment1 extends Fragment {
         existGroup = (RelativeLayout) view.findViewById(R.id.layout_existGroup);
         imgBtn_addGroup = (ImageButton) view.findViewById(R.id.imgBtn_addGroup);
         listView_group = (ListView) view.findViewById(R.id.listView_group);
+
         // Adapter 생성
         adapter = new GroupListViewAdapter();
         // 리스트뷰 참조 및 Adapter달기
         listView_group.setAdapter(adapter);
 
+        // addGroup 버튼
         imgBtn_addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,9 +50,27 @@ public class TabFragment1 extends Fragment {
             }
         });
 
+        // listView item click
+        listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
+                redirectMapActivity();
+            }
+        });
+
         setLayout();
         return view;
     }
+
+    private void redirectMapActivity() {
+        final Intent intent = new Intent(getActivity(), GroupActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
+    }
+
+    // ====================================================================== for test Code
+    // ====================================================================== for test Code
     void setLayout() {
         if (groupCnt == 0) {
             noGroup.setVisibility(View.VISIBLE);
