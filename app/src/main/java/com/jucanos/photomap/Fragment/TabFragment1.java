@@ -20,8 +20,6 @@ import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 
-import java.security.acl.Group;
-
 public class TabFragment1 extends Fragment {
     private RelativeLayout noGroup, existGroup;
     private ImageButton imgBtn_addGroup;
@@ -55,7 +53,7 @@ public class TabFragment1 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
-                redirectMapActivity();
+                redirectGroupActivity();
             }
         });
 
@@ -63,7 +61,7 @@ public class TabFragment1 extends Fragment {
         return view;
     }
 
-    private void redirectMapActivity() {
+    private void redirectGroupActivity() {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
