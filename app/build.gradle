@@ -36,4 +36,7 @@ dependencies {
 
     // for variable shape imageView
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+
+    // for image crop
+    implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
 }
