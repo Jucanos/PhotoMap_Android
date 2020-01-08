@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,7 +40,7 @@ public class StoryActivity extends AppCompatActivity {
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
             case R.id.item_add:
-                Toast.makeText(getApplicationContext(),"add Story click", Toast.LENGTH_SHORT).show();
+                redirectAddStoryActivity();
                 return true;
             // 뒤로가기 버튼
             case android.R.id.home:
@@ -48,5 +49,11 @@ public class StoryActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void redirectAddStoryActivity(){
+        Intent intent = new Intent(this,AddStoryActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
     }
 }
