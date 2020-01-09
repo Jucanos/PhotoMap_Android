@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -31,10 +29,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_item, null);
 
-
         final CropperView imageView = view.findViewById(R.id.imageView_image);
 
-        imageView.setMakeSquare(true);
         imageView.setImageBitmap(imageList.get(position));
         container.addView(view);
         return view;
@@ -54,5 +50,22 @@ public class ViewPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
         return (view == (View) o);
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    public Bitmap getBitmap(int x) {
+        return imageList.get((x));
+    }
+
+    public void setBitmap(int x, Bitmap mbitmap) {
+        imageList.set(x, mbitmap);
+    }
+
+
+
+
 
 }

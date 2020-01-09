@@ -16,12 +16,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
 import com.jucanos.photomap.Viewpager.ViewPagerAdapter;
+import com.jucanos.photomap.util.BitmapUtils;
 
 import java.util.ArrayList;
 
 public class AddStoryActivity extends AppCompatActivity {
     private ArrayList<Bitmap> imageList;
     private CustomViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,13 @@ public class AddStoryActivity extends AppCompatActivity {
         viewPager = (CustomViewPager) findViewById(R.id.viewPager_vp);
         addGroupTest();
         viewPager.setPagingEnabled(false);
-        viewPager.setAdapter(new ViewPagerAdapter(this, imageList));
+        viewPagerAdapter = new ViewPagerAdapter(this, imageList);
+        viewPager.setAdapter(viewPagerAdapter);
 
         ImageView imageView_left = (ImageView) findViewById(R.id.imageView_left);
         ImageView imageView_right = (ImageView) findViewById(R.id.imageView_right);
+        ImageView imageView_rotate = (ImageView) findViewById(R.id.imageView_rotate);
+        ImageView imageView_snap = (ImageView) findViewById(R.id.imageView_snap);
 
         imageView_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +58,23 @@ public class AddStoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+            }
+        });
+
+        imageView_rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap mBitmap = viewPagerAdapter.getBitmap(viewPager.getCurrentItem());
+                mBitmap = BitmapUtils.rotateBitmap(mBitmap, 90);
+                viewPagerAdapter.setBitmap(viewPager.getCurrentItem(),mBitmap);
+                viewPagerAdapter.notifyDataSetChanged();
+            }
+        });
+
+        imageView_snap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
