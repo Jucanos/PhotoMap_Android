@@ -5,20 +5,22 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.fenchtose.nocropper.CropperView;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.util.SquareImageView;
 
 import java.util.ArrayList;
 
-public class ViewPagerAdapter extends PagerAdapter {
+public class StoryViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<Bitmap> imageList;
 
-    public ViewPagerAdapter(Context context, ArrayList<Bitmap> imageList) {
+    public StoryViewPagerAdapter(Context context, ArrayList<Bitmap> imageList) {
         this.mContext = context;
         this.imageList = imageList;
     }
@@ -27,9 +29,9 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.viewpager_item, null);
+        View view = inflater.inflate(R.layout.story_viewpager_item, null);
 
-        final CropperView imageView = view.findViewById(R.id.imageView_image);
+        final SquareImageView imageView = view.findViewById(R.id.imageView_image);
 
         imageView.setImageBitmap(imageList.get(position));
         container.addView(view);
