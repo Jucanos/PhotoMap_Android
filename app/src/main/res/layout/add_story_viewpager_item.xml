@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+  >
+
+    <FrameLayout
+        android:id="@+id/top_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.fenchtose.nocropper.CropperView
+            android:id="@+id/imageView_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff282828"
+            app:nocropper__grid_color="@color/colorAccent"
+            app:nocropper__grid_opacity="0.8"
+            app:nocropper__grid_thickness="0.8dp"
+            app:nocropper__padding_color="@color/colorAccent" />
+
+
+
+
+    </FrameLayout>
+
+</RelativeLayout>

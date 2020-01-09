@@ -36,4 +36,13 @@ dependencies {
 
     // for variable shape imageView
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+
+    // for image crop
+    implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
+
+    // for viewPager indicator
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+
+    // for expandable textView
+    implementation 'com.ms-square:expandableTextView:0.1.4'
 }
