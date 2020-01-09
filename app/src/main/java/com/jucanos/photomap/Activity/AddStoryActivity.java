@@ -7,12 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
@@ -21,8 +20,9 @@ import com.jucanos.photomap.Viewpager.ViewPagerAdapter;
 import java.util.ArrayList;
 
 public class AddStoryActivity extends AppCompatActivity {
-    private static final int DP = 24;
     private ArrayList<Bitmap> imageList;
+    private CustomViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +34,27 @@ public class AddStoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("사진 선택 및 크기 설정");
 
-        CustomViewPager viewPager = (CustomViewPager)findViewById(R.id.viewPager_vp);
+        viewPager = (CustomViewPager) findViewById(R.id.viewPager_vp);
         addGroupTest();
         viewPager.setPagingEnabled(false);
         viewPager.setAdapter(new ViewPagerAdapter(this, imageList));
+
+        ImageView imageView_left = (ImageView) findViewById(R.id.imageView_left);
+        ImageView imageView_right = (ImageView) findViewById(R.id.imageView_right);
+
+        imageView_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            }
+        });
+
+        imageView_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+            }
+        });
     }
 
     @Override
@@ -63,18 +80,10 @@ public class AddStoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        View layoutMainView = (View)this.findViewById(R.id.relativeLayout_container);
-//        relativeLayout_container_width = layoutMainView.getHeight();
-//        relativeLayout_container_height = layoutMainView.getWidth();
-//    }
-
-    // ====================================================================== for test Code
-    // ====================================================================== for test Code
-    void addGroupTest(){
+    void addGroupTest() {
         imageList = new ArrayList();
         Drawable drawable = getResources().getDrawable(R.drawable.test_image);
-        Bitmap bm = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         for (int i = 0; i < 5; i++) {
             imageList.add(bm);
         }

@@ -3,11 +3,10 @@ package com.jucanos.photomap.Viewpager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -21,8 +20,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<Bitmap> imageList;
 
-    public ViewPagerAdapter(Context context, ArrayList<Bitmap> imageList)
-    {
+    public ViewPagerAdapter(Context context, ArrayList<Bitmap> imageList) {
         this.mContext = context;
         this.imageList = imageList;
     }
@@ -30,9 +28,12 @@ public class ViewPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_item, null);
-        final CropperView imageView = view.findViewById(R.id.imageview);
+
+
+        final CropperView imageView = view.findViewById(R.id.imageView_image);
+
         imageView.setMakeSquare(true);
         imageView.setImageBitmap(imageList.get(position));
         container.addView(view);
@@ -46,12 +47,12 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
     }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-        return (view == (View)o);
+        return (view == (View) o);
     }
 
 }
