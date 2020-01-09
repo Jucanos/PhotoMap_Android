@@ -42,4 +42,7 @@ dependencies {
 
     // for viewPager indicator
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+
+    // for expandable textView
+    implementation 'com.ms-square:expandableTextView:0.1.4'
 }
