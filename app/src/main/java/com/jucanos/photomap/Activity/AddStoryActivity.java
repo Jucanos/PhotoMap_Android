@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
-import com.jucanos.photomap.Viewpager.ViewPagerAdapter;
+import com.jucanos.photomap.Viewpager.AddStoryViewPagerAdapter;
 import com.jucanos.photomap.util.BitmapUtils;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class AddStoryActivity extends AppCompatActivity {
     private ArrayList<Bitmap> imageList;
     private CustomViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
+    private AddStoryViewPagerAdapter addStoryViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,8 @@ public class AddStoryActivity extends AppCompatActivity {
         viewPager = (CustomViewPager) findViewById(R.id.viewPager_vp);
         addGroupTest();
         viewPager.setPagingEnabled(false);
-        viewPagerAdapter = new ViewPagerAdapter(this, imageList);
-        viewPager.setAdapter(viewPagerAdapter);
+        addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(this, imageList);
+        viewPager.setAdapter(addStoryViewPagerAdapter);
 
         ImageView imageView_left = (ImageView) findViewById(R.id.imageView_left);
         ImageView imageView_right = (ImageView) findViewById(R.id.imageView_right);
@@ -64,10 +64,10 @@ public class AddStoryActivity extends AppCompatActivity {
         imageView_rotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap mBitmap = viewPagerAdapter.getBitmap(viewPager.getCurrentItem());
+                Bitmap mBitmap = addStoryViewPagerAdapter.getBitmap(viewPager.getCurrentItem());
                 mBitmap = BitmapUtils.rotateBitmap(mBitmap, 90);
-                viewPagerAdapter.setBitmap(viewPager.getCurrentItem(),mBitmap);
-                viewPagerAdapter.notifyDataSetChanged();
+                addStoryViewPagerAdapter.setBitmap(viewPager.getCurrentItem(),mBitmap);
+                addStoryViewPagerAdapter.notifyDataSetChanged();
             }
         });
 

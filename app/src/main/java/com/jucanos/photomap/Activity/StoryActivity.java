@@ -1,20 +1,24 @@
 package com.jucanos.photomap.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.jucanos.photomap.ListView.StoryListViewAdapter;
+import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
 
-public class StoryActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class StoryActivity extends AppCompatActivity {
+    private ListView listView_story;
+    private StoryListViewAdapter listView_storyApater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +28,13 @@ public class StoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Group Name");
+
+        listView_storyApater = new StoryListViewAdapter();
+        listView_story = (ListView) findViewById(R.id.listView_story);
+        listView_story.setAdapter(listView_storyApater);
+        addStoryTest();
+        addStoryTest();
+        addStoryTest();
 
     }
 
@@ -55,5 +66,33 @@ public class StoryActivity extends AppCompatActivity {
         Intent intent = new Intent(this,AddStoryActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
+    }
+
+    // ====================================================================== for test Code
+    // ====================================================================== for test Code
+    void addStoryTest(){
+        String thumbnail_realPath = "drawable://" + R.drawable.test_image;
+        ArrayList<String> image_realPahts = new ArrayList<String>();
+        for(int i = 0 ; i < 5; i++){
+            String image_realpath = "drawable://" + R.drawable.test_image;
+            image_realPahts.add(image_realpath);
+        }
+        String time_upload = "0000/00/00 00:00";
+        String time_edit = "0000/00/00 00:00";
+        String description = "난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.";
+        String title = "백만스물둘청원";
+
+        StoryListViewItem storyListViewItem = new StoryListViewItem();
+
+        storyListViewItem.setThumnail_realPath(thumbnail_realPath);
+        storyListViewItem.setImage_realPahts(image_realPahts);
+        storyListViewItem.setTime_upload(time_upload);
+        storyListViewItem.setTime_edit(time_edit);
+        storyListViewItem.setDescription(description);
+        storyListViewItem.setTitle(title);
+
+        listView_storyApater.addItem(storyListViewItem);
+        listView_storyApater.notifyDataSetChanged();
+
     }
 }
