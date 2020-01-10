@@ -25,6 +25,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.R;
@@ -48,6 +50,12 @@ public class GroupActivity extends AppCompatActivity {
     private MemberListViewAdapter adapter;
     private View v;
     private RelativeLayout container;
+
+    // floating action button 객체
+    private FloatingActionMenu floatingActionMenu_menu;
+    private FloatingActionButton floatingActionButton_save, floatingActionButton_share, floatingActionButton_rep;
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,42 +96,90 @@ public class GroupActivity extends AppCompatActivity {
         container.addView(zoomView);
 
         // PorterShapeImageView
-        imageView_gyeonggi = (PorterShapeImageView) findViewById(R.id.imageView_gyeonggi);
+        imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
         imageView_gyeonggi.setOnTouchListener(mClickListener);
         imageViews[1] = imageView_gyeonggi;
-        imageView_gangwon = (PorterShapeImageView) v.findViewById(R.id.imageView_gangwon);
+        imageView_gangwon = v.findViewById(R.id.imageView_gangwon);
         imageView_gangwon.setOnTouchListener(mClickListener);
         imageViews[2] = imageView_gangwon;
-        imageView_chungbuk = (PorterShapeImageView) findViewById(R.id.imageView_cungbuk);
+        imageView_chungbuk = findViewById(R.id.imageView_cungbuk);
         imageView_chungbuk.setOnTouchListener(mClickListener);
         imageViews[3] = imageView_chungbuk;
-        imageView_chungnam = (PorterShapeImageView) findViewById(R.id.imageView_chungnam);
+        imageView_chungnam = findViewById(R.id.imageView_chungnam);
         imageView_chungnam.setOnTouchListener(mClickListener);
         imageViews[4] = imageView_chungnam;
-        imageView_jeonbuk = (PorterShapeImageView) findViewById(R.id.imageView_jeonbuk);
+        imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
         imageView_jeonbuk.setOnTouchListener(mClickListener);
         imageViews[5] = imageView_jeonbuk;
-        imageView_jeonnam = (PorterShapeImageView) findViewById(R.id.imageView_jeonnam);
+        imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
         imageView_jeonnam.setOnTouchListener(mClickListener);
         imageViews[6] = imageView_jeonnam;
-        ImageView_gyeongbuk = (PorterShapeImageView) findViewById(R.id.imageView_gyeongbuk);
+        ImageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
         ImageView_gyeongbuk.setOnTouchListener(mClickListener);
         imageViews[7] = ImageView_gyeongbuk;
-        ImageView_gyeongnam = (PorterShapeImageView) findViewById(R.id.imageView_gyeongnam);
+        ImageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
         ImageView_gyeongnam.setOnTouchListener(mClickListener);
         imageViews[8] = ImageView_gyeongnam;
-        imageView_jeju = (PorterShapeImageView) findViewById(R.id.imageView_jeju);
+        imageView_jeju = findViewById(R.id.imageView_jeju);
         imageView_jeju.setOnTouchListener(mClickListener);
         imageViews[9] = imageView_jeju;
+
+
+        floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
+        floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
+        floatingActionButton_share = findViewById(R.id.floatingActionButton_share);
+        floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
+
+        floatingActionMenu_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean opened) {
+
+            }
+        });
+
+        floatingActionMenu_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (floatingActionMenu_menu.isOpened()) {
+                    floatingActionMenu_menu.close(true);
+                }
+            }
+        });
+
+        floatingActionButton_rep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GroupActivity.this, "floatingActionButton_rep", Toast.LENGTH_SHORT).show();
+                floatingActionMenu_menu.close(true);
+            }
+        });
+
+        floatingActionButton_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GroupActivity.this, "floatingActionButton_save", Toast.LENGTH_SHORT).show();
+                floatingActionMenu_menu.close(true);
+            }
+        });
+
+        floatingActionButton_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GroupActivity.this, "floatingActionButton_share", Toast.LENGTH_SHORT).show();
+                floatingActionMenu_menu.close(true);
+            }
+        });
+
     }
 
-    PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener(){
+    PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener() {
         int x = 0, y = 0;
         int transparency;
+
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            Bitmap bm = ((BitmapDrawable)imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
+            Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     x = (int) pxToDp(mContext, event.getX());
@@ -137,7 +193,7 @@ public class GroupActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
                     if (transparency != 0) {
-                        Toast.makeText(getApplicationContext(),v.getContentDescription(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
                     }
                     break;
@@ -190,13 +246,14 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("regionPos", regionCode);
         startActivity(intent);
-        overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
+
     // ====================================================================== for test Code
     // ====================================================================== for test Code
-    void addGroupTest(){
+    void addGroupTest() {
         Drawable drawable = getResources().getDrawable(R.drawable.test_image);
-        Bitmap bm = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         adapter.addItem(bm, "일청원");
         adapter.addItem(bm, "이청원");
         adapter.addItem(bm, "삼청원");
