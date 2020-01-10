@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:background="@drawable/background_dialog_radius"
+    android:padding="15dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_delete"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:text="이름 설정" />
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="프로필사진변경"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            style="?attr/borderlessButtonStyle"
+            />
+
+        <Button
+            android:id="@+id/button_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="나가기"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            style="?attr/borderlessButtonStyle"
+            />
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            style="?attr/borderlessButtonStyle"
+            />
+    </LinearLayout>
+</RelativeLayout>
