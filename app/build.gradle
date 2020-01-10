@@ -45,4 +45,7 @@ dependencies {
 
     // for expandable textView
     implementation 'com.ms-square:expandableTextView:0.1.4'
+
+    // for fab
+    implementation 'com.github.clans:fab:1.6.4'
 }
