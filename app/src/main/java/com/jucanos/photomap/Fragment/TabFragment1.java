@@ -12,10 +12,13 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.Activity.GroupActivity;
+import com.jucanos.photomap.Dialog.GroupDialogListener;
+import com.jucanos.photomap.Dialog.GroupDialog;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
@@ -54,6 +57,32 @@ public class TabFragment1 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
                 redirectGroupActivity();
+            }
+        });
+
+        listView_group.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                GroupDialog dialog = new GroupDialog(getContext(), "그룹이름");
+                dialog.setDialogListener(new GroupDialogListener() {
+                    @Override
+                    public void onGroupNameClicked() {
+                        Toast.makeText(getContext(), "change onGroupNameClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onThumbnailClicked() {
+                        Toast.makeText(getContext(), "change onThumbnailClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onExitClicked() {
+                        Toast.makeText(getContext(), "exit onExitClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+                dialog.show();
+                return true;
             }
         });
 

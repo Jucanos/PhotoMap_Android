@@ -13,9 +13,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.jucanos.photomap.Dialog.GroupDialog;
+import com.jucanos.photomap.Dialog.GroupDialogListener;
+import com.jucanos.photomap.Dialog.StoryDialog;
+import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
 import com.jucanos.photomap.Viewpager.AddStoryViewPagerAdapter;
@@ -83,6 +88,35 @@ public class StoryListViewAdapter extends BaseAdapter {
         textView_title.setText(listViewItem.getTitle());
         textView_upload.setText(listViewItem.getTime_upload());
         expandableTextView_description.setText(listViewItem.getDescription() + "\n\n" + listViewItem.getTime_edit());
+
+        button_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoryDialog dialog = new StoryDialog(context);
+                dialog.setDialogListener(new StoryDialogListener() {
+                    @Override
+                    public void onDeleteClicked() {
+                        Toast.makeText(context, "change onDeleteClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onEditClicked() {
+                        Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onRepClicked() {
+                        Toast.makeText(context, "change onRepClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelClicked() {
+                        Toast.makeText(context, "change onCancelClicked is clicked", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialog.show();
+            }
+        });
 
         // 아이템 내 각 위젯에 데이터 반영
         return convertView;
