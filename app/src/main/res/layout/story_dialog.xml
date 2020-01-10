@@ -21,23 +21,23 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:text="이름 설정" />
+            android:text="게시글 삭제" />
 
         <Button
             android:id="@+id/button_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="프로필사진변경"
+            android:text="게시글 수정"
             android:gravity="center_vertical"
             android:background="?attr/selectableItemBackground"
             style="?attr/borderlessButtonStyle"
             />
 
         <Button
-            android:id="@+id/button_exit"
+            android:id="@+id/button_rep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="나가기"
+            android:text="대표사진 설정"
             android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             style="?attr/borderlessButtonStyle"

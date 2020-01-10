@@ -9,7 +9,7 @@
     >
 
     <TextView
-        android:id="@+id/txtView_title"
+        android:id="@+id/textView_groupName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="그룹 이름"
@@ -21,14 +21,14 @@
      />
 
     <LinearLayout
-        android:layout_below="@+id/txtView_title"
+        android:layout_below="@+id/textView_groupName"
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
       <Button
-          android:id="@+id/btn_title"
+          android:id="@+id/button_name"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="이름 설정"
@@ -38,7 +38,7 @@
           />
 
         <Button
-            android:id="@+id/btn_image"
+            android:id="@+id/button_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="프로필사진변경"
@@ -48,7 +48,7 @@
             />
 
         <Button
-            android:id="@+id/btn_exit"
+            android:id="@+id/button_rep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="나가기"

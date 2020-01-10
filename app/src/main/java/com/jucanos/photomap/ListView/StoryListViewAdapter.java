@@ -105,8 +105,8 @@ public class StoryListViewAdapter extends BaseAdapter {
                     }
 
                     @Override
-                    public void onExitClicked() {
-                        Toast.makeText(context, "change onExitClicked is clicked", Toast.LENGTH_SHORT).show();
+                    public void onRepClicked() {
+                        Toast.makeText(context, "change onRepClicked is clicked", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

@@ -11,55 +11,53 @@ import android.widget.TextView;
 
 import com.jucanos.photomap.R;
 
-public class GroupDialog extends Dialog implements View.OnClickListener{
+public class GroupDialog extends Dialog implements View.OnClickListener {
     private GroupDialogListener longClickDialogListner;
     private static final int LAYOUT = R.layout.group_dialog;
     private Context context;
-    private Button btn_title, btn_exit, btn_image;
-    private TextView txtView_title;
     private String groupName;
 
 
-    public GroupDialog(Context context, String groupName){
+    public GroupDialog(Context context, String groupName) {
         super(context);
         this.context = context;
         this.groupName = groupName;
     }
 
 
-    public void setDialogListener(GroupDialogListener dialogListener){
+    public void setDialogListener(GroupDialogListener dialogListener) {
         this.longClickDialogListner = dialogListener;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        btn_title = (Button) findViewById(R.id.btn_title);
-        btn_exit = (Button) findViewById(R.id.btn_exit);
-        btn_image = (Button) findViewById(R.id.btn_image);
+        final Button button_name = (Button) findViewById(R.id.button_name);
+        final Button button_exit = (Button) findViewById(R.id.button_rep);
+        final Button button_thumbnail = (Button) findViewById(R.id.button_thumbnail);
+        final TextView textView_groupName = (TextView) findViewById(R.id.textView_groupName);
+        textView_groupName.setText(groupName);
 
-        txtView_title = (TextView) findViewById(R.id.txtView_title);
-        txtView_title.setText(groupName);
-
-        btn_title.setOnClickListener(this);
-        btn_exit.setOnClickListener(this);
-        btn_image.setOnClickListener(this);
+        button_name.setOnClickListener(this);
+        button_exit.setOnClickListener(this);
+        button_thumbnail.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_title:
-                longClickDialogListner.onTitleClicked();
+        switch (v.getId()) {
+            case R.id.button_name:
+                longClickDialogListner.onGroupNameClicked();
                 dismiss();
                 break;
-            case R.id.btn_image:
-                longClickDialogListner.onImageClicked();
+            case R.id.button_thumbnail:
+                longClickDialogListner.onThumbnailClicked();
                 dismiss();
                 break;
-            case R.id.btn_exit:
+            case R.id.button_rep:
                 longClickDialogListner.onExitClicked();
                 dismiss();
                 break;

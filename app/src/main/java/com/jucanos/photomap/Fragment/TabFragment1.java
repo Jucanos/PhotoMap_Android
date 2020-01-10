@@ -66,13 +66,13 @@ public class TabFragment1 extends Fragment {
                 GroupDialog dialog = new GroupDialog(getContext(), "그룹이름");
                 dialog.setDialogListener(new GroupDialogListener() {
                     @Override
-                    public void onTitleClicked() {
-                        Toast.makeText(getContext(), "change onTitleClicked is clicked", Toast.LENGTH_SHORT).show();
+                    public void onGroupNameClicked() {
+                        Toast.makeText(getContext(), "change onGroupNameClicked is clicked", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onImageClicked() {
-                        Toast.makeText(getContext(), "change onImageClicked is clicked", Toast.LENGTH_SHORT).show();
+                    public void onThumbnailClicked() {
+                        Toast.makeText(getContext(), "change onThumbnailClicked is clicked", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
