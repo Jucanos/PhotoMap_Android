@@ -6,7 +6,7 @@
     android:background="#FFFFFF">
 
     <RelativeLayout
-        android:id="@+id/upper"
+        android:id="@+id/relativeLayout_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
@@ -63,7 +63,7 @@
         android:id="@+id/middle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/upper">
+        android:layout_below="@+id/relativeLayout_upper">
 
         <com.jucanos.photomap.Viewpager.CustomViewPager
             android:id="@+id/customViewPager_vp"

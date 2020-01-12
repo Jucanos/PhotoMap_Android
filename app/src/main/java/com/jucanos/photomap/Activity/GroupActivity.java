@@ -78,7 +78,6 @@ public class GroupActivity extends AppCompatActivity {
         listView_member.setAdapter(adapter);
         adapter.addItem(null, "그룹멤버 초대");
         adapter.notifyDataSetChanged();
-        addGroupTest();
 
         v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -99,7 +98,7 @@ public class GroupActivity extends AppCompatActivity {
         imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
         imageView_gyeonggi.setOnTouchListener(mClickListener);
         imageViews[1] = imageView_gyeonggi;
-        imageView_gangwon = v.findViewById(R.id.imageView_gangwon);
+        imageView_gangwon = findViewById(R.id.imageView_gangwon);
         imageView_gangwon.setOnTouchListener(mClickListener);
         imageViews[2] = imageView_gangwon;
         imageView_chungbuk = findViewById(R.id.imageView_cungbuk);
@@ -124,6 +123,7 @@ public class GroupActivity extends AppCompatActivity {
         imageView_jeju.setOnTouchListener(mClickListener);
         imageViews[9] = imageView_jeju;
 
+        addGroupTest();
 
         floatingActionButton_rep = v.findViewById(R.id.floatingActionButton_rep);
         floatingActionButton_save = v.findViewById(R.id.floatingActionButton_save);
@@ -137,14 +137,18 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionMenu_menu.setOnClickListener(new View.OnClickListener() {
+
+        floatingActionMenu_menu.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View v, MotionEvent event) {
                 if (floatingActionMenu_menu.isOpened()) {
                     floatingActionMenu_menu.close(true);
+                    return false;
                 }
+                return false;
             }
         });
+
 
         floatingActionButton_rep.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,5 +259,6 @@ public class GroupActivity extends AppCompatActivity {
         adapter.addItem(bm, "삼청원");
         adapter.addItem(bm, "사청원");
         adapter.notifyDataSetChanged();
+        imageView_gangwon.setImageBitmap(bm);
     }
 }

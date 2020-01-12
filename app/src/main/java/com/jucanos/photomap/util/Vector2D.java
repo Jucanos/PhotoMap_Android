@@ -1,4 +1,4 @@
-package com.photoinmap.CustomImageView;
+package com.jucanos.photomap.util;
 
 public class Vector2D {
 

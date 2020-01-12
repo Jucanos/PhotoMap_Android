@@ -1,6 +1,7 @@
 package com.jucanos.photomap.ListView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.jucanos.photomap.Activity.MainActivity;
+import com.jucanos.photomap.Activity.SetRepActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.R;
@@ -104,6 +107,8 @@ public class StoryListViewAdapter extends BaseAdapter {
                     @Override
                     public void onRepClicked() {
                         Toast.makeText(context, "change onRepClicked is clicked", Toast.LENGTH_SHORT).show();
+                        final Intent intent = new Intent(context, SetRepActivity.class);
+                        context.startActivity(intent);
                     }
 
                     @Override
@@ -114,6 +119,8 @@ public class StoryListViewAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
+
+
 
         // 아이템 내 각 위젯에 데이터 반영
         return convertView;
@@ -147,6 +154,10 @@ public class StoryListViewAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+    protected void redirectSignupActivity() {
+
     }
 
 }
