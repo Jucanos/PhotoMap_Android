@@ -20,15 +20,14 @@
             android:layout_marginLeft="25dp"
             android:layout_marginTop="39dp"
             android:clipChildren="false"
+            android:contentDescription="1"
             android:maxWidth="125dp"
             android:maxHeight="150dp"
             android:minWidth="125dp"
             android:minHeight="150dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gyeonggi"
-            app:siShape="@drawable/ic_gyeonggi"
-            android:contentDescription="1"
-            />
+            app:siShape="@drawable/ic_gyeonggi" />
 
         <!--강원도 : 2-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -39,15 +38,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="66dp"
             android:layout_marginTop="0dp"
+            android:contentDescription="2"
             android:maxWidth="215dp"
             android:maxHeight="215dp"
             android:minWidth="215dp"
             android:minHeight="215dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gangwon"
-            app:siShape="@drawable/ic_gangwon"
-            android:contentDescription="2"
-            />
+            app:siShape="@drawable/ic_gangwon" />
 
 
         <!--충북 : 3-->
@@ -59,15 +57,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="81dp"
             android:layout_marginTop="138dp"
+            android:contentDescription="3"
             android:maxWidth="140dp"
             android:maxHeight="140dp"
             android:minWidth="140dp"
             android:minHeight="140dp"
             android:scaleType="centerCrop"
             android:src="@drawable/chungbuk"
-            app:siShape="@drawable/ic_chungbuk"
-            android:contentDescription="3"
-            />
+            app:siShape="@drawable/ic_chungbuk" />
         <!--충남 : 4-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
             android:id="@+id/imageView_chungnam"
@@ -77,15 +74,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="154dp"
+            android:contentDescription="4"
             android:maxWidth="135dp"
             android:maxHeight="130dp"
             android:minWidth="135dp"
             android:minHeight="130dp"
             android:scaleType="centerCrop"
             android:src="@drawable/chungnam"
-            app:siShape="@drawable/ic_chungnam"
-            android:contentDescription="4"
-            />
+            app:siShape="@drawable/ic_chungnam" />
 
 
         <!--전북 : 5-->
@@ -97,15 +93,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="18dp"
             android:layout_marginTop="237dp"
+            android:contentDescription="5"
             android:maxWidth="145dp"
             android:maxHeight="120dp"
             android:minWidth="145dp"
             android:minHeight="120dp"
             android:scaleType="centerCrop"
             android:src="@drawable/jeonbuk"
-            app:siShape="@drawable/ic_junbuk"
-            android:contentDescription="5"
-            />
+            app:siShape="@drawable/ic_junbuk" />
 
         <!--전남 : 6-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -116,15 +111,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="3dp"
             android:layout_marginTop="308dp"
+            android:contentDescription="6"
             android:maxWidth="150dp"
             android:maxHeight="135dp"
             android:minWidth="150dp"
             android:minHeight="135dp"
             android:scaleType="centerCrop"
             android:src="@drawable/jeonnam"
-            app:siShape="@drawable/ic_junnam"
-            android:contentDescription="6"
-            />
+            app:siShape="@drawable/ic_junnam" />
 
         <!--경북 : 7-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -135,15 +129,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="127dp"
             android:layout_marginTop="149dp"
+            android:contentDescription="7"
             android:maxWidth="170dp"
             android:maxHeight="180dp"
             android:minWidth="170dp"
             android:minHeight="180dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gyeongbuk"
-            app:siShape="@drawable/ic_gyeongbuk"
-            android:contentDescription="7"
-            />
+            app:siShape="@drawable/ic_gyeongbuk" />
 
         <!--경남 : 8-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -154,15 +147,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="111dp"
             android:layout_marginTop="264dp"
+            android:contentDescription="8"
             android:maxWidth="175dp"
             android:maxHeight="130dp"
             android:minWidth="175dp"
             android:minHeight="130dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gyeongnam"
-            app:siShape="@drawable/ic_gyeongnam"
-            android:contentDescription="8"
-            />
+            app:siShape="@drawable/ic_gyeongnam" />
 
         <!--제주 : 9-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -173,15 +165,79 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="443dp"
+            android:contentDescription="9"
             android:maxWidth="90dp"
             android:maxHeight="60dp"
             android:minWidth="90dp"
             android:minHeight="60dp"
             android:scaleType="centerCrop"
             android:src="@drawable/jeju"
-            app:siShape="@drawable/ic_jeju"
-            android:contentDescription="9"
-            />
+            app:siShape="@drawable/ic_jeju" />
+    </RelativeLayout>
+    \
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floatingActionMenu_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+
+            app:fab_shadowColor="#000000"
+            app:fab_showShadow="true"
+
+            app:menu_backgroundColor="#99000000"
+            app:menu_colorNormal="#000000"
+            app:menu_colorPressed="#55000000"
+
+            app:menu_labels_ellipsize="end"
+            app:menu_labels_maxLines="-1"
+            app:menu_labels_position="left"
+            app:menu_labels_showShadow="true"
+            app:menu_labels_singleLine="true"
+
+            app:menu_openDirection="up">
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floatingActionButton_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_white"
+                app:fab_colorNormal="#000000"
+                app:fab_colorPressed="#55000000"
+                app:fab_label="공유하기"
+                app:fab_size="mini" />
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floatingActionButton_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_photo_white"
+                app:fab_colorNormal="#000000"
+                app:fab_colorPressed="#55000000"
+                app:fab_label="이미지로 저장하기"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floatingActionButton_rep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_korea_white"
+                app:fab_colorNormal="#000000"
+                app:fab_colorPressed="#55000000"
+                app:fab_label="대표지도 설정"
+                app:fab_size="mini" />
+
+        </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
 
 </RelativeLayout>

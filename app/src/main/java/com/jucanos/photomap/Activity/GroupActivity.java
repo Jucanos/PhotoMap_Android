@@ -125,10 +125,10 @@ public class GroupActivity extends AppCompatActivity {
         imageViews[9] = imageView_jeju;
 
 
-        floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
-        floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
-        floatingActionButton_share = findViewById(R.id.floatingActionButton_share);
-        floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
+        floatingActionButton_rep = v.findViewById(R.id.floatingActionButton_rep);
+        floatingActionButton_save = v.findViewById(R.id.floatingActionButton_save);
+        floatingActionButton_share = v.findViewById(R.id.floatingActionButton_share);
+        floatingActionMenu_menu = v.findViewById(R.id.floatingActionMenu_menu);
 
         floatingActionMenu_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
