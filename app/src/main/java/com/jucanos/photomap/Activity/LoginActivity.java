@@ -8,7 +8,9 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.jucanos.photomap.R;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -22,11 +24,12 @@ import static com.kakao.util.helper.Utility.getPackageInfo;
 
 public class LoginActivity extends AppCompatActivity {
     private SessionCallback callback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Log.e("[hash_key]",getKeyHash(getApplicationContext()));
+        Log.e("[hash_key]", getKeyHash(getApplicationContext()));
 
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
@@ -74,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
-            if(exception != null) {
+            if (exception != null) {
                 Logger.e(exception);
             }
         }

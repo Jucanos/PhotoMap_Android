@@ -17,13 +17,10 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.jucanos.photomap.Dialog.GroupDialog;
-import com.jucanos.photomap.Dialog.GroupDialogListener;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
-import com.jucanos.photomap.Viewpager.AddStoryViewPagerAdapter;
 import com.jucanos.photomap.Viewpager.StoryViewPagerAdapter;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
@@ -55,10 +52,10 @@ public class StoryListViewAdapter extends BaseAdapter {
         final int pos = position;
         final Context context = parent.getContext();
 
-        // "group_listview_item" Layout을 inflate하여 convertView 참조 획득.
+        // "listview_item_group" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.story_listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.listview_item_story, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득

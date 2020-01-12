@@ -9,8 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.jucanos.photomap.Fragment.CustomViewPager;
-import com.jucanos.photomap.Fragment.PagerAdapter;
+import com.jucanos.photomap.Fragment.FragmentViewPager;
+import com.jucanos.photomap.Fragment.FragmentPagerAdapter;
 import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,16 +20,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /* TextView */
-        TextView mCustomTabTextView1 = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_item, null);
-        TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_item, null);
-        TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_item, null);
+        TextView mCustomTabTextView1 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
+        TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
+        TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
 
         mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group , 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView1));
@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final CustomViewPager viewPager = (CustomViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
+        final FragmentViewPager viewPager = findViewById(R.id.pager);
+        final FragmentPagerAdapter adapter = new FragmentPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

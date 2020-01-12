@@ -27,7 +27,7 @@ public class AddStoryViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.add_story_viewpager_item, null);
+        View view = inflater.inflate(R.layout.viewpager_item_add_story, null);
 
         final CropperView imageView = view.findViewById(R.id.imageView_image);
 

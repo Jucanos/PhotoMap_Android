@@ -31,21 +31,21 @@ public class AddStoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_story);
 
         // set toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("사진 선택 및 크기 설정");
 
-        viewPager = (CustomViewPager) findViewById(R.id.viewPager_vp);
+        viewPager = findViewById(R.id.viewPager_vp);
         addGroupTest();
         viewPager.setPagingEnabled(false);
         addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(this, imageList);
         viewPager.setAdapter(addStoryViewPagerAdapter);
 
-        ImageView imageView_left = (ImageView) findViewById(R.id.imageView_left);
-        ImageView imageView_right = (ImageView) findViewById(R.id.imageView_right);
-        ImageView imageView_rotate = (ImageView) findViewById(R.id.imageView_rotate);
-        ImageView imageView_snap = (ImageView) findViewById(R.id.imageView_snap);
+        ImageView imageView_left = findViewById(R.id.imageView_left);
+        ImageView imageView_right = findViewById(R.id.imageView_right);
+        ImageView imageView_rotate = findViewById(R.id.imageView_rotate);
+        ImageView imageView_snap = findViewById(R.id.imageView_snap);
 
         imageView_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,7 @@ public class AddStoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Bitmap mBitmap = addStoryViewPagerAdapter.getBitmap(viewPager.getCurrentItem());
                 mBitmap = BitmapUtils.rotateBitmap(mBitmap, 90);
-                addStoryViewPagerAdapter.setBitmap(viewPager.getCurrentItem(),mBitmap);
+                addStoryViewPagerAdapter.setBitmap(viewPager.getCurrentItem(), mBitmap);
                 addStoryViewPagerAdapter.notifyDataSetChanged();
             }
         });
@@ -103,7 +103,7 @@ public class AddStoryActivity extends AppCompatActivity {
     }
 
     void addGroupTest() {
-        imageList = new ArrayList();
+        imageList = new ArrayList<>();
         Drawable drawable = getResources().getDrawable(R.drawable.test_image);
         Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         for (int i = 0; i < 5; i++) {

@@ -13,7 +13,7 @@ import com.jucanos.photomap.R;
 
 public class GroupDialog extends Dialog implements View.OnClickListener {
     private GroupDialogListener longClickDialogListner;
-    private static final int LAYOUT = R.layout.group_dialog;
+    private static final int LAYOUT = R.layout.dialog_group;
     private Context context;
     private String groupName;
 

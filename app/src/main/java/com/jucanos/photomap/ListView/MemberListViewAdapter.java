@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -26,6 +25,7 @@ public class MemberListViewAdapter extends BaseAdapter {
     public MemberListViewAdapter() {
 
     }
+
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
@@ -39,10 +39,10 @@ public class MemberListViewAdapter extends BaseAdapter {
         final int pos = position;
         final Context context = parent.getContext();
 
-        // "group_listview_item" Layout을 inflate하여 convertView 참조 획득.
+        // "listview_item_group" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.member_listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.listview_item_member, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
@@ -53,9 +53,9 @@ public class MemberListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         imgView_thumbnail.setClipToOutline(true);
-        if(listViewItem.getThumbnail() == null){
+        if (listViewItem.getThumbnail() == null) {
             imgView_thumbnail.setImageResource(R.drawable.ic_add_button_inside_black_circle);
-        }else{
+        } else {
             imgView_thumbnail.setImageBitmap(listViewItem.getThumbnail());
         }
         txtView_groupName.setText(listViewItem.getName());

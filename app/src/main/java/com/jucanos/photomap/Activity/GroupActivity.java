@@ -44,7 +44,7 @@ public class GroupActivity extends AppCompatActivity {
     PorterShapeImageView ImageView_gyeongbuk; // 7
     PorterShapeImageView ImageView_gyeongnam; // 8
     PorterShapeImageView imageView_jeju; // 9
-    final PorterShapeImageView imageViews[] = new PorterShapeImageView[10];
+    final PorterShapeImageView[] imageViews = new PorterShapeImageView[10];
     private DrawerLayout drawerLayout_drawer;
     private ListView listView_member;
     private MemberListViewAdapter adapter;
@@ -64,23 +64,23 @@ public class GroupActivity extends AppCompatActivity {
 
         mContext = this;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Group Name");
 
-        drawerLayout_drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout_drawer = findViewById(R.id.drawer_layout);
         drawerLayout_drawer.openDrawer(Gravity.RIGHT);
         drawerLayout_drawer.closeDrawer(GravityCompat.END);
 
         adapter = new MemberListViewAdapter();
-        listView_member = (ListView) findViewById(R.id.listView_member);
+        listView_member = findViewById(R.id.listView_member);
         listView_member.setAdapter(adapter);
         adapter.addItem(null, "그룹멤버 초대");
         adapter.notifyDataSetChanged();
         addGroupTest();
 
-        v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.map, null, false);
+        v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         // ZoomView 설정
@@ -185,11 +185,7 @@ public class GroupActivity extends AppCompatActivity {
                     x = (int) pxToDp(mContext, event.getX());
                     y = (int) pxToDp(mContext, event.getY());
                     transparency = bm.getPixel(x, y);
-                    if (transparency != 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return transparency != 0;
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
                     if (transparency != 0) {

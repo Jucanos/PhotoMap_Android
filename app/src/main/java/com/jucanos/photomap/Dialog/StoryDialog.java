@@ -10,21 +10,22 @@ import android.widget.Button;
 
 import com.jucanos.photomap.R;
 
-public class StoryDialog extends Dialog implements View.OnClickListener{
+public class StoryDialog extends Dialog implements View.OnClickListener {
     private StoryDialogListener ClickDialogListner;
-    private static final int LAYOUT = R.layout.story_dialog;
+    private static final int LAYOUT = R.layout.dialog_story;
     private Context context;
 
 
-    public StoryDialog(Context context){
+    public StoryDialog(Context context) {
         super(context);
         this.context = context;
     }
 
 
-    public void setDialogListener(StoryDialogListener dialogListener){
+    public void setDialogListener(StoryDialogListener dialogListener) {
         this.ClickDialogListner = dialogListener;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class StoryDialog extends Dialog implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.button_delete:
                 ClickDialogListner.onDeleteClicked();
                 dismiss();

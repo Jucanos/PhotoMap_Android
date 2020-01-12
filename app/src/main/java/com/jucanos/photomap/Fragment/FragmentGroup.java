@@ -23,7 +23,7 @@ import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 
-public class TabFragment1 extends Fragment {
+public class FragmentGroup extends Fragment {
     private RelativeLayout noGroup, existGroup;
     private ImageButton imgBtn_addGroup;
     private ListView listView_group;
@@ -32,7 +32,7 @@ public class TabFragment1 extends Fragment {
     private GroupListViewAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_fragment_1, fragmentContainer, false);
+        View view = inflater.inflate(R.layout.fragment_group, fragmentContainer, false);
         noGroup = (RelativeLayout) view.findViewById(R.id.layout_noGroup);
         existGroup = (RelativeLayout) view.findViewById(R.id.layout_existGroup);
         imgBtn_addGroup = (ImageButton) view.findViewById(R.id.imgBtn_addGroup);

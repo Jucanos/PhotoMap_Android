@@ -6,12 +6,12 @@ import android.view.MotionEvent;
 
 import androidx.viewpager.widget.ViewPager;
 
-public class CustomViewPager extends ViewPager {
+public class FragmentViewPager extends ViewPager {
     private Boolean disable = false;
-    public CustomViewPager(Context context) {
+    public FragmentViewPager(Context context) {
         super(context);
     }
-    public CustomViewPager(Context context, AttributeSet attrs){
+    public FragmentViewPager(Context context, AttributeSet attrs){
         super(context,attrs);
     }
     @Override

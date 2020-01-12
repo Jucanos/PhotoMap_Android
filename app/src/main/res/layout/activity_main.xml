@@ -17,7 +17,7 @@
         android:theme="@style/TabTheme"
         />
 
-    <com.jucanos.photomap.Fragment.CustomViewPager
+    <com.jucanos.photomap.Fragment.FragmentViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +34,7 @@
         >
 
     </androidx.appcompat.widget.Toolbar>
-    <com.jucanos.photomap.Fragment.CustomViewPager
+    <com.jucanos.photomap.Fragment.FragmentViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

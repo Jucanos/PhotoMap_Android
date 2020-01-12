@@ -19,18 +19,19 @@ import java.util.ArrayList;
 public class StoryActivity extends AppCompatActivity {
     private ListView listView_story;
     private StoryListViewAdapter listView_storyApater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Group Name");
 
         listView_storyApater = new StoryListViewAdapter();
-        listView_story = (ListView) findViewById(R.id.listView_story);
+        listView_story = findViewById(R.id.listView_story);
         listView_story.setAdapter(listView_storyApater);
         addStoryTest();
         addStoryTest();
@@ -62,18 +63,18 @@ public class StoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void redirectAddStoryActivity(){
-        Intent intent = new Intent(this,AddStoryActivity.class);
+    public void redirectAddStoryActivity() {
+        Intent intent = new Intent(this, AddStoryActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     // ====================================================================== for test Code
     // ====================================================================== for test Code
-    void addStoryTest(){
+    void addStoryTest() {
         String thumbnail_realPath = "drawable://" + R.drawable.test_image;
         ArrayList<String> image_realPahts = new ArrayList<String>();
-        for(int i = 0 ; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             String image_realpath = "drawable://" + R.drawable.test_image;
             image_realPahts.add(image_realpath);
         }
@@ -93,6 +94,5 @@ public class StoryActivity extends AppCompatActivity {
 
         listView_storyApater.addItem(storyListViewItem);
         listView_storyApater.notifyDataSetChanged();
-
     }
 }
