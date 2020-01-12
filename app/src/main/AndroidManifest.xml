@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Activity.AddStoryActivity"></activity>
+        <activity android:name=".Activity.SetRepActivity"></activity>
+        <activity android:name=".Activity.AddStoryActivity" />
         <activity android:name=".Activity.StoryActivity" />
         <activity android:name=".Activity.GroupActivity" />
         <activity
