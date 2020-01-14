@@ -48,4 +48,6 @@ dependencies {
 
     // for fab
     implementation 'com.github.clans:fab:1.6.4'
+
+    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 }
