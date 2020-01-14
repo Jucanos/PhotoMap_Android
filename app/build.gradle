@@ -49,6 +49,5 @@ dependencies {
     // for fab
     implementation 'com.github.clans:fab:1.6.4'
 
-    // for dropdown textView
-    implementation 'com.github.hakobast:dropdown-textview:0.3.0'
+    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 }
