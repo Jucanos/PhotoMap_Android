@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.jucanos.photomap.Activity.AddGroupActivity"
-    android:background="#99000000"
-    >
+    android:background="#55000000"
+    tools:context="com.jucanos.photomap.Activity.AddGroupActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_ab"
@@ -24,16 +23,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:layout_below="@+id/appbar_ab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        >
+        android:layout_below="@+id/appbar_ab"
+        android:background="#FFFFFF">
+
         <EditText
             android:id="@+id/editText_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </EditText>
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="그룹이름을 입력해 주세요!"
+            android:backgroundTint="@android:color/black"
+            android:singleLine="true"
+            />
     </RelativeLayout>
 
 
