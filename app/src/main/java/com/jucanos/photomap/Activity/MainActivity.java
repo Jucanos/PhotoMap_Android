@@ -15,6 +15,7 @@ import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
         TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
         TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
 
-        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group , 0, 0);
+        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group, 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView1));
 
-        mCustomTabTextView2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map , 0, 0);
+        mCustomTabTextView2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map, 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView2));
 
-        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_menu , 0, 0);
+        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_menu, 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView3));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                viewPager.setCurrentItem(tab.getPosition(), false);
             }
 
             @Override
