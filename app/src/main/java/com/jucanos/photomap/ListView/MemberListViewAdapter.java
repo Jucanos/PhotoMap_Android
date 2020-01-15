@@ -48,7 +48,7 @@ public class MemberListViewAdapter extends BaseAdapter {
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         CircleImageView imgView_thumbnail = (CircleImageView) convertView.findViewById(R.id.imgView_thumbnail);
         TextView txtView_groupName = (TextView) convertView.findViewById(R.id.txtView_groupName);
-        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+        // UserData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MemberListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영

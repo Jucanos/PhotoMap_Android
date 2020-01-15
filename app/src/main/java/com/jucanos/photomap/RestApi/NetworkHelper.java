@@ -1,4 +1,4 @@
-package com.jucanos.photomap.util;
+package com.jucanos.photomap.RestApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
