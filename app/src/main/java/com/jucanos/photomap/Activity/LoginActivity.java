@@ -108,9 +108,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         globalApplication.authorization = response.body();
-                        Log.e("getUid", globalApplication.authorization.getData().getUid());
-                        Log.e("getThumbnail", globalApplication.authorization.getData().getThumbnail());
-                        Log.e("getNickname", globalApplication.authorization.getData().getNickname());
+                        Log.e("getUid", globalApplication.authorization.getUserData().getUid());
+                        Log.e("getThumbnail", globalApplication.authorization.getUserData().getThumbnail());
+                        Log.e("getNickname", globalApplication.authorization.getUserData().getNickname());
                     }
                 }
             }

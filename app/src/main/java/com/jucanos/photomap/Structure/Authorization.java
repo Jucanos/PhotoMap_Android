@@ -5,22 +5,22 @@ import com.google.gson.annotations.SerializedName;
 public class Authorization {
     @SerializedName("data")
     @Expose
-    private Data data;
+    private UserData userData;
     @SerializedName("message")
     @Expose
     private String message;
 
-    public Authorization(Data data, String message) {
-        this.data = data;
+    public Authorization(UserData userData, String message) {
+        this.userData = userData;
         this.message = message;
     }
 
-    public Data getData() {
-        return data;
+    public UserData getUserData() {
+        return userData;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public void setData(UserData userData) {
+        this.userData = userData;
     }
 
     public String getMessage() {

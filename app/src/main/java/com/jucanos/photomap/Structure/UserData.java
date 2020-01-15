@@ -7,7 +7,7 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Data {
+public class UserData {
     @SerializedName("uid")
     @Expose
     private String uid;
@@ -20,7 +20,7 @@ public class Data {
     @Expose
     private String thumbnail;
 
-    public Data(String uid, String nickname, String thumbnail) {
+    public UserData(String uid, String nickname, String thumbnail) {
         this.uid = uid;
         this.nickname = nickname;
         this.thumbnail = thumbnail;
