@@ -1,12 +1,18 @@
 package com.jucanos.photomap.Fragment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.Activity.LoginActivity;
@@ -24,12 +30,19 @@ import retrofit2.Response;
 
 public class FragmentSetting extends Fragment {
     public GlobalApplication globalApplication;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         globalApplication = globalApplication = GlobalApplication.getGlobalApplicationContext();
 
-        TextView textView_notice= view.findViewById(R.id.textView_notice);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("설정");
+        setHasOptionsMenu(true);
+
+        TextView textView_notice = view.findViewById(R.id.textView_notice);
         textView_notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,12 +72,27 @@ public class FragmentSetting extends Fragment {
         });
         return view;
     }
-    void redirectNoticeActivity(){
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_add:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    void redirectNoticeActivity() {
         final Intent intent = new Intent(getActivity(), NoticeActivity.class);
         getActivity().startActivity(intent);
     }
 
-    void redirectLoginActivity(){
+    void redirectLoginActivity() {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         getActivity().startActivity(intent);
         getActivity().finish();
@@ -82,6 +110,7 @@ public class FragmentSetting extends Fragment {
                     }
                 });
             }
+
             @Override
             public void onFailure(Call<Authorization> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());

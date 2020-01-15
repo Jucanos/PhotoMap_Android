@@ -6,36 +6,47 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.Activity.GroupActivity;
-import com.jucanos.photomap.Dialog.GroupDialogListener;
 import com.jucanos.photomap.Dialog.GroupDialog;
+import com.jucanos.photomap.Dialog.GroupDialogListener;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 
 public class FragmentGroup extends Fragment {
     private RelativeLayout noGroup, existGroup;
-    private ImageButton imgBtn_addGroup;
     private ListView listView_group;
 
     private int groupCnt = 0;
     private GroupListViewAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group, fragmentContainer, false);
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
+        setHasOptionsMenu(true);
+
+
         noGroup = (RelativeLayout) view.findViewById(R.id.layout_noGroup);
         existGroup = (RelativeLayout) view.findViewById(R.id.layout_existGroup);
-        imgBtn_addGroup = (ImageButton) view.findViewById(R.id.imgBtn_addGroup);
         listView_group = (ListView) view.findViewById(R.id.listView_group);
 
         // Adapter 생성
@@ -44,12 +55,6 @@ public class FragmentGroup extends Fragment {
         listView_group.setAdapter(adapter);
 
         // addGroup 버튼
-        imgBtn_addGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addGroupTest();
-            }
-        });
 
         // listView item click
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,10 +95,27 @@ public class FragmentGroup extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment_group, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_add:
+                addGroupTest();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private void redirectGroupActivity() {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_not_move);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     // ====================================================================== for test Code
@@ -107,9 +129,10 @@ public class FragmentGroup extends Fragment {
             existGroup.setVisibility(View.VISIBLE);
         }
     }
-    void addGroupTest(){
+
+    void addGroupTest() {
         Drawable drawable = getResources().getDrawable(R.drawable.test_image);
-        Bitmap bm = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         adapter.addItem(bm, "Group Name");
         adapter.notifyDataSetChanged();
         groupCnt += 1;
