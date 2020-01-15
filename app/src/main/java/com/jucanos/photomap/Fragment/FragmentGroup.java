@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,8 @@ public class FragmentGroup extends Fragment {
     private int groupCnt = 0;
     private GroupListViewAdapter adapter;
 
+    private int ADD_GROUP = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group, fragmentContainer, false);
@@ -47,9 +50,9 @@ public class FragmentGroup extends Fragment {
         setHasOptionsMenu(true);
 
 
-        noGroup = (RelativeLayout) view.findViewById(R.id.layout_noGroup);
-        existGroup = (RelativeLayout) view.findViewById(R.id.layout_existGroup);
-        listView_group = (ListView) view.findViewById(R.id.listView_group);
+        noGroup = view.findViewById(R.id.layout_noGroup);
+        existGroup = view.findViewById(R.id.layout_existGroup);
+        listView_group = view.findViewById(R.id.listView_group);
 
         // Adapter 생성
         adapter = new GroupListViewAdapter();
@@ -122,14 +125,25 @@ public class FragmentGroup extends Fragment {
 
     public void redirectAddGroupActivity() {
         Intent intent = new Intent(getActivity(), AddGroupActivity.class);
-        startActivity(intent);
+        getActivity().startActivityForResult(intent,ADD_GROUP);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_not_move);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case 1:
+                String mapTokpen = data.getStringExtra("mapToken");
+                Log.e("mapToken",mapTokpen);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // destroy all menu and re-call onCreateOptionsMenu
         getActivity().invalidateOptionsMenu();
     }
 

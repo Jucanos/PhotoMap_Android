@@ -1,24 +1,20 @@
 package com.jucanos.photomap.RestApi;
 
-import android.util.Log;
-
-import com.google.gson.JsonObject;
 import com.jucanos.photomap.Structure.Authorization;
+import com.jucanos.photomap.Structure.CreateMap;
 
-import java.util.ArrayList;
-
-import javax.xml.transform.Result;
+import java.util.HashMap;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("dev/users")
@@ -27,13 +23,17 @@ public interface ApiService {
     @DELETE("dev/users")
     Call<Authorization> signoutAccount(@Header("Authorization") String authorization);
 
-//    @GET("accounts/{accountId}")
+    //    @GET("accounts/{accountId}")
 //    Call<Authorization> getAccountInfo(@Header("Authorization") String authKey,//해더에 key Authorization String 형태의 토큰을 요구함, {}
 //                                       @Path("accountId") String accountId) ;
 //
-//    @GET("accounts/test")
-//    Call<Authorization> getTestApi(@Header("Authorization") String authKey,//해더에 key Authorization String 형태의 토큰을 요구함
-//                                   @Query("params") String accountId) ;
+
+    @POST("dev/maps")
+    Call<CreateMap> createMap(
+            @Header("Authorization") String authKey,
+            @Body String name);
+
+
 //
 //    @FormUrlEncoded
 //    @POST("user/login")
