@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.Dialog.GroupDialog;
 import com.jucanos.photomap.Dialog.GroupDialogListener;
@@ -42,6 +43,7 @@ public class FragmentGroup extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
+        toolbar.inflateMenu(R.menu.menu_fragment_group);
         setHasOptionsMenu(true);
 
 
@@ -105,7 +107,7 @@ public class FragmentGroup extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_add:
-                addGroupTest();
+                redirectAddGroupActivity();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -116,6 +118,19 @@ public class FragmentGroup extends Fragment {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
+    public void redirectAddGroupActivity() {
+        Intent intent = new Intent(getActivity(), AddGroupActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_not_move);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // destroy all menu and re-call onCreateOptionsMenu
+        getActivity().invalidateOptionsMenu();
     }
 
     // ====================================================================== for test Code
