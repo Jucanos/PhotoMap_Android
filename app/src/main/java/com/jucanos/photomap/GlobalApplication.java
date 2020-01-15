@@ -14,10 +14,13 @@ import com.kakao.auth.KakaoSDK;
 
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
+    public String token;
     public Authorization authorization;
+
     public static GlobalApplication getInstance() {
         return instance;
     }
+
     public static final GlobalApplication getGlobalApplicationContext() {
         if (instance == null)
             throw new IllegalStateException("this application does not inherit com.kakao.GlobalApplication");
@@ -31,7 +34,7 @@ public class GlobalApplication extends Application {
             return new ISessionConfig() {
                 @Override
                 public AuthType[] getAuthTypes() {
-                    return new AuthType[] {AuthType.KAKAO_LOGIN_ALL};
+                    return new AuthType[]{AuthType.KAKAO_LOGIN_ALL};
                 }
 
                 @Override

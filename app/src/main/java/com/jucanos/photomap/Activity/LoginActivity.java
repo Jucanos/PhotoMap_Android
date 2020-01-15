@@ -80,8 +80,9 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onSessionOpened() {
-            Log.i("[getAccessToken]", Session.getCurrentSession().getAccessToken());
-            requestTestApi(Session.getCurrentSession().getAccessToken());
+            Log.e("[getAccessToken]", Session.getCurrentSession().getAccessToken());
+            globalApplication.token = Session.getCurrentSession().getAccessToken();
+            requestLoginAccount(Session.getCurrentSession().getAccessToken());
             redirectSignupActivity();
         }
 
@@ -99,13 +100,18 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void requestTestApi(String token) {
+    public void requestLoginAccount(String token) {
         final Call<Authorization> res = NetworkHelper.getInstance().getService().loginAccount("Bearer " + token);
         res.enqueue(new Callback<Authorization>() {
             @Override
             public void onResponse(Call<Authorization> call, Response<Authorization> response) {
                 if (response.isSuccessful()) {
-                    globalApplication.authorization = response.body();
+                    if (response.body() != null) {
+                        globalApplication.authorization = response.body();
+                        Log.e("getUid", globalApplication.authorization.getData().getUid());
+                        Log.e("getThumbnail", globalApplication.authorization.getData().getThumbnail());
+                        Log.e("getNickname", globalApplication.authorization.getData().getNickname());
+                    }
                 }
             }
             @Override

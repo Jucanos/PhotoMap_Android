@@ -92,22 +92,22 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/textView_pwd"
+            android:id="@+id/textView_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout3_1"
             android:layout_margin="10dp"
-            android:text="공지사항"
+            android:text="로그아웃"
             android:textColor="#000000"
             android:textSize="30dp" />
 
         <TextView
-            android:id="@+id/textView_logout"
+            android:id="@+id/textView_signout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView_pwd"
+            android:layout_below="@+id/textView_logout"
             android:layout_margin="10dp"
-            android:text="리뷰 작성하기"
+            android:text="회원 탈퇴"
             android:textColor="#000000"
             android:textSize="30dp" />
     </RelativeLayout>
