@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.Authorization;
-import com.jucanos.photomap.util.NetworkHelper;
+import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;

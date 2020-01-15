@@ -1,4 +1,4 @@
-package com.jucanos.photomap.util;
+package com.jucanos.photomap.RestApi;
 
 import android.util.Log;
 

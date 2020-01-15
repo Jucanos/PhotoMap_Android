@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.Activity.LoginActivity;
-import com.jucanos.photomap.Activity.MainActivity;
 import com.jucanos.photomap.Activity.NoticeActivity;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.Authorization;
-import com.jucanos.photomap.util.NetworkHelper;
+import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
