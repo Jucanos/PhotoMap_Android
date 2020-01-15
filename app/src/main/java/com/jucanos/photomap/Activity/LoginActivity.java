@@ -11,7 +11,10 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.Structure.Authorization;
+import com.jucanos.photomap.util.NetworkHelper;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
@@ -20,16 +23,21 @@ import com.kakao.util.helper.log.Logger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static com.kakao.util.helper.Utility.getPackageInfo;
 
 public class LoginActivity extends AppCompatActivity {
     private SessionCallback callback;
-
+    public GlobalApplication globalApplication;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Log.e("[hash_key]", getKeyHash(getApplicationContext()));
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
@@ -72,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onSessionOpened() {
+            Log.i("[getAccessToken]", Session.getCurrentSession().getAccessToken());
+            requestTestApi(Session.getCurrentSession().getAccessToken());
             redirectSignupActivity();
         }
 
@@ -87,5 +97,21 @@ public class LoginActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void requestTestApi(String token) {
+        final Call<Authorization> res = NetworkHelper.getInstance().getService().loginAccount("Bearer " + token);
+        res.enqueue(new Callback<Authorization>() {
+            @Override
+            public void onResponse(Call<Authorization> call, Response<Authorization> response) {
+                if (response.isSuccessful()) {
+                    globalApplication.authorization = response.body();
+                }
+            }
+            @Override
+            public void onFailure(Call<Authorization> call, Throwable t) {
+                Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
     }
 }

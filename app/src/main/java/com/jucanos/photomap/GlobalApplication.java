@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.jucanos.photomap.Structure.Authorization;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
@@ -13,7 +14,7 @@ import com.kakao.auth.KakaoSDK;
 
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
-
+    public Authorization authorization;
     public static GlobalApplication getInstance() {
         return instance;
     }
