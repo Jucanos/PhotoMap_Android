@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CreateMapData {
+    @SerializedName("name")
+    @Expose
+    String name;
+
     @SerializedName("mid")
     @Expose
     String mid;
@@ -12,9 +16,18 @@ public class CreateMapData {
     @Expose
     CreateMapDataRepresents createMapDataRepresents;
 
-    public CreateMapData(String mid, CreateMapDataRepresents createMapDataRepresents) {
+    public CreateMapData(String name, String mid, CreateMapDataRepresents createMapDataRepresents) {
+        this.name = name;
         this.mid = mid;
         this.createMapDataRepresents = createMapDataRepresents;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMid() {
