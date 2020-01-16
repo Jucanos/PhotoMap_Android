@@ -38,7 +38,7 @@ public class FragmentSetting extends Fragment {
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("설정");
         setHasOptionsMenu(true);
 

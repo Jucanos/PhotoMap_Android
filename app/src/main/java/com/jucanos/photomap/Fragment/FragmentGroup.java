@@ -54,7 +54,7 @@ public class FragmentGroup extends Fragment {
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
         toolbar.inflateMenu(R.menu.menu_fragment_group);
         setHasOptionsMenu(true);
@@ -141,7 +141,7 @@ public class FragmentGroup extends Fragment {
     public void redirectAddGroupActivity() {
         Intent intent = new Intent(getActivity(), AddGroupActivity.class);
         getActivity().startActivityForResult(intent, ADD_GROUP);
-        getActivity().overridePendingTransition(R.anim.anim_slide_in_top, R.anim.anim_not_move);
+        getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
     }
 
     @Override
