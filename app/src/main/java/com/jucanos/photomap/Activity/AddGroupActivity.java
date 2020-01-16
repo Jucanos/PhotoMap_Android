@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,6 +42,8 @@ public class AddGroupActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("그룹 생성");
 
         editText_name = findViewById(R.id.editText_name);
+        RelativeLayout relativeLayout_total = findViewById(R.id.relativeLayout_total);
+        hideView(relativeLayout_total);
     }
 
     @Override
@@ -93,5 +99,26 @@ public class AddGroupActivity extends AppCompatActivity {
         });
     }
 
+    private void hideView(final View view) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_slide_in_top);
+        //use this to make it longer:  animation.setDuration(1000);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+        });
+
+        view.startAnimation(animation);
+    }
 
 }
