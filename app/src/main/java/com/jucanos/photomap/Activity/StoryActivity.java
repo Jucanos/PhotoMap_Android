@@ -64,7 +64,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     public void redirectAddStoryActivity() {
-        Intent intent = new Intent(this, AddStoryActivity.class);
+        Intent intent = new Intent(this, AddStoryImageActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
