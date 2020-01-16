@@ -104,7 +104,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
     void addGroupTest() {
         imageList = new ArrayList<>();
-        Drawable drawable = getResources().getDrawable(R.drawable.test_image);
+        Drawable drawable = getResources().getDrawable(R.drawable.test_image_width);
         Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         for (int i = 0; i < 5; i++) {
             imageList.add(bm);
