@@ -4,39 +4,39 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CreateMapDataRepresents {
-    @SerializedName("gyeonggi")
+    @SerializedName("map_gyeonggi")
     @Expose
     private String gyeonggi;
 
-    @SerializedName("gangwon")
+    @SerializedName("map_gangwon")
     @Expose
     private String gangwon;
 
-    @SerializedName("chungbuk")
+    @SerializedName("map_chungbuk")
     @Expose
     private String chungbuk;
 
-    @SerializedName("chungnam")
+    @SerializedName("map_chungnam")
     @Expose
     private String chungnam;
 
-    @SerializedName("jeonbuk")
+    @SerializedName("map_jeonbuk")
     @Expose
     private String jeonbuk;
 
-    @SerializedName("jeonnam")
+    @SerializedName("map_jeonnam")
     @Expose
     private String jeonnam;
 
-    @SerializedName("gyeongbuk")
+    @SerializedName("map_gyeongbuk")
     @Expose
     private String gyeongbuk;
 
-    @SerializedName("gyeongnam")
+    @SerializedName("map_gyeongnam")
     @Expose
     private String gyeongnam;
 
-    @SerializedName("jeju")
+    @SerializedName("map_jeju")
     @Expose
     private String jeju;
 

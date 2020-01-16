@@ -68,7 +68,7 @@ public class StoryListViewAdapter extends BaseAdapter {
         final Button button_menu = (Button) convertView.findViewById(R.id.button_menu);
         final CustomViewPager customViewPager_vp = (CustomViewPager) convertView.findViewById(R.id.customViewPager_vp);
         final ExpandableTextView expandableTextView_description = (ExpandableTextView) convertView.findViewById(R.id.expandableTextView_description);
-        // UserData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+        // GetUserInfoData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
 
 
         StoryListViewItem listViewItem = listViewItemList.get(position);

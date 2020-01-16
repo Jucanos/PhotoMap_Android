@@ -1,8 +1,5 @@
 package com.jucanos.photomap.Structure;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class RequestCreateMap {
     String name;
 

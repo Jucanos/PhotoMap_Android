@@ -32,7 +32,7 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.RequestUserRemove;
-import com.jucanos.photomap.Structure.UserRemove;
+import com.jucanos.photomap.Structure.RemoveUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +52,7 @@ public class FragmentGroup extends Fragment {
         View view = inflater.inflate(R.layout.fragment_group, fragmentContainer, false);
         globalApplication = GlobalApplication.getGlobalApplicationContext();
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
@@ -197,10 +197,10 @@ public class FragmentGroup extends Fragment {
     }
 
     public void userRemove(String token, String mid, String remove) {
-        final Call<UserRemove> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RequestUserRemove(remove));
-        res.enqueue(new Callback<UserRemove>() {
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RequestUserRemove(remove));
+        res.enqueue(new Callback<RemoveUser>() {
             @Override
-            public void onResponse(Call<UserRemove> call, Response<UserRemove> response) {
+            public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
                 if (response.isSuccessful()) {
                     Log.e("LoginActivity", "[onResponse] is Successful");
                 } else {
@@ -209,7 +209,7 @@ public class FragmentGroup extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<UserRemove> call, Throwable t) {
+            public void onFailure(Call<RemoveUser> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
             }
         });

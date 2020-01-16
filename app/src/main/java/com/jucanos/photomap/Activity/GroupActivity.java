@@ -64,7 +64,7 @@ public class GroupActivity extends AppCompatActivity {
 
         mContext = this;
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Group Name");
@@ -90,7 +90,7 @@ public class GroupActivity extends AppCompatActivity {
         zoomView.setMaxZoom(8f);
 
         // 컨테이너 설정후 zoomView 추가
-        container = findViewById(R.id.container);
+        container = findViewById(R.id.fragmentViewPager_container);
         container.setClipChildren(false);
         container.addView(zoomView);
 
@@ -252,7 +252,7 @@ public class GroupActivity extends AppCompatActivity {
     // ====================================================================== for test Code
     // ====================================================================== for test Code
     void addGroupTest() {
-        Drawable drawable = getResources().getDrawable(R.drawable.test_image);
+        Drawable drawable = getResources().getDrawable(R.drawable.test_image_vertical);
         Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         adapter.addItem(bm, "일청원");
         adapter.addItem(bm, "이청원");

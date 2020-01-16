@@ -13,21 +13,22 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout_ab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:tooltipText="!!!!">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_tb"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
-            android:id="@+id/container"
+            android:id="@+id/fragmentViewPager_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/relativeLayout_upper"
@@ -69,13 +70,13 @@
             android:id="@+id/layout_addMember"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_title"/>
+            android:layout_below="@id/layout_title" />
 
         <ListView
             android:id="@+id/listView_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_addMember"/>
+            android:layout_below="@+id/layout_addMember" />
 
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

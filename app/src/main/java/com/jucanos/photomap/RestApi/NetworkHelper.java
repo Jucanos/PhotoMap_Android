@@ -5,9 +5,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkHelper {
     private static NetworkHelper ourInstance = new NetworkHelper();
+
     public static NetworkHelper getInstance() {
         return ourInstance;
     }
+
     private NetworkHelper() {
     }
 
@@ -21,7 +23,4 @@ public class NetworkHelper {
     public ApiService getService() {
         return service;
     }
-
-
-
 }

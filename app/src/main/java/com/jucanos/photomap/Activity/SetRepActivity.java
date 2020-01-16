@@ -48,7 +48,7 @@ public class SetRepActivity extends AppCompatActivity {
         // String filePath = globalApplication.groupArrayList.get(mapPos).storys[regionPos].get(storyPos).getRealFilePath();
         //bitMap_back = BitmapFactory.decodeFile(filePath);
 
-        Drawable drawable = getResources().getDrawable(R.drawable.test_image);
+        Drawable drawable = getResources().getDrawable(R.drawable.test_image_vertical);
         bitMap_back = ((BitmapDrawable) drawable).getBitmap();
         // 확대, 축소, 회전을 위한 view inflate
         view = new SandboxView(this, bitMap_back);
@@ -56,7 +56,7 @@ public class SetRepActivity extends AppCompatActivity {
         view.setLayoutParams(layoutParams);
 
         // 컨테이너 설정후 zoomView 추가
-        RelativeLayout container = findViewById(R.id.container);
+        RelativeLayout container = findViewById(R.id.fragmentViewPager_container);
         container.addView(view);
 
         // 마스크의 검은색 부분 -> 반투명 검은색으로 변경
@@ -67,23 +67,23 @@ public class SetRepActivity extends AppCompatActivity {
     public Drawable getBitmapFront(int regionCode) {
         Drawable drawable = null;
         if (regionCode == 1) {
-            drawable = getResources().getDrawable(R.drawable.gyeonggi_empty);
+            drawable = getResources().getDrawable(R.drawable.map_gyeonggi_empty);
         } else if (regionCode == 2) {
-            drawable = getResources().getDrawable(R.drawable.gangwon_empty);
+            drawable = getResources().getDrawable(R.drawable.map_gangwon_empty);
         } else if (regionCode == 3) {
-            drawable = getResources().getDrawable(R.drawable.chungbuk_empty);
+            drawable = getResources().getDrawable(R.drawable.map_chungbuk_empty);
         } else if (regionCode == 4) {
-            drawable = getResources().getDrawable(R.drawable.chungnam_empty);
+            drawable = getResources().getDrawable(R.drawable.map_chungnam_empty);
         } else if (regionCode == 5) {
-            drawable = getResources().getDrawable(R.drawable.junbuk_empty);
+            drawable = getResources().getDrawable(R.drawable.map_junbuk_empty);
         } else if (regionCode == 6) {
-            drawable = getResources().getDrawable(R.drawable.junnam_empty);
+            drawable = getResources().getDrawable(R.drawable.map_junnam_empty);
         } else if (regionCode == 7) {
-            drawable = getResources().getDrawable(R.drawable.gyeongbuk_empty);
+            drawable = getResources().getDrawable(R.drawable.map_gyeongbuk_empty);
         } else if (regionCode == 8) {
-            drawable = getResources().getDrawable(R.drawable.gyeongnam_empty);
+            drawable = getResources().getDrawable(R.drawable.map_gyeongnam_empty);
         } else if (regionCode == 9) {
-            drawable = getResources().getDrawable(R.drawable.jeju_empty);
+            drawable = getResources().getDrawable(R.drawable.map_jeju_empty);
         }
 
         return drawable;

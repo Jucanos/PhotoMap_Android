@@ -3,7 +3,7 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserRemove {
+public class RemoveUser {
     @SerializedName("data")
     @Expose
     String data;
@@ -12,7 +12,7 @@ public class UserRemove {
     @Expose
     String message;
 
-    public UserRemove(String data, String message) {
+    public RemoveUser(String data, String message) {
         this.data = data;
         this.message = message;
     }

@@ -20,7 +20,7 @@ public class AddStoryDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_story_description);
 
         // set toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("내용");

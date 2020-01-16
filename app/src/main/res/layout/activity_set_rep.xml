@@ -9,7 +9,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/container"
+        android:id="@+id/fragmentViewPager_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite" />
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:adjustViewBounds="true"
-            android:src="@drawable/gangwon_empty" />
+            android:src="@drawable/map_gangwon_empty" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_weight="1"
-            android:background="@drawable/background_dialog_radius"
+            android:background="@drawable/layout_rounded_dialog"
             android:text="자르기"
             android:textColor="#000000" />
     </LinearLayout>

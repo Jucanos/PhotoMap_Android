@@ -25,7 +25,7 @@ public class StoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Group Name");
@@ -72,10 +72,10 @@ public class StoryActivity extends AppCompatActivity {
     // ====================================================================== for test Code
     // ====================================================================== for test Code
     void addStoryTest() {
-        String thumbnail_realPath = "drawable://" + R.drawable.test_image;
+        String thumbnail_realPath = "drawable://" + R.drawable.test_image_vertical;
         ArrayList<String> image_realPahts = new ArrayList<String>();
         for (int i = 0; i < 5; i++) {
-            String image_realpath = "drawable://" + R.drawable.test_image;
+            String image_realpath = "drawable://" + R.drawable.test_image_vertical;
             image_realPahts.add(image_realpath);
         }
         String time_upload = "0000/00/00 00:00";

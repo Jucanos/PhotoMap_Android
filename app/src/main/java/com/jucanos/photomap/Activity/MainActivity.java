@@ -2,7 +2,6 @@ package com.jucanos.photomap.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -15,12 +14,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.jucanos.photomap.Fragment.FragmentViewPager;
 import com.jucanos.photomap.Fragment.FragmentPagerAdapter;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.Structure.GetMapList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
@@ -30,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar1);
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
 
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.fragmentViewPager_container);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /* TextView */
@@ -47,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
         mCustomTabTextView2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map, 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView2));
 
-        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_menu, 0, 0);
+        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_three_horizontal_lines_white, 0, 0);
         tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView3));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final FragmentViewPager viewPager = findViewById(R.id.pager);
+        final FragmentViewPager viewPager = findViewById(R.id.fragmentViewPager_fvp);
         final FragmentPagerAdapter adapter = new FragmentPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

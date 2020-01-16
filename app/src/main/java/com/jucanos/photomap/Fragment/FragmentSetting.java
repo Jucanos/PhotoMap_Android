@@ -19,7 +19,7 @@ import com.jucanos.photomap.Activity.LoginActivity;
 import com.jucanos.photomap.Activity.NoticeActivity;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.Structure.Authorization;
+import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -36,7 +36,7 @@ public class FragmentSetting extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         globalApplication = globalApplication = GlobalApplication.getGlobalApplicationContext();
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("설정");
@@ -99,10 +99,10 @@ public class FragmentSetting extends Fragment {
     }
 
     public void requestSignoutAccount(String token) {
-        final Call<Authorization> res = NetworkHelper.getInstance().getService().signoutAccount("Bearer " + token);
-        res.enqueue(new Callback<Authorization>() {
+        final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().signoutAccount("Bearer " + token);
+        res.enqueue(new Callback<GetUserInfo>() {
             @Override
-            public void onResponse(Call<Authorization> call, Response<Authorization> response) {
+            public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
                 if (response.isSuccessful()) {
                     UserManagement.requestLogout(new LogoutResponseCallback() {
                         @Override
@@ -116,7 +116,7 @@ public class FragmentSetting extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Authorization> call, Throwable t) {
+            public void onFailure(Call<GetUserInfo> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
             }
         });

@@ -6,14 +6,14 @@
     android:background="#FFFFFF">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_ab"
+        android:id="@+id/appBarLayout_ab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:tooltipText="!!!!">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_tb"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -24,7 +24,7 @@
         android:id="@+id/layout_noGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar_ab">
+        android:layout_below="@+id/appBarLayout_ab">
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         android:id="@+id/layout_existGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar_ab">
+        android:layout_below="@+id/appBarLayout_ab">
 
         <ListView
             android:id="@+id/listView_group"

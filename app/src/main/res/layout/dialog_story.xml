@@ -4,12 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:clipChildren="false"
-    android:background="@drawable/background_dialog_radius"
+    android:background="@drawable/layout_rounded_dialog"
     android:padding="15dp"
     >
 
     <LinearLayout
-        android:id="@+id/linear_layout"
+        android:id="@+id/linearLayout_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

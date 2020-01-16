@@ -1,11 +1,11 @@
 package com.jucanos.photomap.RestApi;
 
-import com.jucanos.photomap.Structure.Authorization;
+import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.RequestCreateMap;
 import com.jucanos.photomap.Structure.RequestUserRemove;
-import com.jucanos.photomap.Structure.UserRemove;
+import com.jucanos.photomap.Structure.RemoveUser;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,10 +18,10 @@ import retrofit2.http.Path;
 
 public interface ApiService {
     @GET("dev/users")
-    Call<Authorization> loginAccount(@Header("Authorization") String authorization);
+    Call<GetUserInfo> loginAccount(@Header("Authorization") String authorization);
 
     @DELETE("dev/users")
-    Call<Authorization> signoutAccount(@Header("Authorization") String authorization);
+    Call<GetUserInfo> signoutAccount(@Header("Authorization") String authorization);
 
     @GET("dev/maps")
     Call<GetMapList> getMapList(@Header("Authorization") String authKey);
@@ -32,7 +32,7 @@ public interface ApiService {
             @Body RequestCreateMap requestCreateMap);
 
     @PATCH("dev/maps/{mid}")
-    Call<UserRemove> userRemove(@Header("Authorization") String authorization,@Path("mid") String mid, @Body RequestUserRemove requestUserRemove);
+    Call<RemoveUser> userRemove(@Header("Authorization") String authorization, @Path("mid") String mid, @Body RequestUserRemove requestUserRemove);
 
 //    @FormUrlEncoded
 //    @POST("user/login")

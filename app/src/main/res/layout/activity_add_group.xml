@@ -14,14 +14,14 @@
         android:visibility="invisible">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar_ab"
+            android:id="@+id/appBarLayout_ab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:tooltipText="!!!!">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_tb"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -31,7 +31,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appbar_ab"
+            android:layout_below="@+id/appBarLayout_ab"
             android:background="#FFFFFF">
 
             <EditText

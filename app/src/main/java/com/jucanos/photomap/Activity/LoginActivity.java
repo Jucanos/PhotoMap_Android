@@ -13,9 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.Structure.Authorization;
+import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.Structure.GetMapList;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
@@ -103,10 +102,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void requestLoginAccount(final String token) {
-        final Call<Authorization> res = NetworkHelper.getInstance().getService().loginAccount("Bearer " + token);
-        res.enqueue(new Callback<Authorization>() {
+        final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().loginAccount("Bearer " + token);
+        res.enqueue(new Callback<GetUserInfo>() {
             @Override
-            public void onResponse(Call<Authorization> call, Response<Authorization> response) {
+            public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         globalApplication.authorization = response.body();
@@ -121,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Authorization> call, Throwable t) {
+            public void onFailure(Call<GetUserInfo> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
             }
         });

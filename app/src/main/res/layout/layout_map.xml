@@ -26,8 +26,8 @@
             android:minWidth="125dp"
             android:minHeight="150dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/gyeonggi"
-            app:siShape="@drawable/ic_gyeonggi" />
+            android:src="@drawable/map_gyeonggi"
+            app:siShape="@drawable/ic_map_gyeonggi" />
 
         <!--강원도 : 2-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -44,8 +44,8 @@
             android:minWidth="215dp"
             android:minHeight="215dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/gangwon"
-            app:siShape="@drawable/ic_gangwon" />
+            android:src="@drawable/map_gangwon"
+            app:siShape="@drawable/ic_map_gangwon" />
 
 
         <!--충북 : 3-->
@@ -63,8 +63,8 @@
             android:minWidth="140dp"
             android:minHeight="140dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/chungbuk"
-            app:siShape="@drawable/ic_chungbuk" />
+            android:src="@drawable/map_chungbuk"
+            app:siShape="@drawable/ic_map_chungbuk" />
         <!--충남 : 4-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
             android:id="@+id/imageView_chungnam"
@@ -80,8 +80,8 @@
             android:minWidth="135dp"
             android:minHeight="130dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/chungnam"
-            app:siShape="@drawable/ic_chungnam" />
+            android:src="@drawable/map_chungnam"
+            app:siShape="@drawable/ic_map_chungnam" />
 
 
         <!--전북 : 5-->
@@ -99,8 +99,8 @@
             android:minWidth="145dp"
             android:minHeight="120dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/jeonbuk"
-            app:siShape="@drawable/ic_junbuk" />
+            android:src="@drawable/map_jeonbuk"
+            app:siShape="@drawable/ic_map_junbuk" />
 
         <!--전남 : 6-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -117,8 +117,8 @@
             android:minWidth="150dp"
             android:minHeight="135dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/jeonnam"
-            app:siShape="@drawable/ic_junnam" />
+            android:src="@drawable/map_jeonnam"
+            app:siShape="@drawable/ic_map_junnam" />
 
         <!--경북 : 7-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -135,8 +135,8 @@
             android:minWidth="170dp"
             android:minHeight="180dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/gyeongbuk"
-            app:siShape="@drawable/ic_gyeongbuk" />
+            android:src="@drawable/map_gyeongbuk"
+            app:siShape="@drawable/ic_map_gyeongbuk" />
 
         <!--경남 : 8-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -153,8 +153,8 @@
             android:minWidth="175dp"
             android:minHeight="130dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/gyeongnam"
-            app:siShape="@drawable/ic_gyeongnam" />
+            android:src="@drawable/map_gyeongnam"
+            app:siShape="@drawable/ic_map_gyeongnam" />
 
         <!--제주 : 9-->
         <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -171,8 +171,8 @@
             android:minWidth="90dp"
             android:minHeight="60dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/jeju"
-            app:siShape="@drawable/ic_jeju" />
+            android:src="@drawable/map_jeju"
+            app:siShape="@drawable/ic_map_jeju" />
     </RelativeLayout>
     \
 
@@ -210,7 +210,7 @@
                 android:id="@+id/floatingActionButton_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_share_white"
+                android:src="@drawable/ic_icon_share_white"
                 app:fab_colorNormal="#000000"
                 app:fab_colorPressed="#55000000"
                 app:fab_label="공유하기"
@@ -221,7 +221,7 @@
                 android:id="@+id/floatingActionButton_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_photo_white"
+                android:src="@drawable/ic_icon_photo_white"
                 app:fab_colorNormal="#000000"
                 app:fab_colorPressed="#55000000"
                 app:fab_label="이미지로 저장하기"
@@ -231,7 +231,7 @@
                 android:id="@+id/floatingActionButton_rep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_korea_white"
+                android:src="@drawable/ic_icon_korea_white"
                 app:fab_colorNormal="#000000"
                 app:fab_colorPressed="#55000000"
                 app:fab_label="대표지도 설정"

@@ -12,32 +12,36 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1">
+
         <RelativeLayout
-            android:layout_above="@+id/down"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout_down">
+
             <TextView
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="PhotoMap"
-                android:textSize="56dp"/>
+                android:textSize="56dp" />
         </RelativeLayout>
+
         <LinearLayout
-            android:id="@+id/down"
+            android:id="@+id/linearLayout_down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="포토맵에 오신걸 환영합니다"
-                android:textSize="28dp"
-                />
+                android:textAlignment="center"
+                android:textSize="28dp" />
+
             <com.kakao.usermgmt.LoginButton
-                android:id="@+id/com_kakao_login"
+                android:id="@+id/button_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp" />

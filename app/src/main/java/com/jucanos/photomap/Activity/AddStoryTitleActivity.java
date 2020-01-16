@@ -21,7 +21,7 @@ public class AddStoryTitleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_story_title);
 
         // set toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("제목");

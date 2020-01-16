@@ -13,13 +13,13 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+            android:id="@+id/appBarLayout_ab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_tb"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -53,9 +53,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_margin="16dp"
-                android:background="@drawable/black_transp_circ_ripple"
+                android:background="@drawable/layout_black_transp_circ_ripple"
                 android:scaleType="center"
-                android:src="@drawable/ic_arrow_left_button" />
+                android:src="@drawable/ic_icon_arrow_left_nobar_white" />
 
             <ImageView
                 android:id="@+id/imageView_right"
@@ -64,9 +64,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_margin="16dp"
-                android:background="@drawable/black_transp_circ_ripple"
+                android:background="@drawable/layout_black_transp_circ_ripple"
                 android:scaleType="center"
-                android:src="@drawable/ic_arrow_right_button" />
+                android:src="@drawable/ic_icon_arrow_right_nobar_white" />
 
 
             <ImageView
@@ -77,10 +77,10 @@
                 android:layout_alignLeft="@+id/viewPager_vp"
                 android:layout_alignBottom="@+id/viewPager_vp"
                 android:layout_margin="16dp"
-                android:background="@drawable/black_transp_circ_ripple"
+                android:background="@drawable/layout_black_transp_circ_ripple"
                 android:padding="8dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_crop_free_white_24dp" />
+                android:src="@drawable/ic_icon_crop_free_white" />
 
             <ImageView
                 android:id="@+id/imageView_rotate"
@@ -90,10 +90,10 @@
                 android:layout_alignRight="@+id/viewPager_vp"
                 android:layout_alignBottom="@+id/viewPager_vp"
                 android:layout_margin="16dp"
-                android:background="@drawable/black_transp_circ_ripple"
+                android:background="@drawable/layout_black_transp_circ_ripple"
                 android:padding="8dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_rotate_right_white_24dp" />
+                android:src="@drawable/ic_icon_rotate_right_white" />
 
 
         </RelativeLayout>

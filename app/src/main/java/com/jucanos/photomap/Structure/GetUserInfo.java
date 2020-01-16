@@ -1,25 +1,26 @@
 package com.jucanos.photomap.Structure;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Authorization {
+public class GetUserInfo {
     @SerializedName("data")
     @Expose
-    private UserData userData;
+    private GetUserInfoData userData;
     @SerializedName("message")
     @Expose
     private String message;
 
-    public Authorization(UserData userData, String message) {
+    public GetUserInfo(GetUserInfoData userData, String message) {
         this.userData = userData;
         this.message = message;
     }
 
-    public UserData getUserData() {
+    public GetUserInfoData getUserData() {
         return userData;
     }
 
-    public void setData(UserData userData) {
+    public void setData(GetUserInfoData userData) {
         this.userData = userData;
     }
 
