@@ -7,6 +7,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -40,7 +41,6 @@ public class AddStoryImageActivity extends AppCompatActivity {
     private CustomViewPager viewPager;
     private AddStoryViewPagerAdapter addStoryViewPagerAdapter;
 
-    private int galleryCode = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -55,7 +55,6 @@ public class AddStoryImageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("사진 선택 및 크기 설정");
 
         viewPager = findViewById(R.id.viewPager_vp);
-        addGroupTest();
         viewPager.setPagingEnabled(false);
         addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(this, imageList);
         viewPager.setAdapter(addStoryViewPagerAdapter);
@@ -96,7 +95,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
             }
         });
 
-        oepnGallery();
+        openGallery();
     }
 
     @Override
@@ -105,6 +104,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -112,6 +112,9 @@ public class AddStoryImageActivity extends AppCompatActivity {
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
             case R.id.item_next:
+                return true;
+            case R.id.item_gallery:
+                openGallery();
                 return true;
             // 뒤로가기 버튼
             case android.R.id.home:
@@ -123,7 +126,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    boolean oepnGallery() {
+    boolean openGallery() {
         String[] REQUIRED_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -146,6 +149,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
         }
 
         FilePickerBuilder.getInstance().setMaxCount(5)
+                .setActivityTheme(R.style.LibAppTheme)
                 .pickPhoto(this, FilePickerConst.REQUEST_CODE_PHOTO);
         return false;
     }
@@ -155,13 +159,14 @@ public class AddStoryImageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case FilePickerConst.REQUEST_CODE_PHOTO:
-                if(data == null)  Log.e("AddStoryImageActivity", "[data] : null");
+                if (data == null) Log.e("AddStoryImageActivity", "[data] : null");
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> photoPaths = new ArrayList<>();
                     photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                     for (int i = 0; i < photoPaths.size(); i++) {
                         Log.e("AddStoryImageActivity", "[photoPaths] : " + photoPaths.get(i));
                     }
+                    addImage(photoPaths);
                 }
                 break;
         }
@@ -181,19 +186,11 @@ public class AddStoryImageActivity extends AppCompatActivity {
         }
     }
 
-    void addGroupTest() {
-        imageList = new ArrayList<>();
-        Drawable drawable = getResources().getDrawable(R.drawable.test_image_width);
-        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
-        for (int i = 0; i < 5; i++) {
+    void addImage(ArrayList<String> photoPaths){
+        for(int i = 0 ; i < photoPaths.size(); i++){
+            Bitmap bm = BitmapFactory.decodeFile(photoPaths.get(i));
             imageList.add(bm);
         }
-    }
-
-    private static ArrayList<String> getGalleryPath() {
-        ArrayList<String> photoDirs = new ArrayList<>();
-        photoDirs.add(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DCIM + "/");
-        photoDirs.add(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DCIM + "/");
-        return photoDirs;
+        addStoryViewPagerAdapter.notifyDataSetChanged();
     }
 }
