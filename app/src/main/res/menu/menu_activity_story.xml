@@ -5,7 +5,7 @@
     <item
         android:id="@+id/item_add"
         android:title="add"
-        android:icon="@drawable/ic_add_button_inside_black_circle"
+        android:icon="@drawable/ic_plus_white"
         app:showAsAction="always"
         />
 </menu>
