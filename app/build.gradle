@@ -60,4 +60,11 @@ dependencies {
 
     // for fragment's startActivityForResult
     implementation 'com.squareup:otto:1.3.7'
+
+    // for image multi image picker
+    implementation 'com.droidninja:filepicker:2.2.1'
+
+    implementation 'io.alterac.blurkit:blurkit:1.0.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
 }

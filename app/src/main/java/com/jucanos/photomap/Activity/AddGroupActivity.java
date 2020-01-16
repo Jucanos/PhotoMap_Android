@@ -79,6 +79,7 @@ public class AddGroupActivity extends AppCompatActivity {
                         intent.putExtra("mapName", name);
                         setResult(1, intent);
                         finish();
+                        overridePendingTransition(R.anim.anim_slide_out_top, R.anim.anim_not_move);
                     }
                 } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
