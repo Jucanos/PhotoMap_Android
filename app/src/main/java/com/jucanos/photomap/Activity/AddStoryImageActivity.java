@@ -2,25 +2,18 @@ package com.jucanos.photomap.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -37,7 +30,6 @@ import droidninja.filepicker.FilePickerConst;
 
 
 public class AddStoryImageActivity extends AppCompatActivity {
-    private ArrayList<Bitmap> imageList;
     private CustomViewPager viewPager;
     private AddStoryViewPagerAdapter addStoryViewPagerAdapter;
 
@@ -56,7 +48,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.viewPager_vp);
         viewPager.setPagingEnabled(false);
-        addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(this, imageList);
+        addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(this);
         viewPager.setAdapter(addStoryViewPagerAdapter);
 
         ImageView imageView_left = findViewById(R.id.imageView_left);
@@ -112,6 +104,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
             case R.id.item_next:
+                redirectAddStoryTitleActivity();
                 return true;
             case R.id.item_gallery:
                 openGallery();
@@ -189,8 +182,14 @@ public class AddStoryImageActivity extends AppCompatActivity {
     void addImage(ArrayList<String> photoPaths){
         for(int i = 0 ; i < photoPaths.size(); i++){
             Bitmap bm = BitmapFactory.decodeFile(photoPaths.get(i));
-            imageList.add(bm);
+            addStoryViewPagerAdapter.addItem(bm);
         }
         addStoryViewPagerAdapter.notifyDataSetChanged();
+    }
+
+    void redirectAddStoryTitleActivity(){
+        Intent intent = new Intent(this, AddStoryTitleActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 }

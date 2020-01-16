@@ -16,11 +16,10 @@ import java.util.ArrayList;
 
 public class AddStoryViewPagerAdapter extends PagerAdapter {
     private Context mContext;
-    private ArrayList<Bitmap> imageList;
+    private ArrayList<Bitmap> imageList = new ArrayList<>();
 
-    public AddStoryViewPagerAdapter(Context context, ArrayList<Bitmap> imageList) {
+    public AddStoryViewPagerAdapter(Context context) {
         this.mContext = context;
-        this.imageList = imageList;
     }
 
     @NonNull
@@ -64,8 +63,9 @@ public class AddStoryViewPagerAdapter extends PagerAdapter {
         imageList.set(x, mbitmap);
     }
 
-
-
+    public void addItem(Bitmap bm){
+        imageList.add(bm);
+    }
 
 
 }
