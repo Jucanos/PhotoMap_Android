@@ -103,12 +103,16 @@ public class FragmentSetting extends Fragment {
         res.enqueue(new Callback<Authorization>() {
             @Override
             public void onResponse(Call<Authorization> call, Response<Authorization> response) {
-                UserManagement.requestLogout(new LogoutResponseCallback() {
-                    @Override
-                    public void onCompleteLogout() {
-                        redirectLoginActivity();
-                    }
-                });
+                if (response.isSuccessful()) {
+                    UserManagement.requestLogout(new LogoutResponseCallback() {
+                        @Override
+                        public void onCompleteLogout() {
+                            redirectLoginActivity();
+                        }
+                    });
+                } else {
+                    Log.e("[FragmentSetting]", Integer.toString(response.code()));
+                }
             }
 
             @Override

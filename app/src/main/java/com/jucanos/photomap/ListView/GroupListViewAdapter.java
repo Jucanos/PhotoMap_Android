@@ -68,10 +68,13 @@ public class GroupListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(GroupListViewItem item){
+    public void addItem(GroupListViewItem item) {
         listViewItemList.add(item);
     }
 
+    public void delete(int position) {
+        listViewItemList.remove(position);
+    }
 
     public void clear() {
         listViewItemList = new ArrayList<GroupListViewItem>();
