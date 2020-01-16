@@ -15,6 +15,7 @@ import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.Authorization;
 import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.GetMapList;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
@@ -32,6 +33,7 @@ import static com.kakao.util.helper.Utility.getPackageInfo;
 public class LoginActivity extends AppCompatActivity {
     private SessionCallback callback;
     public GlobalApplication globalApplication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.e("[getAccessToken]", Session.getCurrentSession().getAccessToken());
             globalApplication.token = Session.getCurrentSession().getAccessToken();
             requestLoginAccount(Session.getCurrentSession().getAccessToken());
-            redirectSignupActivity();
+
         }
 
         @Override
@@ -100,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void requestLoginAccount(String token) {
+    public void requestLoginAccount(final String token) {
         final Call<Authorization> res = NetworkHelper.getInstance().getService().loginAccount("Bearer " + token);
         res.enqueue(new Callback<Authorization>() {
             @Override
@@ -111,13 +113,19 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("getUid", globalApplication.authorization.getUserData().getUid());
                         Log.e("getThumbnail", globalApplication.authorization.getUserData().getThumbnail());
                         Log.e("getNickname", globalApplication.authorization.getUserData().getNickname());
+                        redirectSignupActivity();
                     }
+                } else {
+                    Log.e("requestLoginAccount", "!!!isSuccessful");
                 }
             }
+
             @Override
             public void onFailure(Call<Authorization> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
             }
         });
     }
+
+
 }

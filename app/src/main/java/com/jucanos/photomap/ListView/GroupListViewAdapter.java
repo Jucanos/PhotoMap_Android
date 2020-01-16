@@ -68,12 +68,10 @@ public class GroupListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(Bitmap thumnail, String title) {
-        GroupListViewItem item = new GroupListViewItem();
-        item.setThumbnail(thumnail);
-        item.setTitle(title);
+    public void addItem(GroupListViewItem item){
         listViewItemList.add(item);
     }
+
 
     public void clear() {
         listViewItemList = new ArrayList<GroupListViewItem>();

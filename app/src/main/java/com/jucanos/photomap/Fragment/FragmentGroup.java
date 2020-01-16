@@ -25,14 +25,21 @@ import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.Dialog.GroupDialog;
 import com.jucanos.photomap.Dialog.GroupDialogListener;
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.GetMapList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentGroup extends Fragment {
     private RelativeLayout noGroup, existGroup;
     private ListView listView_group;
-
+    public GlobalApplication globalApplication;
     private int groupCnt = 0;
     private GroupListViewAdapter adapter;
 
@@ -41,6 +48,7 @@ public class FragmentGroup extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group, fragmentContainer, false);
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -96,6 +104,8 @@ public class FragmentGroup extends Fragment {
             }
         });
 
+        getMapList(globalApplication.token);
+
         setLayout();
         return view;
     }
@@ -134,12 +144,52 @@ public class FragmentGroup extends Fragment {
         switch (resultCode) {
             case 1:
                 String mapTokpen = data.getStringExtra("mapToken");
-                Log.e("mapToken",mapTokpen);
+                String mapName = data.getStringExtra("mapName");
+                Log.e("FragmentGroup","[mapToken] : " + mapTokpen);
+                Log.e("FragmentGroup","[mapName]" + mapName);
+                addGroup(mapTokpen,mapName);
                 break;
             default:
                 break;
         }
     }
+
+    public void addGroup(String name, String mid){
+        Drawable drawable = getResources().getDrawable(R.drawable.logo);
+        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
+        adapter.addItem(new GroupListViewItem(mid,name,bm));
+        adapter.notifyDataSetChanged();
+        setLayout();
+    }
+
+    public void getMapList(String token){
+        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList("Bearer " + token);
+        res.enqueue(new Callback<GetMapList>() {
+            @Override
+            public void onResponse(Call<GetMapList> call, Response<GetMapList> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        GetMapList getMapList = response.body();
+                        for(int i = 0 ; i < getMapList.getGetMapListDatas().size(); i++){
+                            Log.e("LoginActivity","[mid]" +  getMapList.getGetMapListDatas().get(i).getMid());
+                            Log.e("LoginActivity","[getName]" +  getMapList.getGetMapListDatas().get(i).getName());
+                            String name = getMapList.getGetMapListDatas().get(i).getName();
+                            String mid = getMapList.getGetMapListDatas().get(i).getMid();
+                            addGroup(name,mid);
+                        }
+
+                    }
+                }else{
+                    Log.e("LoginActivity","[onResponse] " + Integer.toString(response.code()));
+                }
+            }
+            @Override
+            public void onFailure(Call<GetMapList> call, Throwable t) {
+                Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
+    }
+
 
     @Override
     public void onResume() {
@@ -147,25 +197,18 @@ public class FragmentGroup extends Fragment {
         getActivity().invalidateOptionsMenu();
     }
 
+
+
     // ====================================================================== for test Code
     // ====================================================================== for test Code
     void setLayout() {
-        if (groupCnt == 0) {
+        if (adapter.getCount() == 0) {
             noGroup.setVisibility(View.VISIBLE);
             existGroup.setVisibility(View.GONE);
         } else {
             noGroup.setVisibility(View.GONE);
             existGroup.setVisibility(View.VISIBLE);
         }
-    }
-
-    void addGroupTest() {
-        Drawable drawable = getResources().getDrawable(R.drawable.test_image);
-        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
-        adapter.addItem(bm, "Group Name");
-        adapter.notifyDataSetChanged();
-        groupCnt += 1;
-        setLayout();
     }
 }
 

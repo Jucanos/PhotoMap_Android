@@ -16,8 +16,7 @@ import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateMap;
-
-import java.util.HashMap;
+import com.jucanos.photomap.Structure.RequestCreateMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +37,7 @@ public class AddGroupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("그룹 생성");
 
-        editText_name= findViewById(R.id.editText_name);
+        editText_name = findViewById(R.id.editText_name);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class AddGroupActivity extends AppCompatActivity {
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
             case R.id.item_ok:
-                requestCreateMap(globalApplication.token,editText_name.getText().toString());
+                requestCreateMap(globalApplication.token, editText_name.getText().toString());
                 return true;
             // 뒤로가기 버튼
             case android.R.id.home:
@@ -64,10 +63,10 @@ public class AddGroupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void requestCreateMap(String token,String name) {
-        Log.e("token",token);
-        Log.e("name",name);
-        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, name);
+    public void requestCreateMap(String token, final String name) {
+        Log.e("token", token);
+        Log.e("name", name);
+        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, new RequestCreateMap(name));
         res.enqueue(new Callback<CreateMap>() {
             @Override
             public void onResponse(Call<CreateMap> call, Response<CreateMap> response) {
@@ -77,10 +76,11 @@ public class AddGroupActivity extends AppCompatActivity {
                         Log.e("requestCreateMap", mapToken);
                         Intent intent = new Intent();
                         intent.putExtra("mapToken", mapToken);
+                        intent.putExtra("mapName", name);
                         setResult(1, intent);
                         finish();
                     }
-                }else{
+                } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
                 }
             }
@@ -91,5 +91,6 @@ public class AddGroupActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

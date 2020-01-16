@@ -2,6 +2,7 @@ package com.jucanos.photomap.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -14,6 +15,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.jucanos.photomap.Fragment.FragmentViewPager;
 import com.jucanos.photomap.Fragment.FragmentPagerAdapter;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.GetMapList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
@@ -77,4 +84,6 @@ public class MainActivity extends AppCompatActivity {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+
 }
