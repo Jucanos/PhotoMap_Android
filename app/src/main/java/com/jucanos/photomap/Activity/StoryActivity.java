@@ -2,7 +2,9 @@ package com.jucanos.photomap.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class StoryActivity extends AppCompatActivity {
     private ListView listView_story;
     private StoryListViewAdapter listView_storyApater;
+    private int ADD_STORY_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +36,6 @@ public class StoryActivity extends AppCompatActivity {
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
         listView_story.setAdapter(listView_storyApater);
-        addStoryTest();
-        addStoryTest();
-        addStoryTest();
-
     }
 
     @Override
@@ -65,24 +64,35 @@ public class StoryActivity extends AppCompatActivity {
 
     public void redirectAddStoryActivity() {
         Intent intent = new Intent(this, AddStoryActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_STORY_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String title = data.getStringExtra("title");
+                String description = data.getStringExtra("description");
+                ArrayList<String> realPaths = (ArrayList<String>) data.getSerializableExtra("realPaths");
+                Log.e("StoryActivity", "title : " + title);
+                Log.e("StoryActivity", "description : " + description);
+                for (int i = 0; i < realPaths.size(); i++) {
+                    Log.e("StoryActivity", "realPaths[" + Integer.toString(i) + "] : " + realPaths.get(i));
+                }
+                addStoryTest(realPaths, title, description);
+
+            }
+        }
     }
 
     // ====================================================================== for test Code
     // ====================================================================== for test Code
-    void addStoryTest() {
+    void addStoryTest(ArrayList<String> image_realPahts, String title, String description) {
         String thumbnail_realPath = "drawable://" + R.drawable.test_image_vertical;
-        ArrayList<String> image_realPahts = new ArrayList<String>();
-        for (int i = 0; i < 5; i++) {
-            String image_realpath = "drawable://" + R.drawable.test_image_vertical;
-            image_realPahts.add(image_realpath);
-        }
         String time_upload = "0000/00/00 00:00";
         String time_edit = "0000/00/00 00:00";
-        String description = "난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.난 귀엽다.";
-        String title = "백만스물둘청원";
-
         StoryListViewItem storyListViewItem = new StoryListViewItem();
 
         storyListViewItem.setThumnail_realPath(thumbnail_realPath);

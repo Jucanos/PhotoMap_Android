@@ -41,7 +41,7 @@ public class AddGroupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("그룹 생성");
 
-        editText_name = findViewById(R.id.editText_name);
+        editText_name = findViewById(R.id.editText_description);
         RelativeLayout relativeLayout_total = findViewById(R.id.relativeLayout_total);
         hideView(relativeLayout_total);
     }

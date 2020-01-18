@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import com.jucanos.photomap.Activity.AddStoryActivity;
 import com.jucanos.photomap.R;
 
 public class AddStoryFragmentTitle extends Fragment {
+    private EditText editText_title;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_stroy_title, fragmentContainer, false);
@@ -28,6 +31,8 @@ public class AddStoryFragmentTitle extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("제목");
         toolbar.inflateMenu(R.menu.menu_fragment_add_story_title);
         setHasOptionsMenu(true);
+
+        editText_title = view.findViewById(R.id.editText_title);
 
         return view;
     }
@@ -49,5 +54,9 @@ public class AddStoryFragmentTitle extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getTitle() {
+        return editText_title.getText().toString();
     }
 }

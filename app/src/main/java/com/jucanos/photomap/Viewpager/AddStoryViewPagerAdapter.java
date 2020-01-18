@@ -50,10 +50,10 @@ public class AddStoryViewPagerAdapter extends PagerAdapter {
         return (view == (View) o);
     }
 
-    @Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
-    }
+//    @Override
+//    public int getItemPosition(Object object) {
+//        return POSITION_NONE;
+//    }
 
     public Bitmap getBitmap(int x) {
         return imageList.get((x));

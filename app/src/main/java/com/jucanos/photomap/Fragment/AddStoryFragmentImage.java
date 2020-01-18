@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +52,7 @@ public class AddStoryFragmentImage extends Fragment {
         setHasOptionsMenu(true);
 
         viewPager = view.findViewById(R.id.viewPager_vp);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setPagingEnabled(false);
         addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(getActivity().getApplicationContext());
         viewPager.setAdapter(addStoryViewPagerAdapter);
@@ -64,6 +66,7 @@ public class AddStoryFragmentImage extends Fragment {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                Log.e("AddStoryActivity", "viewPager.getChildCount() : " + Integer.toString(viewPager.getChildCount()));
             }
         });
 
@@ -71,6 +74,7 @@ public class AddStoryFragmentImage extends Fragment {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                Log.e("AddStoryActivity", "viewPager.getChildCount() : " + Integer.toString(viewPager.getChildCount()));
             }
         });
 
@@ -147,6 +151,7 @@ public class AddStoryFragmentImage extends Fragment {
         return false;
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -185,5 +190,21 @@ public class AddStoryFragmentImage extends Fragment {
             addStoryViewPagerAdapter.addItem(bm);
         }
         addStoryViewPagerAdapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<Bitmap> getBitmaps() {
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        // Log.e("viewPager.getWidth",Integer.toString(viewPager.getWidth()));
+        // Log.e("viewPager.getHeight",Integer.toString(viewPager.getHeight()));
+        Log.e("AddStoryActivity", "viewPager.getChildCount() : " + Integer.toString(viewPager.getChildCount()));
+        for (int i = 0; i < viewPager.getChildCount(); i++) {
+            View v = viewPager.getChildAt(i);
+            Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(b);
+            v.draw(c);
+            bitmaps.add(b);
+        }
+        return bitmaps;
     }
 }

@@ -74,12 +74,11 @@ public class StoryListViewAdapter extends BaseAdapter {
         StoryListViewItem listViewItem = listViewItemList.get(position);
         Drawable drawable = context.getResources().getDrawable(R.drawable.test_image_square);
         Bitmap bm = ((BitmapDrawable)drawable).getBitmap();
-
-
         circleImageView_thumbnail.setImageBitmap(bm);
-        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
 
+        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
         for (int i = 0; i < listViewItem.getImage_realPahts().size(); i++) {
+            bm = BitmapFactory.decodeFile(listViewItem.getImage_realPahts().get(i));
             bitmaps.add(bm);
         }
         final StoryViewPagerAdapter StoryViewPagerAdapter = new StoryViewPagerAdapter(context, bitmaps);
