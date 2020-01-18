@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.jucanos.photomap.Fragment.FragmentViewPager;
-import com.jucanos.photomap.Fragment.FragmentPagerAdapter;
+import com.jucanos.photomap.Fragment.MainFragmentPagerAdapter;
 import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.fragmentViewPager_container);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /* TextView */
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final FragmentViewPager viewPager = findViewById(R.id.fragmentViewPager_fvp);
-        final FragmentPagerAdapter adapter = new FragmentPagerAdapter
+        final MainFragmentPagerAdapter adapter = new MainFragmentPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

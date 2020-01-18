@@ -33,9 +33,9 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <com.jucanos.photomap.Fragment.FragmentViewPager
-        android:id="@+id/fragmentViewPager_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+<!--    <com.jucanos.photomap.Fragment.FragmentViewPager-->
+<!--        android:id="@+id/fragmentViewPager_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 </RelativeLayout>

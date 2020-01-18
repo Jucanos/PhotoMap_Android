@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jucanos.photomap.Activity.AddStoryDescriptionActivity">
+    tools:context="com.jucanos.photomap.Activity.AddStoryTitleActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout_ab"
@@ -28,15 +28,13 @@
         android:background="#FFFFFF">
 
         <EditText
-            android:id="@+id/editText_name"
+            android:id="@+id/editText_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:backgroundTint="@android:color/black"
-            android:gravity="top|left"
-            android:hint="그룹이름을 입력해 주세요!"
-            android:inputType="textMultiLine"
-            android:lines="3" />
+            android:hint="제목을 작성해주세요!"
+            android:singleLine="true" />
     </RelativeLayout>
 
 

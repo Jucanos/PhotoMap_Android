@@ -18,10 +18,10 @@ import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.R;
 
-public class FragmentRep extends Fragment {
+public class MainFragmentRep extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rep, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_rep, container, false);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
