@@ -28,12 +28,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentSetting extends Fragment {
+public class MainFragmentSetting extends Fragment {
     public GlobalApplication globalApplication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_setting, container, false);
         globalApplication = globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
@@ -111,7 +111,7 @@ public class FragmentSetting extends Fragment {
                         }
                     });
                 } else {
-                    Log.e("[FragmentSetting]", Integer.toString(response.code()));
+                    Log.e("[MainFragmentSetting]", Integer.toString(response.code()));
                 }
             }
 

@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentGroup extends Fragment {
+public class MainFragmentGroup extends Fragment {
     private RelativeLayout noGroup, existGroup;
     private ListView listView_group;
     public GlobalApplication globalApplication;
@@ -49,7 +49,7 @@ public class FragmentGroup extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_group, fragmentContainer, false);
+        View view = inflater.inflate(R.layout.fragment_main_group, fragmentContainer, false);
         globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
@@ -150,8 +150,8 @@ public class FragmentGroup extends Fragment {
             case 1:
                 String mapTokpen = data.getStringExtra("mapToken");
                 String mapName = data.getStringExtra("mapName");
-                Log.e("FragmentGroup", "[mapToken] : " + mapTokpen);
-                Log.e("FragmentGroup", "[mapName]" + mapName);
+                Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
+                Log.e("MainFragmentGroup", "[mapName]" + mapName);
                 addGroup(mapTokpen, mapName);
                 break;
             default:

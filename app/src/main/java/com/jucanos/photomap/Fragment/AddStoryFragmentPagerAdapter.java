@@ -1,12 +1,13 @@
 package com.jucanos.photomap.Fragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
+public class AddStoryFragmentPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
-    public FragmentPagerAdapter(FragmentManager fm, int NumOfTabs) {
+    public AddStoryFragmentPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
@@ -20,16 +21,18 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                FragmentGroup tab1 = new FragmentGroup();
+                AddStoryFragmentImage tab1 = new AddStoryFragmentImage();
                 return tab1;
             case 1:
-                FragmentRep tab2 = new FragmentRep();
+                AddStoryFragmentTitle tab2 = new AddStoryFragmentTitle();
                 return tab2;
             case 2:
-                FragmentSetting tab3 = new FragmentSetting();
+                AddStoryFragmentDescription tab3 = new AddStoryFragmentDescription();
                 return tab3;
             default:
                 return null;
         }
     }
+
+
 }

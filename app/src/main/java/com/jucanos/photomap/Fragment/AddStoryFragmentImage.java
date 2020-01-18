@@ -1,7 +1,6 @@
-package com.jucanos.photomap.Activity;
+package com.jucanos.photomap.Fragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,15 +8,21 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
+import com.jucanos.photomap.Activity.AddStoryActivity;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.AddStoryViewPagerAdapter;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
@@ -28,33 +33,32 @@ import java.util.ArrayList;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 
-
-public class AddStoryImageActivity extends AppCompatActivity {
+public class AddStoryFragmentImage extends Fragment {
     private CustomViewPager viewPager;
     private AddStoryViewPagerAdapter addStoryViewPagerAdapter;
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_story_image);
+    public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_stroy_image, fragmentContainer, false);
 
-        // set toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar_tb);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("사진 선택 및 크기 설정");
+        Toast.makeText(getActivity().getApplicationContext(), "AddStoryFragmentImage onCreateView", Toast.LENGTH_SHORT).show();
 
-        viewPager = findViewById(R.id.viewPager_vp);
+        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("이미지");
+        setHasOptionsMenu(true);
+
+        viewPager = view.findViewById(R.id.viewPager_vp);
         viewPager.setPagingEnabled(false);
-        addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(this);
+        addStoryViewPagerAdapter = new AddStoryViewPagerAdapter(getActivity().getApplicationContext());
         viewPager.setAdapter(addStoryViewPagerAdapter);
 
-        ImageView imageView_left = findViewById(R.id.imageView_left);
-        ImageView imageView_right = findViewById(R.id.imageView_right);
-        ImageView imageView_rotate = findViewById(R.id.imageView_rotate);
-        ImageView imageView_snap = findViewById(R.id.imageView_snap);
+        ImageView imageView_left = view.findViewById(R.id.imageView_left);
+        ImageView imageView_right = view.findViewById(R.id.imageView_right);
+        ImageView imageView_rotate = view.findViewById(R.id.imageView_rotate);
+        ImageView imageView_snap = view.findViewById(R.id.imageView_snap);
 
         imageView_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,31 +92,27 @@ public class AddStoryImageActivity extends AppCompatActivity {
         });
 
         openGallery();
+        return view;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_add_story_image, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment_add_story_image, menu);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @SuppressLint("WrongConstant")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            // 오른쪽 상단 메뉴 버튼
-            case R.id.item_next:
-                redirectAddStoryTitleActivity();
-                return true;
+        switch (item.getItemId()) {
             case R.id.item_gallery:
                 openGallery();
                 return true;
-            // 뒤로가기 버튼
+            case R.id.item_next:
+                ((AddStoryActivity) getActivity()).setFrag(1);
+                return true;
             case android.R.id.home:
-                finish();
-                overridePendingTransition(R.anim.anim_not_move, R.anim.anim_slide_out_right);
+                getActivity().finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -122,7 +122,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
     boolean openGallery() {
         String[] REQUIRED_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // 최초 권한 요청인지, 혹은 사용자에 의한 재요청인지 확인
             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 // 사용자가 임의로 권한을 취소한 경우
@@ -153,7 +153,7 @@ public class AddStoryImageActivity extends AppCompatActivity {
         switch (requestCode) {
             case FilePickerConst.REQUEST_CODE_PHOTO:
                 if (data == null) Log.e("AddStoryImageActivity", "[data] : null");
-                if (resultCode == RESULT_OK && data != null) {
+                if (resultCode == getActivity().RESULT_OK && data != null) {
                     ArrayList<String> photoPaths = new ArrayList<>();
                     photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                     for (int i = 0; i < photoPaths.size(); i++) {
@@ -179,17 +179,11 @@ public class AddStoryImageActivity extends AppCompatActivity {
         }
     }
 
-    void addImage(ArrayList<String> photoPaths){
-        for(int i = 0 ; i < photoPaths.size(); i++){
+    void addImage(ArrayList<String> photoPaths) {
+        for (int i = 0; i < photoPaths.size(); i++) {
             Bitmap bm = BitmapFactory.decodeFile(photoPaths.get(i));
             addStoryViewPagerAdapter.addItem(bm);
         }
         addStoryViewPagerAdapter.notifyDataSetChanged();
-    }
-
-    void redirectAddStoryTitleActivity(){
-        Intent intent = new Intent(this, AddStoryTitleActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 }

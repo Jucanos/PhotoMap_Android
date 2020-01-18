@@ -1,9 +1,5 @@
 package com.jucanos.photomap.Fragment;
 
-/**
- * Created by user on 2016-12-26.
- */
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,22 +7,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.jucanos.photomap.Activity.AddStoryActivity;
 import com.jucanos.photomap.R;
 
-public class FragmentRep extends Fragment {
+public class AddStoryFragmentDescription extends Fragment {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rep, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_story_description, fragmentContainer, false);
+        Toast.makeText(getActivity().getApplicationContext(), "AddStoryFragmentDescription onCreateView", Toast.LENGTH_SHORT).show();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("대표지도");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("내용");
         setHasOptionsMenu(true);
 
         return view;
@@ -35,13 +34,17 @@ public class FragmentRep extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment_add_story_description, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_add:
-                break;
+            case android.R.id.home:
+                getActivity().invalidateOptionsMenu();
+                ((AddStoryActivity) getActivity()).setFrag(1);
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
