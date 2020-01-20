@@ -15,6 +15,7 @@ import com.jucanos.photomap.Fragment.AddStoryFragmentImage;
 import com.jucanos.photomap.Fragment.AddStoryFragmentPagerAdapter;
 import com.jucanos.photomap.Fragment.AddStoryFragmentTitle;
 import com.jucanos.photomap.Fragment.FragmentViewPager;
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateStory;
@@ -36,26 +37,33 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddStoryActivity extends AppCompatActivity {
+    public GlobalApplication globalApplication;
+
     private FragmentViewPager viewPager;
     private AddStoryFragmentPagerAdapter adapter;
 
-    FragmentManager fragmentManager;
-    AddStoryFragmentImage addStoryFragmentImage;
-    AddStoryFragmentTitle addStoryFragmentTitle;
-    AddStoryFragmentDescription addStoryFragmentDescription;
+    private FragmentManager fragmentManager;
+    private AddStoryFragmentImage addStoryFragmentImage;
+    private AddStoryFragmentTitle addStoryFragmentTitle;
+    private AddStoryFragmentDescription addStoryFragmentDescription;
 
-    String mid;
+    private String mid;
+    private Integer citiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_story);
 
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+
         fragmentManager = getSupportFragmentManager();
 
         addStoryFragmentImage = new AddStoryFragmentImage(); //프래그먼트 객채셍성
         fragmentManager.beginTransaction().replace(R.id.main_frame, addStoryFragmentImage).commit();
 
+        mid = getIntent().getStringExtra("mid");
+        citiKey = getIntent().getIntExtra("citiKey", -1);
     }
 
     public void setFrag(int pos) {
@@ -103,7 +111,7 @@ public class AddStoryActivity extends AppCompatActivity {
         ArrayList<Bitmap> bitmaps = addStoryFragmentImage.getBitmaps();
         ArrayList<String> realPaths = new ArrayList<>();
         for (int i = 0; i < bitmaps.size(); i++) {
-            realPaths.add(saveBitmap("image_" + Integer.toString(i), bitmaps.get(i)));
+            realPaths.add(saveBitmap("image_" + Long.toString(System.currentTimeMillis()), bitmaps.get(i)));
         }
         String title = addStoryFragmentTitle.getTitle();
         String description = addStoryFragmentDescription.getDescription();
@@ -113,6 +121,8 @@ public class AddStoryActivity extends AppCompatActivity {
         intent.putExtra("title", title);
         intent.putExtra("description", description);
         intent.putExtra("realPaths", realPaths);
+        requestUploadImage(title, description, realPaths);
+
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -146,43 +156,45 @@ public class AddStoryActivity extends AppCompatActivity {
     }
 
 
-    public void requestUploadImage() {
-        //Log.e("requestUploadImage","!!!");
-        String token = "0M-wiDPwD-me_onONYmwdhImZL8KcUUe52VylQopcFEAAAFvtz67oQ";
-        String mid = "4702b72cd291a95aa456836585d7b7ab";
-
-        RequestBody cityKey = RequestBody.create(MediaType.parse("text/plain"), "gangwon");
-        RequestBody title = RequestBody.create(MediaType.parse("text/plain"), "제목");
-        RequestBody context = RequestBody.create(MediaType.parse("text/plain"), "내용");
+    public void requestUploadImage(String title, String description, ArrayList<String> realPaths) {
+        Log.e("citiKey",globalApplication.citiKeyInt.get(citiKey));
+        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), globalApplication.citiKeyInt.get(citiKey));
+        RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), title);
+        RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), description);
 
         HashMap<String, RequestBody> hashMap = new HashMap<>();
-        hashMap.put("cityKey", cityKey);
-        hashMap.put("title", title);
-        hashMap.put("context", context);
-
-        List<Uri> paths = new ArrayList<>();
-        paths.add(Uri.fromFile(new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-172835_photoMap.jpg")));
-        paths.add(Uri.fromFile(new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-153913_photoMap.jpg")));
+        hashMap.put("cityKey", requetCityKey);
+        hashMap.put("title", requestTitle);
+        hashMap.put("context", requestDescription);
 
         List<MultipartBody.Part> files = new ArrayList<>();
+        for (int i = 0; i < realPaths.size(); i++) {
+            File file = new File(realPaths.get(i));
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
+        }
 
-        File file = new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-172835_photoMap.jpg");
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        Log.e("file1", file.getName());
-        files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
+//        File file = new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-172835_photoMap.jpg");
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//        Log.e("file1", file.getName());
+//        files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
+//
+//        file = new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-153913_photoMap.jpg");
+//        requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//        Log.e("file2", file.getName());
+//        files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
 
-        file = new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-153913_photoMap.jpg");
-        requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        Log.e("file2", file.getName());
-        files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
-
-        final Call<CreateStory> res = NetworkHelper.getInstance().getService().createStory("Bearer " + token, mid, hashMap, files);
+        final Call<CreateStory> res = NetworkHelper.getInstance().getService().createStory("Bearer " + globalApplication.token, mid, hashMap, files);
         res.enqueue(new Callback<CreateStory>() {
             @Override
             public void onResponse(Call<CreateStory> call, Response<CreateStory> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.e("[isSuccessful]", "isSuccessful");
+                        Log.e("AddStoryActivity", "[mid] : " + response.body().getCreateStoryData().getMid());
+                        Log.e("AddStoryActivity", "[title] : " + response.body().getCreateStoryData().getTitle());
+                        Log.e("AddStoryActivity", "[content] : " + response.body().getCreateStoryData().getContext());
+                        Log.e("AddStoryActivity", "[files] : " + response.body().getCreateStoryData().getFiles().toString());
+                        Log.e("AddStoryActivity", "[sid] : " + response.body().getCreateStoryData().getSid());
                     }
                 } else {
                     Log.e("requestUploadImage", "requestUploadImage error : " + Integer.toString(response.code()));
@@ -191,7 +203,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<CreateStory> call, Throwable t) {
-                Log.e("FragmentDescription", "requestUploadImage fail");
+                Log.e("FragmentDescription", "requestUploadImage fail : " + t.getLocalizedMessage());
             }
         });
     }

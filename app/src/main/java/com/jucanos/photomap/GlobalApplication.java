@@ -12,10 +12,14 @@ import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 
+import java.util.HashMap;
+
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
     public String token;
     public GetUserInfo authorization;
+    public HashMap<String, String> citiKeyString = new HashMap<>();
+    public HashMap<Integer, String> citiKeyInt = new HashMap<>();
 
     public static GlobalApplication getInstance() {
         return instance;
@@ -70,9 +74,30 @@ public class GlobalApplication extends Application {
         }
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
+        citiKeyString.put("경기", "gyeonggi");
+        citiKeyString.put("강원", "gangwon");
+        citiKeyString.put("충북", "chungbuk");
+        citiKeyString.put("충남", "chungnam");
+        citiKeyString.put("전북", "jeonbuk");
+        citiKeyString.put("전남", "jeonnam");
+        citiKeyString.put("경북", "gyeongbuk");
+        citiKeyString.put("경남", "gyeongnam");
+        citiKeyString.put("제주", "jeju");
+
+        citiKeyInt.put(1, "gyeonggi");
+        citiKeyInt.put(2, "gangwon");
+        citiKeyInt.put(3, "chungbuk");
+        citiKeyInt.put(4, "chungnam");
+        citiKeyInt.put(5, "jeonbuk");
+        citiKeyInt.put(6, "jeonnam");
+        citiKeyInt.put(7, "gyeongbuk");
+        citiKeyInt.put(8, "gyeongnam");
+        citiKeyInt.put(9, "jeju");
+
         instance = this;
         KakaoSDK.init(new KakaoSDKAdapter());
     }
