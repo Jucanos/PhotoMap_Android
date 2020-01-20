@@ -76,7 +76,8 @@ public class MainFragmentGroup extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
-                redirectGroupActivity();
+                String mid = groupListViewItem.getMid();
+                redirectGroupActivity(mid);
             }
         });
 
@@ -132,8 +133,9 @@ public class MainFragmentGroup extends Fragment {
     }
 
 
-    private void redirectGroupActivity() {
+    private void redirectGroupActivity(String mid) {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
+        intent.putExtra("mid", mid);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }

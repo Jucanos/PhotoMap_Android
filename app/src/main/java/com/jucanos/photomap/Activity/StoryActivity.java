@@ -23,6 +23,9 @@ public class StoryActivity extends AppCompatActivity {
     private StoryListViewAdapter listView_storyApater;
     private int ADD_STORY_REQUEST = 1;
 
+    private String mid;
+    private Integer citikey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,9 @@ public class StoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Group Name");
+
+        mid = getIntent().getStringExtra("mid");
+        citikey = getIntent().getIntExtra("citikey",-1);
 
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
@@ -51,7 +57,7 @@ public class StoryActivity extends AppCompatActivity {
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
             case R.id.item_add:
-                redirectAddStoryActivity();
+                redirectAddStoryActivity(mid);
                 return true;
             // 뒤로가기 버튼
             case android.R.id.home:
@@ -62,8 +68,11 @@ public class StoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void redirectAddStoryActivity() {
+    public void redirectAddStoryActivity(String mid) {
         Intent intent = new Intent(this, AddStoryActivity.class);
+        intent.putExtra("mid",mid);
+        intent.putExtra("citiKey",citikey);
+
         startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }

@@ -55,6 +55,7 @@ public class GroupActivity extends AppCompatActivity {
     private FloatingActionMenu floatingActionMenu_menu;
     private FloatingActionButton floatingActionButton_save, floatingActionButton_share, floatingActionButton_rep;
 
+    private String mid;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -78,6 +79,8 @@ public class GroupActivity extends AppCompatActivity {
         listView_member.setAdapter(adapter);
         adapter.addItem(null, "그룹멤버 초대");
         adapter.notifyDataSetChanged();
+
+        mid = getIntent().getStringExtra("mid");
 
         v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -242,9 +245,10 @@ public class GroupActivity extends AppCompatActivity {
         return px / density;     // dp 값 반환
     }
 
-    public void redirectRegionActivity(int regionCode) {
+    public void redirectRegionActivity(int citikey) {
         Intent intent = new Intent(this, StoryActivity.class);
-        intent.putExtra("regionPos", regionCode);
+        intent.putExtra("mid", citikey);
+        intent.putExtra("citikey", citikey);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
