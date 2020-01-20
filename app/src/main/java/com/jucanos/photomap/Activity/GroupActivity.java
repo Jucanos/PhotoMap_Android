@@ -245,10 +245,10 @@ public class GroupActivity extends AppCompatActivity {
         return px / density;     // dp 값 반환
     }
 
-    public void redirectRegionActivity(int citikey) {
+    public void redirectRegionActivity(int citykey) {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
-        intent.putExtra("citikey", citikey);
+        intent.putExtra("citykey", citykey);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }

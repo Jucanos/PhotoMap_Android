@@ -2,7 +2,6 @@ package com.jucanos.photomap.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,9 +16,7 @@ import com.jucanos.photomap.ListView.StoryListViewAdapter;
 import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.GetStoryList;
-import com.jucanos.photomap.Structure.RequestCreateMap;
 
 import java.util.ArrayList;
 
@@ -35,7 +32,7 @@ public class StoryActivity extends AppCompatActivity {
     private int ADD_STORY_REQUEST = 1;
 
     private String mid;
-    private Integer citikey;
+    private Integer citykey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,7 @@ public class StoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Group Name");
 
         mid = getIntent().getStringExtra("mid");
-        citikey = getIntent().getIntExtra("citikey",-1);
+        citykey = getIntent().getIntExtra("citykey",-1);
 
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
@@ -86,7 +83,7 @@ public class StoryActivity extends AppCompatActivity {
     public void redirectAddStoryActivity(String mid) {
         Intent intent = new Intent(this, AddStoryActivity.class);
         intent.putExtra("mid",mid);
-        intent.putExtra("citiKey",citikey);
+        intent.putExtra("cityKey", citykey);
 
         startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
@@ -112,7 +109,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     void loadStoryList(){
-        final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, globalApplication.citiKeyInt.get(citikey));
+        final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, globalApplication.cityKeyInt.get(citykey));
         res.enqueue(new Callback<GetStoryList>() {
             @Override
             public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {

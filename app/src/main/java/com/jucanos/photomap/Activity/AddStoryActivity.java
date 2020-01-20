@@ -2,12 +2,10 @@ package com.jucanos.photomap.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.jucanos.photomap.Fragment.AddStoryFragmentDescription;
@@ -48,7 +46,7 @@ public class AddStoryActivity extends AppCompatActivity {
     private AddStoryFragmentDescription addStoryFragmentDescription;
 
     private String mid;
-    private Integer citiKey;
+    private Integer cityKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,7 @@ public class AddStoryActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.main_frame, addStoryFragmentImage).commit();
 
         mid = getIntent().getStringExtra("mid");
-        citiKey = getIntent().getIntExtra("citiKey", -1);
+        cityKey = getIntent().getIntExtra("cityKey", -1);
     }
 
     public void setFrag(int pos) {
@@ -157,8 +155,8 @@ public class AddStoryActivity extends AppCompatActivity {
 
 
     public void requestUploadImage(String title, String description, ArrayList<String> realPaths) {
-        Log.e("citiKey",globalApplication.citiKeyInt.get(citiKey));
-        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), globalApplication.citiKeyInt.get(citiKey));
+        Log.e("cityKey",globalApplication.cityKeyInt.get(cityKey));
+        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), globalApplication.cityKeyInt.get(cityKey));
         RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), title);
         RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), description);
 
