@@ -12,13 +12,24 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.StoryListViewAdapter;
 import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.CreateMap;
+import com.jucanos.photomap.Structure.GetStoryList;
+import com.jucanos.photomap.Structure.RequestCreateMap;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class StoryActivity extends AppCompatActivity {
+    public GlobalApplication globalApplication;
+
     private ListView listView_story;
     private StoryListViewAdapter listView_storyApater;
     private int ADD_STORY_REQUEST = 1;
@@ -31,6 +42,8 @@ public class StoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -42,6 +55,8 @@ public class StoryActivity extends AppCompatActivity {
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
         listView_story.setAdapter(listView_storyApater);
+
+        loadStoryList();
     }
 
     @Override
@@ -94,6 +109,40 @@ public class StoryActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    void loadStoryList(){
+        final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, globalApplication.citiKeyInt.get(citikey));
+        res.enqueue(new Callback<GetStoryList>() {
+            @Override
+            public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        for(int i = 0 ; i < response.body().getGetStoryListItems().size(); i++){
+                            Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
+                            Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
+                            Log.e("StoryActivity", "[title] : " + response.body().getGetStoryListItems().get(i).getTitle());
+                            Log.e("StoryActivity", "[context] : " + response.body().getGetStoryListItems().get(i).getContext());
+
+                            if( response.body().getGetStoryListItems().get(i).getFiles() == null){
+                                Log.e("StoryActivity", "[file] : is null");
+                            }else{
+                                Log.e("StoryActivity", "[files] : " + response.body().getGetStoryListItems().get(i).getFiles().toString());
+                            }
+                            Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
+                            Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
+                        }
+                    }
+                } else {
+                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetStoryList> call, Throwable t) {
+                Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
     }
 
     // ====================================================================== for test Code

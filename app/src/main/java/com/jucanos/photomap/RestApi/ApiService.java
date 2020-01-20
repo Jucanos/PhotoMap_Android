@@ -3,6 +3,7 @@ package com.jucanos.photomap.RestApi;
 import android.database.Observable;
 
 import com.jucanos.photomap.Structure.CreateStory;
+import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.GetMapList;
@@ -55,6 +56,8 @@ public interface ApiService {
             @Part List<MultipartBody.Part> files
     );
 
+    @GET("dev/stories/{mid}/{cityKey}")
+    Call<GetStoryList> getStoryList(@Header("Authorization") String authKey,@Path("mid") String mid, @Path("cityKey") String cityKey);
 
 //    @FormUrlEncoded
 //    @POST("user/login")

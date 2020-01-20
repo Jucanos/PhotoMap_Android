@@ -247,7 +247,7 @@ public class GroupActivity extends AppCompatActivity {
 
     public void redirectRegionActivity(int citikey) {
         Intent intent = new Intent(this, StoryActivity.class);
-        intent.putExtra("mid", citikey);
+        intent.putExtra("mid", mid);
         intent.putExtra("citikey", citikey);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
