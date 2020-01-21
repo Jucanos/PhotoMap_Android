@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.util.SquareImageView;
 
@@ -16,11 +17,11 @@ import java.util.ArrayList;
 
 public class StoryViewPagerAdapter extends PagerAdapter {
     private Context mContext;
-    private ArrayList<Bitmap> imageList;
+    private ArrayList<String> realPaths;
 
-    public StoryViewPagerAdapter(Context context, ArrayList<Bitmap> imageList) {
+    public StoryViewPagerAdapter(Context context, ArrayList<String> imageList) {
         this.mContext = context;
-        this.imageList = imageList;
+        this.realPaths = imageList;
     }
 
     @NonNull
@@ -31,14 +32,15 @@ public class StoryViewPagerAdapter extends PagerAdapter {
 
         final SquareImageView imageView = view.findViewById(R.id.imageView_image);
 
-        imageView.setImageBitmap(imageList.get(position));
+        Glide.with(mContext).load(realPaths.get(position)).into(imageView);
+
         container.addView(view);
         return view;
     }
 
     @Override
     public int getCount() {
-        return imageList.size();
+        return realPaths.size();
     }
 
     @Override
@@ -55,17 +57,4 @@ public class StoryViewPagerAdapter extends PagerAdapter {
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
-
-    public Bitmap getBitmap(int x) {
-        return imageList.get((x));
-    }
-
-    public void setBitmap(int x, Bitmap mbitmap) {
-        imageList.set(x, mbitmap);
-    }
-
-
-
-
-
 }

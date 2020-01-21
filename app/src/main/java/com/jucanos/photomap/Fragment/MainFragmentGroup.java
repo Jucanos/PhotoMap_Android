@@ -204,9 +204,9 @@ public class MainFragmentGroup extends Fragment {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
                 if (response.isSuccessful()) {
-                    Log.e("LoginActivity", "[onResponse] is Successful");
+                    Log.e("MainFragmentGroup", "[onResponse] is Successful");
                 } else {
-                    Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
+                    Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
                 }
             }
 

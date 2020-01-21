@@ -22,7 +22,7 @@ public class GetStoryListData {
     @Expose
     private String context;
 
-    @SerializedName("file")
+    @SerializedName("files")
     @Expose
     private ArrayList<String> files;
 

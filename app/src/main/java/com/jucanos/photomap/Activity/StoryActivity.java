@@ -2,6 +2,7 @@ package com.jucanos.photomap.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,8 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -128,6 +131,7 @@ public class StoryActivity extends AppCompatActivity {
                             }
                             Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
                             Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
+                            addStoryTest(response.body().getGetStoryListItems().get(i).getFiles(), response.body().getGetStoryListItems().get(i).getTitle(),response.body().getGetStoryListItems().get(i).getContext());
                         }
                     }
                 } else {
@@ -141,6 +145,10 @@ public class StoryActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 
     // ====================================================================== for test Code
     // ====================================================================== for test Code

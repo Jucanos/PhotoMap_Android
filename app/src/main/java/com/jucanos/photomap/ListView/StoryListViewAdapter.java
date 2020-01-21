@@ -81,7 +81,7 @@ public class StoryListViewAdapter extends BaseAdapter {
             bm = BitmapFactory.decodeFile(listViewItem.getImage_realPahts().get(i));
             bitmaps.add(bm);
         }
-        final StoryViewPagerAdapter StoryViewPagerAdapter = new StoryViewPagerAdapter(context, bitmaps);
+        final StoryViewPagerAdapter StoryViewPagerAdapter = new StoryViewPagerAdapter(context, listViewItem.getImage_realPahts());
         customViewPager_vp.setAdapter(StoryViewPagerAdapter);
 
         textView_title.setText(listViewItem.getTitle());
