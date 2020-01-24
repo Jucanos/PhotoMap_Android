@@ -32,6 +32,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
+import com.jucanos.photomap.Dialog.RepDialog;
+import com.jucanos.photomap.Dialog.RepDialogListener;
+import com.jucanos.photomap.Dialog.StoryDialog;
+import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.R;
 
@@ -228,6 +232,20 @@ public class GroupActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             longClick = true;
             Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
+            RepDialog dialog = new RepDialog(GroupActivity.this);
+            dialog.setDialogListener(new RepDialogListener() {
+                @Override
+                public void onSetClicked() {
+                    Toast.makeText(GroupActivity.this, "onSetClicked", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onDeleteClicked() {
+                    Toast.makeText(GroupActivity.this, "onDeleteClicked", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            dialog.show();
         }
     };
 
@@ -246,13 +264,14 @@ public class GroupActivity extends AppCompatActivity {
                     transparency = bm.getPixel(x, y);
                     Log.e(v.getContentDescription().toString(),"down transparency : " + transparency);
                     if(transparency != 0){
+                        longClick = false;
                         handler.sendEmptyMessageAtTime(Integer.parseInt(v.getContentDescription().toString()), event.getDownTime() + (long)1000);
                     }
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
                     Log.e(v.getContentDescription().toString(),"up transparency : " + transparency);
-                    if (transparency != 0) {
+                    if (transparency != 0 && !longClick) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
                         handler.removeMessages(Integer.parseInt(v.getContentDescription().toString()));
