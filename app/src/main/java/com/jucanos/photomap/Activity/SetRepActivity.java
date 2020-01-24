@@ -236,6 +236,7 @@ public class SetRepActivity extends AppCompatActivity {
 
                     // 컨테이너 설정후 zoomView 추가
                     RelativeLayout container = findViewById(R.id.fragmentViewPager_container);
+                    container.removeAllViews();
                     container.addView(view);
                 }
                 break;
