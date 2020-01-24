@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -25,26 +30,56 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
+import com.jucanos.photomap.Dialog.RepDialog;
+import com.jucanos.photomap.Dialog.RepDialogListener;
+import com.jucanos.photomap.Dialog.StoryDialog;
+import com.jucanos.photomap.Dialog.StoryDialogListener;
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.GetMapInfo;
+import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
+import com.jucanos.photomap.Structure.GetStoryList;
+
+import java.util.ArrayList;
 
 import pl.polidea.view.ZoomView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupActivity extends AppCompatActivity {
+    public GlobalApplication globalApplication;
+
     public static Context mContext;
+
     PorterShapeImageView imageView_gyeonggi; // 1
+    ImageView imageView_gyeonggi_front;
     PorterShapeImageView imageView_gangwon; // 2
+    ImageView imageView_gangwon_front;
     PorterShapeImageView imageView_chungbuk; // 3
+    ImageView imageView_chungbuk_front;
     PorterShapeImageView imageView_chungnam; // 4
+    ImageView imageView_chungnam_front;
     PorterShapeImageView imageView_jeonbuk; // 5
+    ImageView imageView_jeonbuk_front;
     PorterShapeImageView imageView_jeonnam; // 6
-    PorterShapeImageView ImageView_gyeongbuk; // 7
-    PorterShapeImageView ImageView_gyeongnam; // 8
+    ImageView imageView_jeonnam_front;
+    PorterShapeImageView imageView_gyeongbuk; // 7
+    ImageView imageView_gyeongbuk_front;
+    PorterShapeImageView imageView_gyeongnam; // 8
+    ImageView imageView_gyeongnam_front;
     PorterShapeImageView imageView_jeju; // 9
-    final PorterShapeImageView[] imageViews = new PorterShapeImageView[10];
+    ImageView imageView_jeju_front;
+
+    final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
+    final ImageView[] imageViews = new ImageView[10];
+
     private DrawerLayout drawerLayout_drawer;
     private ListView listView_member;
     private MemberListViewAdapter adapter;
@@ -56,12 +91,17 @@ public class GroupActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton_save, floatingActionButton_share, floatingActionButton_rep;
 
     private String mid;
+    private Boolean longClick = false;
+
+    private Integer SET_REP_REQUEST = 1;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         mContext = this;
 
@@ -99,32 +139,58 @@ public class GroupActivity extends AppCompatActivity {
 
         // PorterShapeImageView
         imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
+        imageView_gyeonggi_front = findViewById(R.id.imageView_gyeonggi_front);
         imageView_gyeonggi.setOnTouchListener(mClickListener);
-        imageViews[1] = imageView_gyeonggi;
+        porterShapeImageViews[1] = imageView_gyeonggi;
+        imageViews[1] = imageView_gyeonggi_front;
+
         imageView_gangwon = findViewById(R.id.imageView_gangwon);
+        imageView_gangwon_front = findViewById(R.id.imageView_gangwon_front);
         imageView_gangwon.setOnTouchListener(mClickListener);
-        imageViews[2] = imageView_gangwon;
-        imageView_chungbuk = findViewById(R.id.imageView_cungbuk);
+        porterShapeImageViews[2] = imageView_gangwon;
+        imageViews[2] = imageView_gangwon_front;
+
+        imageView_chungbuk = findViewById(R.id.imageView_chungbuk);
+        imageView_chungbuk_front = findViewById(R.id.imageView_chungbuk_front);
         imageView_chungbuk.setOnTouchListener(mClickListener);
-        imageViews[3] = imageView_chungbuk;
+        porterShapeImageViews[3] = imageView_chungbuk;
+        imageViews[3] = imageView_chungbuk_front;
+
         imageView_chungnam = findViewById(R.id.imageView_chungnam);
+        imageView_chungnam_front = findViewById(R.id.imageView_chungnam_front);
         imageView_chungnam.setOnTouchListener(mClickListener);
-        imageViews[4] = imageView_chungnam;
+        porterShapeImageViews[4] = imageView_chungnam;
+        imageViews[4] = imageView_chungnam_front;
+
         imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
+        imageView_jeonbuk_front = findViewById(R.id.imageView_jeonbuk_front);
         imageView_jeonbuk.setOnTouchListener(mClickListener);
-        imageViews[5] = imageView_jeonbuk;
+        porterShapeImageViews[5] = imageView_jeonbuk;
+        imageViews[5] = imageView_jeonbuk_front;
+
         imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
+        imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
         imageView_jeonnam.setOnTouchListener(mClickListener);
-        imageViews[6] = imageView_jeonnam;
-        ImageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
-        ImageView_gyeongbuk.setOnTouchListener(mClickListener);
-        imageViews[7] = ImageView_gyeongbuk;
-        ImageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
-        ImageView_gyeongnam.setOnTouchListener(mClickListener);
-        imageViews[8] = ImageView_gyeongnam;
+        porterShapeImageViews[6] = imageView_jeonnam;
+        imageViews[6] = imageView_jeonnam_front;
+
+        imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
+        imageView_gyeongbuk_front = findViewById(R.id.imageView_gyeongbuk_front);
+        imageView_gyeongbuk.setOnTouchListener(mClickListener);
+        porterShapeImageViews[7] = imageView_gyeongbuk;
+        imageViews[7] = imageView_gyeongbuk_front;
+
+        imageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
+        imageView_gyeongnam_front = findViewById(R.id.imageView_gyeongnam_front);
+        imageView_gyeongnam.setOnTouchListener(mClickListener);
+        porterShapeImageViews[8] = imageView_gyeongnam;
+        imageViews[8] = imageView_gyeongnam_front;
+
         imageView_jeju = findViewById(R.id.imageView_jeju);
+        imageView_jeju_front = findViewById(R.id.imageView_jeju_front);
         imageView_jeju.setOnTouchListener(mClickListener);
-        imageViews[9] = imageView_jeju;
+        porterShapeImageViews[9] = imageView_jeju;
+        imageViews[9] = imageView_jeju_front;
 
         addGroupTest();
 
@@ -177,7 +243,32 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        getMapInfoRequest();
     }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            longClick = true;
+            Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
+            final Integer regionCode = msg.what;
+            RepDialog dialog = new RepDialog(GroupActivity.this);
+            dialog.setDialogListener(new RepDialogListener() {
+                @Override
+                public void onSetClicked() {
+                    Toast.makeText(GroupActivity.this, "onSetClicked", Toast.LENGTH_SHORT).show();
+                    redirectSetRepActivity(regionCode);
+                }
+
+                @Override
+                public void onDeleteClicked() {
+                    Toast.makeText(GroupActivity.this, "onDeleteClicked", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            dialog.show();
+        }
+    };
 
     PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener() {
         int x = 0, y = 0;
@@ -192,12 +283,19 @@ public class GroupActivity extends AppCompatActivity {
                     x = (int) pxToDp(mContext, event.getX());
                     y = (int) pxToDp(mContext, event.getY());
                     transparency = bm.getPixel(x, y);
+                    Log.e(v.getContentDescription().toString(),"down transparency : " + transparency);
+                    if(transparency != 0){
+                        longClick = false;
+                        handler.sendEmptyMessageAtTime(Integer.parseInt(v.getContentDescription().toString()), event.getDownTime() + (long)1000);
+                    }
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
-                    if (transparency != 0) {
+                    Log.e(v.getContentDescription().toString(),"up transparency : " + transparency);
+                    if (transparency != 0 && !longClick) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
+                        handler.removeMessages(Integer.parseInt(v.getContentDescription().toString()));
                     }
                     break;
                 default:
@@ -206,7 +304,6 @@ public class GroupActivity extends AppCompatActivity {
             return false;
         }
     };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -249,8 +346,76 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
         intent.putExtra("citykey", citykey);
+
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
+    void redirectSetRepActivity(int regionCode){
+        Intent intent = new Intent(this, SetRepActivity.class);
+        intent.putExtra("mid", mid);
+        intent.putExtra("cityKey", globalApplication.cityKeyInt.get(regionCode));
+        intent.putExtra("regionCode", regionCode);
+        startActivityForResult(intent, SET_REP_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SET_REP_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Integer regionCode =  data.getIntExtra("regionCode",-1);
+                String path = data.getStringExtra("path");
+                Log.e("GroupActivity", "regionCode : " + Integer.toString(regionCode));
+                Log.e("GroupActivity", "path : " + path);
+                Bitmap bm = BitmapFactory.decodeFile(path);
+                porterShapeImageViews[regionCode].setImageBitmap(bm);
+            }
+        }
+    }
+
+    void getMapInfoRequest(){
+        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
+        res.enqueue(new Callback<GetMapInfo>() {
+            @Override
+            public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        setRep(response.body().getData().getGetMapInfoDataRepresents());
+                    }
+                } else {
+                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMapInfo> call, Throwable t) {
+                Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents){
+        String gyeonggi = getMapInfoDataRepresents.getGyeonggi();
+        String gangwon = getMapInfoDataRepresents.getGangwon();
+        String chungbuk = getMapInfoDataRepresents.getChungbuk();
+        String chungnam = getMapInfoDataRepresents.getChungnam();
+        String jeonbuk = getMapInfoDataRepresents.getJeonbuk();
+        String jeonnam = getMapInfoDataRepresents.getJeonnam();
+        String gyeongbuk = getMapInfoDataRepresents.getGyeongbuk();
+        String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
+        String jeju = getMapInfoDataRepresents.getJeju();
+        if(gyeonggi != null)  Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
+        if(gangwon != null)  Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
+        if(chungbuk != null)  Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
+        if(chungnam != null)  Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
+        if(jeonbuk != null)  Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
+        if(jeonnam != null)  Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
+        if(gyeongbuk != null)  Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
+        if(gyeongnam != null)  Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
+        if(jeju != null)  Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
+
+
     }
 
     // ====================================================================== for test Code
@@ -263,6 +428,5 @@ public class GroupActivity extends AppCompatActivity {
         adapter.addItem(bm, "삼청원");
         adapter.addItem(bm, "사청원");
         adapter.notifyDataSetChanged();
-        imageView_gangwon.setImageBitmap(bm);
     }
 }

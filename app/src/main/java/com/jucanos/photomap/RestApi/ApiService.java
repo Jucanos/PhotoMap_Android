@@ -3,6 +3,7 @@ package com.jucanos.photomap.RestApi;
 import android.database.Observable;
 
 import com.jucanos.photomap.Structure.CreateStory;
+import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.Structure.CreateMap;
@@ -10,6 +11,7 @@ import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.RequestCreateMap;
 import com.jucanos.photomap.Structure.RequestUserRemove;
 import com.jucanos.photomap.Structure.RemoveUser;
+import com.jucanos.photomap.Structure.SetRep;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +61,17 @@ public interface ApiService {
     @GET("dev/stories/{mid}/{cityKey}")
     Call<GetStoryList> getStoryList(@Header("Authorization") String authKey,@Path("mid") String mid, @Path("cityKey") String cityKey);
 
+    @GET("dev/maps/{mid}")
+    Call<GetMapInfo> getMapInfo(@Header("Authorization") String authKey, @Path("mid") String mid);
+
+    @Multipart
+    @POST("dev/maps/{mid}")
+    Call<SetRep> setRep(
+            @Header("Authorization") String authorization,
+            @Path("mid") String mid,
+            @PartMap HashMap<String, RequestBody> info,
+            @Part MultipartBody.Part file
+    );
 //    @FormUrlEncoded
 //    @POST("user/login")
 //    Call<Result> getInfo(@Field("params") String name) ;
