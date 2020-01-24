@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.util.SandboxView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.IntBuffer;
 
 public class SetRepActivity extends AppCompatActivity {
@@ -89,7 +95,7 @@ public class SetRepActivity extends AppCompatActivity {
     // stream을 통해서 image mapUI activity 에 전달
 
     // front image setting
-    private void setFrontImage() {
+    public void setFrontImage() {
         bitMap_front = ((BitmapDrawable) getBitmapFront(regionCode)).getBitmap();
         int sW = bitMap_front.getWidth();
         int sH = bitMap_front.getHeight();
@@ -118,10 +124,47 @@ public class SetRepActivity extends AppCompatActivity {
                         Bitmap.Config.ARGB_8888);
                 Canvas c = new Canvas(b);
                 view.draw(c);
+                String path = null;
+                try {
+                    path = saveBitmap("image_" + Long.toString(System.currentTimeMillis()), b);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent();
+                intent.putExtra("regionCode",regionCode);
+                intent.putExtra("path",path);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
 
+    //create a file to write bitmap data
+    public String saveBitmap(String filename, Bitmap bm) throws IOException {
+        File f = new File(getApplicationContext().getCacheDir(), filename);
+        f.createNewFile();
 
+        //Convert bitmap to byte array
+        Bitmap bitmap = bm;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return f.getAbsolutePath();
+    }
 }
 

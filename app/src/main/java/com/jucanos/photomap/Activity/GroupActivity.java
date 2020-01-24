@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -39,6 +40,8 @@ import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.R;
+
+import java.util.ArrayList;
 
 import pl.polidea.view.ZoomView;
 
@@ -81,6 +84,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private String mid;
     private Boolean longClick = false;
+
+    private Integer SET_REP_REQUEST = 1;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -342,7 +347,22 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", globalApplication.cityKeyInt.get(regionCode));
         intent.putExtra("regionCode", regionCode);
-        startActivity(intent);
+        startActivityForResult(intent, SET_REP_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SET_REP_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Integer regionCode =  data.getIntExtra("regionCode",-1);
+                String path = data.getStringExtra("path");
+                Log.e("GroupActivity", "regionCode : " + Integer.toString(regionCode));
+                Log.e("GroupActivity", "path : " + path);
+                Bitmap bm = BitmapFactory.decodeFile(path);
+                porterShapeImageViews[regionCode].setImageBitmap(bm);
+            }
+        }
     }
 
     // ====================================================================== for test Code
@@ -355,6 +375,5 @@ public class GroupActivity extends AppCompatActivity {
         adapter.addItem(bm, "삼청원");
         adapter.addItem(bm, "사청원");
         adapter.notifyDataSetChanged();
-        imageView_gangwon.setImageBitmap(bm);
     }
 }
