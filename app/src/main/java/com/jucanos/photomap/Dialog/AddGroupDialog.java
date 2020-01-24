@@ -11,21 +11,21 @@ import android.widget.TextView;
 
 import com.jucanos.photomap.R;
 
-public class GroupDialog extends Dialog implements View.OnClickListener {
-    private GroupDialogListener longClickDialogListner;
+public class AddGroupDialog extends Dialog implements View.OnClickListener {
+    private AddGroupDialogListener longClickDialogListner;
     private static final int LAYOUT = R.layout.dialog_group;
     private Context context;
     private String groupName;
 
 
-    public GroupDialog(Context context, String groupName) {
+    public AddGroupDialog(Context context, String groupName) {
         super(context);
         this.context = context;
         this.groupName = groupName;
     }
 
 
-    public void setDialogListener(GroupDialogListener dialogListener) {
+    public void setDialogListener(AddGroupDialogListener dialogListener) {
         this.longClickDialogListner = dialogListener;
     }
 

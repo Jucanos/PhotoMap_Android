@@ -23,8 +23,8 @@ import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
-import com.jucanos.photomap.Dialog.GroupDialog;
-import com.jucanos.photomap.Dialog.GroupDialogListener;
+import com.jucanos.photomap.Dialog.AddGroupDialog;
+import com.jucanos.photomap.Dialog.AddGroupDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
@@ -84,8 +84,8 @@ public class MainFragmentGroup extends Fragment {
         listView_group.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                GroupDialog dialog = new GroupDialog(getContext(), "그룹이름");
-                dialog.setDialogListener(new GroupDialogListener() {
+                AddGroupDialog dialog = new AddGroupDialog(getContext(), "그룹이름");
+                dialog.setDialogListener(new AddGroupDialogListener() {
                     @Override
                     public void onGroupNameClicked() {
                         Toast.makeText(getContext(), "change onGroupNameClicked is clicked", Toast.LENGTH_SHORT).show();
