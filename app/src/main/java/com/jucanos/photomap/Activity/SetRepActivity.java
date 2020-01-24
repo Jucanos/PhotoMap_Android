@@ -25,7 +25,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.CreateMap;
+import com.jucanos.photomap.Structure.CreateStory;
+import com.jucanos.photomap.Structure.RequestCreateMap;
+import com.jucanos.photomap.Structure.SetRep;
 import com.jucanos.photomap.util.BitmapUtils;
 import com.jucanos.photomap.util.SandboxView;
 
@@ -36,11 +42,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SetRepActivity extends AppCompatActivity {
+    public GlobalApplication globalApplication;
+
     private Bitmap bitMap_front, bitMap_back;
     private ImageView imageView_front;
     private Button btnCrop;
@@ -53,6 +69,8 @@ public class SetRepActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_rep);
+
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
@@ -164,6 +182,7 @@ public class SetRepActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("regionCode", regionCode);
                 intent.putExtra("path", path);
+                setRepReuquest(path);
                 setResult(RESULT_OK, intent);
                 finish();
                 return true;
@@ -241,6 +260,38 @@ public class SetRepActivity extends AppCompatActivity {
                 }
                 return;
         }
+    }
+
+    private void setRepReuquest(String path) {
+        Log.e("setRepReuquest","cityKey : " + cityKey);
+        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
+
+        HashMap<String, RequestBody> hashMap = new HashMap<>();
+        hashMap.put("cityKey", requetCityKey);
+
+        MultipartBody.Part file;
+        File f = new File(path);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
+        file = MultipartBody.Part.createFormData("img", f.getName(), requestFile);
+
+        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep("Bearer " + globalApplication.token, mid, hashMap, file);
+        res.enqueue(new Callback<SetRep>() {
+            @Override
+            public void onResponse(Call<SetRep> call, Response<SetRep> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e("SetRepActivity", response.body().getData().toString());
+                    }
+                } else {
+                    Log.e("SetRepActivity", "setRepReuquest error : " + Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SetRep> call, Throwable t) {
+                Log.e("SetRepActivity", "setRepReuquest fail : " + t.getLocalizedMessage());
+            }
+        });
     }
 }
 

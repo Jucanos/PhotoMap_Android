@@ -3,7 +3,7 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CreateMapDataRepresents {
+public class SetRepData {
     @SerializedName("gyeonggi")
     @Expose
     private String gyeonggi;
@@ -39,18 +39,6 @@ public class CreateMapDataRepresents {
     @SerializedName("jeju")
     @Expose
     private String jeju;
-
-    public CreateMapDataRepresents(String gyeonggi, String gangwon, String chungbuk, String chungnam, String jeonbuk, String jeonnam, String gyeongbuk, String gyeongnam, String jeju) {
-        this.gyeonggi = gyeonggi;
-        this.gangwon = gangwon;
-        this.chungbuk = chungbuk;
-        this.chungnam = chungnam;
-        this.jeonbuk = jeonbuk;
-        this.jeonnam = jeonnam;
-        this.gyeongbuk = gyeongbuk;
-        this.gyeongnam = gyeongnam;
-        this.jeju = jeju;
-    }
 
     public String getGyeonggi() {
         return gyeonggi;
