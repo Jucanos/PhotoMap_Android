@@ -36,13 +36,17 @@ import com.jucanos.photomap.Dialog.RepDialog;
 import com.jucanos.photomap.Dialog.RepDialogListener;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.R;
 
 import pl.polidea.view.ZoomView;
 
 public class GroupActivity extends AppCompatActivity {
+    public GlobalApplication globalApplication;
+
     public static Context mContext;
+
     PorterShapeImageView imageView_gyeonggi; // 1
     ImageView imageView_gyeonggi_front;
     PorterShapeImageView imageView_gangwon; // 2
@@ -76,7 +80,6 @@ public class GroupActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton_save, floatingActionButton_share, floatingActionButton_rep;
 
     private String mid;
-
     private Boolean longClick = false;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -84,6 +87,8 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         mContext = this;
 
@@ -232,11 +237,13 @@ public class GroupActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             longClick = true;
             Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
+            final Integer regionCode = msg.what;
             RepDialog dialog = new RepDialog(GroupActivity.this);
             dialog.setDialogListener(new RepDialogListener() {
                 @Override
                 public void onSetClicked() {
                     Toast.makeText(GroupActivity.this, "onSetClicked", Toast.LENGTH_SHORT).show();
+                    redirectSetRepActivity(regionCode);
                 }
 
                 @Override
@@ -325,8 +332,17 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
         intent.putExtra("citykey", citykey);
+
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
+    void redirectSetRepActivity(int regionCode){
+        Intent intent = new Intent(this, SetRepActivity.class);
+        intent.putExtra("mid", mid);
+        intent.putExtra("cityKey", globalApplication.cityKeyInt.get(regionCode));
+        intent.putExtra("regionCode", regionCode);
+        startActivity(intent);
     }
 
     // ====================================================================== for test Code

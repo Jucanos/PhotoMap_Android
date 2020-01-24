@@ -24,7 +24,8 @@ public class SetRepActivity extends AppCompatActivity {
     private Bitmap bitMap_front,bitMap_back;
     private ImageView imageView_front;
     private Button btnCrop;
-    private int mapPos, regionPos, storyPos;
+    private String mid, cityKey;
+    private Integer regionCode;
     private View view;
 
     @Override
@@ -32,14 +33,10 @@ public class SetRepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_rep);
 
-        // intent 정보 저장
-        //Intent intent = getIntent();
-        //mapPos = intent.getIntExtra("mapPos", -1);
-        //regionPos = intent.getIntExtra("regionPos", -1);
-        //storyPos = intent.getIntExtra("storyPos", -1);
-
-        regionPos = 2;
-
+        mid = getIntent().getStringExtra("mid");
+        cityKey = getIntent().getStringExtra("cityKey");
+        regionCode = getIntent().getIntExtra("regionCode",-1);
+        Log.e("regionCode",Integer.toString(regionCode));
         // view component load
         imageView_front = findViewById(R.id.imageView_image);
         btnCrop = findViewById(R.id.button_crop);
@@ -93,7 +90,7 @@ public class SetRepActivity extends AppCompatActivity {
 
     // front image setting
     private void setFrontImage() {
-        bitMap_front = ((BitmapDrawable) getBitmapFront(regionPos)).getBitmap();
+        bitMap_front = ((BitmapDrawable) getBitmapFront(regionCode)).getBitmap();
         int sW = bitMap_front.getWidth();
         int sH = bitMap_front.getHeight();
         int[] pixels = new int[sW * sH];
