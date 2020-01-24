@@ -30,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
@@ -40,10 +41,17 @@ import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.GetMapInfo;
+import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
+import com.jucanos.photomap.Structure.GetStoryList;
 
 import java.util.ArrayList;
 
 import pl.polidea.view.ZoomView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
@@ -235,6 +243,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        getMapInfoRequest();
     }
 
     private Handler handler = new Handler() {
@@ -363,6 +372,50 @@ public class GroupActivity extends AppCompatActivity {
                 porterShapeImageViews[regionCode].setImageBitmap(bm);
             }
         }
+    }
+
+    void getMapInfoRequest(){
+        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
+        res.enqueue(new Callback<GetMapInfo>() {
+            @Override
+            public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        setRep(response.body().getData().getGetMapInfoDataRepresents());
+                    }
+                } else {
+                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMapInfo> call, Throwable t) {
+                Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents){
+        String gyeonggi = getMapInfoDataRepresents.getGyeonggi();
+        String gangwon = getMapInfoDataRepresents.getGangwon();
+        String chungbuk = getMapInfoDataRepresents.getChungbuk();
+        String chungnam = getMapInfoDataRepresents.getChungnam();
+        String jeonbuk = getMapInfoDataRepresents.getJeonbuk();
+        String jeonnam = getMapInfoDataRepresents.getJeonnam();
+        String gyeongbuk = getMapInfoDataRepresents.getGyeongbuk();
+        String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
+        String jeju = getMapInfoDataRepresents.getJeju();
+        if(gyeonggi != null)  Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
+        if(gangwon != null)  Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
+        if(chungbuk != null)  Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
+        if(chungnam != null)  Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
+        if(jeonbuk != null)  Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
+        if(jeonnam != null)  Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
+        if(gyeongbuk != null)  Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
+        if(gyeongnam != null)  Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
+        if(jeju != null)  Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
+
+
     }
 
     // ====================================================================== for test Code

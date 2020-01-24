@@ -28,22 +28,15 @@ import androidx.appcompat.widget.Toolbar;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.Structure.CreateMap;
-import com.jucanos.photomap.Structure.CreateStory;
-import com.jucanos.photomap.Structure.RequestCreateMap;
 import com.jucanos.photomap.Structure.SetRep;
 import com.jucanos.photomap.util.BitmapUtils;
 import com.jucanos.photomap.util.SandboxView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
@@ -78,6 +71,7 @@ public class SetRepActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("사진 편집");
 
         mid = getIntent().getStringExtra("mid");
+        Log.e("SetRepActivity","mid : " + mid);
         cityKey = getIntent().getStringExtra("cityKey");
         regionCode = getIntent().getIntExtra("regionCode", -1);
         Log.e("regionCode", Integer.toString(regionCode));
@@ -182,7 +176,7 @@ public class SetRepActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("regionCode", regionCode);
                 intent.putExtra("path", path);
-                setRepReuquest(path);
+                setRepRequest(path);
                 setResult(RESULT_OK, intent);
                 finish();
                 return true;
@@ -211,13 +205,13 @@ public class SetRepActivity extends AppCompatActivity {
                 requestPermissions(REQUIRED_PERMISSIONS, 300);
                 return true;
             }
-
         } else { // 접근권한이 있을때
             Log.e("[PackageManager]", "접근 허가");
         }
 
         FilePickerBuilder.getInstance().setMaxCount(1)
                 .setActivityTheme(R.style.LibAppTheme)
+                .enableCameraSupport(false)
                 .pickPhoto(this, FilePickerConst.REQUEST_CODE_PHOTO);
         return false;
     }
@@ -253,27 +247,29 @@ public class SetRepActivity extends AppCompatActivity {
         switch (requestCode) {
             case 300:
                 // 권한 허용
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("[PackageManager]", "접근 허가");
-                } else { //권한 허용 불가
-                    Log.e("[PackageManager]", "접근 불가");
-                }
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Log.e("[SetRepActivity]", "onRequestPermissionsResult 접근 허가");
+                else  //권한 허용 불가
+                    Log.e("[SetRepActivity]", "onRequestPermissionsResult 접근 불가");
                 return;
         }
     }
 
-    private void setRepReuquest(String path) {
-        Log.e("setRepReuquest","cityKey : " + cityKey);
-        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
+    private void setRepRequest(String path) {
+        Log.e("setRepRequest", "cityKey : " + cityKey);
 
+        // body part
+        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
         HashMap<String, RequestBody> hashMap = new HashMap<>();
         hashMap.put("cityKey", requetCityKey);
 
+        // multi body part
         MultipartBody.Part file;
         File f = new File(path);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
         file = MultipartBody.Part.createFormData("img", f.getName(), requestFile);
 
+        // request
         final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep("Bearer " + globalApplication.token, mid, hashMap, file);
         res.enqueue(new Callback<SetRep>() {
             @Override
@@ -283,13 +279,13 @@ public class SetRepActivity extends AppCompatActivity {
                         Log.e("SetRepActivity", response.body().getData().toString());
                     }
                 } else {
-                    Log.e("SetRepActivity", "setRepReuquest error : " + Integer.toString(response.code()));
+                    Log.e("SetRepActivity", "setRepRequest error : " + Integer.toString(response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<SetRep> call, Throwable t) {
-                Log.e("SetRepActivity", "setRepReuquest fail : " + t.getLocalizedMessage());
+                Log.e("SetRepActivity", "setRepRequest fail : " + t.getLocalizedMessage());
             }
         });
     }

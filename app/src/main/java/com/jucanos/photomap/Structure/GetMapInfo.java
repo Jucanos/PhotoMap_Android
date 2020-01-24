@@ -3,20 +3,20 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SetRep {
+public class GetMapInfo {
     @SerializedName("data")
     @Expose
-    private SetRepData data;
+    private GetMapInfoData data;
 
     @SerializedName("message")
     @Expose
     private String message;
 
-    public SetRepData getData() {
+    public GetMapInfoData getData() {
         return data;
     }
 
-    public void setData(SetRepData data) {
+    public void setData(GetMapInfoData data) {
         this.data = data;
     }
 

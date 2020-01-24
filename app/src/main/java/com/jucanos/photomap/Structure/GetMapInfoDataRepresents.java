@@ -3,7 +3,7 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class  SetRepData {
+public class GetMapInfoDataRepresents {
     @SerializedName("gyeonggi")
     @Expose
     private String gyeonggi;
