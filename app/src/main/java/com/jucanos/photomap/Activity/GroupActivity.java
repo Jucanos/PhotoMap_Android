@@ -8,6 +8,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -179,6 +181,18 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 100:
+                    Toast.makeText(GroupActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
+                    break;
+
+            }
+        }
+    };
+
     PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener() {
         int x = 0, y = 0;
         int transparency;
@@ -189,6 +203,7 @@ public class GroupActivity extends AppCompatActivity {
             Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    handler.sendEmptyMessageAtTime(100, event.getDownTime() + (long)500);
                     x = (int) pxToDp(mContext, event.getX());
                     y = (int) pxToDp(mContext, event.getY());
                     transparency = bm.getPixel(x, y);
@@ -199,6 +214,7 @@ public class GroupActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
                     }
+                    handler.removeMessages(100);
                     break;
                 default:
                     break;
@@ -206,7 +222,6 @@ public class GroupActivity extends AppCompatActivity {
             return false;
         }
     };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
