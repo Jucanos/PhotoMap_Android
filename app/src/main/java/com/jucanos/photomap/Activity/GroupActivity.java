@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -38,15 +40,27 @@ import pl.polidea.view.ZoomView;
 public class GroupActivity extends AppCompatActivity {
     public static Context mContext;
     PorterShapeImageView imageView_gyeonggi; // 1
+    ImageView imageView_gyeonggi_front;
     PorterShapeImageView imageView_gangwon; // 2
+    ImageView imageView_gangwon_front;
     PorterShapeImageView imageView_chungbuk; // 3
+    ImageView imageView_chungbuk_front;
     PorterShapeImageView imageView_chungnam; // 4
+    ImageView imageView_chungnam_front;
     PorterShapeImageView imageView_jeonbuk; // 5
+    ImageView imageView_jeonbuk_front;
     PorterShapeImageView imageView_jeonnam; // 6
-    PorterShapeImageView ImageView_gyeongbuk; // 7
-    PorterShapeImageView ImageView_gyeongnam; // 8
+    ImageView imageView_jeonnam_front;
+    PorterShapeImageView imageView_gyeongbuk; // 7
+    ImageView imageView_gyeongbuk_front;
+    PorterShapeImageView imageView_gyeongnam; // 8
+    ImageView imageView_gyeongnam_front;
     PorterShapeImageView imageView_jeju; // 9
-    final PorterShapeImageView[] imageViews = new PorterShapeImageView[10];
+    ImageView imageView_jeju_front;
+
+    final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
+    final ImageView[] imageViews = new ImageView[10];
+
     private DrawerLayout drawerLayout_drawer;
     private ListView listView_member;
     private MemberListViewAdapter adapter;
@@ -58,6 +72,8 @@ public class GroupActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton_save, floatingActionButton_share, floatingActionButton_rep;
 
     private String mid;
+
+    private Boolean longClick = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -101,32 +117,58 @@ public class GroupActivity extends AppCompatActivity {
 
         // PorterShapeImageView
         imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
+        imageView_gyeonggi_front = findViewById(R.id.imageView_gyeonggi_front);
         imageView_gyeonggi.setOnTouchListener(mClickListener);
-        imageViews[1] = imageView_gyeonggi;
+        porterShapeImageViews[1] = imageView_gyeonggi;
+        imageViews[1] = imageView_gyeonggi_front;
+
         imageView_gangwon = findViewById(R.id.imageView_gangwon);
+        imageView_gangwon_front = findViewById(R.id.imageView_gangwon_front);
         imageView_gangwon.setOnTouchListener(mClickListener);
-        imageViews[2] = imageView_gangwon;
-        imageView_chungbuk = findViewById(R.id.imageView_cungbuk);
+        porterShapeImageViews[2] = imageView_gangwon;
+        imageViews[2] = imageView_gangwon_front;
+
+        imageView_chungbuk = findViewById(R.id.imageView_chungbuk);
+        imageView_chungbuk_front = findViewById(R.id.imageView_chungbuk_front);
         imageView_chungbuk.setOnTouchListener(mClickListener);
-        imageViews[3] = imageView_chungbuk;
+        porterShapeImageViews[3] = imageView_chungbuk;
+        imageViews[3] = imageView_chungbuk_front;
+
         imageView_chungnam = findViewById(R.id.imageView_chungnam);
+        imageView_chungnam_front = findViewById(R.id.imageView_chungnam_front);
         imageView_chungnam.setOnTouchListener(mClickListener);
-        imageViews[4] = imageView_chungnam;
+        porterShapeImageViews[4] = imageView_chungnam;
+        imageViews[4] = imageView_chungnam_front;
+
         imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
+        imageView_jeonbuk_front = findViewById(R.id.imageView_jeonbuk_front);
         imageView_jeonbuk.setOnTouchListener(mClickListener);
-        imageViews[5] = imageView_jeonbuk;
+        porterShapeImageViews[5] = imageView_jeonbuk;
+        imageViews[5] = imageView_jeonbuk_front;
+
         imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
+        imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
         imageView_jeonnam.setOnTouchListener(mClickListener);
-        imageViews[6] = imageView_jeonnam;
-        ImageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
-        ImageView_gyeongbuk.setOnTouchListener(mClickListener);
-        imageViews[7] = ImageView_gyeongbuk;
-        ImageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
-        ImageView_gyeongnam.setOnTouchListener(mClickListener);
-        imageViews[8] = ImageView_gyeongnam;
+        porterShapeImageViews[6] = imageView_jeonnam;
+        imageViews[6] = imageView_jeonnam_front;
+
+        imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
+        imageView_gyeongbuk_front = findViewById(R.id.imageView_gyeongbuk_front);
+        imageView_gyeongbuk.setOnTouchListener(mClickListener);
+        porterShapeImageViews[7] = imageView_gyeongbuk;
+        imageViews[7] = imageView_gyeongbuk_front;
+
+        imageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
+        imageView_gyeongnam_front = findViewById(R.id.imageView_gyeongnam_front);
+        imageView_gyeongnam.setOnTouchListener(mClickListener);
+        porterShapeImageViews[8] = imageView_gyeongnam;
+        imageViews[8] = imageView_gyeongnam_front;
+
         imageView_jeju = findViewById(R.id.imageView_jeju);
+        imageView_jeju_front = findViewById(R.id.imageView_jeju_front);
         imageView_jeju.setOnTouchListener(mClickListener);
-        imageViews[9] = imageView_jeju;
+        porterShapeImageViews[9] = imageView_jeju;
+        imageViews[9] = imageView_jeju_front;
 
         addGroupTest();
 
@@ -184,12 +226,8 @@ public class GroupActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 100:
-                    Toast.makeText(GroupActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
-                    break;
-
-            }
+            longClick = true;
+            Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -203,18 +241,22 @@ public class GroupActivity extends AppCompatActivity {
             Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    handler.sendEmptyMessageAtTime(100, event.getDownTime() + (long)500);
                     x = (int) pxToDp(mContext, event.getX());
                     y = (int) pxToDp(mContext, event.getY());
                     transparency = bm.getPixel(x, y);
+                    Log.e(v.getContentDescription().toString(),"down transparency : " + transparency);
+                    if(transparency != 0){
+                        handler.sendEmptyMessageAtTime(Integer.parseInt(v.getContentDescription().toString()), event.getDownTime() + (long)1000);
+                    }
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
+                    Log.e(v.getContentDescription().toString(),"up transparency : " + transparency);
                     if (transparency != 0) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
+                        handler.removeMessages(Integer.parseInt(v.getContentDescription().toString()));
                     }
-                    handler.removeMessages(100);
                     break;
                 default:
                     break;
