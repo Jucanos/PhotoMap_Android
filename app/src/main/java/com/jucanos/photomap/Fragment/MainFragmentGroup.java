@@ -154,7 +154,7 @@ public class MainFragmentGroup extends Fragment {
                 String mapName = data.getStringExtra("mapName");
                 Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
                 Log.e("MainFragmentGroup", "[mapName]" + mapName);
-                addGroup(mapTokpen, mapName);
+                addGroup(mapName,mapTokpen);
                 break;
             default:
                 break;
