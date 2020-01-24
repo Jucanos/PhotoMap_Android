@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.util.BitmapUtils;
 import com.jucanos.photomap.util.SandboxView;
 
 import java.io.ByteArrayOutputStream;
@@ -134,6 +135,7 @@ public class SetRepActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -145,13 +147,17 @@ public class SetRepActivity extends AppCompatActivity {
                 return true;
             // 뒤로가기 버튼
             case R.id.item_cut:
+                if (view == null) {
+                    openGallery();
+                    return true;
+                }
                 Bitmap b = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
                         Bitmap.Config.ARGB_8888);
                 Canvas c = new Canvas(b);
                 view.draw(c);
                 String path = null;
                 try {
-                    path = saveBitmap("image_" + Long.toString(System.currentTimeMillis()), b);
+                    path = BitmapUtils.saveBitmap("image_" + Long.toString(System.currentTimeMillis()), b, 50, getApplicationContext());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -235,34 +241,6 @@ public class SetRepActivity extends AppCompatActivity {
                 }
                 return;
         }
-    }
-
-    //create a file to write bitmap data
-    public String saveBitmap(String filename, Bitmap bm) throws IOException {
-        File f = new File(getApplicationContext().getCacheDir(), filename);
-        f.createNewFile();
-
-        //Convert bitmap to byte array
-        Bitmap bitmap = bm;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50 /*ignored for PNG*/, bos);
-        byte[] bitmapdata = bos.toByteArray();
-
-        //write the bytes in file
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return f.getAbsolutePath();
     }
 }
 

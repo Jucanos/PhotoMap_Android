@@ -16,7 +16,9 @@ import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -158,12 +160,32 @@ public class BitmapUtils {
      * @param bm   The bitmap.
      * @param file The file to write the bitmap into.
      */
-    public static void writeBitmapToFile(Bitmap bm, File file, int quality) throws IOException {
+    //create a file to write bitmap data
+    public static String saveBitmap(String filename, Bitmap bm,int quality,Context mContext) throws IOException {
+        File f = new File(mContext.getCacheDir(), filename);
+        f.createNewFile();
 
-        FileOutputStream fos = new FileOutputStream(file);
-        bm.compress(Bitmap.CompressFormat.JPEG, quality, fos);
-        fos.flush();
-        fos.close();
+        //Convert bitmap to byte array
+        Bitmap bitmap = bm;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return f.getAbsolutePath();
     }
 
     public static Bitmap addPadding(@NonNull Bitmap bmp) {
