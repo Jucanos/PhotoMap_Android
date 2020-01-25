@@ -3,6 +3,8 @@ package com.jucanos.photomap.RestApi;
 import android.database.Observable;
 
 import com.jucanos.photomap.Structure.CreateStory;
+import com.jucanos.photomap.Structure.EditGroup;
+import com.jucanos.photomap.Structure.EditGroupRequest;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
@@ -27,6 +29,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
@@ -59,7 +62,7 @@ public interface ApiService {
     );
 
     @GET("dev/stories/{mid}/{cityKey}")
-    Call<GetStoryList> getStoryList(@Header("Authorization") String authKey,@Path("mid") String mid, @Path("cityKey") String cityKey);
+    Call<GetStoryList> getStoryList(@Header("Authorization") String authKey, @Path("mid") String mid, @Path("cityKey") String cityKey);
 
     @GET("dev/maps/{mid}")
     Call<GetMapInfo> getMapInfo(@Header("Authorization") String authKey, @Path("mid") String mid);
@@ -72,6 +75,13 @@ public interface ApiService {
             @PartMap HashMap<String, RequestBody> info,
             @Part MultipartBody.Part file
     );
+
+    @PUT("dev/maps/{mid}")
+    Call<EditGroup> editGroup(@Header("Authorization") String authKey,
+                              @Path("mid") String mid,
+                              @Body EditGroupRequest editGroupRequest
+    );
+
 //    @FormUrlEncoded
 //    @POST("user/login")
 //    Call<Result> getInfo(@Field("params") String name) ;

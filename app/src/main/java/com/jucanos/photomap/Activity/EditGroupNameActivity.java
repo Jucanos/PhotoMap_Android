@@ -1,5 +1,7 @@
 package com.jucanos.photomap.Activity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,37 +15,51 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.Structure.CreateMap;
-import com.jucanos.photomap.Structure.RequestCreateMap;
+import com.jucanos.photomap.Structure.EditGroup;
+import com.jucanos.photomap.Structure.EditGroupRequest;
+import com.jucanos.photomap.Structure.SetRep;
 
+import java.io.File;
+import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddGroupActivity extends AppCompatActivity {
-    public GlobalApplication globalApplication;
+public class EditGroupNameActivity extends AppCompatActivity {
+    private GlobalApplication globalApplication;
     private EditText editText_name;
-
+    private String mid;
+    private int pos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_group);
+        setContentView(R.layout.activity_edit_group_name);
+
         globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("그룹 생성");
+        getSupportActionBar().setTitle("그룹 이름 수정");
 
-        editText_name = findViewById(R.id.editText_description);
+        String name = getIntent().getStringExtra("name");
+        mid = getIntent().getStringExtra("mid");
+        pos = getIntent().getIntExtra("pos",-1);
+
         RelativeLayout relativeLayout_total = findViewById(R.id.relativeLayout_total);
         hideView(relativeLayout_total);
+
+        editText_name = findViewById(R.id.editText_name);
+        editText_name.setHint(name);
+        editText_name.requestFocus();
+
     }
 
     @Override
@@ -59,42 +75,40 @@ public class AddGroupActivity extends AppCompatActivity {
         switch (id) {
             // 오른쪽 상단 메뉴 버튼
             case R.id.item_ok:
-                requestCreateMap(globalApplication.token, editText_name.getText().toString());
+                editGroupRequest();
+                Intent intent = new Intent();
+                intent.putExtra("pos", pos);
+                intent.putExtra("name", editText_name.getText().toString());
+                setResult(RESULT_OK, intent);
+                finish();
                 return true;
             // 뒤로가기 버튼
             case android.R.id.home:
+
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void requestCreateMap(String token, final String name) {
-        Log.e("token", token);
-        Log.e("name", name);
-        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, new RequestCreateMap(name));
-        res.enqueue(new Callback<CreateMap>() {
+    void editGroupRequest(){
+        // body part
+        // request
+        final Call<EditGroup> res = NetworkHelper.getInstance().getService().editGroup("Bearer " + globalApplication.token, mid, new EditGroupRequest(editText_name.getText().toString()));
+        res.enqueue(new Callback<EditGroup>() {
             @Override
-            public void onResponse(Call<CreateMap> call, Response<CreateMap> response) {
+            public void onResponse(Call<EditGroup> call, Response<EditGroup> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        String mapToken = response.body().getCreateMapData().getMid();
-                        Log.e("requestCreateMap", mapToken);
-                        Intent intent = new Intent();
-                        intent.putExtra("mapToken", mapToken);
-                        intent.putExtra("mapName", name);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                        overridePendingTransition(R.anim.anim_slide_out_top, R.anim.anim_not_move);
-                    }
+                    Log.e("EditGroupNameActivity", " success");
+                    finish();
                 } else {
-                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                    Log.e("EditGroupNameActivity", "setRepRequest error : " + Integer.toString(response.code()));
                 }
             }
 
             @Override
-            public void onFailure(Call<CreateMap> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+            public void onFailure(Call<EditGroup> call, Throwable t) {
+                Log.e("EditGroupNameActivity", "setRepRequest fail : " + t.getLocalizedMessage());
             }
         });
     }
@@ -120,5 +134,4 @@ public class AddGroupActivity extends AppCompatActivity {
 
         view.startAnimation(animation);
     }
-
 }

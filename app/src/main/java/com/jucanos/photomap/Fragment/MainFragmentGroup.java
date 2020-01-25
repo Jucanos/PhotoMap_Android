@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.jucanos.photomap.Activity.AddGroupActivity;
+import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.Dialog.AddGroupDialog;
 import com.jucanos.photomap.Dialog.AddGroupDialogListener;
@@ -45,8 +46,8 @@ public class MainFragmentGroup extends Fragment {
     private int groupCnt = 0;
     private GroupListViewAdapter adapter;
 
-    private int ADD_GROUP = 1;
-
+    private final int ADD_GROUP = 1;
+    private final int EDIT_GROUP = 2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_group, fragmentContainer, false);
@@ -89,11 +90,13 @@ public class MainFragmentGroup extends Fragment {
                     @Override
                     public void onGroupNameClicked() {
                         Toast.makeText(getContext(), "change onGroupNameClicked is clicked", Toast.LENGTH_SHORT).show();
+                        redirectEditGroupNameActivity(adapter.getItem(position).getTitle(), adapter.getItem(position).getMid(),position);
                     }
 
                     @Override
                     public void onThumbnailClicked() {
                         Toast.makeText(getContext(), "change onThumbnailClicked is clicked", Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
@@ -146,18 +149,34 @@ public class MainFragmentGroup extends Fragment {
         getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
     }
 
+    private void redirectEditGroupNameActivity(String name,String mid, int pos){
+        final Intent intent = new Intent(getActivity(), EditGroupNameActivity.class);
+        intent.putExtra("name", name);
+        intent.putExtra("mid", mid);
+        intent.putExtra("pos", pos);
+        getActivity().startActivityForResult(intent, EDIT_GROUP);
+        getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
-            case 1:
-                String mapTokpen = data.getStringExtra("mapToken");
-                String mapName = data.getStringExtra("mapName");
-                Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
-                Log.e("MainFragmentGroup", "[mapName]" + mapName);
-                addGroup(mapName,mapTokpen);
-                break;
-            default:
-                break;
+        if(resultCode == getActivity().RESULT_OK) {
+            switch (requestCode) {
+                case ADD_GROUP:
+                    String mapTokpen = data.getStringExtra("mapToken");
+                    String mapName = data.getStringExtra("mapName");
+                    Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
+                    Log.e("MainFragmentGroup", "[mapName]" + mapName);
+                    addGroup(mapName, mapTokpen);
+                    break;
+                case EDIT_GROUP:
+                    String name = data.getStringExtra("name");
+                    int pos = data.getIntExtra("pos",-1);
+                    adapter.getItem(pos).setTitle(name);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
