@@ -32,7 +32,7 @@ import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapList;
-import com.jucanos.photomap.Structure.RequestUserRemove;
+import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 
 import retrofit2.Call;
@@ -218,7 +218,7 @@ public class MainFragmentGroup extends Fragment {
     }
 
     public void userRemove(String token, String mid, String remove) {
-        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RequestUserRemove(remove));
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RemoveUserRequest(remove));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {

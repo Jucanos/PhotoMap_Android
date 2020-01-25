@@ -57,7 +57,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        addStoryFragmentImage = new AddStoryFragmentImage(); //프래그먼트 객채셍성
+        addStoryFragmentImage = new AddStoryFragmentImage();
         fragmentManager.beginTransaction().replace(R.id.main_frame, addStoryFragmentImage).commit();
 
         mid = getIntent().getStringExtra("mid");
@@ -155,7 +155,6 @@ public class AddStoryActivity extends AppCompatActivity {
 
 
     public void requestUploadImage(String title, String description, ArrayList<String> realPaths) {
-        Log.e("cityKey",globalApplication.cityKeyInt.get(cityKey));
         RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), globalApplication.cityKeyInt.get(cityKey));
         RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), title);
         RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), description);
@@ -171,16 +170,6 @@ public class AddStoryActivity extends AppCompatActivity {
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
         }
-
-//        File file = new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-172835_photoMap.jpg");
-//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//        Log.e("file1", file.getName());
-//        files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
-//
-//        file = new File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20200118-153913_photoMap.jpg");
-//        requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//        Log.e("file2", file.getName());
-//        files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
 
         final Call<CreateStory> res = NetworkHelper.getInstance().getService().createStory("Bearer " + globalApplication.token, mid, hashMap, files);
         res.enqueue(new Callback<CreateStory>() {

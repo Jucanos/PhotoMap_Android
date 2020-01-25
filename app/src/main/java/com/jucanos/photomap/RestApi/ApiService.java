@@ -1,7 +1,5 @@
 package com.jucanos.photomap.RestApi;
 
-import android.database.Observable;
-
 import com.jucanos.photomap.Structure.CreateStory;
 import com.jucanos.photomap.Structure.EditGroup;
 import com.jucanos.photomap.Structure.EditGroupRequest;
@@ -10,8 +8,8 @@ import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.GetMapList;
-import com.jucanos.photomap.Structure.RequestCreateMap;
-import com.jucanos.photomap.Structure.RequestUserRemove;
+import com.jucanos.photomap.Structure.CreateMapRequest;
+import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 import com.jucanos.photomap.Structure.SetRep;
 
@@ -20,7 +18,6 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -47,10 +44,10 @@ public interface ApiService {
     @POST("dev/maps")
     Call<CreateMap> createMap(
             @Header("Authorization") String authorization,
-            @Body RequestCreateMap requestCreateMap);
+            @Body CreateMapRequest createMapRequest);
 
     @PATCH("dev/maps/{mid}")
-    Call<RemoveUser> userRemove(@Header("Authorization") String authorization, @Path("mid") String mid, @Body RequestUserRemove requestUserRemove);
+    Call<RemoveUser> userRemove(@Header("Authorization") String authorization, @Path("mid") String mid, @Body RemoveUserRequest removeUserRequest);
 
     @Multipart
     @POST("dev/stories/{mid}")
@@ -81,8 +78,4 @@ public interface ApiService {
                               @Path("mid") String mid,
                               @Body EditGroupRequest editGroupRequest
     );
-
-//    @FormUrlEncoded
-//    @POST("user/login")
-//    Call<Result> getInfo(@Field("params") String name) ;
 }

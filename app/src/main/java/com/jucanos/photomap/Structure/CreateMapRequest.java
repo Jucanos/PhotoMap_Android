@@ -1,9 +1,9 @@
 package com.jucanos.photomap.Structure;
 
-public class RequestCreateMap {
+public class CreateMapRequest {
     String name;
 
-    public RequestCreateMap(String name) {
+    public CreateMapRequest(String name) {
         this.name = name;
     }
 

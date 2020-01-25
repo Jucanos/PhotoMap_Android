@@ -245,12 +245,13 @@ public class GroupActivity extends AppCompatActivity {
         getMapInfoRequest();
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             longClickId = -1;
             Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
-            final Integer regionCode = msg.what;
+            final int regionCode = msg.what;
             RepDialog dialog = new RepDialog(GroupActivity.this);
             dialog.setDialogListener(new RepDialogListener() {
                 @Override

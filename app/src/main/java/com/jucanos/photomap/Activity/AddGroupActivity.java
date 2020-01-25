@@ -20,7 +20,7 @@ import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateMap;
-import com.jucanos.photomap.Structure.RequestCreateMap;
+import com.jucanos.photomap.Structure.CreateMapRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,7 +72,7 @@ public class AddGroupActivity extends AppCompatActivity {
     public void requestCreateMap(String token, final String name) {
         Log.e("token", token);
         Log.e("name", name);
-        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, new RequestCreateMap(name));
+        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, new CreateMapRequest(name));
         res.enqueue(new Callback<CreateMap>() {
             @Override
             public void onResponse(Call<CreateMap> call, Response<CreateMap> response) {
