@@ -68,11 +68,9 @@ public class StoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            // 오른쪽 상단 메뉴 버튼
             case R.id.item_add:
                 redirectAddStoryActivity(mid);
                 return true;
-            // 뒤로가기 버튼
             case android.R.id.home:
                 finish();
                 overridePendingTransition(R.anim.anim_not_move, R.anim.anim_slide_out_right);
@@ -121,10 +119,10 @@ public class StoryActivity extends AppCompatActivity {
                 storyListViewItem.setSid(sid);
                 storyListViewItem.setMid(mid);
                 addStoryTest(storyListViewItem);
-            }else if(requestCode == EDIT_STORY_REQUEST){
-                int pos = data.getIntExtra("pos",-1);
+            } else if (requestCode == EDIT_STORY_REQUEST) {
+                int pos = data.getIntExtra("pos", -1);
                 String title = data.getStringExtra("title");
-                String context= data.getStringExtra("context");
+                String context = data.getStringExtra("context");
                 listView_storyApater.getItem(pos).setContext(context);
                 listView_storyApater.getItem(pos).setTitle(title);
                 listView_storyApater.notifyDataSetChanged();
@@ -145,7 +143,6 @@ public class StoryActivity extends AppCompatActivity {
                             Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
                             Log.e("StoryActivity", "[title] : " + response.body().getGetStoryListItems().get(i).getTitle());
                             Log.e("StoryActivity", "[context] : " + response.body().getGetStoryListItems().get(i).getContext());
-
                             if (response.body().getGetStoryListItems().get(i).getFiles() == null) {
                                 Log.e("StoryActivity", "[file] : is null");
                             } else {
@@ -172,22 +169,18 @@ public class StoryActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                    Log.e("StoryActivity", "[loadStoryList response.isNotSuccessful()]" + Integer.toString(response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<GetStoryList> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Log.e("StoryActivity", "[loadStoryList is onFailure]" + t.getLocalizedMessage());
             }
         });
     }
 
-
-    // ====================================================================== for test Code
-    // ====================================================================== for test Code
     void addStoryTest(StoryListViewItem storyListViewItem) {
-        String thumbnail_realPath = "drawable://" + R.drawable.test_image_vertical;
         listView_storyApater.addItem(storyListViewItem);
         listView_storyApater.notifyDataSetChanged();
     }
