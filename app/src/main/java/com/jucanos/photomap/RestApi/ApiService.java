@@ -3,6 +3,8 @@ package com.jucanos.photomap.RestApi;
 import com.jucanos.photomap.Structure.CreateStory;
 import com.jucanos.photomap.Structure.EditGroup;
 import com.jucanos.photomap.Structure.EditGroupRequest;
+import com.jucanos.photomap.Structure.EditStory;
+import com.jucanos.photomap.Structure.EditStoryRequest;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
@@ -82,4 +84,7 @@ public interface ApiService {
 
     @DELETE("dev/stories/{sid}")
     Call<RemoveStory> removeStory(@Header("Authorization") String authorization, @Path("sid") String sid);
+
+    @PATCH("dev/stories/{sid}")
+    Call<EditStory> editStory(@Header("Authorization") String authorization, @Path("sid") String sid, @Body EditStoryRequest editStoryRequest);
 }

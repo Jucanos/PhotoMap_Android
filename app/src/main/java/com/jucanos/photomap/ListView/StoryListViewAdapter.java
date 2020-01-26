@@ -25,6 +25,8 @@ import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.EditStory;
+import com.jucanos.photomap.Structure.EditStoryRequest;
 import com.jucanos.photomap.Structure.RemoveStory;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
 import com.jucanos.photomap.Viewpager.StoryViewPagerAdapter;
@@ -157,7 +159,7 @@ public class StoryListViewAdapter extends BaseAdapter {
         return bitmap;
     }
 
-    void removeStoryRequest(String sid, final int pos) {
+    public void removeStoryRequest(String sid, final int pos) {
         final Call<RemoveStory> res = NetworkHelper.getInstance().getService().removeStory("Bearer " + GlobalApplication.getGlobalApplicationContext().token, sid);
         res.enqueue(new Callback<RemoveStory>() {
             @Override
@@ -173,6 +175,25 @@ public class StoryListViewAdapter extends BaseAdapter {
 
             @Override
             public void onFailure(Call<RemoveStory> call, Throwable t) {
+                Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void editStoryRequest(String sid, String title, String context, int pos){
+        final Call<EditStory> res = NetworkHelper.getInstance().getService().editStory("Bearer " + GlobalApplication.getGlobalApplicationContext().token,sid,new EditStoryRequest(title,context));
+        res.enqueue(new Callback<EditStory>() {
+            @Override
+            public void onResponse(Call<EditStory> call, Response<EditStory> response) {
+                if (response.isSuccessful()) {
+                    Log.e("StoryActivity", "[removeStoryRequest] is Successful");
+                } else {
+                    Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EditStory> call, Throwable t) {
                 Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
             }
         });
