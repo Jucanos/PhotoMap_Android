@@ -30,6 +30,7 @@ public class StoryActivity extends AppCompatActivity {
     private ListView listView_story;
     private StoryListViewAdapter listView_storyApater;
     private int ADD_STORY_REQUEST = 1;
+    private int EDIT_STORY_REQUEST = 2;
 
     private String mid;
     private Integer citykey;
@@ -89,11 +90,21 @@ public class StoryActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
+    public void redirectEditStoryActivity(String sid, String title, String context, int pos) {
+        Intent intent = new Intent(this, EditStoryActivity.class);
+        intent.putExtra("sid", sid);
+        intent.putExtra("title", title);
+        intent.putExtra("context", context);
+        intent.putExtra("pos", pos);
+        startActivityForResult(intent, EDIT_STORY_REQUEST);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_STORY_REQUEST) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_STORY_REQUEST) {
                 StoryListViewItem storyListViewItem = new StoryListViewItem();
                 String title = data.getStringExtra("title");
                 String context = data.getStringExtra("context");
@@ -110,6 +121,13 @@ public class StoryActivity extends AppCompatActivity {
                 storyListViewItem.setSid(sid);
                 storyListViewItem.setMid(mid);
                 addStoryTest(storyListViewItem);
+            }else if(requestCode == EDIT_STORY_REQUEST){
+                int pos = data.getIntExtra("pos",-1);
+                String title = data.getStringExtra("title");
+                String context= data.getStringExtra("context");
+                listView_storyApater.getItem(pos).setContext(context);
+                listView_storyApater.getItem(pos).setTitle(title);
+                listView_storyApater.notifyDataSetChanged();
 
             }
         }

@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.jucanos.photomap.Activity.EditStoryActivity;
 import com.jucanos.photomap.Activity.SetRepActivity;
+import com.jucanos.photomap.Activity.StoryActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
@@ -43,6 +45,7 @@ import retrofit2.Response;
 
 public class StoryListViewAdapter extends BaseAdapter {
     private GlobalApplication globalApplication;
+    private final int EDIT_STORY_REQEUST = 3;
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<StoryListViewItem> listViewItemList = new ArrayList<StoryListViewItem>();
 
@@ -106,6 +109,8 @@ public class StoryListViewAdapter extends BaseAdapter {
                     @Override
                     public void onEditClicked() {
                         Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
+                        final Intent intent = new Intent(context, EditStoryActivity.class);
+                        ((StoryActivity)context).redirectEditStoryActivity(listViewItem.getSid(),listViewItem.getTitle(),listViewItem.getContext(),position);
                     }
 
                     @Override
@@ -180,23 +185,5 @@ public class StoryListViewAdapter extends BaseAdapter {
         });
     }
 
-    public void editStoryRequest(String sid, String title, String context, int pos){
-        final Call<EditStory> res = NetworkHelper.getInstance().getService().editStory("Bearer " + GlobalApplication.getGlobalApplicationContext().token,sid,new EditStoryRequest(title,context));
-        res.enqueue(new Callback<EditStory>() {
-            @Override
-            public void onResponse(Call<EditStory> call, Response<EditStory> response) {
-                if (response.isSuccessful()) {
-                    Log.e("StoryActivity", "[removeStoryRequest] is Successful");
-                } else {
-                    Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EditStory> call, Throwable t) {
-                Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
-            }
-        });
-    }
 
 }
