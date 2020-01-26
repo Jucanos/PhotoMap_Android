@@ -115,14 +115,7 @@ public class AddStoryActivity extends AppCompatActivity {
         String description = addStoryFragmentDescription.getDescription();
         Log.e("AddStoryActivity", "title : " + title);
         Log.e("AddStoryActivity", "description : " + description);
-        Intent intent = new Intent();
-        intent.putExtra("title", title);
-        intent.putExtra("description", description);
-        intent.putExtra("realPaths", realPaths);
         requestUploadImage(title, description, realPaths);
-
-        setResult(RESULT_OK, intent);
-        finish();
     }
 
     //create a file to write bitmap data
@@ -164,7 +157,7 @@ public class AddStoryActivity extends AppCompatActivity {
         hashMap.put("title", requestTitle);
         hashMap.put("context", requestDescription);
 
-        List<MultipartBody.Part> files = new ArrayList<>();
+        final List<MultipartBody.Part> files = new ArrayList<>();
         for (int i = 0; i < realPaths.size(); i++) {
             File file = new File(realPaths.get(i));
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -182,6 +175,14 @@ public class AddStoryActivity extends AppCompatActivity {
                         Log.e("AddStoryActivity", "[content] : " + response.body().getCreateStoryData().getContext());
                         Log.e("AddStoryActivity", "[files] : " + response.body().getCreateStoryData().getFiles().toString());
                         Log.e("AddStoryActivity", "[sid] : " + response.body().getCreateStoryData().getSid());
+                        Intent intent = new Intent();
+                        intent.putExtra("title", response.body().getCreateStoryData().getTitle());
+                        intent.putExtra("context", response.body().getCreateStoryData().getContext());
+                        intent.putStringArrayListExtra("files", response.body().getCreateStoryData().getFiles());
+                        intent.putExtra("mid", response.body().getCreateStoryData().getMid());
+                        intent.putExtra("sid", response.body().getCreateStoryData().getSid());
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
                 } else {
                     Log.e("requestUploadImage", "requestUploadImage error : " + Integer.toString(response.code()));

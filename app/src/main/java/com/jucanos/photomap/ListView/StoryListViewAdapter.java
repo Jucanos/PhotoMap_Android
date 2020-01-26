@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,17 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.jucanos.photomap.Activity.MainActivity;
+import com.jucanos.photomap.Activity.EditStoryActivity;
 import com.jucanos.photomap.Activity.SetRepActivity;
+import com.jucanos.photomap.Activity.StoryActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.EditStory;
+import com.jucanos.photomap.Structure.EditStoryRequest;
+import com.jucanos.photomap.Structure.RemoveStory;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
 import com.jucanos.photomap.Viewpager.StoryViewPagerAdapter;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
@@ -32,8 +39,13 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StoryListViewAdapter extends BaseAdapter {
+    private GlobalApplication globalApplication;
+    private final int EDIT_STORY_REQEUST = 3;
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<StoryListViewItem> listViewItemList = new ArrayList<StoryListViewItem>();
 
@@ -51,7 +63,7 @@ public class StoryListViewAdapter extends BaseAdapter {
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
 
@@ -71,22 +83,17 @@ public class StoryListViewAdapter extends BaseAdapter {
         // GetUserInfoData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
 
 
-        StoryListViewItem listViewItem = listViewItemList.get(position);
+        final StoryListViewItem listViewItem = listViewItemList.get(position);
         Drawable drawable = context.getResources().getDrawable(R.drawable.test_image_square);
-        Bitmap bm = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
         circleImageView_thumbnail.setImageBitmap(bm);
 
-        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-        for (int i = 0; i < listViewItem.getImage_realPahts().size(); i++) {
-            bm = BitmapFactory.decodeFile(listViewItem.getImage_realPahts().get(i));
-            bitmaps.add(bm);
-        }
-        final StoryViewPagerAdapter StoryViewPagerAdapter = new StoryViewPagerAdapter(context, listViewItem.getImage_realPahts());
+        final StoryViewPagerAdapter StoryViewPagerAdapter = new StoryViewPagerAdapter(context, listViewItem.getFiles());
         customViewPager_vp.setAdapter(StoryViewPagerAdapter);
 
         textView_title.setText(listViewItem.getTitle());
-        textView_upload.setText(listViewItem.getTime_upload());
-        expandableTextView_description.setText(listViewItem.getDescription() + "\n\n" + listViewItem.getTime_edit());
+        textView_upload.setText(listViewItem.getCreatedAt());
+        expandableTextView_description.setText(listViewItem.getContext() + "\n\n" + listViewItem.getCreatedAt());
 
         button_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,11 +103,14 @@ public class StoryListViewAdapter extends BaseAdapter {
                     @Override
                     public void onDeleteClicked() {
                         Toast.makeText(context, "change onDeleteClicked is clicked", Toast.LENGTH_SHORT).show();
+                        removeStoryRequest(listViewItem.getSid(),position);
                     }
 
                     @Override
                     public void onEditClicked() {
                         Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
+                        final Intent intent = new Intent(context, EditStoryActivity.class);
+                        ((StoryActivity)context).redirectEditStoryActivity(listViewItem.getSid(),listViewItem.getTitle(),listViewItem.getContext(),position);
                     }
 
                     @Override
@@ -118,7 +128,6 @@ public class StoryListViewAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
-
 
 
         // 아이템 내 각 위젯에 데이터 반영
@@ -143,7 +152,7 @@ public class StoryListViewAdapter extends BaseAdapter {
         listViewItemList = new ArrayList<StoryListViewItem>();
     }
 
-    public Bitmap getBitmap(String path,Context context) {
+    public Bitmap getBitmap(String path, Context context) {
         Uri uriFromPath = Uri.fromFile(new File(path));
         Bitmap bitmap = null;
         try {
@@ -155,8 +164,26 @@ public class StoryListViewAdapter extends BaseAdapter {
         return bitmap;
     }
 
-    protected void redirectSignupActivity() {
+    public void removeStoryRequest(String sid, final int pos) {
+        final Call<RemoveStory> res = NetworkHelper.getInstance().getService().removeStory("Bearer " + GlobalApplication.getGlobalApplicationContext().token, sid);
+        res.enqueue(new Callback<RemoveStory>() {
+            @Override
+            public void onResponse(Call<RemoveStory> call, Response<RemoveStory> response) {
+                if (response.isSuccessful()) {
+                    Log.e("StoryActivity", "[removeStoryRequest] is Successful");
+                    listViewItemList.remove(pos);
+                    notifyDataSetChanged();
+                } else {
+                    Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
+                }
+            }
 
+            @Override
+            public void onFailure(Call<RemoveStory> call, Throwable t) {
+                Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
+            }
+        });
     }
+
 
 }

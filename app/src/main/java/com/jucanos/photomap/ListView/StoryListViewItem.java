@@ -3,12 +3,46 @@ package com.jucanos.photomap.ListView;
 import java.util.ArrayList;
 
 public class StoryListViewItem {
-    String thumnail_realPath;
-    ArrayList<String> image_realPahts;
-    String time_upload;
-    String time_edit;
-    String description;
+//    String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
+//    String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
+//    String title = response.body().getGetStoryListItems().get(i).getTitle();
+//    String context = response.body().getGetStoryListItems().get(i).getContext();
+//    ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();
+//    String sid = response.body().getGetStoryListItems().get(i).getSid();
+//    String mid = response.body().getGetStoryListItems().get(i).getMid();
+
+    String thumbnail;
+    String createdAt;
+    String updatedAt;
     String title;
+    String context;
+    ArrayList<String> files;
+    String sid;
+    String mid;
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public String getTitle() {
         return title;
@@ -18,43 +52,35 @@ public class StoryListViewItem {
         this.title = title;
     }
 
-    public String getThumnail_realPath() {
-        return thumnail_realPath;
+    public String getContext() {
+        return context;
     }
 
-    public void setThumnail_realPath(String thumnail_realPath) {
-        this.thumnail_realPath = thumnail_realPath;
+    public void setContext(String context) {
+        this.context = context;
     }
 
-    public ArrayList<String> getImage_realPahts() {
-        return image_realPahts;
+    public ArrayList<String> getFiles() {
+        return files;
     }
 
-    public void setImage_realPahts(ArrayList<String> image_realPahts) {
-        this.image_realPahts = image_realPahts;
+    public void setFiles(ArrayList<String> files) {
+        this.files = files;
     }
 
-    public String getTime_upload() {
-        return time_upload;
+    public String getSid() {
+        return sid;
     }
 
-    public void setTime_upload(String time_upload) {
-        this.time_upload = time_upload;
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 
-    public String getTime_edit() {
-        return time_edit;
+    public String getMid() {
+        return mid;
     }
 
-    public void setTime_edit(String time_edit) {
-        this.time_edit = time_edit;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMid(String mid) {
+        this.mid = mid;
     }
 }

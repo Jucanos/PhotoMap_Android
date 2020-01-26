@@ -3,12 +3,15 @@ package com.jucanos.photomap.RestApi;
 import com.jucanos.photomap.Structure.CreateStory;
 import com.jucanos.photomap.Structure.EditGroup;
 import com.jucanos.photomap.Structure.EditGroupRequest;
+import com.jucanos.photomap.Structure.EditStory;
+import com.jucanos.photomap.Structure.EditStoryRequest;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.CreateMapRequest;
+import com.jucanos.photomap.Structure.RemoveStory;
 import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 import com.jucanos.photomap.Structure.SetRep;
@@ -78,4 +81,10 @@ public interface ApiService {
                               @Path("mid") String mid,
                               @Body EditGroupRequest editGroupRequest
     );
+
+    @DELETE("dev/stories/{sid}")
+    Call<RemoveStory> removeStory(@Header("Authorization") String authorization, @Path("sid") String sid);
+
+    @PATCH("dev/stories/{sid}")
+    Call<EditStory> editStory(@Header("Authorization") String authorization, @Path("sid") String sid, @Body EditStoryRequest editStoryRequest);
 }

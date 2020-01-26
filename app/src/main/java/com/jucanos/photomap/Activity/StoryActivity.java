@@ -2,7 +2,6 @@ package com.jucanos.photomap.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,8 +18,6 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -33,6 +30,7 @@ public class StoryActivity extends AppCompatActivity {
     private ListView listView_story;
     private StoryListViewAdapter listView_storyApater;
     private int ADD_STORY_REQUEST = 1;
+    private int EDIT_STORY_REQUEST = 2;
 
     private String mid;
     private Integer citykey;
@@ -50,7 +48,7 @@ public class StoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Group Name");
 
         mid = getIntent().getStringExtra("mid");
-        citykey = getIntent().getIntExtra("citykey",-1);
+        citykey = getIntent().getIntExtra("citykey", -1);
 
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
@@ -85,53 +83,92 @@ public class StoryActivity extends AppCompatActivity {
 
     public void redirectAddStoryActivity(String mid) {
         Intent intent = new Intent(this, AddStoryActivity.class);
-        intent.putExtra("mid",mid);
+        intent.putExtra("mid", mid);
         intent.putExtra("cityKey", citykey);
 
         startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
+    public void redirectEditStoryActivity(String sid, String title, String context, int pos) {
+        Intent intent = new Intent(this, EditStoryActivity.class);
+        intent.putExtra("sid", sid);
+        intent.putExtra("title", title);
+        intent.putExtra("context", context);
+        intent.putExtra("pos", pos);
+        startActivityForResult(intent, EDIT_STORY_REQUEST);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_STORY_REQUEST) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_STORY_REQUEST) {
+                StoryListViewItem storyListViewItem = new StoryListViewItem();
                 String title = data.getStringExtra("title");
-                String description = data.getStringExtra("description");
-                ArrayList<String> realPaths = (ArrayList<String>) data.getSerializableExtra("realPaths");
-                Log.e("StoryActivity", "title : " + title);
-                Log.e("StoryActivity", "description : " + description);
-                for (int i = 0; i < realPaths.size(); i++) {
-                    Log.e("StoryActivity", "realPaths[" + Integer.toString(i) + "] : " + realPaths.get(i));
-                }
-                addStoryTest(realPaths, title, description);
+                String context = data.getStringExtra("context");
+                ArrayList<String> files = data.getStringArrayListExtra("files");
+                String sid = data.getStringExtra("sid");
+                String mid = data.getStringExtra("mid");
+                String createdAt = Long.toString(System.currentTimeMillis());
+                String updatedAt = Long.toString(System.currentTimeMillis());
+                storyListViewItem.setCreatedAt(createdAt);
+                storyListViewItem.setUpdatedAt(updatedAt);
+                storyListViewItem.setTitle(title);
+                storyListViewItem.setContext(context);
+                storyListViewItem.setFiles(files);
+                storyListViewItem.setSid(sid);
+                storyListViewItem.setMid(mid);
+                addStoryTest(storyListViewItem);
+            }else if(requestCode == EDIT_STORY_REQUEST){
+                int pos = data.getIntExtra("pos",-1);
+                String title = data.getStringExtra("title");
+                String context= data.getStringExtra("context");
+                listView_storyApater.getItem(pos).setContext(context);
+                listView_storyApater.getItem(pos).setTitle(title);
+                listView_storyApater.notifyDataSetChanged();
 
             }
         }
     }
 
-    void loadStoryList(){
+    void loadStoryList() {
         final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, globalApplication.cityKeyInt.get(citykey));
         res.enqueue(new Callback<GetStoryList>() {
             @Override
             public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        for(int i = 0 ; i < response.body().getGetStoryListItems().size(); i++){
+                        for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
                             Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
                             Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
                             Log.e("StoryActivity", "[title] : " + response.body().getGetStoryListItems().get(i).getTitle());
                             Log.e("StoryActivity", "[context] : " + response.body().getGetStoryListItems().get(i).getContext());
 
-                            if( response.body().getGetStoryListItems().get(i).getFiles() == null){
+                            if (response.body().getGetStoryListItems().get(i).getFiles() == null) {
                                 Log.e("StoryActivity", "[file] : is null");
-                            }else{
+                            } else {
                                 Log.e("StoryActivity", "[files] : " + response.body().getGetStoryListItems().get(i).getFiles().toString());
                             }
                             Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
                             Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
-                            addStoryTest(response.body().getGetStoryListItems().get(i).getFiles(), response.body().getGetStoryListItems().get(i).getTitle(),response.body().getGetStoryListItems().get(i).getContext());
+                            String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
+                            String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
+                            String title = response.body().getGetStoryListItems().get(i).getTitle();
+                            String context = response.body().getGetStoryListItems().get(i).getContext();
+                            ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();
+                            String sid = response.body().getGetStoryListItems().get(i).getSid();
+                            String mid = response.body().getGetStoryListItems().get(i).getMid();
+                            StoryListViewItem storyListViewItem = new StoryListViewItem();
+                            storyListViewItem.setCreatedAt(createdAt);
+                            storyListViewItem.setUpdatedAt(updatedAt);
+                            storyListViewItem.setTitle(title);
+                            storyListViewItem.setContext(context);
+                            storyListViewItem.setFiles(files);
+                            storyListViewItem.setSid(sid);
+                            storyListViewItem.setMid(mid);
+                            addStoryTest(storyListViewItem);
                         }
                     }
                 } else {
@@ -147,24 +184,10 @@ public class StoryActivity extends AppCompatActivity {
     }
 
 
-
-
-
     // ====================================================================== for test Code
     // ====================================================================== for test Code
-    void addStoryTest(ArrayList<String> image_realPahts, String title, String description) {
+    void addStoryTest(StoryListViewItem storyListViewItem) {
         String thumbnail_realPath = "drawable://" + R.drawable.test_image_vertical;
-        String time_upload = "0000/00/00 00:00";
-        String time_edit = "0000/00/00 00:00";
-        StoryListViewItem storyListViewItem = new StoryListViewItem();
-
-        storyListViewItem.setThumnail_realPath(thumbnail_realPath);
-        storyListViewItem.setImage_realPahts(image_realPahts);
-        storyListViewItem.setTime_upload(time_upload);
-        storyListViewItem.setTime_edit(time_edit);
-        storyListViewItem.setDescription(description);
-        storyListViewItem.setTitle(title);
-
         listView_storyApater.addItem(storyListViewItem);
         listView_storyApater.notifyDataSetChanged();
     }
