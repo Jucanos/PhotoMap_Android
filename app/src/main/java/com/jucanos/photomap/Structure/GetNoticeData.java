@@ -1,19 +1,28 @@
-package com.jucanos.photomap.ListView;
+package com.jucanos.photomap.Structure;
 
-public class NoticeListViewItem {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class GetNoticeData {
+    @SerializedName("context")
+    @Expose
     private String context;
-    private String createdAt;
-    private String id;
-    private String title;
-    private String updatedAt;
 
-    public NoticeListViewItem(String context, String createdAt, String id, String title, String updatedAt) {
-        this.context = context;
-        this.createdAt = createdAt;
-        this.id = id;
-        this.title = title;
-        this.updatedAt = updatedAt;
-    }
+    @SerializedName("createdAt")
+    @Expose
+    private String createdAt;
+
+    @SerializedName("id")
+    @Expose
+    private String id;
+
+    @SerializedName("title")
+    @Expose
+    private String title;
+
+    @SerializedName("updatedAt")
+    @Expose
+    private String updatedAt;
 
     public String getContext() {
         return context;
