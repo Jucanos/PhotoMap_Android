@@ -79,7 +79,7 @@ public class MemberListViewAdapter extends BaseAdapter {
                         .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
                                 //.setWebUrl("https://www.naver.com")
                                 //.setMobileWebUrl("https://www.naver.com")
-                                .setAndroidExecutionParams("mid="+mid)
+                                .setAndroidExecutionParams("mid="+"4305549b5048e3b79fd61328f40e25b7")
                                 .setIosExecutionParams("mid="+mid)
                                 .build()))
                         .build();

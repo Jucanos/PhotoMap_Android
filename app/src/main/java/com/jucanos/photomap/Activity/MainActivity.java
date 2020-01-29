@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
     private String mid;
     private Boolean fromLink;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mid = getIntent().getStringExtra("mid");
-        if(mid != null){
+        fromLink = false;
+        if (mid != null) {
             fromLink = true;
         }
-        Log.e("MainActivity","[mid] :" + mid);
+        Log.e("MainActivity", "[mid] :" + mid);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /* TextView */
@@ -57,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.disableScroll(true);
-        viewPager.setCurrentItem(1);
+        if (fromLink) viewPager.setCurrentItem(0);
+        else viewPager.setCurrentItem(1);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

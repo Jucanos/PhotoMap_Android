@@ -26,6 +26,8 @@ import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.Dialog.AddGroupDialog;
 import com.jucanos.photomap.Dialog.AddGroupDialogListener;
+import com.jucanos.photomap.Dialog.YesNoDialog;
+import com.jucanos.photomap.Dialog.YesNoDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.GroupListViewAdapter;
 import com.jucanos.photomap.ListView.GroupListViewItem;
@@ -48,6 +50,7 @@ public class MainFragmentGroup extends Fragment {
 
     private final int ADD_GROUP = 1;
     private final int EDIT_GROUP = 2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_group, fragmentContainer, false);
@@ -60,6 +63,12 @@ public class MainFragmentGroup extends Fragment {
         toolbar.inflateMenu(R.menu.menu_fragment_group);
         setHasOptionsMenu(true);
 
+        final String mid = getActivity().getIntent().getStringExtra("mid");
+        boolean fromLink = false;
+        if (mid != null) {
+            fromLink = true;
+        }
+        Log.e("MainFragmentGroup", "[mid] : " + mid);
 
         noGroup = view.findViewById(R.id.layout_noGroup);
         existGroup = view.findViewById(R.id.layout_existGroup);
@@ -90,7 +99,7 @@ public class MainFragmentGroup extends Fragment {
                     @Override
                     public void onGroupNameClicked() {
                         Toast.makeText(getContext(), "change onGroupNameClicked is clicked", Toast.LENGTH_SHORT).show();
-                        redirectEditGroupNameActivity(adapter.getItem(position).getTitle(), adapter.getItem(position).getMid(),position);
+                        redirectEditGroupNameActivity(adapter.getItem(position).getTitle(), adapter.getItem(position).getMid(), position);
                     }
 
                     @Override
@@ -112,8 +121,25 @@ public class MainFragmentGroup extends Fragment {
                 return true;
             }
         });
+        if (fromLink) {
+            YesNoDialog dialog = new YesNoDialog(getContext(), "그룹에 참여 하시겠습니까?");
+            dialog.setDialogListener(new YesNoDialogListener() {
+                @Override
+                public void onPositiveClicked() {
+                    Toast.makeText(globalApplication, "onPositiveClicked", Toast.LENGTH_SHORT).show();
+                    userRemove(globalApplication.token, mid, "false");
+                }
 
-        getMapList(globalApplication.token);
+                @Override
+                public void onNegativeClicked() {
+                    Toast.makeText(globalApplication, "onNegativeClicked", Toast.LENGTH_SHORT).show();
+                    getMapList(globalApplication.token);
+                }
+            });
+            dialog.show();
+        } else {
+            getMapList(globalApplication.token);
+        }
 
         setLayout();
         return view;
@@ -149,7 +175,7 @@ public class MainFragmentGroup extends Fragment {
         getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
     }
 
-    private void redirectEditGroupNameActivity(String name,String mid, int pos){
+    private void redirectEditGroupNameActivity(String name, String mid, int pos) {
         final Intent intent = new Intent(getActivity(), EditGroupNameActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("mid", mid);
@@ -160,7 +186,7 @@ public class MainFragmentGroup extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == getActivity().RESULT_OK) {
+        if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case ADD_GROUP:
                     String mapTokpen = data.getStringExtra("mapToken");
@@ -171,7 +197,7 @@ public class MainFragmentGroup extends Fragment {
                     break;
                 case EDIT_GROUP:
                     String name = data.getStringExtra("name");
-                    int pos = data.getIntExtra("pos",-1);
+                    int pos = data.getIntExtra("pos", -1);
                     adapter.getItem(pos).setTitle(name);
                     break;
                 default:
@@ -203,8 +229,8 @@ public class MainFragmentGroup extends Fragment {
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             addGroup(name, mid);
                         }
-
                     }
+                    adapter.notifyDataSetChanged();
                 } else {
                     Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
                 }
@@ -217,13 +243,16 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
-    public void userRemove(String token, String mid, String remove) {
+    public void userRemove(String token, String mid, final String remove) {
         final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RemoveUserRequest(remove));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
                 if (response.isSuccessful()) {
                     Log.e("MainFragmentGroup", "[onResponse] is Successful");
+                    if (remove.equals("false")) {
+                        getMapList(globalApplication.token);
+                    }
                 } else {
                     Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
                 }
