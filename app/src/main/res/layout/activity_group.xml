@@ -45,7 +45,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="#FFFFFF"
@@ -66,16 +66,25 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/layout_addMember"
+            android:id="@+id/relativeLayout_addMember"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_title" />
+            android:layout_below="@id/layout_title">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="그룹 추가"
+                android:textAlignment="center" />
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/listView_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_addMember" />
+            android:layout_below="@+id/relativeLayout_addMember"
+            android:divider="#00000000" />
 
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

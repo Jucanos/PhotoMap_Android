@@ -40,13 +40,25 @@ import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
+import com.jucanos.photomap.ListView.MemberListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 import com.jucanos.photomap.Structure.GetStoryList;
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
+import com.kakao.util.helper.log.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import pl.polidea.view.ZoomView;
 import retrofit2.Call;
@@ -114,16 +126,51 @@ public class GroupActivity extends AppCompatActivity {
         drawerLayout_drawer.openDrawer(Gravity.RIGHT);
         drawerLayout_drawer.closeDrawer(GravityCompat.END);
 
-        adapter = new MemberListViewAdapter();
+        adapter = new MemberListViewAdapter(getApplicationContext());
         listView_member = findViewById(R.id.listView_member);
         listView_member.setAdapter(adapter);
-        adapter.addItem(null, "그룹멤버 초대");
-        adapter.notifyDataSetChanged();
 
         mid = getIntent().getStringExtra("mid");
 
         v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        RelativeLayout relativeLayout_addMember = findViewById(R.id.relativeLayout_addMember);
+        relativeLayout_addMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedTemplate params = FeedTemplate
+                        .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
+                                "https://ifh.cc/g/ODD7n.png",
+                                LinkObject.newBuilder().setWebUrl("https://www.naver.com")
+                                        .setMobileWebUrl("https://www.naver.com").build())
+                                .build())
+                        .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
+                                //.setWebUrl("https://www.naver.com")
+                                //.setMobileWebUrl("https://www.naver.com")
+                                .setAndroidExecutionParams("mid=" + "4305549b5048e3b79fd61328f40e25b7")
+                                .setIosExecutionParams("mid=" + mid)
+                                .build()))
+                        .build();
+
+                //  콜백으로 링크 잘갔는지 확인
+                Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+                serverCallbackArgs.put("user_id", "${current_user_id}");
+                serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+                KakaoLinkService.getInstance().sendDefault(GroupActivity.this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+                    @Override
+                    public void onFailure(ErrorResult errorResult) {
+                        Logger.e(errorResult.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(KakaoLinkResponse result) {
+                        // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
+                    }
+                });
+            }
+        });
 
         // ZoomView 설정
         ZoomView zoomView = new ZoomView(this);
@@ -190,8 +237,6 @@ public class GroupActivity extends AppCompatActivity {
         imageView_jeju.setOnTouchListener(mClickListener);
         porterShapeImageViews[9] = imageView_jeju;
         imageViews[9] = imageView_jeju_front;
-
-        addGroupTest();
 
         floatingActionButton_rep = v.findViewById(R.id.floatingActionButton_rep);
         floatingActionButton_save = v.findViewById(R.id.floatingActionButton_save);
@@ -388,6 +433,13 @@ public class GroupActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         setRep(response.body().getData().getGetMapInfoDataRepresents());
+                        for (int i = 0; i < response.body().getData().getGetMapInfoDataOwners().size(); i++) {
+                            String thumbnail = response.body().getData().getGetMapInfoDataOwners().get(i).getThumbnail();
+                            String name = response.body().getData().getGetMapInfoDataOwners().get(i).getNickname();
+                            MemberListViewItem memberListViewItem = new MemberListViewItem(thumbnail, name);
+                            adapter.addItem(memberListViewItem);
+                        }
+                        adapter.notifyDataSetChanged();
                     }
                 } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
@@ -432,20 +484,6 @@ public class GroupActivity extends AppCompatActivity {
 
 
     }
-
-    public String getMid(){
-        return mid;
-    }
-
-    // ====================================================================== for test Code
-    // ====================================================================== for test Code
-    void addGroupTest() {
-        Drawable drawable = getResources().getDrawable(R.drawable.test_image_vertical);
-        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
-        adapter.addItem(bm, "일청원");
-        adapter.addItem(bm, "이청원");
-        adapter.addItem(bm, "삼청원");
-        adapter.addItem(bm, "사청원");
-        adapter.notifyDataSetChanged();
-    }
 }
+
+
