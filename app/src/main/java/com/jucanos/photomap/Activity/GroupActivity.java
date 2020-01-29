@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -283,6 +286,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GroupActivity.this, "floatingActionButton_share", Toast.LENGTH_SHORT).show();
+                getMapImage();
                 floatingActionMenu_menu.close(true);
             }
         });
@@ -451,6 +455,17 @@ public class GroupActivity extends AppCompatActivity {
                 Log.e("[onFailure]", t.getLocalizedMessage());
             }
         });
+    }
+
+    void getMapImage(){
+        View v = findViewById(R.id.relativeLayout_mapContainer);
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+        // MediaStore 에 image 저장
+        String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
+        Uri myUri = Uri.parse(filePath);
     }
 
     void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents) {
