@@ -1,10 +1,14 @@
 package com.jucanos.photomap.Activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.jucanos.photomap.ListView.MemberListViewItem;
 import com.jucanos.photomap.ListView.NoticeListViewAdapter;
@@ -15,6 +19,7 @@ import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetNotice;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +35,11 @@ public class NoticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("공지사항");
+
         noticeListViewAdapter = new NoticeListViewAdapter();
         listView_notice = findViewById(R.id.listView_notice);
 
@@ -37,6 +47,24 @@ public class NoticeActivity extends AppCompatActivity {
         listView_notice.setAdapter(noticeListViewAdapter);
         getNoticeRequest();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @SuppressLint("WrongConstant")
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     void getNoticeRequest() {
         final Call<GetNotice> res = NetworkHelper.getInstance().getService().getNotice();
