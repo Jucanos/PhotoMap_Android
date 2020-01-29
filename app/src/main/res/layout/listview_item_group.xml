@@ -10,16 +10,15 @@
         android:layout_margin="5dp"
         android:padding="15dp"
         android:background="@drawable/layout_rounded_line">
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/imageView_thumbnail"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:background="@drawable/layout_rounded"
             android:padding="5dp"
-            android:src="@drawable/kakao_login_button_background" />
+             />
 
         <LinearLayout
             android:id="@+id/linearLayout_mid"

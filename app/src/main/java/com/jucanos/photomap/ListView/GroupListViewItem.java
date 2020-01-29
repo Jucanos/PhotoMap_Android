@@ -5,12 +5,10 @@ import android.graphics.Bitmap;
 public class GroupListViewItem {
     private String mid;
     private String title;
-    private Bitmap thumbnail;
 
-    public GroupListViewItem(String mid, String title, Bitmap thumbnail) {
+    public GroupListViewItem(String mid, String title) {
         this.mid = mid;
         this.title = title;
-        this.thumbnail = thumbnail;
     }
 
     public String getMid() {
@@ -27,13 +25,5 @@ public class GroupListViewItem {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Bitmap getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(Bitmap thumbnail) {
-        this.thumbnail = thumbnail;
     }
 }

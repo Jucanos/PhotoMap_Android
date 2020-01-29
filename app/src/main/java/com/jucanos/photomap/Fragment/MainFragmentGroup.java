@@ -207,9 +207,7 @@ public class MainFragmentGroup extends Fragment {
     }
 
     public void addGroup(String name, String mid) {
-        Drawable drawable = getResources().getDrawable(R.drawable.logo);
-        Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
-        adapter.addItem(new GroupListViewItem(mid, name, bm));
+        adapter.addItem(new GroupListViewItem(mid, name));
         adapter.notifyDataSetChanged();
         setLayout();
     }

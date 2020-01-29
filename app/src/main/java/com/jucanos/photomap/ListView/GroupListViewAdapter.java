@@ -1,29 +1,35 @@
 package com.jucanos.photomap.ListView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.jucanos.photomap.R;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<GroupListViewItem> listViewItemList = new ArrayList<GroupListViewItem>();
 
     // ListViewAdapter의 생성자
-    public GroupListViewAdapter() {
-
-    }
+    public GroupListViewAdapter() {}
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
@@ -35,25 +41,27 @@ public class GroupListViewAdapter extends BaseAdapter {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
         final Context context = parent.getContext();
 
-        // "listview_item_group" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listview_item_group, parent, false);
         }
 
-        // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        CircleImageView imgView_thumbnail = (CircleImageView) convertView.findViewById(R.id.imageView_thumbnail);
-        TextView txtView_groupName = (TextView) convertView.findViewById(R.id.textView_groupName);
-        // GetUserInfoData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+        ImageView imgView_thumbnail = convertView.findViewById(R.id.imageView_thumbnail);
+        TextView txtView_groupName = convertView.findViewById(R.id.textView_groupName);
+
         GroupListViewItem listViewItem = listViewItemList.get(position);
 
-        // 아이템 내 각 위젯에 데이터 반영
-        imgView_thumbnail.setClipToOutline(true);
-        imgView_thumbnail.setImageBitmap(listViewItem.getThumbnail());
+
+        String thumbnail_path = "https://s3.soybeans.tech/uploads/" + listViewItem.getMid() + "/main.png";
+        Glide.with(context)
+                .load(thumbnail_path)
+                .placeholder(R.drawable.logo)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imgView_thumbnail);
         txtView_groupName.setText(listViewItem.getTitle());
+
         return convertView;
     }
 
@@ -78,5 +86,4 @@ public class GroupListViewAdapter extends BaseAdapter {
     public void clear() {
         listViewItemList = new ArrayList<GroupListViewItem>();
     }
-
 }
