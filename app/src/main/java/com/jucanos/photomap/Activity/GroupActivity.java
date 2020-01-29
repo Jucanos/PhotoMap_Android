@@ -433,6 +433,10 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
+    public String getMid(){
+        return mid;
+    }
+
     // ====================================================================== for test Code
     // ====================================================================== for test Code
     void addGroupTest() {

@@ -54,7 +54,7 @@ public class MainFragmentSetting extends Fragment {
         textView_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserManagement.requestLogout(new LogoutResponseCallback() {
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
                         redirectLoginActivity();
@@ -104,7 +104,7 @@ public class MainFragmentSetting extends Fragment {
             @Override
             public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
                 if (response.isSuccessful()) {
-                    UserManagement.requestLogout(new LogoutResponseCallback() {
+                    UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                         @Override
                         public void onCompleteLogout() {
                             redirectLoginActivity();

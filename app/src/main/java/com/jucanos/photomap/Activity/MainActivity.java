@@ -2,6 +2,7 @@ package com.jucanos.photomap.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
+    private String mid;
+    private Boolean fromLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
+
+        mid = getIntent().getStringExtra("mid");
+        fromLink = false;
+        if (mid != null) {
+            fromLink = true;
+        }
+        Log.e("MainActivity", "[mid] :" + mid);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /* TextView */
@@ -49,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.disableScroll(true);
-        viewPager.setCurrentItem(1);
+        if (fromLink) viewPager.setCurrentItem(0);
+        else viewPager.setCurrentItem(1);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
