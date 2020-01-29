@@ -1,16 +1,19 @@
 package com.jucanos.photomap.ListView;
 
-import android.graphics.Bitmap;
-
 public class MemberListViewItem {
-    private Bitmap thumbnail;
+    private String thumbnail;
     private String name;
 
-    public Bitmap getThumbnail() {
+    public MemberListViewItem(String thumbnail, String name) {
+        this.thumbnail = thumbnail;
+        this.name = name;
+    }
+
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Bitmap thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 
@@ -18,7 +21,7 @@ public class MemberListViewItem {
         return name;
     }
 
-    public void setNmae(String title) {
-        this.name = title;
+    public void setName(String name) {
+        this.name = name;
     }
 }

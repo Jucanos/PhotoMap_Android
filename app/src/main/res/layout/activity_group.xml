@@ -45,7 +45,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="#FFFFFF"
@@ -66,16 +66,55 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/layout_addMember"
+            android:id="@+id/relativeLayout_addMember"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_title" />
+            android:layout_below="@+id/layout_title"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/imageView_addMember"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_icon_couple_users" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_mid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/imageView_addMember"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/textView_addMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="그룹 초대"
+                        android:textColor="#000000"
+                        android:textSize="24dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/listView_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_addMember" />
+            android:layout_below="@+id/relativeLayout_addMember"
+            android:divider="#00000000" />
 
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
