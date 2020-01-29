@@ -25,14 +25,7 @@
         <activity android:name=".Activity.SetRepActivity" />
         <activity android:name=".Activity.StoryActivity" />
         <activity android:name=".Activity.GroupActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
 
-            <data android:scheme="@string/kakao_scheme"
-                android:host="@string/kakaolink_host" />
-        </intent-filter>
         </activity>
         <activity
             android:name=".Activity.AddGroupActivity"
@@ -45,6 +38,15 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/kakao_scheme"
+                    android:host="@string/kakaolink_host" />
             </intent-filter>
         </activity>
 

@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
@@ -22,6 +23,7 @@ import com.kakao.util.helper.log.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +34,8 @@ import static com.kakao.util.helper.Utility.getPackageInfo;
 public class LoginActivity extends AppCompatActivity {
     private SessionCallback callback;
     public GlobalApplication globalApplication;
-
+    private String mid;
+    private Boolean fromLink = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,11 @@ public class LoginActivity extends AppCompatActivity {
         Log.e("[hash_key]", getKeyHash(getApplicationContext()));
         globalApplication = GlobalApplication.getGlobalApplicationContext();
 
+        if(getIntent().getData() != null) {
+            mid = Objects.requireNonNull(getIntent().getData()).getQueryParameter("mid");
+            fromLink = true;
+            ActivityCompat.finishAffinity(this);
+        }
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
         Session.getCurrentSession().checkAndImplicitOpen();
@@ -97,6 +105,10 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void redirectSignupActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
+        if(fromLink){
+            Log.e("LoginActivity","[redirectSignupActivity][mid]" + mid);
+            intent.putExtra("mid",mid);
+        }
         startActivity(intent);
         finish();
     }

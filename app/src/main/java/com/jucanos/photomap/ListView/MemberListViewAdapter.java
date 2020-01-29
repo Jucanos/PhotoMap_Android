@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.R;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
@@ -64,21 +65,22 @@ public class MemberListViewAdapter extends BaseAdapter {
         // GetUserInfoData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MemberListViewItem listViewItem = listViewItemList.get(position);
 
+        final String mid = ((GroupActivity)GroupActivity.mContext).getMid();
+
         relativeLayout_add_member.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FeedTemplate params = FeedTemplate
                         .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
-                                "https://ifh.cc/g/b2FOs.png",
+                                "https://ifh.cc/g/ODD7n.png",
                                 LinkObject.newBuilder().setWebUrl("https://www.naver.com")
                                         .setMobileWebUrl("https://www.naver.com").build())
-                                .setDescrption("허정근, etc")
                                 .build())
                         .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
                                 //.setWebUrl("https://www.naver.com")
                                 //.setMobileWebUrl("https://www.naver.com")
-                                .setAndroidExecutionParams("key1=시발새끼야") // key1 = mid
-                                .setIosExecutionParams("key1=value1")
+                                .setAndroidExecutionParams("mid="+mid)
+                                .setIosExecutionParams("mid="+mid)
                                 .build()))
                         .build();
 
