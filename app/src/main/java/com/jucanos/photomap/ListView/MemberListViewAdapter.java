@@ -7,13 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 import com.jucanos.photomap.R;
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
+import com.kakao.util.helper.log.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,10 +58,48 @@ public class MemberListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        CircleImageView imgView_thumbnail = (CircleImageView) convertView.findViewById(R.id.imageView_thumbnail);
-        TextView txtView_groupName = (TextView) convertView.findViewById(R.id.textView_groupName);
+        RelativeLayout relativeLayout_add_member = convertView.findViewById(R.id.relativeLayout_add_member);
+        CircleImageView imgView_thumbnail = convertView.findViewById(R.id.imageView_thumbnail);
+        TextView txtView_groupName = convertView.findViewById(R.id.textView_groupName);
         // GetUserInfoData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MemberListViewItem listViewItem = listViewItemList.get(position);
+
+        relativeLayout_add_member.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedTemplate params = FeedTemplate
+                        .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
+                                "https://ifh.cc/g/b2FOs.png",
+                                LinkObject.newBuilder().setWebUrl("https://www.naver.com")
+                                        .setMobileWebUrl("https://www.naver.com").build())
+                                .setDescrption("허정근, etc")
+                                .build())
+                        .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
+                                //.setWebUrl("https://www.naver.com")
+                                //.setMobileWebUrl("https://www.naver.com")
+                                .setAndroidExecutionParams("key1=시발새끼야") // key1 = mid
+                                .setIosExecutionParams("key1=value1")
+                                .build()))
+                        .build();
+
+                //  콜백으로 링크 잘갔는지 확인
+                Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+                serverCallbackArgs.put("user_id", "${current_user_id}");
+                serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+                KakaoLinkService.getInstance().sendDefault(context, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+                    @Override
+                    public void onFailure(ErrorResult errorResult) {
+                        Logger.e(errorResult.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(KakaoLinkResponse result) {
+                        // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
+                    }
+                });
+            }
+        });
 
         // 아이템 내 각 위젯에 데이터 반영
         imgView_thumbnail.setClipToOutline(true);
