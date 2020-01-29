@@ -58,7 +58,9 @@ public class NoticeListViewAdapter extends BaseAdapter {
                 expandableLayout_el.toggle();
             }
         });
-        textView_description.setText(listViewItem.getDescription());
+
+        button_title.setText(listViewItem.getTitle());
+        textView_description.setText(listViewItem.getContext());
         return convertView;
     }
 
@@ -72,9 +74,8 @@ public class NoticeListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(String title, String description) {
-        NoticeListViewItem item = new NoticeListViewItem(title, description);
-        listViewItemList.add(item);
+    public void addItem(NoticeListViewItem noticeListViewItem){
+        listViewItemList.add(noticeListViewItem);
     }
 
     public void clear() {

@@ -6,6 +6,7 @@ import com.jucanos.photomap.Structure.EditGroupRequest;
 import com.jucanos.photomap.Structure.EditStory;
 import com.jucanos.photomap.Structure.EditStoryRequest;
 import com.jucanos.photomap.Structure.GetMapInfo;
+import com.jucanos.photomap.Structure.GetNotice;
 import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.Structure.CreateMap;
@@ -87,4 +88,7 @@ public interface ApiService {
 
     @PATCH("dev/stories/{sid}")
     Call<EditStory> editStory(@Header("Authorization") String authorization, @Path("sid") String sid, @Body EditStoryRequest editStoryRequest);
+
+    @GET("dev/notice")
+    Call<GetNotice> getNotice();
 }
