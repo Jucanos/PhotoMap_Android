@@ -241,10 +241,10 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[9] = imageView_jeju;
         imageViews[9] = imageView_jeju_front;
 
-        floatingActionButton_rep = v.findViewById(R.id.floatingActionButton_rep);
-        floatingActionButton_save = v.findViewById(R.id.floatingActionButton_save);
-        floatingActionButton_share = v.findViewById(R.id.floatingActionButton_share);
-        floatingActionMenu_menu = v.findViewById(R.id.floatingActionMenu_menu);
+        floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
+        floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
+        floatingActionButton_share = findViewById(R.id.floatingActionButton_share);
+        floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
 
         floatingActionMenu_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
@@ -270,6 +270,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GroupActivity.this, "floatingActionButton_rep", Toast.LENGTH_SHORT).show();
+                globalApplication.saveRepMid(mid);
                 floatingActionMenu_menu.close(true);
             }
         });
@@ -278,6 +279,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GroupActivity.this, "floatingActionButton_save", Toast.LENGTH_SHORT).show();
+                getMapImage();
                 floatingActionMenu_menu.close(true);
             }
         });
@@ -286,7 +288,6 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GroupActivity.this, "floatingActionButton_share", Toast.LENGTH_SHORT).show();
-                getMapImage();
                 floatingActionMenu_menu.close(true);
             }
         });
