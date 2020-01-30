@@ -361,7 +361,6 @@ public class GroupActivity extends AppCompatActivity {
                     }
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
-                    Log.e("ACTION_UP", "ACTIONUP");
                     transparency = bm.getPixel(x, y);
                     if (transparency != 0 && longClickId != -1) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
