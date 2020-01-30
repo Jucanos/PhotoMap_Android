@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -110,6 +111,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private Integer SET_REP_REQUEST = 1;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -292,6 +294,15 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        zoomView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                handler.removeMessages(longClickId);
+                longClickId = -1;
+                return false;
+            }
+        });
+
         getMapInfoRequest();
     }
 
@@ -322,6 +333,7 @@ public class GroupActivity extends AppCompatActivity {
 
     PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener() {
         int x = 0, y = 0;
+        float startX = 0, startY = 0, distanceSum = 0;
         int transparency;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -337,6 +349,9 @@ public class GroupActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_DOWN:
                     x = (int) pxToDp(mContext, event.getX());
                     y = (int) pxToDp(mContext, event.getY());
+                    distanceSum = 0;
+                    startX = event.getX(0);
+                    startY = event.getY(0);
                     transparency = bm.getPixel(x, y);
                     if (transparency != 0 && longClickId == -1) {
                         longClickId = Integer.parseInt(v.getContentDescription().toString());
@@ -346,6 +361,7 @@ public class GroupActivity extends AppCompatActivity {
                     }
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
+                    Log.e("ACTION_UP", "ACTIONUP");
                     transparency = bm.getPixel(x, y);
                     if (transparency != 0 && longClickId != -1) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
@@ -458,7 +474,7 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    void getMapImage(){
+    void getMapImage() {
         View v = findViewById(R.id.relativeLayout_mapContainer);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
