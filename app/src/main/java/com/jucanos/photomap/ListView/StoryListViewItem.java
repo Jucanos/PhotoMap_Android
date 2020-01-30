@@ -3,6 +3,14 @@ package com.jucanos.photomap.ListView;
 import java.util.ArrayList;
 
 public class StoryListViewItem {
+//    String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
+//    String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
+//    String title = response.body().getGetStoryListItems().get(i).getTitle();
+//    String context = response.body().getGetStoryListItems().get(i).getContext();
+//    ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();
+//    String sid = response.body().getGetStoryListItems().get(i).getSid();
+//    String mid = response.body().getGetStoryListItems().get(i).getMid();
+
     private String thumbnail;
     private String createdAt;
     private String updatedAt;
