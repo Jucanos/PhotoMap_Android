@@ -3,7 +3,11 @@ package com.jucanos.photomap;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
@@ -12,6 +16,8 @@ import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GlobalApplication extends Application {
@@ -103,5 +109,18 @@ public class GlobalApplication extends Application {
 
         instance = this;
         KakaoSDK.init(new KakaoSDKAdapter());
+    }
+
+    public void saveRepMid(String mid) {
+        SharedPreferences pref =getSharedPreferences("mid", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("mid",mid); //키값, 저장값
+        editor.commit();
+    }
+
+    public String getRePMid(){
+        SharedPreferences prefs =getSharedPreferences("mid", MODE_PRIVATE);
+        String result = prefs.getString("mid", ""); //키값, 디폴트값
+        return result;
     }
 }

@@ -27,14 +27,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayout_ab"
-        android:background="@color/colorWhite"
-        android:clipChildren="false">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="메인지도를 등록해주세요"
-            android:textSize="32dp" />
+        android:background="@color/colorWhite">
+        <include
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/layout_map"
+            />
     </RelativeLayout>
 </RelativeLayout>
