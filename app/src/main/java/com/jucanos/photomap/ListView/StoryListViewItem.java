@@ -3,22 +3,15 @@ package com.jucanos.photomap.ListView;
 import java.util.ArrayList;
 
 public class StoryListViewItem {
-//    String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
-//    String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
-//    String title = response.body().getGetStoryListItems().get(i).getTitle();
-//    String context = response.body().getGetStoryListItems().get(i).getContext();
-//    ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();
-//    String sid = response.body().getGetStoryListItems().get(i).getSid();
-//    String mid = response.body().getGetStoryListItems().get(i).getMid();
-
-    String thumbnail;
-    String createdAt;
-    String updatedAt;
-    String title;
-    String context;
-    ArrayList<String> files;
-    String sid;
-    String mid;
+    private String thumbnail;
+    private String createdAt;
+    private String updatedAt;
+    private String title;
+    private String context;
+    private ArrayList<String> files;
+    private String sid;
+    private String mid;
+    private String creator;
 
     public String getThumbnail() {
         return thumbnail;
@@ -82,5 +75,13 @@ public class StoryListViewItem {
 
     public void setMid(String mid) {
         this.mid = mid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

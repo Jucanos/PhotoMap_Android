@@ -34,6 +34,10 @@ public class GetStoryListData {
     @Expose
     private String mid;
 
+    @SerializedName("creator")
+    @Expose
+    private String creator;
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -88,5 +92,13 @@ public class GetStoryListData {
 
     public void setMid(String mid) {
         this.mid = mid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }
