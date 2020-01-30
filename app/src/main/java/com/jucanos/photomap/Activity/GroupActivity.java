@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,8 +38,6 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.jucanos.photomap.Dialog.RepDialog;
 import com.jucanos.photomap.Dialog.RepDialogListener;
-import com.jucanos.photomap.Dialog.StoryDialog;
-import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.ListView.MemberListViewItem;
@@ -49,7 +45,6 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
-import com.jucanos.photomap.Structure.GetStoryList;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -60,7 +55,6 @@ import com.kakao.network.ErrorResult;
 import com.kakao.network.callback.ResponseCallback;
 import com.kakao.util.helper.log.Logger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -456,6 +450,8 @@ public class GroupActivity extends AppCompatActivity {
                         for (int i = 0; i < response.body().getData().getGetMapInfoDataOwners().size(); i++) {
                             String thumbnail = response.body().getData().getGetMapInfoDataOwners().get(i).getThumbnail();
                             String name = response.body().getData().getGetMapInfoDataOwners().get(i).getNickname();
+                            String uid = response.body().getData().getGetMapInfoDataOwners().get(i).getUid();
+                            globalApplication.userThumbnail.put(uid, thumbnail);
                             MemberListViewItem memberListViewItem = new MemberListViewItem(thumbnail, name);
                             adapter.addItem(memberListViewItem);
                         }

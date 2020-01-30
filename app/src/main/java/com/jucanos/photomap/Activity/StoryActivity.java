@@ -150,6 +150,7 @@ public class StoryActivity extends AppCompatActivity {
                             }
                             Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
                             Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
+                            Log.e("StoryActivity", "[creator] : " + response.body().getGetStoryListItems().get(i).getCreator());
                             String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
                             String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
                             String title = response.body().getGetStoryListItems().get(i).getTitle();
@@ -157,6 +158,7 @@ public class StoryActivity extends AppCompatActivity {
                             ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();
                             String sid = response.body().getGetStoryListItems().get(i).getSid();
                             String mid = response.body().getGetStoryListItems().get(i).getMid();
+                            String creator = response.body().getGetStoryListItems().get(i).getCreator();
                             StoryListViewItem storyListViewItem = new StoryListViewItem();
                             storyListViewItem.setCreatedAt(createdAt);
                             storyListViewItem.setUpdatedAt(updatedAt);
@@ -165,6 +167,7 @@ public class StoryActivity extends AppCompatActivity {
                             storyListViewItem.setFiles(files);
                             storyListViewItem.setSid(sid);
                             storyListViewItem.setMid(mid);
+                            storyListViewItem.setCreator(creator);
                             addStoryTest(storyListViewItem);
                         }
                     }
