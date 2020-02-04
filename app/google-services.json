@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "575847640785",
+    "firebase_url": "https://photomap-ba430.firebaseio.com",
+    "project_id": "photomap-ba430",
+    "storage_bucket": "photomap-ba430.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575847640785:android:5283260651aaf153071ff0",
+        "android_client_info": {
+          "package_name": "com.jucanos.photomap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575847640785-6p81gacmlm8ul9ie102qqnaoj7ihgic0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jucanos.photomap",
+            "certificate_hash": "a7e41bdd43f4b228499a6ccae98b08e28281a3ac"
+          }
+        },
+        {
+          "client_id": "575847640785-78b5n3fqbetfle1khdcadeeadul3ljeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGT_kK5Mf2T0UhSz0_Di8vG6zSm-zKMpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575847640785-78b5n3fqbetfle1khdcadeeadul3ljeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
