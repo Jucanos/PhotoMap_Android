@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Log and toast
                         Log.e("FCM Token : ", token);
-                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

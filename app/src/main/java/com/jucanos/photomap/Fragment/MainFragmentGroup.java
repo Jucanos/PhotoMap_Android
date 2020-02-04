@@ -17,10 +17,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
@@ -87,6 +91,17 @@ public class MainFragmentGroup extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
                 String mid = groupListViewItem.getMid();
+                FirebaseMessaging.getInstance().subscribeToTopic(mid)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                String msg = "success";
+                                if (!task.isSuccessful()) {
+                                    msg = "fail";
+                                }
+                                Log.e("subscribeToTopic", msg);
+                            }
+                        });
                 redirectGroupActivity(mid);
             }
         });
@@ -110,6 +125,17 @@ public class MainFragmentGroup extends Fragment {
 
                     @Override
                     public void onExitClicked() {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(adapter.getItem(position).getMid())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        String msg = "success";
+                                        if (!task.isSuccessful()) {
+                                            msg = "fail";
+                                        }
+                                        Log.e("unsubscribeFromTopic", msg);
+                                    }
+                                });
                         userRemove(globalApplication.token, adapter.getItem(position).getMid(), "true");
                         adapter.delete(position);
                         adapter.notifyDataSetChanged();
