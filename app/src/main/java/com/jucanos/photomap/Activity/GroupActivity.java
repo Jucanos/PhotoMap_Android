@@ -491,25 +491,23 @@ public class GroupActivity extends AppCompatActivity {
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
         if (gyeonggi != null)
-            Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
+            Glide.with(getApplicationContext()).load(gyeonggi).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[1]);
         if (gangwon != null)
-            Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
+            Glide.with(getApplicationContext()).load(gangwon).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[2]);
         if (chungbuk != null)
-            Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
+            Glide.with(getApplicationContext()).load(chungbuk).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[3]);
         if (chungnam != null)
-            Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
+            Glide.with(getApplicationContext()).load(chungnam).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[4]);
         if (jeonbuk != null)
-            Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
+            Glide.with(getApplicationContext()).load(jeonbuk).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[5]);
         if (jeonnam != null)
-            Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
+            Glide.with(getApplicationContext()).load(jeonnam).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[6]);
         if (gyeongbuk != null)
-            Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
+            Glide.with(getApplicationContext()).load(gyeongbuk).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[7]);
         if (gyeongnam != null)
-            Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
+            Glide.with(getApplicationContext()).load(gyeongnam).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[8]);
         if (jeju != null)
-            Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
-
-
+            Glide.with(getApplicationContext()).load(jeju).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[9]);
     }
 }
 

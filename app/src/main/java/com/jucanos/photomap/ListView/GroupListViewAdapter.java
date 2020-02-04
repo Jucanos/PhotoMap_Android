@@ -57,7 +57,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         String thumbnail_path = "https://s3.soybeans.tech/uploads/" + listViewItem.getMid() + "/main.png";
         Glide.with(context)
                 .load(thumbnail_path)
-                .placeholder(R.drawable.logo)
+                .placeholder(R.drawable.image_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imgView_thumbnail);
         txtView_groupName.setText(listViewItem.getTitle());
