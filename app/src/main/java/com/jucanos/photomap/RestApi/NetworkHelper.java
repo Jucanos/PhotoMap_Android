@@ -4,6 +4,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkHelper {
+    private static String url = "https://soybeans.tech/api/";
+
     private static NetworkHelper ourInstance = new NetworkHelper();
 
     public static NetworkHelper getInstance() {
@@ -14,7 +16,7 @@ public class NetworkHelper {
     }
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://soybeans.tech/")
+            .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
             .build();
 
