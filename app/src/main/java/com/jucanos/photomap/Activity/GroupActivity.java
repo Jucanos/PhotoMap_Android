@@ -334,6 +334,7 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
+            Log.e("touch",v.getContentDescription().toString());
             if (event.getPointerCount() >= 2) {
                 handler.removeMessages(longClickId);
                 longClickId = -1;
@@ -347,6 +348,7 @@ public class GroupActivity extends AppCompatActivity {
                     startX = event.getX(0);
                     startY = event.getY(0);
                     transparency = bm.getPixel(x, y);
+                    Log.e("down transParency : ",Integer.toString(transparency));
                     if (transparency != 0 && longClickId == -1) {
                         longClickId = Integer.parseInt(v.getContentDescription().toString());
                         handler.sendEmptyMessageAtTime(longClickId, event.getDownTime() + (long) 1000);
@@ -356,6 +358,7 @@ public class GroupActivity extends AppCompatActivity {
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
+                    Log.e("up transParency : ",Integer.toString(transparency));
                     if (transparency != 0 && longClickId != -1) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));

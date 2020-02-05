@@ -18,8 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_margin="5dp"
-            android:background="@drawable/layout_rounded"
-            android:src="@drawable/test_image_vertical" />
+            android:background="@drawable/layout_rounded" />
 
         <TextView
             android:id="@+id/textView_title"
