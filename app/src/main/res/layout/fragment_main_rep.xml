@@ -23,7 +23,22 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/fragmentViewPager_container"
+        android:id="@+id/layout_noRep"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout_ab">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="대표지도를 설정 해주세요!"
+            android:textSize="32dp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_existRep"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayout_ab"

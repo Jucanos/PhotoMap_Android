@@ -41,6 +41,7 @@ import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +52,7 @@ public class MainFragmentGroup extends Fragment {
     public GlobalApplication globalApplication;
     private int groupCnt = 0;
     private GroupListViewAdapter adapter;
+    private DynamicBox box;
 
     private final int ADD_GROUP = 1;
     private final int EDIT_GROUP = 2;
@@ -78,12 +80,20 @@ public class MainFragmentGroup extends Fragment {
         existGroup = view.findViewById(R.id.layout_existGroup);
         listView_group = view.findViewById(R.id.listView_group);
 
-        // Adapter 생성
+        // groupListView
         adapter = new GroupListViewAdapter();
-        // 리스트뷰 참조 및 Adapter달기
         listView_group.setAdapter(adapter);
 
-        // addGroup 버튼
+        // loading layout
+        box = new DynamicBox(getActivity(), listView_group);
+        box.showLoadingLayout();
+        box.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                box.showLoadingLayout();
+                getMapList(globalApplication.token);
+            }
+        });
 
         // listView item click
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -147,6 +157,7 @@ public class MainFragmentGroup extends Fragment {
                 return true;
             }
         });
+
         if (fromLink) {
             YesNoDialog dialog = new YesNoDialog(getContext(), "그룹에 참여 하시겠습니까?");
             dialog.setDialogListener(new YesNoDialogListener() {
@@ -171,6 +182,8 @@ public class MainFragmentGroup extends Fragment {
         return view;
     }
 
+
+    // toolbar menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -188,6 +201,7 @@ public class MainFragmentGroup extends Fragment {
     }
 
 
+    // redirect
     private void redirectGroupActivity(String mid) {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         intent.putExtra("mid", mid);
@@ -210,6 +224,7 @@ public class MainFragmentGroup extends Fragment {
         getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
     }
 
+    // get intent result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == getActivity().RESULT_OK) {
@@ -232,12 +247,14 @@ public class MainFragmentGroup extends Fragment {
         }
     }
 
+    // addGroup
     public void addGroup(String name, String mid) {
         adapter.addItem(new GroupListViewItem(mid, name));
         adapter.notifyDataSetChanged();
-        setLayout();
+
     }
 
+    // request : getMapList
     public void getMapList(String token) {
         final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList("Bearer " + token);
         res.enqueue(new Callback<GetMapList>() {
@@ -255,8 +272,11 @@ public class MainFragmentGroup extends Fragment {
                         }
                     }
                     adapter.notifyDataSetChanged();
+                    setLayout();
+                    box.hideAll();
                 } else {
                     Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
+                    box.showInternetOffLayout();
                 }
             }
 
@@ -267,6 +287,7 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
+    // request : uwerRemove
     public void userRemove(String token, String mid, final String remove) {
         final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RemoveUserRequest(remove));
         res.enqueue(new Callback<RemoveUser>() {
@@ -289,16 +310,6 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().invalidateOptionsMenu();
-    }
-
-
-    // ====================================================================== for test Code
-    // ====================================================================== for test Code
     void setLayout() {
         if (adapter.getCount() == 0) {
             noGroup.setVisibility(View.VISIBLE);
@@ -307,6 +318,13 @@ public class MainFragmentGroup extends Fragment {
             noGroup.setVisibility(View.GONE);
             existGroup.setVisibility(View.VISIBLE);
         }
+    }
+
+    // lifeCycle
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu();
     }
 }
 
