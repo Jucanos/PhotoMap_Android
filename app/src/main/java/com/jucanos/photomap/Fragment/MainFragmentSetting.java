@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.jucanos.photomap.Activity.LoginActivity;
 import com.jucanos.photomap.Activity.NoticeActivity;
 import com.jucanos.photomap.GlobalApplication;
+import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.RestApi.NetworkHelper;
@@ -107,6 +108,7 @@ public class MainFragmentSetting extends Fragment {
                     UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                         @Override
                         public void onCompleteLogout() {
+                            MyFirebaseMessagingService.unSubscribe(globalApplication.authorization.getUserData().getUid());
                             redirectLoginActivity();
                         }
                     });

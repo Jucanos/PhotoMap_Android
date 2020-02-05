@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.jucanos.photomap.GlobalApplication;
+import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.RestApi.NetworkHelper;
@@ -58,23 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         Session.getCurrentSession().addCallback(callback);
         Session.getCurrentSession().checkAndImplicitOpen();
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("FCM Login","getInstanceId failed", task.getException());
-                            return;
-                        }
 
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        Log.e("FCM Token : ", token);
-                        // Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     public static String getKeyHash(final Context context) {
@@ -133,6 +118,28 @@ public class LoginActivity extends AppCompatActivity {
             Log.e("LoginActivity","[redirectSignupActivity][mid]" + mid);
             intent.putExtra("mid",mid);
         }
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM Login","getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        Log.e("FCM Token : ", token);
+
+                        MyFirebaseMessagingService.subscribe(globalApplication.authorization.getUserData().getUid());
+                        // Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
         startActivity(intent);
         finish();
     }
