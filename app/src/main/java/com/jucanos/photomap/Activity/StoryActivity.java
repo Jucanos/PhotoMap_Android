@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.jucanos.photomap.Structure.GetStoryList;
 
 import java.util.ArrayList;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +36,9 @@ public class StoryActivity extends AppCompatActivity {
 
     private String mid;
     private Integer citykey;
+
+    // for loading
+    private DynamicBox box;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,14 @@ public class StoryActivity extends AppCompatActivity {
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
         listView_story.setAdapter(listView_storyApater);
+
+        box = new DynamicBox(this, listView_story);
+        box.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadStoryList();
+            }
+        });
 
         loadStoryList();
     }
@@ -132,6 +145,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     void loadStoryList() {
+        box.showLoadingLayout();
         final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, globalApplication.cityKeyInt.get(citykey));
         res.enqueue(new Callback<GetStoryList>() {
             @Override
@@ -170,8 +184,10 @@ public class StoryActivity extends AppCompatActivity {
                             storyListViewItem.setCreator(creator);
                             addStoryTest(storyListViewItem);
                         }
+                        box.hideAll();
                     }
                 } else {
+                    box.showExceptionLayout();
                     Log.e("StoryActivity", "[loadStoryList response.isNotSuccessful()]" + Integer.toString(response.code()));
                 }
             }

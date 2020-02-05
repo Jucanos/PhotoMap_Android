@@ -33,6 +33,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
@@ -138,6 +139,7 @@ public class GroupActivity extends AppCompatActivity {
         relativeLayout_addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("[addMember]", "onClick");
                 FeedTemplate params = FeedTemplate
                         .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
                                 "https://ifh.cc/g/ODD7n.png",
@@ -147,7 +149,7 @@ public class GroupActivity extends AppCompatActivity {
                         .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
                                 //.setWebUrl("https://www.naver.com")
                                 //.setMobileWebUrl("https://www.naver.com")
-                                .setAndroidExecutionParams("mid=" + "4305549b5048e3b79fd61328f40e25b7")
+                                .setAndroidExecutionParams("mid=" + "4b05d0f3848dc6ac99ce46cc377e80fb")
                                 .setIosExecutionParams("mid=" + mid)
                                 .build()))
                         .build();
@@ -334,7 +336,7 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
-            Log.e("touch",v.getContentDescription().toString());
+            Log.e("touch", v.getContentDescription().toString());
             if (event.getPointerCount() >= 2) {
                 handler.removeMessages(longClickId);
                 longClickId = -1;
@@ -348,7 +350,7 @@ public class GroupActivity extends AppCompatActivity {
                     startX = event.getX(0);
                     startY = event.getY(0);
                     transparency = bm.getPixel(x, y);
-                    Log.e("down transParency : ",Integer.toString(transparency));
+                    Log.e("down transParency : ", Integer.toString(transparency));
                     if (transparency != 0 && longClickId == -1) {
                         longClickId = Integer.parseInt(v.getContentDescription().toString());
                         handler.sendEmptyMessageAtTime(longClickId, event.getDownTime() + (long) 1000);
@@ -358,7 +360,7 @@ public class GroupActivity extends AppCompatActivity {
                     return transparency != 0;
                 case MotionEvent.ACTION_UP:
                     transparency = bm.getPixel(x, y);
-                    Log.e("up transParency : ",Integer.toString(transparency));
+                    Log.e("up transParency : ", Integer.toString(transparency));
                     if (transparency != 0 && longClickId != -1) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
@@ -493,24 +495,34 @@ public class GroupActivity extends AppCompatActivity {
         String gyeongbuk = getMapInfoDataRepresents.getGyeongbuk();
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
+
         if (gyeonggi != null)
-            Glide.with(getApplicationContext()).load(gyeonggi).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[1]);
+            Glide.with(getApplicationContext()).load(gyeonggi).
+                    into(porterShapeImageViews[1]);
         if (gangwon != null)
-            Glide.with(getApplicationContext()).load(gangwon).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[2]);
+            Glide.with(getApplicationContext()).load(gangwon).
+                    into(porterShapeImageViews[2]);
         if (chungbuk != null)
-            Glide.with(getApplicationContext()).load(chungbuk).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[3]);
+            Glide.with(getApplicationContext()).load(chungbuk).
+                    into(porterShapeImageViews[3]);
         if (chungnam != null)
-            Glide.with(getApplicationContext()).load(chungnam).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[4]);
+            Glide.with(getApplicationContext()).load(chungnam).
+                    into(porterShapeImageViews[4]);
         if (jeonbuk != null)
-            Glide.with(getApplicationContext()).load(jeonbuk).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[5]);
+            Glide.with(getApplicationContext()).load(jeonbuk).
+                    into(porterShapeImageViews[5]);
         if (jeonnam != null)
-            Glide.with(getApplicationContext()).load(jeonnam).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[6]);
+            Glide.with(getApplicationContext()).load(jeonnam).
+                    into(porterShapeImageViews[6]);
         if (gyeongbuk != null)
-            Glide.with(getApplicationContext()).load(gyeongbuk).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[7]);
+            Glide.with(getApplicationContext()).load(gyeongbuk).
+                    into(porterShapeImageViews[7]);
         if (gyeongnam != null)
-            Glide.with(getApplicationContext()).load(gyeongnam).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[8]);
+            Glide.with(getApplicationContext()).load(gyeongnam).
+                    into(porterShapeImageViews[8]);
         if (jeju != null)
-            Glide.with(getApplicationContext()).load(jeju).placeholder(R.drawable.image_placeholder).into(porterShapeImageViews[9]);
+            Glide.with(getApplicationContext()).load(jeju).
+                   into(porterShapeImageViews[9]);
     }
 }
 

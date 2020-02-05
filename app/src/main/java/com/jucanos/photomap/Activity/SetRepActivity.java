@@ -163,10 +163,19 @@ public class SetRepActivity extends AppCompatActivity {
                     openGallery();
                     return true;
                 }
-                Bitmap b = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
+                // Log.e("[imageView_front]","x : " + Float.toString(imageView_front.getX()));
+                // Log.e("[imageView_front]","y : " + Float.toString(imageView_front.getY()));
+
+                // Log.e("[imageView_front]","width : " + Float.toString(imageView_front.getWidth()));
+                // Log.e("[imageView_front]","height : " + Float.toString(imageView_front.getHeight()));
+
+                Bitmap b = Bitmap.createBitmap(imageView_front.getWidth(), imageView_front.getHeight(),
                         Bitmap.Config.ARGB_8888);
+
                 Canvas c = new Canvas(b);
+                c.translate(-1 * imageView_front.getX(), -1 * imageView_front.getY());
                 view.draw(c);
+
                 String path = null;
                 try {
                     path = BitmapUtils.saveBitmap("image_" + Long.toString(System.currentTimeMillis()), b, 50, getApplicationContext());
@@ -231,6 +240,7 @@ public class SetRepActivity extends AppCompatActivity {
                     bitMap_back = BitmapFactory.decodeFile(filePath);
                     // 확대, 축소, 회전을 위한 view inflate
                     view = new SandboxView(this, bitMap_back);
+
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     view.setLayoutParams(layoutParams);
 
