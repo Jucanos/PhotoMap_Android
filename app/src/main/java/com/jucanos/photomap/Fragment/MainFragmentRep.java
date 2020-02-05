@@ -32,6 +32,7 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import pl.polidea.view.ZoomView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +61,9 @@ public class MainFragmentRep extends Fragment {
     final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
     final ImageView[] imageViews = new ImageView[10];
 
+    private RelativeLayout noRep, existRep;
+    private DynamicBox box;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +74,17 @@ public class MainFragmentRep extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("대표지도");
         setHasOptionsMenu(true);
+
+        noRep = view.findViewById(R.id.layout_noRep);
+        existRep = view.findViewById(R.id.relativeLayout_existRep);
+
+        box = new DynamicBox(getActivity(), existRep);
+        box.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setRep();
+            }
+        });
 
         // PorterShapeImageView
         imageView_gyeonggi = view.findViewById(R.id.imageView_gyeonggi);
@@ -122,9 +137,14 @@ public class MainFragmentRep extends Fragment {
 
     // 대표 지도 유뮤 체크 후 대표 사진 불러오기
     void setRep() {
-        String mid = GlobalApplication.getGlobalApplicationContext().getRePMid();
+        box.showLoadingLayout();
+        String mid = "";
+        mid = GlobalApplication.getGlobalApplicationContext().getRePMid();
+        Log.e("[setRep]",mid);
         if (!mid.equals("")) {
             getMapInfoRequest(mid);
+        } else {
+            setLayout(false);
         }
     }
 
@@ -137,6 +157,7 @@ public class MainFragmentRep extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         setRep(response.body().getData().getGetMapInfoDataRepresents());
+
                     }
                 } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
@@ -179,6 +200,8 @@ public class MainFragmentRep extends Fragment {
             Glide.with(getActivity().getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
         if (jeju != null)
             Glide.with(getActivity().getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
+
+        setLayout(true);
     }
 
     // toolbar 메뉴
@@ -194,6 +217,17 @@ public class MainFragmentRep extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void setLayout(boolean rep) {
+        box.hideAll();
+        if (!rep) {
+            noRep.setVisibility(View.VISIBLE);
+            existRep.setVisibility(View.GONE);
+        } else {
+            noRep.setVisibility(View.GONE);
+            existRep.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
