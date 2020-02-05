@@ -77,6 +77,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
     implementation 'androidx.work:work-runtime:2.3.0'
+
+    // for loading layout
+    implementation 'com.github.medyo:dynamicbox:1.2@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'
