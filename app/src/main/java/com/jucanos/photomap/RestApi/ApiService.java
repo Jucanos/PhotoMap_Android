@@ -36,25 +36,25 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 
 public interface ApiService {
-    @GET("dev/users")
+    @GET("users")
     Call<GetUserInfo> loginAccount(@Header("Authorization") String authorization);
 
-    @DELETE("dev/users")
+    @DELETE("users")
     Call<GetUserInfo> signoutAccount(@Header("Authorization") String authorization);
 
-    @GET("dev/maps")
+    @GET("maps")
     Call<GetMapList> getMapList(@Header("Authorization") String authKey);
 
-    @POST("dev/maps")
+    @POST("maps")
     Call<CreateMap> createMap(
             @Header("Authorization") String authorization,
             @Body CreateMapRequest createMapRequest);
 
-    @PATCH("dev/maps/{mid}")
+    @PATCH("maps/{mid}")
     Call<RemoveUser> userRemove(@Header("Authorization") String authorization, @Path("mid") String mid, @Body RemoveUserRequest removeUserRequest);
 
     @Multipart
-    @POST("dev/stories/{mid}")
+    @POST("stories/{mid}")
     Call<CreateStory> createStory(
             @Header("Authorization") String authorization,
             @Path("mid") String mid,
@@ -62,14 +62,14 @@ public interface ApiService {
             @Part List<MultipartBody.Part> files
     );
 
-    @GET("dev/stories/{mid}/{cityKey}")
+    @GET("stories/{mid}/{cityKey}")
     Call<GetStoryList> getStoryList(@Header("Authorization") String authKey, @Path("mid") String mid, @Path("cityKey") String cityKey);
 
-    @GET("dev/maps/{mid}")
+    @GET("maps/{mid}")
     Call<GetMapInfo> getMapInfo(@Header("Authorization") String authKey, @Path("mid") String mid);
 
     @Multipart
-    @POST("dev/maps/{mid}")
+    @POST("maps/{mid}")
     Call<SetRep> setRep(
             @Header("Authorization") String authorization,
             @Path("mid") String mid,
@@ -77,18 +77,18 @@ public interface ApiService {
             @Part MultipartBody.Part file
     );
 
-    @PUT("dev/maps/{mid}")
+    @PUT("maps/{mid}")
     Call<EditGroup> editGroup(@Header("Authorization") String authKey,
                               @Path("mid") String mid,
                               @Body EditGroupRequest editGroupRequest
     );
 
-    @DELETE("dev/stories/{sid}")
+    @DELETE("stories/{sid}")
     Call<RemoveStory> removeStory(@Header("Authorization") String authorization, @Path("sid") String sid);
 
-    @PATCH("dev/stories/{sid}")
+    @PATCH("stories/{sid}")
     Call<EditStory> editStory(@Header("Authorization") String authorization, @Path("sid") String sid, @Body EditStoryRequest editStoryRequest);
 
-    @GET("dev/notice")
+    @GET("notice")
     Call<GetNotice> getNotice();
 }
