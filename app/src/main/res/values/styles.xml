@@ -1,14 +1,10 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">#000000</item>
-
-
+        <item name="android:statusBarColor">#161817</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,7 +18,6 @@
         <item name="colorAccent">#000000</item>
         <item name="colorPrimary">#ffffff</item>
         <item name="colorPrimaryDark">#ffffff</item>
-
         <!-- 하단 움직이는 바 색-->
     </style>
 
@@ -45,7 +40,8 @@
         <!--        <item name="android:windowIsFloating">true</item>-->
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+    </style>>
 
     <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
