@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.jucanos.photomap.R;
 
@@ -29,7 +30,8 @@ public class GroupListViewAdapter extends BaseAdapter {
     private ArrayList<GroupListViewItem> listViewItemList = new ArrayList<GroupListViewItem>();
 
     // ListViewAdapter의 생성자
-    public GroupListViewAdapter() {}
+    public GroupListViewAdapter() {
+    }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
@@ -57,9 +59,11 @@ public class GroupListViewAdapter extends BaseAdapter {
         String thumbnail_path = "https://s3.soybeans.tech/uploads/" + listViewItem.getMid() + "/main.png";
         Glide.with(context)
                 .load(thumbnail_path)
-                .placeholder(R.drawable.image_placeholder)
+                .placeholder(R.drawable.image_loader)
+                .circleCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imgView_thumbnail);
+
         txtView_groupName.setText(listViewItem.getTitle());
 
         return convertView;
