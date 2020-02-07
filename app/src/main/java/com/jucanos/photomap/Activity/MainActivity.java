@@ -3,14 +3,10 @@ package com.jucanos.photomap.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.jucanos.photomap.Fragment.FragmentViewPager;
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 //        TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
 //        TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
 //
-//        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group, 0, 0);
+//        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group_fill, 0, 0);
 //        mCustomTabTextView1.setGravity(Gravity.CENTER);
 
 
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 //        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView3));
 
 
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_group));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_group_fill));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_map));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_setting));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -71,6 +67,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition(), false);
+                switch (tab.getPosition()) {
+                    case 0:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group_fill);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting);
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map_fill);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting);
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting_fill);
+                        break;
+                }
             }
 
             @Override
