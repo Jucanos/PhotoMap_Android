@@ -8,21 +8,26 @@
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
+    <!--???? -->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <!-- tab style -->
     <style name="TabTheme" parent="AppTheme.NoActionBar">
         <item name="colorAccent">@color/windowBackground</item>
         <item name="colorPrimary">@color/windowBackground</item>
     </style>
 
+    <!-- Toolbar style -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorSecondary">#ffffff</item>
-        <item name="colorPrimaryDark">#ffffff</item>
-        <item name="android:textColorPrimary">#ffffff</item>
-        <item name="colorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="colorPrimary">#ffffff</item>
+        <item name="colorControlHighlight">#000000</item>
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -34,9 +39,9 @@
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#ffffff</item>
         <item name="android:statusBarColor">#000000</item>
-        <!--        <item name="android:windowIsFloating">true</item>-->
     </style>
 
+    <!-- filePicker style   -->
     <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#000000</item>
@@ -47,12 +52,15 @@
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
+    <!-- imagePicker Style????   -->
     <style name="PickerTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabBackground">@color/colorPrimary</item>
         <item name="tabGravity">fill</item>
         <item name="tabMaxWidth">0dp</item>
     </style>
 
+
+    <!-- imagePicker Style???   -->
     <style name="SmoothCheckBoxStyle">
         <item name="color_checked">@color/checkbox_color</item>
         <item name="color_unchecked">@android:color/white</item>
