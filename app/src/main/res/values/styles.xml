@@ -14,12 +14,8 @@
     </style>
 
     <style name="TabTheme" parent="AppTheme.NoActionBar">
-        <item name="android:textColorPrimary">#ffffff</item>       <!-- 탭바 선택된 텍스트 -->
-        <item name="android:textColorSecondary">#ffffff</item>     <!-- 탭바 텍스트 -->
-        <item name="colorAccent">#000000</item>
-        <item name="colorPrimary">#ffffff</item>
-        <item name="colorPrimaryDark">#ffffff</item>
-        <!-- 하단 움직이는 바 색-->
+        <item name="colorAccent">@color/windowBackground</item>
+        <item name="colorPrimary">@color/windowBackground</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -40,9 +36,6 @@
         <item name="android:statusBarColor">#000000</item>
         <!--        <item name="android:windowIsFloating">true</item>-->
     </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-    </style>>
 
     <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->

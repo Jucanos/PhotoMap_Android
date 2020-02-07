@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    >
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="15dp"
-        android:background="@drawable/layout_rounded_line">
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/listview_item_group"
+        android:elevation="10dp">
+
         <ImageView
             android:id="@+id/imageView_thumbnail"
             android:layout_width="wrap_content"
@@ -17,15 +17,13 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:padding="5dp"
-             />
+            android:layout_margin="10dp" />
 
         <LinearLayout
             android:id="@+id/linearLayout_mid"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imageView_thumbnail"
-            android:layout_weight="4"
             android:orientation="vertical"
             android:paddingLeft="5dp">
 
@@ -34,10 +32,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="bottom"
                 android:text="Group Name"
                 android:textColor="#000000"
                 android:textSize="24dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView_left_of_lastUpdated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Updated : " />
+
+                <TextView
+                    android:id="@+id/textView_lastUpdated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/textView_left_of_lastUpdated"
+                    android:text="0000/00/00" />
+
+            </RelativeLayout>
+
         </LinearLayout>
+
     </RelativeLayout>
+
 </RelativeLayout>

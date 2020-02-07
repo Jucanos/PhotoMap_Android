@@ -60,7 +60,6 @@ public class GroupListViewAdapter extends BaseAdapter {
         Glide.with(context)
                 .load(thumbnail_path)
                 .placeholder(R.drawable.image_loader)
-                .circleCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imgView_thumbnail);
 

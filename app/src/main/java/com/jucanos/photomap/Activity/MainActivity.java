@@ -3,6 +3,7 @@ package com.jucanos.photomap.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -38,19 +39,24 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /* TextView */
-        TextView mCustomTabTextView1 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
-        TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
-        TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
+//        TextView mCustomTabTextView1 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
+//        TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
+//        TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
+//
+//        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group, 0, 0);
+//        mCustomTabTextView1.setGravity(Gravity.CENTER);
 
-        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group, 0, 0);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView1));
 
-        mCustomTabTextView2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map, 0, 0);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView2));
+//        mCustomTabTextView2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map, 0, 0);
+//        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView2));
 
-        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_three_horizontal_lines_white, 0, 0);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView3));
+//        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_setting, 0, 0);
+//        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView3));
 
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_group));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_map));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_setting));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final FragmentViewPager viewPager = findViewById(R.id.fragmentViewPager_fvp);
