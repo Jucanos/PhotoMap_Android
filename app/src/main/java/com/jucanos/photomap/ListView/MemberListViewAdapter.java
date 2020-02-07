@@ -17,6 +17,8 @@ import com.jucanos.photomap.R;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MemberListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<MemberListViewItem> listViewItemList = new ArrayList<MemberListViewItem>();
@@ -46,7 +48,7 @@ public class MemberListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        final ImageView imageView_thumbnail = convertView.findViewById(R.id.imageView_thumbnail);
+        final CircleImageView circleImageView_thumbnail = convertView.findViewById(R.id.circleImageView_thumbnail);
         final TextView txtView_groupName = convertView.findViewById(R.id.textView_groupName);
         // GetUserInfoData Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MemberListViewItem listViewItem = listViewItemList.get(position);
@@ -56,7 +58,7 @@ public class MemberListViewAdapter extends BaseAdapter {
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.ic_icon_add_button_inside_black)
                 .dontAnimate()
-                .into(imageView_thumbnail);
+                .into(circleImageView_thumbnail);
 
         txtView_groupName.setText(listViewItem.getName());
         return convertView;
