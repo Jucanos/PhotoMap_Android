@@ -34,21 +34,6 @@ public class MainActivity extends AppCompatActivity {
         Log.e("MainActivity", "[mid] :" + mid);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        /* TextView */
-//        TextView mCustomTabTextView1 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
-//        TextView mCustomTabTextView2 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
-//        TextView mCustomTabTextView3 = (TextView) LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
-//
-//        mCustomTabTextView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_group_fill, 0, 0);
-//        mCustomTabTextView1.setGravity(Gravity.CENTER);
-
-
-//        mCustomTabTextView2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_map, 0, 0);
-//        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView2));
-
-//        mCustomTabTextView3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_icon_setting, 0, 0);
-//        tabLayout.addTab(tabLayout.newTab().setCustomView(mCustomTabTextView3));
-
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_group_fill));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_icon_map));
@@ -61,8 +46,18 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.disableScroll(true);
-        if (fromLink) viewPager.setCurrentItem(0);
-        else viewPager.setCurrentItem(1);
+        if (fromLink) {
+            viewPager.setCurrentItem(0);
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group_fill);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map);
+            tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting);
+        }
+        else {
+            viewPager.setCurrentItem(1);
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map_fill);
+            tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting);
+        }
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
