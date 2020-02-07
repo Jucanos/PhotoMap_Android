@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.jucanos.photomap.Activity.LoginActivity;
 import com.jucanos.photomap.Activity.NoticeActivity;
 import com.jucanos.photomap.GlobalApplication;
@@ -25,6 +26,7 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,13 +37,22 @@ public class MainFragmentSetting extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_setting, container, false);
-        globalApplication = globalApplication = GlobalApplication.getGlobalApplicationContext();
+        globalApplication  = GlobalApplication.getGlobalApplicationContext();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("설정");
         setHasOptionsMenu(true);
+
+        // userInfo
+        // nickName
+        TextView textView_nickName = view.findViewById(R.id.textView_nickName);
+        textView_nickName.setText(globalApplication.authorization.getUserData().getNickname());
+
+        // thumbnail
+        CircleImageView circleImageView_thumbnail = view.findViewById(R.id.circleImageView_thumbnail);
+        Glide.with(getActivity()).load(globalApplication.authorization.getUserData().getThumbnail()).into(circleImageView_thumbnail);
 
         TextView textView_notice = view.findViewById(R.id.textView_notice);
         textView_notice.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +82,8 @@ public class MainFragmentSetting extends Fragment {
                 requestSignoutAccount(globalApplication.token);
             }
         });
+
+
         return view;
     }
 

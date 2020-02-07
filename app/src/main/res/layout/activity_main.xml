@@ -9,33 +9,18 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="?attr/colorPrimary"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/TabTheme" />
+        android:theme="@style/TabTheme"
+        app:tabIndicatorHeight="0dp"
+        />
 
     <com.jucanos.photomap.Fragment.FragmentViewPager
         android:id="@+id/fragmentViewPager_fvp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/tab_layout" />
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_tb"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
-
-    </androidx.appcompat.widget.Toolbar>
-
-<!--    <com.jucanos.photomap.Fragment.FragmentViewPager-->
-<!--        android:id="@+id/fragmentViewPager_container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+        android:layout_above="@id/tab_layout"/>
 </RelativeLayout>

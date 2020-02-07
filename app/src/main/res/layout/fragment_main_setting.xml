@@ -25,13 +25,23 @@
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/appBarLayout_ab">
+        android:layout_below="@+id/appBarLayout_ab"
+        android:padding="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageView_thumbnail"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/layout_rounded" />
 
         <TextView
-            android:id="@+id/textView_email"
+            android:id="@+id/textView_nickName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/circleImageView_thumbnail"
             android:text="gjek136@naver.com"
             android:textColor="#000000"
             android:textSize="30dp" />
@@ -48,7 +58,7 @@
             android:id="@+id/layout2_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#d6d5d6">
+            android:background="@color/windowBackground">
 
             <TextView
                 android:layout_width="match_parent"
@@ -63,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout2_1"
-            android:layout_margin="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
             android:text="공지사항"
             android:textColor="#000000"
             android:textSize="30dp" />
@@ -73,7 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_notice"
-            android:layout_margin="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
             android:text="리뷰 작성하기"
             android:textColor="#000000"
             android:textSize="30dp" />
@@ -83,7 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_review"
-            android:layout_margin="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
             android:text="앱 공유하기"
             android:textColor="#000000"
             android:textSize="30dp" />
@@ -99,13 +112,14 @@
             android:id="@+id/layout3_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#d6d5d6">
+            android:background="@color/windowBackground">>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="회원정보관리"
+
                 android:textSize="20dp" />
         </RelativeLayout>
 
@@ -114,7 +128,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout3_1"
-            android:layout_margin="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
             android:text="로그아웃"
             android:textColor="#000000"
             android:textSize="30dp" />
@@ -124,7 +139,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_logout"
-            android:layout_margin="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
             android:text="회원 탈퇴"
             android:textColor="#000000"
             android:textSize="30dp" />

@@ -11,14 +11,13 @@
         android:id="@+id/relativeLayout_total"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout_ab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:tooltipText="!!!!">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_tb"
@@ -32,16 +31,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/appBarLayout_ab"
-            android:background="#FFFFFF">
+            android:background="#FFFFFF"
+            android:padding="20dp">
 
             <EditText
                 android:id="@+id/editText_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:backgroundTint="@android:color/black"
-                android:hint="그룹이름을 입력해 주세요!"
-                android:singleLine="true" />
+                android:background="@drawable/listview_item_group"
+                android:gravity="center_horizontal"
+                android:hint="그룹 이름을 입력해주세요!"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textSize="20dp" />
         </RelativeLayout>
 
     </RelativeLayout>

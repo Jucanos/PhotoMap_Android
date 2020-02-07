@@ -118,13 +118,14 @@
         <RelativeLayout
             android:id="@+id/layout_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#d6d5d6">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/windowBackground">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_centerVertical="true"
                 android:text="그룹멤버"
                 android:textSize="20dp" />
         </RelativeLayout>
