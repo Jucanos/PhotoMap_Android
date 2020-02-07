@@ -86,6 +86,7 @@ public class MainFragmentRep extends Fragment {
             }
         });
 
+
         // PorterShapeImageView
         imageView_gyeonggi = view.findViewById(R.id.imageView_gyeonggi);
         imageView_gyeonggi_front = view.findViewById(R.id.imageView_gyeonggi_front);
@@ -140,7 +141,7 @@ public class MainFragmentRep extends Fragment {
         box.showLoadingLayout();
         String mid = "";
         mid = GlobalApplication.getGlobalApplicationContext().getRePMid();
-        Log.e("[setRep]",mid);
+        Log.e("[setRep]", mid);
         if (!mid.equals("")) {
             getMapInfoRequest(mid);
         } else {
@@ -221,6 +222,7 @@ public class MainFragmentRep extends Fragment {
 
     void setLayout(boolean rep) {
         box.hideAll();
+        Log.e("[setLayout]", "rep " + rep);
         if (!rep) {
             noRep.setVisibility(View.VISIBLE);
             existRep.setVisibility(View.GONE);
