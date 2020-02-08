@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class StoryListViewAdapter extends BaseAdapter {
         final CircleImageView circleImageView_thumbnail = convertView.findViewById(R.id.circleImageView_thumbnail);
         final TextView textView_title = convertView.findViewById(R.id.textView_title);
         final TextView textView_upload = convertView.findViewById(R.id.textView_upload);
-        final Button button_menu = convertView.findViewById(R.id.button_menu);
+        final ImageView imageView_more = convertView.findViewById(R.id.imageView_more);
         final CustomViewPager customViewPager_vp = convertView.findViewById(R.id.customViewPager_vp);
         final ExpandableTextView expandableTextView_description = convertView.findViewById(R.id.expandableTextView_description);
 
@@ -93,7 +94,7 @@ public class StoryListViewAdapter extends BaseAdapter {
         textView_upload.setText(getDateString(getDate(listViewItem.getCreatedAt())));
         expandableTextView_description.setText(listViewItem.getContext() + "\n\n" + getDateString(getDate(listViewItem.getCreatedAt())));
 
-        button_menu.setOnClickListener(new View.OnClickListener() {
+        imageView_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StoryDialog dialog = new StoryDialog(context);

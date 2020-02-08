@@ -43,18 +43,19 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/button_menu"
+            android:layout_toLeftOf="@+id/imageView_more"
             android:text="0000/00/00 00:00"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button_menu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <ImageView
+            android:id="@+id/imageView_more"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ic_icon_three_vertical_dot_black" />
+            android:src="@drawable/ic_more"
+            android:background="?attr/selectableItemBackground"/>
 
     </RelativeLayout>
 
