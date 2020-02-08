@@ -2,6 +2,7 @@ package com.jucanos.photomap.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +54,8 @@ public class MainFragmentGroup extends Fragment {
     private final int ADD_GROUP = 1;
     private final int EDIT_GROUP = 2;
 
+    private long lastClickTime = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_group, fragmentContainer, false);
@@ -95,6 +98,10 @@ public class MainFragmentGroup extends Fragment {
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
                 String mid = groupListViewItem.getMid();
                 redirectGroupActivity(mid);
