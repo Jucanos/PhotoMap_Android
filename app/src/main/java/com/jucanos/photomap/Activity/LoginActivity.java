@@ -155,6 +155,9 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("getUid", globalApplication.authorization.getUserData().getUid());
                         Log.e("getThumbnail", globalApplication.authorization.getUserData().getThumbnail());
                         Log.e("getNickname", globalApplication.authorization.getUserData().getNickname());
+                        if(globalApplication.authorization.getUserData().getPrimary() != null)
+                            Log.e("getNickname",globalApplication.authorization.getUserData().getPrimary());
+
                         redirectSignupActivity();
                     }
                 } else {

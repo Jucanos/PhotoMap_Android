@@ -46,6 +46,8 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
+import com.jucanos.photomap.Structure.SetMapRep;
+import com.jucanos.photomap.Structure.SetMapRepRequest;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -268,7 +270,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GroupActivity.this, "floatingActionButton_rep", Toast.LENGTH_SHORT).show();
-                globalApplication.saveRepMid(mid);
+                setMapRepRequest(mid);
                 floatingActionMenu_menu.close(true);
             }
         });
@@ -444,6 +446,8 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
+
+    /* request function */
     void getMapInfoRequest() {
         final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
@@ -470,6 +474,27 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<GetMapInfo> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    void setMapRepRequest(final String mid) {
+        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep("Bearer " + globalApplication.token, mid, new SetMapRepRequest(false));
+        res.enqueue(new Callback<SetMapRep>() {
+            @Override
+            public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
+                if (response.isSuccessful()) {
+                    Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
+
+                    globalApplication.authorization.getUserData().setPrimary(mid);
+                } else {
+                    Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SetMapRep> call, Throwable t) {
+                Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
             }
         });
     }
@@ -522,7 +547,7 @@ public class GroupActivity extends AppCompatActivity {
                     into(porterShapeImageViews[8]);
         if (jeju != null)
             Glide.with(getApplicationContext()).load(jeju).
-                   into(porterShapeImageViews[9]);
+                    into(porterShapeImageViews[9]);
     }
 }
 

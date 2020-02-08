@@ -16,11 +16,9 @@ public class GetUserInfoData {
     @Expose
     private String thumbnail;
 
-    public GetUserInfoData(String uid, String nickname, String thumbnail) {
-        this.uid = uid;
-        this.nickname = nickname;
-        this.thumbnail = thumbnail;
-    }
+    @SerializedName("primary")
+    @Expose
+    private String primary;
 
     public String getUid() {
         return uid;
@@ -44,5 +42,13 @@ public class GetUserInfoData {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getPrimary() {
+        return primary;
+    }
+
+    public void setPrimary(String primary) {
+        this.primary = primary;
     }
 }

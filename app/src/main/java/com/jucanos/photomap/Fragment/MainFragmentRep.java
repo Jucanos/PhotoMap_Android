@@ -139,13 +139,13 @@ public class MainFragmentRep extends Fragment {
     // 대표 지도 유뮤 체크 후 대표 사진 불러오기
     void setRep() {
         box.showLoadingLayout();
-        String mid = "";
-        mid = GlobalApplication.getGlobalApplicationContext().getRePMid();
-        Log.e("[setRep]", mid);
-        if (!mid.equals("")) {
-            getMapInfoRequest(mid);
-        } else {
+        String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
+        if (repMid == null) {
+            Log.e("MainFragmentRep", "[setRep] : repMid is null");
             setLayout(false);
+        } else {
+            Log.e("MainFragmentRep", "[setRep] : mid : " + repMid);
+            getMapInfoRequest(repMid);
         }
     }
 
@@ -157,6 +157,7 @@ public class MainFragmentRep extends Fragment {
             public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+                        Log.e("MainFragmentRep", "[getMapInfoRequest] is success");
                         setRep(response.body().getData().getGetMapInfoDataRepresents());
 
                     }
@@ -183,24 +184,51 @@ public class MainFragmentRep extends Fragment {
         String gyeongbuk = getMapInfoDataRepresents.getGyeongbuk();
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
+
         if (gyeonggi != null)
             Glide.with(getActivity().getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
+        else
+            porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
+
         if (gangwon != null)
             Glide.with(getActivity().getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
+        else
+            porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
+
         if (chungbuk != null)
             Glide.with(getActivity().getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
+        else
+            porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
+
         if (chungnam != null)
             Glide.with(getActivity().getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
+        else
+            porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
+
         if (jeonbuk != null)
             Glide.with(getActivity().getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
+        else
+            porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
+
         if (jeonnam != null)
             Glide.with(getActivity().getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
+        else
+            porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
+
         if (gyeongbuk != null)
             Glide.with(getActivity().getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
+        else
+            porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
+
         if (gyeongnam != null)
             Glide.with(getActivity().getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
+        else
+            porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
+
         if (jeju != null)
             Glide.with(getActivity().getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
+        else
+            porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
 
         setLayout(true);
     }

@@ -113,16 +113,16 @@ public class GlobalApplication extends Application {
         KakaoSDK.init(new KakaoSDKAdapter());
     }
 
-    public void saveRepMid(String mid) {
-        SharedPreferences pref = getSharedPreferences("mid", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("mid", mid); //키값, 저장값
-        editor.commit();
-    }
-
-    public String getRePMid() {
-        SharedPreferences prefs = getSharedPreferences("mid", MODE_PRIVATE);
-        String result = prefs.getString("mid", ""); //키값, 디폴트값
-        return result;
-    }
+//    public void saveRepMid(String mid) {
+//        SharedPreferences pref = getSharedPreferences("mid", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        editor.putString("mid", mid); //키값, 저장값
+//        editor.commit();
+//    }
+//
+//    public String getRePMid() {
+//        SharedPreferences prefs = getSharedPreferences("mid", MODE_PRIVATE);
+//        String result = prefs.getString("mid", ""); //키값, 디폴트값
+//        return result;
+//    }
 }

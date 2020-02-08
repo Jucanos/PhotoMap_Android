@@ -15,6 +15,8 @@ import com.jucanos.photomap.Structure.CreateMapRequest;
 import com.jucanos.photomap.Structure.RemoveStory;
 import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
+import com.jucanos.photomap.Structure.SetMapRep;
+import com.jucanos.photomap.Structure.SetMapRepRequest;
 import com.jucanos.photomap.Structure.SetRep;
 
 import java.util.HashMap;
@@ -91,4 +93,8 @@ public interface ApiService {
 
     @GET("notice")
     Call<GetNotice> getNotice();
+
+    // 대표 지도 설정
+    @PATCH("users/{mid}")
+    Call<SetMapRep> setMapRep(@Header("Authorization") String authorization, @Path("mid") String mid, @Body SetMapRepRequest setMapRepRequest);
 }
