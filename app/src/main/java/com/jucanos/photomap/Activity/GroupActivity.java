@@ -101,7 +101,7 @@ public class GroupActivity extends AppCompatActivity {
 
     // floating action button 객체
     private FloatingActionMenu floatingActionMenu_menu;
-    private FloatingActionButton floatingActionButton_save, floatingActionButton_share, floatingActionButton_rep;
+    private FloatingActionButton floatingActionButton_save, floatingActionButton_rep;
 
     private String mid;
     private int longClickId = -1;
@@ -243,7 +243,6 @@ public class GroupActivity extends AppCompatActivity {
 
         floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
         floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
-        floatingActionButton_share = findViewById(R.id.floatingActionButton_share);
         floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
 
         floatingActionMenu_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
@@ -280,14 +279,6 @@ public class GroupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(GroupActivity.this, "floatingActionButton_save", Toast.LENGTH_SHORT).show();
                 getMapImage();
-                floatingActionMenu_menu.close(true);
-            }
-        });
-
-        floatingActionButton_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(GroupActivity.this, "floatingActionButton_share", Toast.LENGTH_SHORT).show();
                 floatingActionMenu_menu.close(true);
             }
         });
