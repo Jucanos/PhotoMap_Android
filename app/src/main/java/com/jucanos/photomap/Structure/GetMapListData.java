@@ -3,6 +3,8 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class GetMapListData {
     @SerializedName("mid")
     @Expose
@@ -12,10 +14,9 @@ public class GetMapListData {
     @Expose
     private String name;
 
-    public GetMapListData(String mid, String name) {
-        this.mid = mid;
-        this.name = name;
-    }
+    @SerializedName("updatedAt")
+    @Expose
+    private Date updatedAt;
 
     public String getMid() {
         return mid;
@@ -31,5 +32,13 @@ public class GetMapListData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

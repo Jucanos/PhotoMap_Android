@@ -35,6 +35,8 @@ import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 
+import java.util.Date;
+
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -206,7 +208,7 @@ public class MainFragmentGroup extends Fragment {
                     String mapName = data.getStringExtra("mapName");
                     Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
                     Log.e("MainFragmentGroup", "[mapName]" + mapName);
-                    addGroup(mapName, mapTokpen);
+                    addGroup(mapName, mapTokpen, new Date(System.currentTimeMillis()));
                     break;
                 case EDIT_GROUP:
                     String name = data.getStringExtra("name");
@@ -220,8 +222,12 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // addGroup
-    public void addGroup(String name, String mid) {
-        adapter.addItem(new GroupListViewItem(mid, name));
+    public void addGroup(String title, String mid, Date updatedAt) {
+        GroupListViewItem groupListViewItem = new GroupListViewItem();
+        groupListViewItem.setTitle(title);
+        groupListViewItem.setMid(mid);
+        groupListViewItem.setUpdatedAt(updatedAt);
+        adapter.addItem(groupListViewItem);
         adapter.notifyDataSetChanged();
 
     }
@@ -238,9 +244,11 @@ public class MainFragmentGroup extends Fragment {
                         for (int i = 0; i < getMapList.getGetMapListDatas().size(); i++) {
                             Log.e("LoginActivity", "[mid]" + getMapList.getGetMapListDatas().get(i).getMid());
                             Log.e("LoginActivity", "[getName]" + getMapList.getGetMapListDatas().get(i).getName());
+                            Log.e("LoginActivity", "[updatedAt]" + getMapList.getGetMapListDatas().get(i).getUpdatedAt());
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
-                            addGroup(name, mid);
+                            Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
+                            addGroup(name, mid, updatedAt);
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -282,6 +290,7 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
+    // decided by request result.
     void setLayout() {
         if (adapter.getCount() == 0) {
             noGroup.setVisibility(View.VISIBLE);

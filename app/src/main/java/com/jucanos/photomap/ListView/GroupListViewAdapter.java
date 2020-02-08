@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jucanos.photomap.R;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -51,7 +52,8 @@ public class GroupListViewAdapter extends BaseAdapter {
         }
 
         ImageView imgView_thumbnail = convertView.findViewById(R.id.imageView_thumbnail);
-        TextView txtView_groupName = convertView.findViewById(R.id.textView_groupName);
+        TextView textView_groupName = convertView.findViewById(R.id.textView_groupName);
+        TextView textView_lastUpdated = convertView.findViewById(R.id.textView_lastUpdated);
 
         GroupListViewItem listViewItem = listViewItemList.get(position);
 
@@ -63,8 +65,9 @@ public class GroupListViewAdapter extends BaseAdapter {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imgView_thumbnail);
 
-        txtView_groupName.setText(listViewItem.getTitle());
+        textView_groupName.setText(listViewItem.getTitle());
 
+        textView_lastUpdated.setText((new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(listViewItem.getUpdatedAt())));
         return convertView;
     }
 
@@ -86,7 +89,4 @@ public class GroupListViewAdapter extends BaseAdapter {
         listViewItemList.remove(position);
     }
 
-    public void clear() {
-        listViewItemList = new ArrayList<GroupListViewItem>();
-    }
 }

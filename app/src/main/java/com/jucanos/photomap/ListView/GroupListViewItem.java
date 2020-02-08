@@ -1,15 +1,11 @@
 package com.jucanos.photomap.ListView;
 
-import android.graphics.Bitmap;
+import java.util.Date;
 
 public class GroupListViewItem {
     private String mid;
     private String title;
-
-    public GroupListViewItem(String mid, String title) {
-        this.mid = mid;
-        this.title = title;
-    }
+    private Date updatedAt;
 
     public String getMid() {
         return mid;
@@ -25,5 +21,13 @@ public class GroupListViewItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
