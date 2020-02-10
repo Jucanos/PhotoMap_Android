@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.disableScroll(true);
+        viewPager.setOffscreenPageLimit(3);
         if (fromLink) {
             viewPager.setCurrentItem(0);
             tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group_fill);
