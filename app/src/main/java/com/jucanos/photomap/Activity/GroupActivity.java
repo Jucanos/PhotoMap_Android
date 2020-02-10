@@ -148,7 +148,7 @@ public class GroupActivity extends AppCompatActivity {
                                 LinkObject.newBuilder()
                                         .setMobileWebUrl("https://play.google.com")
                                         .setWebUrl("https://play.google.com")
-                                        .setAndroidExecutionParams("mid=" + "4b05d0f3848dc6ac99ce46cc377e80fb")
+                                        .setAndroidExecutionParams("mid=" + mid)
                                         .setIosExecutionParams("mid=" + mid)
                                         .build()
                         )
@@ -156,7 +156,7 @@ public class GroupActivity extends AppCompatActivity {
                         .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
                                 .setMobileWebUrl("https://play.google.com")
                                 .setWebUrl("https://play.google.com")
-                                .setAndroidExecutionParams("mid=" + "4b05d0f3848dc6ac99ce46cc377e80fb")
+                                .setAndroidExecutionParams("mid=" + mid)
                                 .setIosExecutionParams("mid=" + mid)
                                 .build()))
                         .build();

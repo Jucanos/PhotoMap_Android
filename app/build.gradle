@@ -42,6 +42,7 @@ dependencies {
 
     // for image crop
     implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
+    implementation 'com.github.yalantis:ucrop:2.2.4-native'
 
     // for viewPager indicator
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'

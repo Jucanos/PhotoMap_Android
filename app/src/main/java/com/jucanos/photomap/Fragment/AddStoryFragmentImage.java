@@ -148,6 +148,7 @@ public class AddStoryFragmentImage extends Fragment {
         FilePickerBuilder.getInstance().setMaxCount(5)
                 .setActivityTheme(R.style.LibAppTheme)
                 .pickPhoto(this, FilePickerConst.REQUEST_CODE_PHOTO);
+
         return false;
     }
 
@@ -197,13 +198,16 @@ public class AddStoryFragmentImage extends Fragment {
         // Log.e("viewPager.getWidth",Integer.toString(viewPager.getWidth()));
         // Log.e("viewPager.getHeight",Integer.toString(viewPager.getHeight()));
         Log.e("AddStoryActivity", "viewPager.getChildCount() : " + Integer.toString(viewPager.getChildCount()));
-        for (int i = 0; i < viewPager.getChildCount(); i++) {
-            View v = viewPager.getChildAt(i);
-            Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-                    Bitmap.Config.ARGB_8888);
-            Canvas c = new Canvas(b);
-            v.draw(c);
-            bitmaps.add(b);
+//        for (int i = 0; i < viewPager.getChildCount(); i++) {
+//            View v = viewPager.getChildAt(i);
+//            Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+//                    Bitmap.Config.ARGB_8888);
+//            Canvas c = new Canvas(b);
+//            v.draw(c);
+//            bitmaps.add(b);
+//        }
+        for(int i = 0 ; i < addStoryViewPagerAdapter.getCount(); i++){
+            bitmaps.add(addStoryViewPagerAdapter.getCropImage(i));
         }
         return bitmaps;
     }

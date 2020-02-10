@@ -18,6 +18,7 @@ import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
+import com.yalantis.ucrop.UCrop;
 
 import java.util.ArrayList;
 
@@ -83,6 +84,7 @@ public class StoryActivity extends AppCompatActivity {
         switch (id) {
             case R.id.item_add:
                 redirectAddStoryActivity(mid);
+
                 return true;
             case android.R.id.home:
                 finish();

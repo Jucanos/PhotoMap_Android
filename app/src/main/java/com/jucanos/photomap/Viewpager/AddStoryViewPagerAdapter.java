@@ -2,6 +2,7 @@ package com.jucanos.photomap.Viewpager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,15 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.fenchtose.nocropper.CropperView;
 import com.jucanos.photomap.R;
+import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 
 import java.util.ArrayList;
 
 public class AddStoryViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<Bitmap> imageList = new ArrayList<>();
+    private ArrayList<ImageCropView> imageViewList = new ArrayList<>();
+
 
     public AddStoryViewPagerAdapter(Context context) {
         this.mContext = context;
@@ -28,8 +32,10 @@ public class AddStoryViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_item_add_story, null);
 
-        final CropperView imageView = view.findViewById(R.id.imageView_image);
-
+        final ImageCropView imageView = view.findViewById(R.id.imageView_image);
+        imageViewList.add(imageView);
+        imageView.setGridInnerMode(ImageCropView.GRID_ON);
+        imageView.setGridOuterMode(ImageCropView.GRID_ON);
         imageView.setImageBitmap(imageList.get(position));
         container.addView(view);
         return view;
@@ -67,5 +73,8 @@ public class AddStoryViewPagerAdapter extends PagerAdapter {
         imageList.add(bm);
     }
 
+    public Bitmap getCropImage(int x){
+        return imageViewList.get(x).getCroppedImage();
+    }
 
 }
