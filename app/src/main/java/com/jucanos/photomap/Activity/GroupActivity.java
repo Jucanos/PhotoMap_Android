@@ -145,12 +145,17 @@ public class GroupActivity extends AppCompatActivity {
                 FeedTemplate params = FeedTemplate
                         .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
                                 "https://ifh.cc/g/ODD7n.png",
-                                LinkObject.newBuilder().setWebUrl("https://www.naver.com")
-                                        .setMobileWebUrl("https://www.naver.com").build())
+                                LinkObject.newBuilder()
+                                        .setMobileWebUrl("https://play.google.com")
+                                        .setWebUrl("https://play.google.com")
+                                        .setAndroidExecutionParams("mid=" + "4b05d0f3848dc6ac99ce46cc377e80fb")
+                                        .setIosExecutionParams("mid=" + mid)
+                                        .build()
+                        )
                                 .build())
                         .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
-                                //.setWebUrl("https://www.naver.com")
-                                //.setMobileWebUrl("https://www.naver.com")
+                                .setMobileWebUrl("https://play.google.com")
+                                .setWebUrl("https://play.google.com")
                                 .setAndroidExecutionParams("mid=" + "4b05d0f3848dc6ac99ce46cc377e80fb")
                                 .setIosExecutionParams("mid=" + mid)
                                 .build()))
