@@ -19,6 +19,7 @@ import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetNotice;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -79,10 +80,10 @@ public class NoticeActivity extends AppCompatActivity {
                         Log.e("NoticeActivity", "[Title] : " + response.body().getGetNoticeData().get(i).getTitle());
                         Log.e("NoticeActivity", "[UpdatedAt] : " + response.body().getGetNoticeData().get(i).getUpdatedAt());
                         String context = response.body().getGetNoticeData().get(i).getContext();
-                        String createdAt = response.body().getGetNoticeData().get(i).getCreatedAt();
+                        Date createdAt = response.body().getGetNoticeData().get(i).getCreatedAt();
                         String id = response.body().getGetNoticeData().get(i).getId();
                         String title = response.body().getGetNoticeData().get(i).getTitle();
-                        String updatedAt = response.body().getGetNoticeData().get(i).getUpdatedAt();
+                        Date updatedAt = response.body().getGetNoticeData().get(i).getUpdatedAt();
                         NoticeListViewItem noticeListViewItem = new NoticeListViewItem(context, createdAt, id, title, updatedAt);
                         noticeListViewAdapter.addItem(noticeListViewItem);
                     }

@@ -18,9 +18,9 @@ import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
-import com.yalantis.ucrop.UCrop;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
@@ -124,8 +124,8 @@ public class StoryActivity extends AppCompatActivity {
                 ArrayList<String> files = data.getStringArrayListExtra("files");
                 String sid = data.getStringExtra("sid");
                 String mid = data.getStringExtra("mid");
-                String createdAt = Long.toString(System.currentTimeMillis());
-                String updatedAt = Long.toString(System.currentTimeMillis());
+                Date createdAt =  new Date(System.currentTimeMillis());
+                Date updatedAt = new Date(System.currentTimeMillis());
                 storyListViewItem.setCreatedAt(createdAt);
                 storyListViewItem.setUpdatedAt(updatedAt);
                 storyListViewItem.setTitle(title);
@@ -167,8 +167,8 @@ public class StoryActivity extends AppCompatActivity {
                             Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
                             Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
                             Log.e("StoryActivity", "[creator] : " + response.body().getGetStoryListItems().get(i).getCreator());
-                            String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
-                            String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
+                            Date createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
+                            Date updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
                             String title = response.body().getGetStoryListItems().get(i).getTitle();
                             String context = response.body().getGetStoryListItems().get(i).getContext();
                             ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();

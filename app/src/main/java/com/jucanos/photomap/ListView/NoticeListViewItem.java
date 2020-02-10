@@ -1,13 +1,15 @@
 package com.jucanos.photomap.ListView;
 
+import java.util.Date;
+
 public class NoticeListViewItem {
     private String context;
-    private String createdAt;
+    private Date createdAt;
     private String id;
     private String title;
-    private String updatedAt;
+    private Date updatedAt;
 
-    public NoticeListViewItem(String context, String createdAt, String id, String title, String updatedAt) {
+    public NoticeListViewItem(String context, Date createdAt, String id, String title, Date updatedAt) {
         this.context = context;
         this.createdAt = createdAt;
         this.id = id;
@@ -23,11 +25,11 @@ public class NoticeListViewItem {
         this.context = context;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -47,11 +49,11 @@ public class NoticeListViewItem {
         this.title = title;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

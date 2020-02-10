@@ -4,15 +4,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GetMapInfoData {
     @SerializedName("createdAt")
     @Expose
-    private String createdAt;
+    private Date createdAt;
 
     @SerializedName("updatedAt")
     @Expose
-    private String updatedAt;
+    private Date updatedAt;
 
     @SerializedName("represents")
     @Expose
@@ -30,19 +31,19 @@ public class GetMapInfoData {
     @Expose
     ArrayList<GetMapInfoDataOwner> getMapInfoDataOwners;
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 

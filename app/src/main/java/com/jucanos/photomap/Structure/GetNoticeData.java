@@ -3,6 +3,8 @@ package com.jucanos.photomap.Structure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class GetNoticeData {
     @SerializedName("context")
     @Expose
@@ -10,7 +12,7 @@ public class GetNoticeData {
 
     @SerializedName("createdAt")
     @Expose
-    private String createdAt;
+    private Date createdAt;
 
     @SerializedName("id")
     @Expose
@@ -22,7 +24,7 @@ public class GetNoticeData {
 
     @SerializedName("updatedAt")
     @Expose
-    private String updatedAt;
+    private Date updatedAt;
 
     public String getContext() {
         return context;
@@ -32,11 +34,11 @@ public class GetNoticeData {
         this.context = context;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -56,11 +58,11 @@ public class GetNoticeData {
         this.title = title;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

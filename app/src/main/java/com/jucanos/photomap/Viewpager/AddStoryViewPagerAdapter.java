@@ -2,7 +2,6 @@ package com.jucanos.photomap.Viewpager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.fenchtose.nocropper.CropperView;
 import com.jucanos.photomap.R;
 import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 

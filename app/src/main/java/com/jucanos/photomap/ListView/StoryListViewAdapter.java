@@ -91,8 +91,8 @@ public class StoryListViewAdapter extends BaseAdapter {
         customViewPager_vp.setAdapter(StoryViewPagerAdapter);
 
         textView_title.setText(listViewItem.getTitle());
-        textView_upload.setText(getDateString(getDate(listViewItem.getCreatedAt())));
-        expandableTextView_description.setText(listViewItem.getContext() + "\n\n" + getDateString(getDate(listViewItem.getCreatedAt())));
+        textView_upload.setText((new SimpleDateFormat("yyyy-MM-dd hh").format(listViewItem.getCreatedAt())));
+        expandableTextView_description.setText(listViewItem.getContext());
 
         imageView_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,23 +167,6 @@ public class StoryListViewAdapter extends BaseAdapter {
                 Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
             }
         });
-    }
-
-    public Date getDate(String strDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        Date date = null;
-        try {
-            date = sdf.parse(strDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-    public String getDateString(Date from) {
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-        String to = transFormat.format(from);
-        return to;
     }
 
 

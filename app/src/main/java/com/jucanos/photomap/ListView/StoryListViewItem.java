@@ -1,19 +1,12 @@
 package com.jucanos.photomap.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class StoryListViewItem {
-//    String createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
-//    String updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
-//    String title = response.body().getGetStoryListItems().get(i).getTitle();
-//    String context = response.body().getGetStoryListItems().get(i).getContext();
-//    ArrayList<String> files = response.body().getGetStoryListItems().get(i).getFiles();
-//    String sid = response.body().getGetStoryListItems().get(i).getSid();
-//    String mid = response.body().getGetStoryListItems().get(i).getMid();
-
     private String thumbnail;
-    private String createdAt;
-    private String updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
     private String title;
     private String context;
     private ArrayList<String> files;
@@ -29,19 +22,19 @@ public class StoryListViewItem {
         this.thumbnail = thumbnail;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
