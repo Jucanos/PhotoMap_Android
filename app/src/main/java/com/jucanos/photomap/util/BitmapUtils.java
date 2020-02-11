@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -189,7 +190,6 @@ public class BitmapUtils {
     }
 
     public static Bitmap addPadding(@NonNull Bitmap bmp) {
-
         int biggerParam = Math.max(bmp.getWidth(), bmp.getHeight());
         Bitmap bitmap = Bitmap.createBitmap(biggerParam, biggerParam, bmp.getConfig());
         Canvas canvas = new Canvas(bitmap);
@@ -206,5 +206,15 @@ public class BitmapUtils {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
+    public static Bitmap getBitmapByPath(String path){
+        File imgFile = new File(path);
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            return myBitmap;
+        }else{
+            return null;
+        }
     }
 }

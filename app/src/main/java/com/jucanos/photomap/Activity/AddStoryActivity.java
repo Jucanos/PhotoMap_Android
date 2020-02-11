@@ -10,14 +10,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.jucanos.photomap.Fragment.AddStoryFragmentDescription;
 import com.jucanos.photomap.Fragment.AddStoryFragmentImage;
-import com.jucanos.photomap.Fragment.AddStoryFragmentPagerAdapter;
 import com.jucanos.photomap.Fragment.AddStoryFragmentTitle;
-import com.jucanos.photomap.Fragment.FragmentViewPager;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateStory;
-import com.kroegerama.imgpicker.BottomSheetImagePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,9 +34,6 @@ import retrofit2.Response;
 
 public class AddStoryActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
-
-    private FragmentViewPager viewPager;
-    private AddStoryFragmentPagerAdapter adapter;
 
     private FragmentManager fragmentManager;
     private AddStoryFragmentImage addStoryFragmentImage;
@@ -64,13 +58,6 @@ public class AddStoryActivity extends AppCompatActivity {
 
         mid = getIntent().getStringExtra("mid");
         cityKey = getIntent().getIntExtra("cityKey", -1);
-
-
-        new BottomSheetImagePicker.Builder("ㅠㅜ")
-                .multiSelect(3, 6)
-                .peekHeight(700)
-                .show(getSupportFragmentManager(), null);
-
     }
 
     public void setFrag(int pos) {

@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,17 +26,11 @@ import com.jucanos.photomap.Activity.AddStoryActivity;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.AddStoryViewPagerAdapter;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
-import com.jucanos.photomap.util.BitmapUtils;
-import com.kroegerama.imgpicker.BottomSheetImagePicker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
-import gun0912.tedbottompicker.TedBottomPicker;
-import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
-import gun0912.tedbottompicker.TedRxBottomPicker;
 
 public class AddStoryFragmentImage extends Fragment {
     private CustomViewPager viewPager;

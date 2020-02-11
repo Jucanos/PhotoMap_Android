@@ -4,45 +4,110 @@
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
+        style="@style/AppTheme.NoActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:elevation="2dp"
-        style="@style/AppTheme.NoActionBar"
-        >
+        android:elevation="2dp">
+
         <TextView
             android:id="@+id/album_text_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:drawablePadding="8dp"
             android:drawableRight="@drawable/abc_spinner_mtrl_am_alpha"
+            android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:text="앨범" />
     </androidx.appcompat.widget.Toolbar>
 
-
-    <com.naver.android.helloyako.imagecrop.view.ImageCropView
-        android:id="@+id/imageCropView_image"
+    <FrameLayout
+        android:id="@+id/frameLayout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:background="@color/colorWhite">
+
+        <com.naver.android.helloyako.imagecrop.view.ImageCropView
+            android:id="@+id/imageCropView_image1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            imagecrop:gridInnerColor="#ffffff"
+            imagecrop:gridInnerStroke="1dp"
+            imagecrop:gridOuterColor="#000000"
+            imagecrop:gridOuterStroke="2dp"
+            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:setInnerGridMode="on"
+            imagecrop:setOuterGridMode="on" />
+
+        <com.naver.android.helloyako.imagecrop.view.ImageCropView
+            android:id="@+id/imageCropView_image2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            imagecrop:gridInnerColor="#ffffff"
+            imagecrop:gridInnerStroke="1dp"
+            imagecrop:gridOuterColor="#000000"
+            imagecrop:gridOuterStroke="2dp"
+            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:setInnerGridMode="on"
+            imagecrop:setOuterGridMode="on" />
+
+        <com.naver.android.helloyako.imagecrop.view.ImageCropView
+            android:id="@+id/imageCropView_image3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            imagecrop:gridInnerColor="#ffffff"
+            imagecrop:gridInnerStroke="1dp"
+            imagecrop:gridOuterColor="#000000"
+            imagecrop:gridOuterStroke="2dp"
+            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:setInnerGridMode="on"
+            imagecrop:setOuterGridMode="on" />
+
+        <com.naver.android.helloyako.imagecrop.view.ImageCropView
+            android:id="@+id/imageCropView_image4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            imagecrop:gridInnerColor="#ffffff"
+            imagecrop:gridInnerStroke="1dp"
+            imagecrop:gridOuterColor="#000000"
+            imagecrop:gridOuterStroke="2dp"
+            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:setInnerGridMode="on"
+            imagecrop:setOuterGridMode="on" />
+
+        <com.naver.android.helloyako.imagecrop.view.ImageCropView
+            android:id="@+id/imageCropView_image5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            imagecrop:gridInnerColor="#ffffff"
+            imagecrop:gridInnerStroke="1dp"
+            imagecrop:gridOuterColor="#000000"
+            imagecrop:gridOuterStroke="2dp"
+            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:setInnerGridMode="on"
+            imagecrop:setOuterGridMode="on" />
+
+    </FrameLayout>
+
 
     <com.jucanos.photomap.photoPicker.CoordinatorRecyclerView
         android:id="@+id/media_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        />
+        android:scrollbars="vertical" />
 
     <include
         android:id="@+id/empty_txt"
         layout="@layout/layout_boxing_empty_txt"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loading"
