@@ -83,8 +83,8 @@ public class StoryActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.item_add:
-                redirectAddStoryActivity(mid);
-
+                //redirectAddStoryActivity(mid);
+                startActivity(new Intent(StoryActivity.this, AddStoryImageActivity.class));
                 return true;
             case android.R.id.home:
                 finish();

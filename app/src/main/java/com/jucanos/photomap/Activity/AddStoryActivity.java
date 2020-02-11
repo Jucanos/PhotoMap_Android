@@ -10,9 +10,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.jucanos.photomap.Fragment.AddStoryFragmentDescription;
 import com.jucanos.photomap.Fragment.AddStoryFragmentImage;
-import com.jucanos.photomap.Fragment.AddStoryFragmentPagerAdapter;
 import com.jucanos.photomap.Fragment.AddStoryFragmentTitle;
-import com.jucanos.photomap.Fragment.FragmentViewPager;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
@@ -37,9 +35,6 @@ import retrofit2.Response;
 public class AddStoryActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
 
-    private FragmentViewPager viewPager;
-    private AddStoryFragmentPagerAdapter adapter;
-
     private FragmentManager fragmentManager;
     private AddStoryFragmentImage addStoryFragmentImage;
     private AddStoryFragmentTitle addStoryFragmentTitle;
@@ -59,6 +54,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
         addStoryFragmentImage = new AddStoryFragmentImage();
         fragmentManager.beginTransaction().replace(R.id.main_frame, addStoryFragmentImage).commit();
+
 
         mid = getIntent().getStringExtra("mid");
         cityKey = getIntent().getIntExtra("cityKey", -1);

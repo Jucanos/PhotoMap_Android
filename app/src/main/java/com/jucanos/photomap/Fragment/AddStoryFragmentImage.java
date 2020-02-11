@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +26,6 @@ import com.jucanos.photomap.Activity.AddStoryActivity;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Viewpager.AddStoryViewPagerAdapter;
 import com.jucanos.photomap.Viewpager.CustomViewPager;
-import com.jucanos.photomap.util.BitmapUtils;
 
 import java.util.ArrayList;
 
@@ -59,8 +57,8 @@ public class AddStoryFragmentImage extends Fragment {
 
         ImageView imageView_left = view.findViewById(R.id.imageView_left);
         ImageView imageView_right = view.findViewById(R.id.imageView_right);
-        ImageView imageView_rotate = view.findViewById(R.id.imageView_rotate);
-        ImageView imageView_snap = view.findViewById(R.id.imageView_snap);
+//        ImageView imageView_rotate = view.findViewById(R.id.imageView_rotate);
+//        ImageView imageView_snap = view.findViewById(R.id.imageView_snap);
 
         imageView_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,24 +76,30 @@ public class AddStoryFragmentImage extends Fragment {
             }
         });
 
-        imageView_rotate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bitmap mBitmap = addStoryViewPagerAdapter.getBitmap(viewPager.getCurrentItem());
-                mBitmap = BitmapUtils.rotateBitmap(mBitmap, 90);
-                addStoryViewPagerAdapter.setBitmap(viewPager.getCurrentItem(), mBitmap);
-                addStoryViewPagerAdapter.notifyDataSetChanged();
-            }
-        });
+//        imageView_rotate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bitmap mBitmap = addStoryViewPagerAdapter.getBitmap(viewPager.getCurrentItem());
+//                mBitmap = BitmapUtils.rotateBitmap(mBitmap, 90);
+//                addStoryViewPagerAdapter.setBitmap(viewPager.getCurrentItem(), mBitmap);
+//                addStoryViewPagerAdapter.notifyDataSetChanged();
+//            }
+//        });
+//
+//        imageView_snap.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
-        imageView_snap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //openGallery();
+//
+//        new BottomSheetImagePicker.Builder("ㅠㅜ")
+//                .multiSelect(3, 6)
+//                .requestTag("multi")
+//                .show(getChildFragmentManager(), null);
 
-            }
-        });
-
-        openGallery();
         return view;
     }
 
