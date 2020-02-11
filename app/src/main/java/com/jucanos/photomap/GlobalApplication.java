@@ -5,10 +5,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.bilibili.boxing.BoxingMediaLoader;
+import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.jucanos.photomap.Structure.GetUserInfo;
+import com.jucanos.photomap.photoPicker.BoxingGlideLoader;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
@@ -22,6 +25,7 @@ import java.util.HashMap;
 
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
+    private static Context appContext;
     public String token;
     public GetUserInfo authorization;
     public HashMap<String, String> cityKeyString = new HashMap<>();
@@ -108,6 +112,12 @@ public class GlobalApplication extends Application {
         cityKeyInt.put(7, "gyeongbuk");
         cityKeyInt.put(8, "gyeongnam");
         cityKeyInt.put(9, "jeju");
+
+
+        // for photoPicker image glider
+        appContext = getApplicationContext();
+        IBoxingMediaLoader loader = new BoxingGlideLoader();
+        BoxingMediaLoader.getInstance().init(loader);
 
         instance = this;
         KakaoSDK.init(new KakaoSDKAdapter());

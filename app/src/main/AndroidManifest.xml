@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
+        tools:replace="android:theme"
         android:usesCleartextTraffic="true">
 
         <!-- FCM 서비스 -->
@@ -34,9 +35,8 @@
         <activity android:name=".Activity.NoticeActivity" />
         <activity android:name=".Activity.SetRepActivity" />
         <activity android:name=".Activity.StoryActivity" />
-        <activity android:name=".Activity.GroupActivity">
-
-        </activity>
+        <activity android:name=".Activity.GroupActivity"/>
+        <activity android:name=".Activity.AddStoryImageActivity"/>
         <activity
             android:name=".Activity.AddGroupActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
@@ -62,10 +62,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

@@ -17,6 +17,7 @@ import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateStory;
+import com.kroegerama.imgpicker.BottomSheetImagePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -60,8 +61,16 @@ public class AddStoryActivity extends AppCompatActivity {
         addStoryFragmentImage = new AddStoryFragmentImage();
         fragmentManager.beginTransaction().replace(R.id.main_frame, addStoryFragmentImage).commit();
 
+
         mid = getIntent().getStringExtra("mid");
         cityKey = getIntent().getIntExtra("cityKey", -1);
+
+
+        new BottomSheetImagePicker.Builder("ㅠㅜ")
+                .multiSelect(3, 6)
+                .peekHeight(700)
+                .show(getSupportFragmentManager(), null);
+
     }
 
     public void setFrag(int pos) {
