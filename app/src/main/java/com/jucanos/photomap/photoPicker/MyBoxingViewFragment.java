@@ -4,8 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,16 +33,14 @@ import com.bilibili.boxing.model.entity.impl.ImageMedia;
 import com.bilibili.boxing.utils.BoxingFileHelper;
 import com.bilibili.boxing_impl.WindowManagerHelper;
 import com.bilibili.boxing_impl.adapter.BoxingAlbumAdapter;
-import com.bilibili.boxing_impl.adapter.BoxingMediaAdapter;
 import com.bilibili.boxing_impl.ui.BoxingViewActivity;
 import com.bilibili.boxing_impl.view.HackyGridLayoutManager;
-import com.bilibili.boxing_impl.view.MediaItemLayout;
 import com.bilibili.boxing_impl.view.SpacesItemDecoration;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.util.BitmapUtils;
 import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,7 +59,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     //private Button mOkBtn;
     private CoordinatorRecyclerView mRecycleView;
 
-    private BoxingMediaAdapter mMediaAdapter;
+    private MyBoxingMediaAdapter mMediaAdapter;
     private BoxingAlbumAdapter mAlbumWindowAdapter;
 
     private ProgressDialog mDialog;
@@ -76,9 +71,13 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     // My
     private FrameLayout frameLayout_container;
     private ArrayList<ImageCropView> imageCropViews = new ArrayList<>();
+
+    private ArrayList<MyMediaItemLayout> myMediaItemLayouts = new ArrayList<>();
+
     private CoordinatorLinearLayout parentLayout;
     private HashMap<String, Integer> hashMap_imageCropViews_pos = new HashMap<>();
     private String last_imageCropViews_id = "";
+    private MyMediaItemLayout current_layout = null; // 현재 보고있는 layout 정보
 
     private int mMaxCount;
 
@@ -89,7 +88,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     @Override
     public void onCreateWithSelectedMedias(Bundle savedInstanceState, @Nullable List<BaseMedia> selectedMedias) {
         mAlbumWindowAdapter = new BoxingAlbumAdapter(getContext());
-        mMediaAdapter = new BoxingMediaAdapter(getContext());
+        mMediaAdapter = new MyBoxingMediaAdapter(getContext());
         mMediaAdapter.setSelectedMedias(selectedMedias);
         mMaxCount = getMaxCount();
     }
@@ -239,7 +238,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     }
 
-    public BoxingMediaAdapter getMediaAdapter() {
+    public MyBoxingMediaAdapter getMediaAdapter() {
         return mMediaAdapter;
     }
 
@@ -472,30 +471,18 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                 }
                 ImageMedia photoMedia = (ImageMedia) iMedia;
                 boolean isSelected = !photoMedia.isSelected();
-                MediaItemLayout layout = (MediaItemLayout) view;
+                MyMediaItemLayout layout = (MyMediaItemLayout) view;
                 List<BaseMedia> selectedMedias = mMediaAdapter.getSelectedMedias();
 
                 if (!isSelected) {
                     if (last_imageCropViews_id.equals(photoMedia.getId())) {
-                        Log.e("debug pos", "1");
-                        photoMedia.setSelected(false);
-                        layout.setChecked(false);
-                        hashMap_imageCropViews_pos.remove(photoMedia.getId());
-                        selectedMedias.remove(photoMedia);
-
-                        // hash, seletedMeida 삭제 후 처리
-                        imageCropViews.get(selectedMedias.size()).resetDisplay();
-
-                        if (selectedMedias.size() >= 1) {
-                            setFrameLayout(selectedMedias.size());
-                        } else {
-                            last_imageCropViews_id = "";
-                            imageCropViews.get(0).setImageFilePath(mMediaAdapter.getAllMedias().get(0).getPath());
-                            setFrameLayout(0);
-                        }
+                        Log.e("photoPicker", "debug pos 1");
+                        removeImageMedia(photoMedia, selectedMedias, layout);
+                        return;
                     } else {
-                        Log.e("debug pos", "2");
-                        setFrameLayout(hashMap_imageCropViews_pos.get(photoMedia.getId()));
+                        Log.e("photoPicker", "debug pos 2");
+                        checkImageMedia(photoMedia, selectedMedias, layout);
+                        return;
                     }
                 } else {
                     // 5장 초과
@@ -505,27 +492,16 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         return;
                     }
                     if (!selectedMedias.contains(photoMedia)) {
-                        // 크기 초과
+                        // 이미지 크기(용량) 초과
                         if (photoMedia.isGifOverSize()) {
                             Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
                             return;
+                        } else {
+                            insertImageMedia(photoMedia, selectedMedias, layout);
+                            return;
                         }
-                        // 정상
-                        selectedMedias.add(photoMedia);
-                        String path = photoMedia.getPath();
-                        imageCropViews.get(hashMap_imageCropViews_pos.size()).setImageFilePath(path);
-                        hashMap_imageCropViews_pos.put(photoMedia.getId(), hashMap_imageCropViews_pos.size());
-                        Log.e("hash put", Integer.toString(hashMap_imageCropViews_pos.size()));
-                        setFrameLayout(hashMap_imageCropViews_pos.size() - 1);
-
                     }
-                    photoMedia.setSelected(isSelected); // adapter에서 체크 되있는 정보 유지
-                    layout.setChecked(isSelected);
-
-                    // toolbar 설정임 ( 아직 신경안써도 됨 )
-                    // updateMultiPickerLayoutState(selectedMedias);
                 }
-                last_imageCropViews_id = photoMedia.getId();
             }
         }
 
@@ -553,7 +529,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     // 오른쪽위에 클릭했을때
-    private class OnMediaCheckedListener implements BoxingMediaAdapter.OnMediaCheckedListener {
+    private class OnMediaCheckedListener implements MyBoxingMediaAdapter.OnMediaCheckedListener {
 
         @Override
         public void onChecked(View view, BaseMedia iMedia) {
@@ -562,26 +538,17 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
             }
             ImageMedia photoMedia = (ImageMedia) iMedia;
             boolean isSelected = !photoMedia.isSelected();
-            MediaItemLayout layout = (MediaItemLayout) view;
+            MyMediaItemLayout layout = (MyMediaItemLayout) view;
             List<BaseMedia> selectedMedias = mMediaAdapter.getSelectedMedias();
-
             if (!isSelected) {
                 if (last_imageCropViews_id.equals(photoMedia.getId())) {
-                    Log.e("debug pos", "1");
-                    photoMedia.setSelected(false);
-                    layout.setChecked(false);
-                    hashMap_imageCropViews_pos.remove(photoMedia.getId());
-                    selectedMedias.remove(photoMedia);
-                    if (selectedMedias.size() >= 1) {
-                        setFrameLayout(selectedMedias.size() - 1);
-                    } else {
-                        last_imageCropViews_id = "";
-                        imageCropViews.get(0).setImageFilePath(mMediaAdapter.getAllMedias().get(0).getPath());
-                        setFrameLayout(0);
-                    }
+                    Log.e("photoPicker", "debug pos 1");
+                    removeImageMedia(photoMedia, selectedMedias, layout);
+                    return;
                 } else {
-                    Log.e("debug pos", "2");
-                    setFrameLayout(hashMap_imageCropViews_pos.get(photoMedia.getId()));
+                    Log.e("photoPicker", "debug pos 2");
+                    checkImageMedia(photoMedia, selectedMedias, layout);
+                    return;
                 }
             } else {
                 // 5장 초과
@@ -591,27 +558,16 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                     return;
                 }
                 if (!selectedMedias.contains(photoMedia)) {
-                    // 크기 초과
+                    // 이미지 크기(용량) 초과
                     if (photoMedia.isGifOverSize()) {
                         Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
                         return;
+                    } else {
+                        insertImageMedia(photoMedia, selectedMedias, layout);
+                        return;
                     }
-                    // 정상
-                    selectedMedias.add(photoMedia);
-                    String path = photoMedia.getPath();
-                    imageCropViews.get(hashMap_imageCropViews_pos.size()).setImageFilePath(path);
-                    hashMap_imageCropViews_pos.put(photoMedia.getId(), hashMap_imageCropViews_pos.size());
-                    Log.e("hash put", Integer.toString(hashMap_imageCropViews_pos.size()));
-                    setFrameLayout(hashMap_imageCropViews_pos.size() - 1);
-
                 }
-                photoMedia.setSelected(isSelected); // adapter에서 체크 되있는 정보 유지
-                layout.setChecked(isSelected);
-
-                // toolbar 설정임 ( 아직 신경안써도 됨 )
-                // updateMultiPickerLayoutState(selectedMedias);
             }
-            last_imageCropViews_id = photoMedia.getId();
             // toolbar 설정임 ( 아직 신경안써도 됨 )
             // updateMultiPickerLayoutState(selectedMedias);
         }
@@ -645,5 +601,75 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
             if (i == pos) imageCropViews.get(i).setVisibility(View.VISIBLE);
             else imageCropViews.get(i).setVisibility(View.INVISIBLE);
         }
+    }
+
+
+    public void removeImageMedia(ImageMedia imageMedia, List<BaseMedia> selectedMedias, MyMediaItemLayout layout) {
+        imageMedia.setSelected(false);
+        layout.setChecked(false, 0);
+
+        hashMap_imageCropViews_pos.remove(imageMedia.getId());
+        selectedMedias.remove(imageMedia);
+
+        int removedIndex = myMediaItemLayouts.indexOf(layout);
+        for (int i = removedIndex; i < myMediaItemLayouts.size() - 1; i++) {
+            Collections.swap(imageCropViews, i, i + 1);
+        }
+        myMediaItemLayouts.remove(removedIndex);
+
+        resortCount();
+
+        if (selectedMedias.size() >= 1) {
+            Log.e("a", "1");
+            last_imageCropViews_id = selectedMedias.get(selectedMedias.size() - 1).getId();
+            setFrameLayout(selectedMedias.size() - 1);
+            refreshCurrent(myMediaItemLayouts.get(selectedMedias.size() - 1));
+        } else {
+            Log.e("a", "2");
+            last_imageCropViews_id = "";
+            imageCropViews.get(0).resetDisplay();
+            imageCropViews.get(0).setImageFilePath(mMediaAdapter.getAllMedias().get(0).getPath());
+            setFrameLayout(0);
+            refreshCurrent(null);
+        }
+    }
+
+    public void insertImageMedia(ImageMedia imageMedia, List<BaseMedia> selectedMedias, MyMediaItemLayout layout) {
+        selectedMedias.add(imageMedia);
+        String path = imageMedia.getPath();
+        imageCropViews.get(hashMap_imageCropViews_pos.size()).resetDisplay();
+        imageCropViews.get(hashMap_imageCropViews_pos.size()).setImageFilePath(path);
+        hashMap_imageCropViews_pos.put(imageMedia.getId(), hashMap_imageCropViews_pos.size());
+        Log.e("hash put", Integer.toString(hashMap_imageCropViews_pos.size()));
+        setFrameLayout(hashMap_imageCropViews_pos.size() - 1);
+        imageMedia.setSelected(true); // adapter에서 체크 되있는 정보 유지
+        layout.setChecked(true, hashMap_imageCropViews_pos.size());
+        myMediaItemLayouts.add(layout);
+
+        refreshCurrent(layout);
+        last_imageCropViews_id = imageMedia.getId();
+    }
+
+
+    public void checkImageMedia(ImageMedia imageMedia, List<BaseMedia> selectedMedias, MyMediaItemLayout layout) {
+        setFrameLayout(hashMap_imageCropViews_pos.get(imageMedia.getId()));
+        refreshCurrent(layout);
+        last_imageCropViews_id = imageMedia.getId();
+    }
+
+    public void resortCount() {
+        for (int i = 0; i < myMediaItemLayouts.size(); i++) {
+            myMediaItemLayouts.get(i).setCount(true, i + 1);
+        }
+    }
+
+    public void refreshCurrent(MyMediaItemLayout layout) {
+        if (current_layout != null)
+            current_layout.setCurrent(false);
+
+        if (layout != null)
+            layout.setCurrent(true);
+
+        current_layout = layout;
     }
 }

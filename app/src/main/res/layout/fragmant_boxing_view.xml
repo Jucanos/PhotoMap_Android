@@ -23,6 +23,13 @@
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:text="앨범" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다음"
+
+            />
+
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
@@ -39,7 +46,7 @@
             imagecrop:gridInnerStroke="1dp"
             imagecrop:gridOuterColor="#000000"
             imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:outsideLayerColor="#00000000"
             imagecrop:setInnerGridMode="on"
             imagecrop:setOuterGridMode="on" />
 
@@ -52,7 +59,7 @@
             imagecrop:gridInnerStroke="1dp"
             imagecrop:gridOuterColor="#000000"
             imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:outsideLayerColor="#00000000"
             imagecrop:setInnerGridMode="on"
             imagecrop:setOuterGridMode="on" />
 
@@ -65,7 +72,7 @@
             imagecrop:gridInnerStroke="1dp"
             imagecrop:gridOuterColor="#000000"
             imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:outsideLayerColor="#00000000"
             imagecrop:setInnerGridMode="on"
             imagecrop:setOuterGridMode="on" />
 
@@ -78,7 +85,7 @@
             imagecrop:gridInnerStroke="1dp"
             imagecrop:gridOuterColor="#000000"
             imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:outsideLayerColor="#00000000"
             imagecrop:setInnerGridMode="on"
             imagecrop:setOuterGridMode="on" />
 
@@ -91,7 +98,7 @@
             imagecrop:gridInnerStroke="1dp"
             imagecrop:gridOuterColor="#000000"
             imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#99000000"
+            imagecrop:outsideLayerColor="#00000000"
             imagecrop:setInnerGridMode="on"
             imagecrop:setOuterGridMode="on" />
 
