@@ -22,13 +22,7 @@
             android:drawableRight="@drawable/abc_spinner_mtrl_am_alpha"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:text="앨범" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="다음"
-
-            />
+            android:text="갤러리" />
 
     </androidx.appcompat.widget.Toolbar>
 

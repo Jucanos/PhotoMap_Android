@@ -32,7 +32,6 @@ import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bilibili.boxing.model.entity.impl.ImageMedia;
 import com.bilibili.boxing.utils.BoxingFileHelper;
 import com.bilibili.boxing_impl.WindowManagerHelper;
-import com.bilibili.boxing_impl.adapter.BoxingAlbumAdapter;
 import com.bilibili.boxing_impl.ui.BoxingViewActivity;
 import com.bilibili.boxing_impl.view.HackyGridLayoutManager;
 import com.bilibili.boxing_impl.view.SpacesItemDecoration;
@@ -70,17 +69,15 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private PopupWindow mAlbumPopWindow;
     private ProgressBar mLoadingView;
 
-    // My
+    // My Member
+
+    // for half fragment view
     private FrameLayout frameLayout_container;
+    private CoordinatorLinearLayout parentLayout;
+
     private ArrayList<ImageCropView> imageCropViews = new ArrayList<>();
 
-    private ArrayList<MyMediaItemLayout> myMediaItemLayouts = new ArrayList<>();
-
-    private CoordinatorLinearLayout parentLayout;
-    private HashMap<String, Integer> hashMap_imageCropViews_pos = new HashMap<>();
-    private String last_imageCropViews_id = "";
-    private MyMediaItemLayout current_layout = null; // 현재 보고있는 layout 정보
-
+    // default album
     private TextView album_text_view;
 
     private int mMaxCount;
@@ -507,7 +504,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
                 AlbumEntity albumMedia = albums.get(pos);
                 loadMedias(0, albumMedia.mBucketId);
-                mTitleTxt.setText(albumMedia.mBucketName == null ? getString(com.bilibili.boxing_impl.R.string.boxing_default_album_name) : albumMedia.mBucketName);
+                mTitleTxt.setText(albumMedia.mBucketName == null ? ("album") : albumMedia.mBucketName);
 
                 for (AlbumEntity album : albums) {
                     album.mIsSelected = false;
@@ -566,13 +563,12 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
             } else {
                 // 일단 필요없는부분
                 if (selectedMedias.size() >= mMaxCount) {
-                    String warning = getString(com.bilibili.boxing_impl.R.string.boxing_too_many_picture_fmt, mMaxCount);
-                    Toast.makeText(getActivity(), warning, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "최대 5장만 선택 가능합니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!selectedMedias.contains(photoMedia)) {
                     if (photoMedia.isGifOverSize()) {
-                        Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "이미지의 크기가 너무 큽니다", Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         Log.e("selectedMedias", "new insert");
