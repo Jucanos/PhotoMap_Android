@@ -544,7 +544,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                             seletedMediaInfoEntry.getValue().setPos(seletedMediaInfoEntry.getValue().getPos() - 1);
                         }
                         if (seletedMediaInfoEntry.getValue().getPos() == selectedMedias.size() - 2) {
-                            Log.e("!", "!!");
                             seletedMediaInfoEntry.getValue().setCur(true);
                         }
                     }
@@ -576,7 +575,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-                        Log.e("seletedMediaInfo", "new Image");
+                        Log.e("selectedMedias", "new insert");
                         // 새롭게 들어가는 곳
                         int lPos = selectedMedias.size() - 1;
                         int nPos = selectedMedias.size();
@@ -590,7 +589,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
                         seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, imageCropViews.get(cropViewPos)));
-
                         return;
                     }
                 }
