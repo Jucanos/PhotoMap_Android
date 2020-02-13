@@ -44,6 +44,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import dagger.multibindings.IntoMap;
+
 public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.OnClickListener {
     public static final String TAG = "com.bilibili.boxing_impl.ui.BoxingViewFragment";
     private static final int TOP_REMAIN_HEIGHT = 48;
@@ -78,6 +80,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private HashMap<String, Integer> hashMap_imageCropViews_pos = new HashMap<>();
     private String last_imageCropViews_id = "";
     private MyMediaItemLayout current_layout = null; // 현재 보고있는 layout 정보
+
+    private TextView album_text_view;
 
     private int mMaxCount;
 
@@ -141,7 +145,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image3));
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image4));
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image5));
-
+        album_text_view = view.findViewById(R.id.album_text_view);
 
 //        imageCropView1.setGridInnerMode(ImageCropView.GRID_OFF);
 //        imageCropView1.setGridOuterMode(ImageCropView.GRID_OFF);
@@ -151,6 +155,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         mRecycleView.setHasFixedSize(true);
         mLoadingView = (ProgressBar) view.findViewById(R.id.loading);
 
+
+        setTitleTxt(album_text_view);
         setLayoutSize();
         initRecycleView();
 
@@ -204,8 +210,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         mMediaAdapter.addAllData(medias);
         checkSelectedMedia(medias, mMediaAdapter.getSelectedMedias());
         imageCropViews.get(0).setImageFilePath(mMediaAdapter.getAllMedias().get(0).getPath());
-        setFrameLayout(0);
-
     }
 
     private boolean isEmptyData(List<BaseMedia> medias) {
@@ -458,51 +462,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         }
 
         private void multiImageClick(View view, BaseMedia iMedia, int pos) {
-            if (!mIsPreview) {
-//                AlbumEntity albumMedia = mAlbumWindowAdapter.getCurrentAlbum();
-//                String albumId = albumMedia != null ? albumMedia.mBucketId : AlbumEntity.DEFAULT_NAME;
-//                mIsPreview = true;
-//
-//                ArrayList<BaseMedia> medias = (ArrayList<BaseMedia>) mMediaAdapter.getSelectedMedias();
-                Log.e("[multiImageClick]", "image click");
-
-                if (!(iMedia instanceof ImageMedia)) {
-                    return;
-                }
-                ImageMedia photoMedia = (ImageMedia) iMedia;
-                boolean isSelected = !photoMedia.isSelected();
-                MyMediaItemLayout layout = (MyMediaItemLayout) view;
-                List<BaseMedia> selectedMedias = mMediaAdapter.getSelectedMedias();
-
-                if (!isSelected) {
-                    if (last_imageCropViews_id.equals(photoMedia.getId())) {
-                        Log.e("photoPicker", "debug pos 1");
-                        removeImageMedia(photoMedia, selectedMedias, layout);
-                        return;
-                    } else {
-                        Log.e("photoPicker", "debug pos 2");
-                        checkImageMedia(photoMedia, selectedMedias, layout);
-                        return;
-                    }
-                } else {
-                    // 5장 초과
-                    if (selectedMedias.size() >= mMaxCount) {
-                        String warning = getString(com.bilibili.boxing_impl.R.string.boxing_too_many_picture_fmt, mMaxCount);
-                        Toast.makeText(getActivity(), warning, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (!selectedMedias.contains(photoMedia)) {
-                        // 이미지 크기(용량) 초과
-                        if (photoMedia.isGifOverSize()) {
-                            Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
-                            return;
-                        } else {
-                            insertImageMedia(photoMedia, selectedMedias, layout);
-                            return;
-                        }
-                    }
-                }
-            }
+            ClickImage(view, iMedia);
         }
 
         private void singleImageClick(BaseMedia media) {
@@ -533,43 +493,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
         @Override
         public void onChecked(View view, BaseMedia iMedia) {
-            if (!(iMedia instanceof ImageMedia)) {
-                return;
-            }
-            ImageMedia photoMedia = (ImageMedia) iMedia;
-            boolean isSelected = !photoMedia.isSelected();
-            MyMediaItemLayout layout = (MyMediaItemLayout) view;
-            List<BaseMedia> selectedMedias = mMediaAdapter.getSelectedMedias();
-            if (!isSelected) {
-                if (last_imageCropViews_id.equals(photoMedia.getId())) {
-                    Log.e("photoPicker", "debug pos 1");
-                    removeImageMedia(photoMedia, selectedMedias, layout);
-                    return;
-                } else {
-                    Log.e("photoPicker", "debug pos 2");
-                    checkImageMedia(photoMedia, selectedMedias, layout);
-                    return;
-                }
-            } else {
-                // 5장 초과
-                if (selectedMedias.size() >= mMaxCount) {
-                    String warning = getString(com.bilibili.boxing_impl.R.string.boxing_too_many_picture_fmt, mMaxCount);
-                    Toast.makeText(getActivity(), warning, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!selectedMedias.contains(photoMedia)) {
-                    // 이미지 크기(용량) 초과
-                    if (photoMedia.isGifOverSize()) {
-                        Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        insertImageMedia(photoMedia, selectedMedias, layout);
-                        return;
-                    }
-                }
-            }
-            // toolbar 설정임 ( 아직 신경안써도 됨 )
-            // updateMultiPickerLayoutState(selectedMedias);
+            ClickImage(view, iMedia);
         }
     }
 
@@ -595,81 +519,85 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         }
     }
 
-    // my Function
-    public void setFrameLayout(int pos) {
-        for (int i = 0; i < 5; i++) {
-            if (i == pos) imageCropViews.get(i).setVisibility(View.VISIBLE);
-            else imageCropViews.get(i).setVisibility(View.INVISIBLE);
+    public void ClickImage(View view, BaseMedia iMedia) {
+        if (!mIsPreview) {
+            Log.e("[multiImageClick]", "image click");
+            if (!(iMedia instanceof ImageMedia)) {
+                return;
+            }
+            ImageMedia photoMedia = (ImageMedia) iMedia;
+            boolean preSelected = photoMedia.isSelected();
+            MyMediaItemLayout layout = (MyMediaItemLayout) view;
+
+            List<BaseMedia> selectedMedias = mMediaAdapter.getSelectedMedias();
+            HashMap<String, SeletedMediaInfo> seletedMediaInfoHashMap = mMediaAdapter.getSeletedMediaInfoHashMap();
+            Log.e("===============", photoMedia.getId() + "==============");
+            if (preSelected) {
+                SeletedMediaInfo seletedMediaInfo = seletedMediaInfoHashMap.get(photoMedia.getId());
+                if (seletedMediaInfo.getCur()) {
+                    Log.e("seletedMediaInfo", "getCur() is true");
+                    int removePos = seletedMediaInfo.clear();
+                    mMediaAdapter.getPq().offer(removePos);
+                    seletedMediaInfoHashMap.remove(photoMedia.getId());
+                    for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
+                        if (seletedMediaInfoEntry.getValue().getPos() > removePos) {
+                            seletedMediaInfoEntry.getValue().setPos(seletedMediaInfoEntry.getValue().getPos() - 1);
+                        }
+                        if (seletedMediaInfoEntry.getValue().getPos() == selectedMedias.size() - 2) {
+                            Log.e("!","!!");
+                            seletedMediaInfoEntry.getValue().setCur(true);
+                        }
+                    }
+                    photoMedia.setSelected(false);
+                    selectedMedias.remove(photoMedia);
+                } else {
+                    Log.e("seletedMediaInfo", "getCur() is false");
+                    for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
+                        if (seletedMediaInfoEntry.getValue().getCur()) {
+                            seletedMediaInfoEntry.getValue().setCur(false);
+                            Log.e("seletedMediaInfoEntry", seletedMediaInfoEntry.getKey() + "is set False");
+                            break;
+                        }
+                    }
+                    seletedMediaInfo.setCur(true);
+                    Log.e("seletedMediaInfoEntry", photoMedia.getId() + "is set true");
+
+                }
+
+            } else {
+                // 일단 필요없는부분
+                if (selectedMedias.size() >= mMaxCount) {
+                    String warning = getString(com.bilibili.boxing_impl.R.string.boxing_too_many_picture_fmt, mMaxCount);
+                    Toast.makeText(getActivity(), warning, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!selectedMedias.contains(photoMedia)) {
+                    if (photoMedia.isGifOverSize()) {
+                        Toast.makeText(getActivity(), com.bilibili.boxing_impl.R.string.boxing_gif_too_big, Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        Log.e("selectedMedias", "new insert");
+                        // 새롭게 들어가는 곳
+                        int lPos = selectedMedias.size() - 1;
+                        int nPos = selectedMedias.size();
+
+                        if (lPos >= 0) {
+                            String lId = selectedMedias.get(lPos).getId();
+                            SeletedMediaInfo lSeletedMediaInfo = seletedMediaInfoHashMap.get(lId);
+                            lSeletedMediaInfo.setCur(false);
+                        }
+
+                        selectedMedias.add(photoMedia);
+                        int cropViewPos = mMediaAdapter.getPq().poll();
+                        Log.e("cropViewPos ", Integer.toString(cropViewPos));
+                        seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, imageCropViews.get(cropViewPos)));
+                        Log.e("new insert", Integer.toString(selectedMedias.size()));
+
+                        return;
+                    }
+                }
+            }
         }
     }
 
-
-    public void removeImageMedia(ImageMedia imageMedia, List<BaseMedia> selectedMedias, MyMediaItemLayout layout) {
-        imageMedia.setSelected(false);
-        layout.setChecked(false, 0);
-
-        hashMap_imageCropViews_pos.remove(imageMedia.getId());
-        selectedMedias.remove(imageMedia);
-
-        int removedIndex = myMediaItemLayouts.indexOf(layout);
-        for (int i = removedIndex; i < myMediaItemLayouts.size() - 1; i++) {
-            Collections.swap(imageCropViews, i, i + 1);
-        }
-        myMediaItemLayouts.remove(removedIndex);
-
-        resortCount();
-
-        if (selectedMedias.size() >= 1) {
-            Log.e("a", "1");
-            last_imageCropViews_id = selectedMedias.get(selectedMedias.size() - 1).getId();
-            setFrameLayout(selectedMedias.size() - 1);
-            refreshCurrent(myMediaItemLayouts.get(selectedMedias.size() - 1));
-        } else {
-            Log.e("a", "2");
-            last_imageCropViews_id = "";
-            imageCropViews.get(0).resetDisplay();
-            imageCropViews.get(0).setImageFilePath(mMediaAdapter.getAllMedias().get(0).getPath());
-            setFrameLayout(0);
-            refreshCurrent(null);
-        }
-    }
-
-    public void insertImageMedia(ImageMedia imageMedia, List<BaseMedia> selectedMedias, MyMediaItemLayout layout) {
-        selectedMedias.add(imageMedia);
-        String path = imageMedia.getPath();
-        imageCropViews.get(hashMap_imageCropViews_pos.size()).resetDisplay();
-        imageCropViews.get(hashMap_imageCropViews_pos.size()).setImageFilePath(path);
-        hashMap_imageCropViews_pos.put(imageMedia.getId(), hashMap_imageCropViews_pos.size());
-        Log.e("hash put", Integer.toString(hashMap_imageCropViews_pos.size()));
-        setFrameLayout(hashMap_imageCropViews_pos.size() - 1);
-        imageMedia.setSelected(true); // adapter에서 체크 되있는 정보 유지
-        layout.setChecked(true, hashMap_imageCropViews_pos.size());
-        myMediaItemLayouts.add(layout);
-
-        refreshCurrent(layout);
-        last_imageCropViews_id = imageMedia.getId();
-    }
-
-
-    public void checkImageMedia(ImageMedia imageMedia, List<BaseMedia> selectedMedias, MyMediaItemLayout layout) {
-        setFrameLayout(hashMap_imageCropViews_pos.get(imageMedia.getId()));
-        refreshCurrent(layout);
-        last_imageCropViews_id = imageMedia.getId();
-    }
-
-    public void resortCount() {
-        for (int i = 0; i < myMediaItemLayouts.size(); i++) {
-            myMediaItemLayouts.get(i).setCount(true, i + 1);
-        }
-    }
-
-    public void refreshCurrent(MyMediaItemLayout layout) {
-        if (current_layout != null)
-            current_layout.setCurrent(false);
-
-        if (layout != null)
-            layout.setCurrent(true);
-
-        current_layout = layout;
-    }
 }

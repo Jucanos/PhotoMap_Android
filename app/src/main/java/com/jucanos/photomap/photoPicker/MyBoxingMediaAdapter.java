@@ -18,6 +18,7 @@ package com.jucanos.photomap.photoPicker;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,9 @@ import com.bilibili.boxing_impl.BoxingResHelper;
 import com.jucanos.photomap.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 
 /**
@@ -51,6 +54,7 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
 
     private List<BaseMedia> mMedias;
     private List<BaseMedia> mSelectedMedias;
+    // view Holder 를 수정해야 합니다.
     private LayoutInflater mInflater;
     private BoxingConfig mMediaConfig;
     private View.OnClickListener mOnCameraClickListener;
@@ -58,6 +62,12 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
     private MyBoxingMediaAdapter.OnCheckListener mOnCheckListener;
     private MyBoxingMediaAdapter.OnMediaCheckedListener mOnCheckedListener;
     private int mDefaultRes;
+
+    // My Member
+    // <meidaId,
+    private HashMap<String, SeletedMediaInfo> seletedMediaInfoHashMap;
+    private PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+
 
     public MyBoxingMediaAdapter(Context context) {
         this.mInflater = LayoutInflater.from(context);
@@ -68,6 +78,8 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
         this.mMultiImageMode = mMediaConfig.getMode() == BoxingConfig.Mode.MULTI_IMG;
         this.mOnCheckListener = new MyBoxingMediaAdapter.OnCheckListener();
         this.mDefaultRes = mMediaConfig.getMediaPlaceHolderRes();
+        this.seletedMediaInfoHashMap = new HashMap<>();
+        for (int i = 0; i < 5; i++) pq.offer(i);
     }
 
     @Override
@@ -104,8 +116,22 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
             vh.mItemLayout.setTag(R.id.media_item_check, pos);
             vh.mItemLayout.setMedia(media);
             vh.mItemChecked.setVisibility(mMultiImageMode ? View.VISIBLE : View.GONE);
+
             if (mMultiImageMode && media instanceof ImageMedia) {
-                vh.mItemLayout.setChecked(((ImageMedia) media).isSelected(),0);
+                final SeletedMediaInfo seletedMediaInfo = seletedMediaInfoHashMap.get(media.getId());
+                if (seletedMediaInfo == null) {
+                    vh.mItemLayout.setCount(false, 0);
+                    vh.mItemLayout.setCurrent(false);
+                } else {
+                    if (seletedMediaInfo.getCur()) {
+                        Log.e(" media.getId()", "Cur is true");
+                        vh.mItemLayout.setCurrent(true);
+                    } else {
+                        vh.mItemLayout.setCurrent(false);
+                    }
+                    vh.mItemLayout.setCount(true, seletedMediaInfo.getPos() + 1);
+                    seletedMediaInfo.setLayout(vh.mItemLayout);
+                }
                 vh.mItemChecked.setTag(R.id.media_layout, vh.mItemLayout);
                 vh.mItemChecked.setTag(media);
                 vh.mItemChecked.setOnClickListener(mOnCheckListener);
@@ -121,6 +147,22 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mMedias.size() + mOffset;
+    }
+
+    public HashMap<String, SeletedMediaInfo> getSeletedMediaInfoHashMap() {
+        return seletedMediaInfoHashMap;
+    }
+
+    public void setSeletedMediaInfoHashMap(HashMap<String, SeletedMediaInfo> seletedMediaInfoHashMap) {
+        this.seletedMediaInfoHashMap = seletedMediaInfoHashMap;
+    }
+
+    public PriorityQueue<Integer> getPq() {
+        return pq;
+    }
+
+    public void setPq(PriorityQueue<Integer> pq) {
+        this.pq = pq;
     }
 
     public void setOnCameraClickListener(View.OnClickListener onCameraClickListener) {
