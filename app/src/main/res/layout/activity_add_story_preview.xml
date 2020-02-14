@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:elevation="0dp"
     tools:context=".Activity.AddStoryPreviewActivity">
 
 
@@ -13,7 +14,8 @@
         style="@style/AppTheme.NoActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:elevation="20dp">
+        android:background="#FFFFFF"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
