@@ -6,21 +6,24 @@ import com.bilibili.boxing.model.entity.impl.ImageMedia;
 import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 
 public class SeletedMediaInfo {
-    private Integer mPos;
+    private Integer mCount;
     private boolean mCur;
     private MyMediaItemLayout mLayout;
     private ImageCropView mCropView;
     private ImageMedia mImgMedia;
+    private Integer mCropViewPos;
 
     SeletedMediaInfo() {
-        mPos = 0;
+        mCount = 0;
         mCur = false;
         mLayout = null;
         mCropView = null;
+        mCropViewPos= 0;
     }
 
     SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, ImageCropView imageCropView) {
-        mPos = pos;
+        mCount = pos;
+        mCropViewPos = pos;
         mCur = cur;
         mLayout = layout;
         mImgMedia = imageMedia;
@@ -36,13 +39,13 @@ public class SeletedMediaInfo {
         mCropView.setVisibility(View.VISIBLE);
     }
 
-    public void setPos(Integer pos) {
-        mPos = pos;
-        mLayout.setCount(true, pos + 1);
+    public void setCount(Integer count) {
+        mCount = count;
+        mLayout.setCount(true, count + 1);
     }
 
-    public Integer getPos() {
-        return mPos;
+    public Integer getCount() {
+        return mCount;
     }
 
     public void setCur(boolean cur) {
@@ -82,6 +85,14 @@ public class SeletedMediaInfo {
         this.mImgMedia = imgMedia;
     }
 
+    public Integer getCropViewPos() {
+        return mCropViewPos;
+    }
+
+    public void setCropViewPos(Integer CropViewPos) {
+        this.mCropViewPos = CropViewPos;
+    }
+
     public int clear() {
         mCropView.setVisibility(View.GONE);
         mImgMedia.setSelected(false);
@@ -90,7 +101,7 @@ public class SeletedMediaInfo {
         mLayout.setCount(false, 0);
         mLayout.setCurrent(false);
 
-        return getPos();
+        return mCropViewPos;
     }
 
 }

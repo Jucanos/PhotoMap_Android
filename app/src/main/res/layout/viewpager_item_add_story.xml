@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/frameLayout_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.naver.android.helloyako.imagecrop.view.ImageCropView
-            android:id="@+id/imageView_image"
-            xmlns:imagecrop="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            imagecrop:outsideLayerColor="#99000000"
-            imagecrop:setInnerGridMode="on"
-            imagecrop:gridInnerStroke="1dp"
-            imagecrop:gridInnerColor="#66ffffff"
-            imagecrop:setOuterGridMode="on"
-            imagecrop:gridOuterStroke="1dp"
-            imagecrop:gridOuterColor="#ffffff"/>
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/imageView_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -30,12 +31,10 @@ public class AddStoryViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_item_add_story, null);
 
-        final ImageCropView imageView = view.findViewById(R.id.imageView_image);
-        imageViewList.add(imageView);
-        imageView.setGridInnerMode(ImageCropView.GRID_ON);
-        imageView.setGridOuterMode(ImageCropView.GRID_ON);
+        final ImageView imageView = view.findViewById(R.id.imageView_image);
         imageView.setImageBitmap(imageList.get(position));
         container.addView(view);
+
         return view;
     }
 

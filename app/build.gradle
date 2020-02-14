@@ -82,6 +82,12 @@ dependencies {
 
     // for loading layout
     implementation 'com.github.medyo:dynamicbox:1.2@aar'
+
+    // for image slider
+    implementation 'com.github.smarteist:autoimageslider:1.3.3'
+
+    // FOR IMAGE FILETER
+    implementation 'info.androidhive:imagefilters:1.0.7'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -159,7 +159,6 @@ public class BitmapUtils {
      * to 100.
      *
      * @param bm   The bitmap.
-     * @param file The file to write the bitmap into.
      */
     //create a file to write bitmap data
     public static String saveBitmap(String filename, Bitmap bm,int quality,Context mContext) throws IOException {
@@ -212,6 +211,17 @@ public class BitmapUtils {
         File imgFile = new File(path);
         if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            return myBitmap;
+        }else{
+            return null;
+        }
+    }
+
+    public static Bitmap getBitmapByPathMutable(String path){
+        File imgFile = new File(path);
+        BitmapFactory.Options opts = new BitmapFactory.Options(); opts.inMutable = true;
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(),opts);
             return myBitmap;
         }else{
             return null;
