@@ -129,7 +129,7 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
                     } else {
                         vh.mItemLayout.setCurrent(false);
                     }
-                    vh.mItemLayout.setCount(true, seletedMediaInfo.getPos() + 1);
+                    vh.mItemLayout.setCount(true, seletedMediaInfo.getCount() + 1);
                     seletedMediaInfo.setLayout(vh.mItemLayout);
                 }
                 vh.mItemChecked.setTag(R.id.media_layout, vh.mItemLayout);

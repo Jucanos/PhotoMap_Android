@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,15 +37,17 @@ import com.bilibili.boxing_impl.WindowManagerHelper;
 import com.bilibili.boxing_impl.ui.BoxingViewActivity;
 import com.bilibili.boxing_impl.view.HackyGridLayoutManager;
 import com.bilibili.boxing_impl.view.SpacesItemDecoration;
+import com.jucanos.photomap.Activity.AddStoryPreviewActivity;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.util.BitmapUtils;
 import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-
-import dagger.multibindings.IntoMap;
 
 public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.OnClickListener {
     public static final String TAG = "com.bilibili.boxing_impl.ui.BoxingViewFragment";
@@ -69,18 +73,26 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private PopupWindow mAlbumPopWindow;
     private ProgressBar mLoadingView;
 
-    // My Member
+    private int mMaxCount;
 
+    /**
+     * My Member
+     **/
     // for half fragment view
     private FrameLayout frameLayout_container;
     private CoordinatorLinearLayout parentLayout;
 
+    // for controling cropView image
     private ArrayList<ImageCropView> imageCropViews = new ArrayList<>();
 
     // default album
     private TextView album_text_view;
 
-    private int mMaxCount;
+    // requestcode
+    private final int ADD_STORY_REQUEST = 1;
+
+    private TextView textView_next;
+
 
     public static MyBoxingViewFragment newInstance() {
         return new MyBoxingViewFragment();
@@ -143,6 +155,9 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image4));
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image5));
         album_text_view = view.findViewById(R.id.album_text_view);
+        textView_next = view.findViewById(R.id.textView_next);
+
+        textView_next.setOnClickListener(this);
 
 //        imageCropView1.setGridInnerMode(ImageCropView.GRID_OFF);
 //        imageCropView1.setGridOuterMode(ImageCropView.GRID_OFF);
@@ -296,6 +311,15 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        switch (id) {
+            case R.id.textView_next:
+                try {
+                    redirectAddStoryActivity();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
 //        if (id == R.id.choose_ok_btn) {
 //            onFinish(mMediaAdapter.getSelectedMedias());
 //        } else if (id == R.id.choose_preview_btn) {
@@ -537,10 +561,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                     mMediaAdapter.getPq().offer(removePos);
                     seletedMediaInfoHashMap.remove(photoMedia.getId());
                     for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
-                        if (seletedMediaInfoEntry.getValue().getPos() > removePos) {
-                            seletedMediaInfoEntry.getValue().setPos(seletedMediaInfoEntry.getValue().getPos() - 1);
+                        if (seletedMediaInfoEntry.getValue().getCount() > removePos) {
+                            seletedMediaInfoEntry.getValue().setCount(seletedMediaInfoEntry.getValue().getCount() - 1);
                         }
-                        if (seletedMediaInfoEntry.getValue().getPos() == selectedMedias.size() - 2) {
+                        if (seletedMediaInfoEntry.getValue().getCount() == selectedMedias.size() - 2) {
                             seletedMediaInfoEntry.getValue().setCur(true);
                         }
                     }
@@ -585,6 +609,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
                         seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, imageCropViews.get(cropViewPos)));
+                        Log.e("nPos",Integer.toString(nPos));
                         return;
                     }
                 }
@@ -592,4 +617,38 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         }
     }
 
+    public void redirectAddStoryActivity() throws IOException {
+
+        ArrayList<Pair<Integer,String>> aPaths = new ArrayList<>();
+        ArrayList<String> bPaths = new ArrayList<>();
+
+        for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : mMediaAdapter.getSeletedMediaInfoHashMap().entrySet()) {
+            String fileName = "image_" + System.currentTimeMillis();
+            Bitmap bm = seletedMediaInfoEntry.getValue().getmCropView().getCroppedImage();
+            String path = BitmapUtils.saveBitmap(fileName,bm,100,getActivity().getApplicationContext());
+            Integer order = seletedMediaInfoEntry.getValue().getCount();
+            aPaths.add(new Pair<Integer, String>(order,path));
+        }
+
+        Collections.sort(aPaths, new Comparator<Pair<Integer, String>>() {
+            @Override
+            public int compare(Pair<Integer, String> o1, Pair<Integer, String> o2) {
+                return o1.first.compareTo(o2.first) ;
+            }
+        });
+
+        for(int i = 0 ; i < aPaths.size(); i++){
+            Log.e(Integer.toString(aPaths.get(i).first),aPaths.get(i).second);
+        }
+
+        for(int i = 0 ; i < aPaths.size(); i++){
+            bPaths.add(aPaths.get(i).second);
+        }
+
+        Intent intent = new Intent(getActivity(), AddStoryPreviewActivity.class);
+        intent.putStringArrayListExtra("paths",bPaths);
+
+        startActivityForResult(intent, ADD_STORY_REQUEST);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
 }
