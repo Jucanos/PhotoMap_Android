@@ -1,10 +1,13 @@
 package com.jucanos.photomap.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,24 +26,27 @@ import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.utils.ThumbnailItem;
 import com.zomato.photofilters.utils.ThumbnailsManager;
 
+import org.w3c.dom.Text;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, View.OnClickListener {
     static {
         System.loadLibrary("NativeImageProcessor");
     }
 
     private SliderView sliderView;
     private ArrayList<String> paths = new ArrayList<>();
-    private MyRecyclerViewAdapter mFilterAdapter;
     private SliderAdapterExample mSlideradapter;
+    private MyRecyclerViewAdapter mFilterAdapter;
+    private TextView textView_next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_story_preview);
-
 
         getIntentData();
         initView();
@@ -53,12 +59,14 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     public void getIntentData() {
         paths = getIntent().getStringArrayListExtra("paths");
-        Log.e("paths size : ",Integer.toString(paths.size()));
+        Log.e("paths size : ", Integer.toString(paths.size()));
 
     }
 
     public void initView() {
         sliderView = findViewById(R.id.imageSlider);
+        textView_next = findViewById(R.id.textView_next);
+        textView_next.setOnClickListener(this);
     }
 
     public void loadImages() {
@@ -114,9 +122,37 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     @Override
     public void onItemClick(View view, int position) {
         Log.e("current Position", Integer.toString(sliderView.getCurrentPagePosition()));
-        Integer viewPos = sliderView.getCurrentPagePosition();
+        int viewPos = sliderView.getCurrentPagePosition();
         ThumbnailItem thumbnailItem = mFilterAdapter.getItem(position);
         mSlideradapter.setFilter(viewPos, thumbnailItem);
         mSlideradapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.textView_next) {
+            try {
+                redirectRegionActivity();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void redirectRegionActivity() throws IOException {
+        ArrayList<String> paths = new ArrayList<>();
+
+        for (int i = 0; i < mSlideradapter.getCount(); i++) {
+            Bitmap bm = mSlideradapter.getBitmap(i);
+            String fileName = "image_" + System.currentTimeMillis();
+            String path = BitmapUtils.saveBitmap(fileName, bm, 100, this);
+            paths.add(path);
+        }
+
+        Intent intent = new Intent(this, AddStoryPeedActivity.class);
+        intent.putStringArrayListExtra("paths",paths);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 }

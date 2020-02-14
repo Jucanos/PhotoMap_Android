@@ -15,11 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="#FFFFFF"
-        >
+        android:elevation="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/album_text_view"
                 android:layout_width="wrap_content"
@@ -28,6 +29,7 @@
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:text="필터" />
+
             <TextView
                 android:id="@+id/textView_next"
                 android:layout_width="wrap_content"
@@ -35,6 +37,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
                 android:text="다음"
                 android:textColor="#6173FF" />
 
@@ -64,8 +68,7 @@
             app:sliderIndicatorSelectedColor="#5A5A5A"
             app:sliderIndicatorUnselectedColor="#FFF"
             app:sliderScrollTimeInSec="1"
-            app:sliderStartAutoCycle="false"
-            />
+            app:sliderStartAutoCycle="false" />
 
     </androidx.cardview.widget.CardView>
 

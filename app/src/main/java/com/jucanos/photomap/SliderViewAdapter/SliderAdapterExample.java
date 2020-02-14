@@ -61,4 +61,8 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
         bBitmaps.set(x, BitmapUtils.getBitmapByPathMutable(paths.get(x)));
         thumbnailItem.filter.processFilter(bBitmaps.get(x));
     }
+
+    public Bitmap getBitmap(int x){
+        return bBitmaps.get(x);
+    }
 }
