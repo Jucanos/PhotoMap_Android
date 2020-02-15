@@ -467,12 +467,12 @@
 
         <ImageView
             android:layout_width="45dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="356dp"
             android:layout_marginTop="157dp"
-            android:src="@drawable/dokdo" />
+            android:src="@drawable/ic_icon_dokdo" />
 
     </RelativeLayout>
 
