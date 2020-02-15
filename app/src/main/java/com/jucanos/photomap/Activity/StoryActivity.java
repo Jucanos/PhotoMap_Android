@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +19,13 @@ import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
+import com.jucanos.photomap.Structure.GetStoryListData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
@@ -36,7 +41,7 @@ public class StoryActivity extends AppCompatActivity {
     private int EDIT_STORY_REQUEST = 2;
 
     private String mid;
-    private Integer citykey;
+    private String cityKey;
 
     // for loading
     private DynamicBox box;
@@ -54,7 +59,7 @@ public class StoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Group Name");
 
         mid = getIntent().getStringExtra("mid");
-        citykey = getIntent().getIntExtra("citykey", -1);
+        cityKey = getIntent().getStringExtra("cityKey");
 
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
@@ -83,8 +88,7 @@ public class StoryActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.item_add:
-                //redirectAddStoryActivity(mid);
-                startActivity(new Intent(StoryActivity.this, AddStoryImageActivity.class));
+                redirectAddStoryActivity(mid);
                 return true;
             case android.R.id.home:
                 finish();
@@ -95,22 +99,22 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     public void redirectAddStoryActivity(String mid) {
-        Intent intent = new Intent(this, AddStoryActivity.class);
+        Intent intent = new Intent(this, AddStoryImageActivity.class);
         intent.putExtra("mid", mid);
-        intent.putExtra("cityKey", citykey);
+        intent.putExtra("cityKey", cityKey);
 
         startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     public void redirectEditStoryActivity(String sid, String title, String context, int pos) {
-        Intent intent = new Intent(this, EditStoryActivity.class);
-        intent.putExtra("sid", sid);
-        intent.putExtra("title", title);
-        intent.putExtra("context", context);
-        intent.putExtra("pos", pos);
-        startActivityForResult(intent, EDIT_STORY_REQUEST);
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+//        Intent intent = new Intent(this, EditStoryActivity.class);
+//        intent.putExtra("sid", sid);
+//        intent.putExtra("title", title);
+//        intent.putExtra("context", context);
+//        intent.putExtra("pos", pos);
+//        startActivityForResult(intent, EDIT_STORY_REQUEST);
+//        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     @Override
@@ -124,8 +128,10 @@ public class StoryActivity extends AppCompatActivity {
                 ArrayList<String> files = data.getStringArrayListExtra("files");
                 String sid = data.getStringExtra("sid");
                 String mid = data.getStringExtra("mid");
-                Date createdAt =  new Date(System.currentTimeMillis());
+                Date createdAt = new Date(System.currentTimeMillis());
                 Date updatedAt = new Date(System.currentTimeMillis());
+                storyListViewItem.setThumbnail(globalApplication.authorization.getUserData().getThumbnail());
+                storyListViewItem.setCreator(globalApplication.authorization.getUserData().getUid());
                 storyListViewItem.setCreatedAt(createdAt);
                 storyListViewItem.setUpdatedAt(updatedAt);
                 storyListViewItem.setTitle(title);
@@ -133,7 +139,7 @@ public class StoryActivity extends AppCompatActivity {
                 storyListViewItem.setFiles(files);
                 storyListViewItem.setSid(sid);
                 storyListViewItem.setMid(mid);
-                addStoryTest(storyListViewItem);
+                addStoryTest(storyListViewItem, false);
             } else if (requestCode == EDIT_STORY_REQUEST) {
                 int pos = data.getIntExtra("pos", -1);
                 String title = data.getStringExtra("title");
@@ -148,12 +154,18 @@ public class StoryActivity extends AppCompatActivity {
 
     void loadStoryList() {
         box.showLoadingLayout();
-        final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, globalApplication.cityKeyInt.get(citykey));
+        final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList("Bearer " + globalApplication.token, mid, cityKey);
         res.enqueue(new Callback<GetStoryList>() {
             @Override
             public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+                        Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
+                            @Override
+                            public int compare(GetStoryListData o1, GetStoryListData o2) {
+                                return o1.getCreatedAt().compareTo(o2.getCreatedAt());
+                            }
+                        });
                         for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
                             Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
                             Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
@@ -184,7 +196,7 @@ public class StoryActivity extends AppCompatActivity {
                             storyListViewItem.setSid(sid);
                             storyListViewItem.setMid(mid);
                             storyListViewItem.setCreator(creator);
-                            addStoryTest(storyListViewItem);
+                            addStoryTest(storyListViewItem, false);
                         }
                         box.hideAll();
                     }
@@ -201,8 +213,8 @@ public class StoryActivity extends AppCompatActivity {
         });
     }
 
-    void addStoryTest(StoryListViewItem storyListViewItem) {
-        listView_storyApater.addItem(storyListViewItem);
+    void addStoryTest(StoryListViewItem storyListViewItem, boolean pushBack) {
+        listView_storyApater.addItem(storyListViewItem, pushBack);
         listView_storyApater.notifyDataSetChanged();
     }
 }

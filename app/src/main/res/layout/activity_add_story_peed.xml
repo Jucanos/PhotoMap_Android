@@ -54,6 +54,7 @@
         app:cardCornerRadius="6dp">
 
         <EditText
+            android:id="@+id/editText_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorWhite"
@@ -72,7 +73,7 @@
         app:cardCornerRadius="6dp">
 
         <EditText
-            android:id="@+id/editText_description"
+            android:id="@+id/editText_context"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

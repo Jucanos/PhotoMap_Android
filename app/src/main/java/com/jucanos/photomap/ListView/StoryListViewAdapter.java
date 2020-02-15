@@ -2,13 +2,13 @@ package com.jucanos.photomap.ListView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,23 +16,22 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
-import com.jucanos.photomap.Activity.EditStoryActivity;
 import com.jucanos.photomap.Activity.SetRepActivity;
-import com.jucanos.photomap.Activity.StoryActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.SliderViewAdapter.SliderAdapterStoryItem;
 import com.jucanos.photomap.Structure.RemoveStory;
-import com.jucanos.photomap.Viewpager.CustomViewPager;
-import com.jucanos.photomap.Viewpager.StoryViewPagerAdapter;
+import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -40,10 +39,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StoryListViewAdapter extends BaseAdapter {
-    private GlobalApplication globalApplication;
-    private final int EDIT_STORY_REQEUST = 3;
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<StoryListViewItem> listViewItemList = new ArrayList<StoryListViewItem>();
+    private SliderAdapterStoryItem setSliderAdapter;
 
     // ListViewAdapter의 생성자
     public StoryListViewAdapter() {
@@ -70,11 +68,16 @@ public class StoryListViewAdapter extends BaseAdapter {
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         final CircleImageView circleImageView_thumbnail = convertView.findViewById(R.id.circleImageView_thumbnail);
+        final TextView textView_creator = convertView.findViewById(R.id.textView_creator);
         final TextView textView_title = convertView.findViewById(R.id.textView_title);
         final TextView textView_upload = convertView.findViewById(R.id.textView_upload);
         final ImageView imageView_more = convertView.findViewById(R.id.imageView_more);
-        final CustomViewPager customViewPager_vp = convertView.findViewById(R.id.customViewPager_vp);
-        final ExpandableTextView expandableTextView_description = convertView.findViewById(R.id.expandableTextView_description);
+        final SliderView sliderView = convertView.findViewById(R.id.imageSlider);
+
+        sliderView.getLayoutParams().height = ViewUtils.getScreenWidth();
+        sliderView.getLayoutParams().width = ViewUtils.getScreenWidth();
+
+        final ExpandableTextView expandableTextView_description = convertView.findViewById(R.id.expandableTextView_context);
 
         // instance of position
         final StoryListViewItem listViewItem = listViewItemList.get(position);
@@ -87,11 +90,18 @@ public class StoryListViewAdapter extends BaseAdapter {
 
 
         // story images
-        final StoryViewPagerAdapter StoryViewPagerAdapter = new StoryViewPagerAdapter(context, listViewItem.getFiles());
-        customViewPager_vp.setAdapter(StoryViewPagerAdapter);
+        setSliderAdapter = new SliderAdapterStoryItem(context, listViewItem.getFiles());
+        sliderView.setSliderAdapter(setSliderAdapter);
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        sliderView.setAutoCycle(false);
+        sliderView.setIndicatorUnselectedColor(Color.WHITE);
+        sliderView.setIndicatorSelectedColor(Color.BLACK);
+        sliderView.setCircularHandlerEnabled(false);
 
+        textView_creator.setText(GlobalApplication.getGlobalApplicationContext().userNickName.get(listViewItem.getCreator()));
         textView_title.setText(listViewItem.getTitle());
-        textView_upload.setText((new SimpleDateFormat("yyyy-MM-dd hh").format(listViewItem.getCreatedAt())));
+        textView_upload.setText((new SimpleDateFormat("yyyy/MM/dd").format(listViewItem.getCreatedAt())));
         expandableTextView_description.setText(listViewItem.getContext());
 
         imageView_more.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +118,8 @@ public class StoryListViewAdapter extends BaseAdapter {
                     @Override
                     public void onEditClicked() {
                         Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
-                        final Intent intent = new Intent(context, EditStoryActivity.class);
-                        ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
+//                        final Intent intent = new Intent(context, EditStoryActivity.class);
+//                        ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
                     }
 
                     @Override
@@ -143,8 +153,10 @@ public class StoryListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(StoryListViewItem item) {
-        listViewItemList.add(item);
+    public void addItem(StoryListViewItem item, boolean pushBack) {
+        if (!pushBack) listViewItemList.add(0, item);
+        else listViewItemList.add(item);
+
     }
 
 

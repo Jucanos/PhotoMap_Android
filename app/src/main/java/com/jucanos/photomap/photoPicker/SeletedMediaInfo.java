@@ -21,7 +21,7 @@ public class SeletedMediaInfo {
         mCropViewPos= 0;
     }
 
-    SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, ImageCropView imageCropView) {
+    public SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, ImageCropView imageCropView) {
         mCount = pos;
         mCropViewPos = pos;
         mCur = cur;
@@ -96,7 +96,6 @@ public class SeletedMediaInfo {
     public int clear() {
         mCropView.setVisibility(View.GONE);
         mImgMedia.setSelected(false);
-
 
         mLayout.setCount(false, 0);
         mLayout.setCurrent(false);

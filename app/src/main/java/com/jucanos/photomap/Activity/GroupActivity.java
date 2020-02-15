@@ -410,10 +410,10 @@ public class GroupActivity extends AppCompatActivity {
         return px / density;     // dp 값 반환
     }
 
-    public void redirectRegionActivity(int citykey) {
+    public void redirectRegionActivity(int cityKey) {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
-        intent.putExtra("citykey", citykey);
+        intent.putExtra("cityKey", globalApplication.cityKeyInt.get(cityKey));
 
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
@@ -457,6 +457,7 @@ public class GroupActivity extends AppCompatActivity {
                             String name = response.body().getData().getGetMapInfoDataOwners().get(i).getNickname();
                             String uid = response.body().getData().getGetMapInfoDataOwners().get(i).getUid();
                             globalApplication.userThumbnail.put(uid, thumbnail);
+                            globalApplication.userNickName.put(uid,name);
                             MemberListViewItem memberListViewItem = new MemberListViewItem(thumbnail, name);
                             adapter.addItem(memberListViewItem);
                         }
