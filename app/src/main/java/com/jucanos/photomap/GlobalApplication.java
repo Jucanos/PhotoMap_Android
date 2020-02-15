@@ -30,7 +30,9 @@ public class GlobalApplication extends Application {
     public GetUserInfo authorization;
     public HashMap<String, String> cityKeyString = new HashMap<>();
     public HashMap<Integer, String> cityKeyInt = new HashMap<>();
+
     public HashMap<String, String> userThumbnail = new HashMap<>();
+    public HashMap<String, String> userNickName = new HashMap<>();
 
     public static GlobalApplication getInstance() {
         return instance;

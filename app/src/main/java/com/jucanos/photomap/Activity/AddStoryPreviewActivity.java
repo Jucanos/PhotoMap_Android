@@ -13,10 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.MyRecyclerViewAdapter;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.SliderViewAdapter.SliderAdapterExample;
+import com.jucanos.photomap.SliderViewAdapter.SliderAdapterAddStoryImage;
 import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.jucanos.photomap.util.BitmapUtils;
 import com.smarteist.autoimageslider.IndicatorAnimations;
@@ -27,11 +26,8 @@ import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.utils.ThumbnailItem;
 import com.zomato.photofilters.utils.ThumbnailsManager;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, View.OnClickListener {
@@ -43,7 +39,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     private SliderView sliderView;
     private ArrayList<String> paths = new ArrayList<>();
-    private SliderAdapterExample mSlideradapter;
+    private SliderAdapterAddStoryImage mSlideradapter;
     private MyRecyclerViewAdapter mFilterAdapter;
     private TextView textView_next;
 
@@ -79,7 +75,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     }
 
     public void loadImages() {
-        mSlideradapter = new SliderAdapterExample(this, paths);
+        mSlideradapter = new SliderAdapterAddStoryImage(this, paths);
         sliderView.setSliderAdapter(mSlideradapter);
         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);

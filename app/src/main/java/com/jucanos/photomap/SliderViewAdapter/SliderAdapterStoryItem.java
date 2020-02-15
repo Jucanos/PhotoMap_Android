@@ -1,33 +1,25 @@
 package com.jucanos.photomap.SliderViewAdapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.util.BitmapUtils;
 import com.smarteist.autoimageslider.SliderViewAdapter;
-import com.zomato.photofilters.utils.ThumbnailItem;
 
 import java.util.ArrayList;
 
-public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
+public class SliderAdapterStoryItem extends SliderViewAdapter<SliderAdapterStoryItem.SliderAdapterVH> {
 
     private Context context;
     private ArrayList<String> paths = new ArrayList<>();
-    private ArrayList<Bitmap> aBitmaps = new ArrayList<>();
-    private ArrayList<Bitmap> bBitmaps = new ArrayList<>();
 
-    public SliderAdapterExample(Context context, ArrayList<String> paths) {
+    public SliderAdapterStoryItem(Context context, ArrayList<String> paths) {
         this.context = context;
         this.paths = paths;
-        for (int i = 0; i < paths.size(); i++) {
-            aBitmaps.add(BitmapUtils.getBitmapByPathMutable(paths.get(i)));
-            bBitmaps.add(BitmapUtils.getBitmapByPathMutable(paths.get(i)));
-        }
     }
 
     @Override
@@ -38,7 +30,7 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
 
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, int position) {
-        viewHolder.imageViewBackground.setImageBitmap(bBitmaps.get(position));
+        Glide.with(context).load(paths.get(position)).into(viewHolder.imageViewBackground);
     }
 
     @Override
@@ -55,14 +47,5 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
             imageViewBackground = itemView.findViewById(R.id.iv_auto_image_slider);
             this.itemView = itemView;
         }
-    }
-
-    public void setFilter(int x, ThumbnailItem thumbnailItem) {
-        bBitmaps.set(x, BitmapUtils.getBitmapByPathMutable(paths.get(x)));
-        thumbnailItem.filter.processFilter(bBitmaps.get(x));
-    }
-
-    public Bitmap getBitmap(int x){
-        return bBitmaps.get(x);
     }
 }

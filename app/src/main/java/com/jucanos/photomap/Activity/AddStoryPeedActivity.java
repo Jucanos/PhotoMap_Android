@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.SliderViewAdapter.SliderAdapterExample;
+import com.jucanos.photomap.SliderViewAdapter.SliderAdapterAddStoryImage;
 import com.jucanos.photomap.Structure.CreateStory;
 import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.smarteist.autoimageslider.IndicatorAnimations;
@@ -44,7 +44,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     private EditText editText_title, editText_context;
 
     private ArrayList<String> paths = new ArrayList<>();
-    private SliderAdapterExample mSlideradapter;
+    private SliderAdapterAddStoryImage mSlideradapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void loadImages(){
-        mSlideradapter = new SliderAdapterExample(this, paths);
+        mSlideradapter = new SliderAdapterAddStoryImage(this, paths);
         sliderView.setSliderAdapter(mSlideradapter);
         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);

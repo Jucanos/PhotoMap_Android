@@ -457,6 +457,7 @@ public class GroupActivity extends AppCompatActivity {
                             String name = response.body().getData().getGetMapInfoDataOwners().get(i).getNickname();
                             String uid = response.body().getData().getGetMapInfoDataOwners().get(i).getUid();
                             globalApplication.userThumbnail.put(uid, thumbnail);
+                            globalApplication.userNickName.put(uid,name);
                             MemberListViewItem memberListViewItem = new MemberListViewItem(thumbnail, name);
                             adapter.addItem(memberListViewItem);
                         }

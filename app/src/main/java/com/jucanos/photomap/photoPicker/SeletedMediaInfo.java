@@ -21,7 +21,7 @@ public class SeletedMediaInfo {
         mCropViewPos= 0;
     }
 
-    SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, ImageCropView imageCropView) {
+    public SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, ImageCropView imageCropView) {
         mCount = pos;
         mCropViewPos = pos;
         mCur = cur;

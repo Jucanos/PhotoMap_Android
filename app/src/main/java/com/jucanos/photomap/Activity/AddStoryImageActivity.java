@@ -13,14 +13,14 @@ import com.bilibili.boxing.AbsBoxingViewFragment;
 import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.photoPicker.MyBoxingViewFragment;
+import com.jucanos.photomap.Fragment.MyBoxingViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class AddStoryImageActivity extends AbsBoxingActivity {
-    private com.jucanos.photomap.photoPicker.MyBoxingViewFragment MyBoxingViewFragment;
+    private com.jucanos.photomap.Fragment.MyBoxingViewFragment MyBoxingViewFragment;
 
 
     // intent request code

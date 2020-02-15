@@ -1,4 +1,4 @@
-package com.jucanos.photomap.photoPicker;
+package com.jucanos.photomap.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -39,6 +39,13 @@ import com.bilibili.boxing_impl.view.HackyGridLayoutManager;
 import com.bilibili.boxing_impl.view.SpacesItemDecoration;
 import com.jucanos.photomap.Activity.AddStoryPreviewActivity;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.photoPicker.BoxingAlbumAdapter;
+import com.jucanos.photomap.photoPicker.CoordinatorLinearLayout;
+import com.jucanos.photomap.photoPicker.CoordinatorRecyclerView;
+import com.jucanos.photomap.photoPicker.MyBoxingMediaAdapter;
+import com.jucanos.photomap.photoPicker.MyMediaItemLayout;
+import com.jucanos.photomap.photoPicker.SeletedMediaInfo;
+import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.jucanos.photomap.util.BitmapUtils;
 import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +19,13 @@ import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
+import com.jucanos.photomap.Structure.GetStoryListData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
@@ -155,6 +160,12 @@ public class StoryActivity extends AppCompatActivity {
             public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+                        Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
+                            @Override
+                            public int compare(GetStoryListData o1, GetStoryListData o2) {
+                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+                            }
+                        });
                         for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
                             Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
                             Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
