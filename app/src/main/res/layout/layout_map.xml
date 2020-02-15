@@ -93,7 +93,7 @@
             android:layout_height="140dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="149dp"
+            android:layout_marginLeft="150dp"
             android:layout_marginTop="132dp"
             android:contentDescription="3"
             android:maxWidth="140dp"
@@ -109,7 +109,7 @@
             android:layout_height="140dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="149dp"
+            android:layout_marginLeft="150dp"
             android:layout_marginTop="132dp"
             android:contentDescription="3"
             android:maxWidth="140dp"
@@ -127,8 +127,8 @@
             android:layout_height="130dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="67dp"
-            android:layout_marginTop="149dp"
+            android:layout_marginLeft="68dp"
+            android:layout_marginTop="148dp"
             android:contentDescription="4"
             android:maxWidth="135dp"
             android:maxHeight="130dp"
@@ -143,8 +143,8 @@
             android:layout_height="130dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="67dp"
-            android:layout_marginTop="149dp"
+            android:layout_marginLeft="68dp"
+            android:layout_marginTop="148dp"
             android:contentDescription="4"
             android:maxWidth="135dp"
             android:maxHeight="130dp"
@@ -161,8 +161,8 @@
             android:layout_height="120dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="84dp"
-            android:layout_marginTop="233dp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="232dp"
             android:contentDescription="5"
             android:maxWidth="145dp"
             android:maxHeight="120dp"
@@ -177,8 +177,8 @@
             android:layout_height="120dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="84dp"
-            android:layout_marginTop="233dp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="232dp"
             android:contentDescription="5"
             android:maxWidth="145dp"
             android:maxHeight="120dp"
@@ -194,8 +194,8 @@
             android:layout_height="135dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="69dp"
-            android:layout_marginTop="304dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="303dp"
             android:contentDescription="6"
             android:maxWidth="150dp"
             android:maxHeight="135dp"
@@ -210,8 +210,8 @@
             android:layout_height="135dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="69dp"
-            android:layout_marginTop="304dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="303dp"
             android:contentDescription="6"
             android:maxWidth="150dp"
             android:maxHeight="135dp"
@@ -228,7 +228,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="195dp"
-            android:layout_marginTop="144dp"
+            android:layout_marginTop="143dp"
             android:contentDescription="7"
             android:maxWidth="170dp"
             android:maxHeight="180dp"
@@ -244,7 +244,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="195dp"
-            android:layout_marginTop="144dp"
+            android:layout_marginTop="143dp"
             android:contentDescription="7"
             android:maxWidth="170dp"
             android:maxHeight="180dp"
@@ -260,8 +260,8 @@
             android:layout_height="130dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="178dp"
-            android:layout_marginTop="260dp"
+            android:layout_marginLeft="179dp"
+            android:layout_marginTop="258dp"
             android:contentDescription="8"
             android:maxWidth="175dp"
             android:maxHeight="130dp"
@@ -276,8 +276,8 @@
             android:layout_height="130dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="178dp"
-            android:layout_marginTop="260dp"
+            android:layout_marginLeft="179dp"
+            android:layout_marginTop="258dp"
             android:contentDescription="8"
             android:maxWidth="175dp"
             android:maxHeight="130dp"
@@ -336,7 +336,9 @@
             android:maxHeight="150dp"
             android:minWidth="125dp"
             android:minHeight="150dp"
-            android:src="@drawable/map_gyeonggi_white" />
+            android:src="@drawable/map_gyeonggi_white"
+            android:visibility="invisible"
+            />
 
         <!--2-->
         <ImageView
@@ -352,7 +354,9 @@
             android:maxHeight="215dp"
             android:minWidth="215dp"
             android:minHeight="215dp"
-            android:src="@drawable/map_gangwon_white" />
+            android:src="@drawable/map_gangwon_white"
+            android:visibility="invisible"
+            />
 
         <!--3-->
         <ImageView
@@ -361,14 +365,16 @@
             android:layout_height="140dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="149dp"
+            android:layout_marginLeft="150dp"
             android:layout_marginTop="132dp"
             android:contentDescription="3"
             android:maxWidth="140dp"
             android:maxHeight="140dp"
             android:minWidth="140dp"
             android:minHeight="140dp"
-            android:src="@drawable/map_chungbuk_white" />
+            android:src="@drawable/map_chungbuk_white"
+            android:visibility="invisible"
+            />
         <!--4-->
         <ImageView
             android:id="@+id/imageView_chungnam_white"
@@ -376,14 +382,16 @@
             android:layout_height="130dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="67dp"
-            android:layout_marginTop="149dp"
+            android:layout_marginLeft="68dp"
+            android:layout_marginTop="148dp"
             android:contentDescription="4"
             android:maxWidth="135dp"
             android:maxHeight="130dp"
             android:minWidth="135dp"
             android:minHeight="130dp"
-            android:src="@drawable/map_chungnam_white" />
+            android:src="@drawable/map_chungnam_white"
+            android:visibility="invisible"
+            />
 
         <!--5-->
         <ImageView
@@ -392,14 +400,16 @@
             android:layout_height="120dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="84dp"
-            android:layout_marginTop="233dp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="232dp"
             android:contentDescription="5"
             android:maxWidth="145dp"
             android:maxHeight="120dp"
             android:minWidth="145dp"
             android:minHeight="120dp"
-            android:src="@drawable/map_junbuk_white" />
+            android:src="@drawable/map_junbuk_white"
+            android:visibility="invisible"
+            />
 
         <!--6-->
         <ImageView
@@ -408,14 +418,16 @@
             android:layout_height="135dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="69dp"
-            android:layout_marginTop="304dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="303dp"
             android:contentDescription="6"
             android:maxWidth="150dp"
             android:maxHeight="135dp"
             android:minWidth="150dp"
             android:minHeight="135dp"
-            android:src="@drawable/map_junnam_white" />
+            android:src="@drawable/map_junnam_white"
+            android:visibility="invisible"
+            />
 
         <!--7-->
         <ImageView
@@ -425,13 +437,15 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="195dp"
-            android:layout_marginTop="144dp"
+            android:layout_marginTop="143dp"
             android:contentDescription="7"
             android:maxWidth="170dp"
             android:maxHeight="180dp"
             android:minWidth="170dp"
             android:minHeight="180dp"
-            android:src="@drawable/map_gyeongbuk_white" />
+            android:src="@drawable/map_gyeongbuk_white"
+            android:visibility="invisible"
+            />
 
         <!--8-->
         <ImageView
@@ -440,14 +454,16 @@
             android:layout_height="130dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="178dp"
-            android:layout_marginTop="260dp"
+            android:layout_marginLeft="179dp"
+            android:layout_marginTop="258dp"
             android:contentDescription="8"
             android:maxWidth="175dp"
             android:maxHeight="130dp"
             android:minWidth="175dp"
             android:minHeight="130dp"
-            android:src="@drawable/map_gyeongnam_white" />
+            android:src="@drawable/map_gyeongnam_white"
+            android:visibility="invisible"
+            />
 
         <!--9-->
         <ImageView
@@ -463,16 +479,18 @@
             android:maxHeight="100dp"
             android:minWidth="150dp"
             android:minHeight="100dp"
-            android:src="@drawable/map_jeju_white" />
+            android:src="@drawable/map_jeju_white"
+            android:visibility="invisible"
+            />
 
         <ImageView
             android:layout_width="45dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="356dp"
             android:layout_marginTop="157dp"
-            android:src="@drawable/dokdo" />
+            android:src="@drawable/ic_icon_dokdo" />
 
     </RelativeLayout>
 

@@ -4,16 +4,17 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:elevation="0dp"
+    >
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="?attr/colorPrimary"
-        android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorWhite"
         android:theme="@style/TabTheme"
         app:tabIndicatorHeight="0dp"
         />
@@ -22,5 +23,7 @@
         android:id="@+id/fragmentViewPager_fvp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/tab_layout"/>
+        android:layout_above="@id/tab_layout"
+        android:elevation="0dp"
+        />
 </RelativeLayout>

@@ -91,6 +91,7 @@ public class GroupActivity extends AppCompatActivity {
     ImageView imageView_jeju_front;
 
     final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
+    final ImageView[] mBorders = new ImageView[10];
     final ImageView[] imageViews = new ImageView[10];
 
     private DrawerLayout drawerLayout_drawer;
@@ -197,54 +198,63 @@ public class GroupActivity extends AppCompatActivity {
         imageView_gyeonggi.setOnTouchListener(mClickListener);
         porterShapeImageViews[1] = imageView_gyeonggi;
         imageViews[1] = imageView_gyeonggi_front;
+        mBorders[1] = findViewById(R.id.imageView_gyeonggi_white);
 
         imageView_gangwon = findViewById(R.id.imageView_gangwon);
         imageView_gangwon_front = findViewById(R.id.imageView_gangwon_front);
         imageView_gangwon.setOnTouchListener(mClickListener);
         porterShapeImageViews[2] = imageView_gangwon;
         imageViews[2] = imageView_gangwon_front;
+        mBorders[2] = findViewById(R.id.imageView_gangwon_white);
 
         imageView_chungbuk = findViewById(R.id.imageView_chungbuk);
         imageView_chungbuk_front = findViewById(R.id.imageView_chungbuk_front);
         imageView_chungbuk.setOnTouchListener(mClickListener);
         porterShapeImageViews[3] = imageView_chungbuk;
         imageViews[3] = imageView_chungbuk_front;
+        mBorders[3] = findViewById(R.id.imageView_chungbuk_white);
 
         imageView_chungnam = findViewById(R.id.imageView_chungnam);
         imageView_chungnam_front = findViewById(R.id.imageView_chungnam_front);
         imageView_chungnam.setOnTouchListener(mClickListener);
         porterShapeImageViews[4] = imageView_chungnam;
         imageViews[4] = imageView_chungnam_front;
+        mBorders[4] = findViewById(R.id.imageView_chungnam_white);
 
         imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
         imageView_jeonbuk_front = findViewById(R.id.imageView_jeonbuk_front);
         imageView_jeonbuk.setOnTouchListener(mClickListener);
         porterShapeImageViews[5] = imageView_jeonbuk;
         imageViews[5] = imageView_jeonbuk_front;
+        mBorders[5] = findViewById(R.id.imageView_jeonbuk_white);
 
         imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
         imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
         imageView_jeonnam.setOnTouchListener(mClickListener);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
+        mBorders[6] = findViewById(R.id.imageView_jeonbuk_white);
 
         imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk_front = findViewById(R.id.imageView_gyeongbuk_front);
         imageView_gyeongbuk.setOnTouchListener(mClickListener);
         porterShapeImageViews[7] = imageView_gyeongbuk;
         imageViews[7] = imageView_gyeongbuk_front;
+        mBorders[7] = findViewById(R.id.imageView_gyeongbuk_white);
 
         imageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
         imageView_gyeongnam_front = findViewById(R.id.imageView_gyeongnam_front);
         imageView_gyeongnam.setOnTouchListener(mClickListener);
         porterShapeImageViews[8] = imageView_gyeongnam;
         imageViews[8] = imageView_gyeongnam_front;
+        mBorders[8] = findViewById(R.id.imageView_gyeongnam_white);
 
         imageView_jeju = findViewById(R.id.imageView_jeju);
         imageView_jeju_front = findViewById(R.id.imageView_jeju_front);
         imageView_jeju.setOnTouchListener(mClickListener);
         porterShapeImageViews[9] = imageView_jeju;
         imageViews[9] = imageView_jeju_front;
+        mBorders[9] = findViewById(R.id.imageView_jeju_white);
 
         floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
         floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
@@ -438,6 +448,7 @@ public class GroupActivity extends AppCompatActivity {
                 Log.e("GroupActivity", "path : " + path);
                 Bitmap bm = BitmapFactory.decodeFile(path);
                 porterShapeImageViews[regionCode].setImageBitmap(bm);
+                mBorders[regionCode].setVisibility(View.VISIBLE);
             }
         }
     }
@@ -457,7 +468,7 @@ public class GroupActivity extends AppCompatActivity {
                             String name = response.body().getData().getGetMapInfoDataOwners().get(i).getNickname();
                             String uid = response.body().getData().getGetMapInfoDataOwners().get(i).getUid();
                             globalApplication.userThumbnail.put(uid, thumbnail);
-                            globalApplication.userNickName.put(uid,name);
+                            globalApplication.userNickName.put(uid, name);
                             MemberListViewItem memberListViewItem = new MemberListViewItem(thumbnail, name);
                             adapter.addItem(memberListViewItem);
                         }
@@ -518,33 +529,51 @@ public class GroupActivity extends AppCompatActivity {
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
 
-        if (gyeonggi != null)
+        if (gyeonggi != null) {
             Glide.with(getApplicationContext()).load(gyeonggi).
                     into(porterShapeImageViews[1]);
-        if (gangwon != null)
+            mBorders[1].setVisibility(View.VISIBLE);
+        }
+        if (gangwon != null) {
             Glide.with(getApplicationContext()).load(gangwon).
                     into(porterShapeImageViews[2]);
-        if (chungbuk != null)
+            mBorders[2].setVisibility(View.VISIBLE);
+        }
+        if (chungbuk != null) {
             Glide.with(getApplicationContext()).load(chungbuk).
                     into(porterShapeImageViews[3]);
-        if (chungnam != null)
+            mBorders[3].setVisibility(View.VISIBLE);
+        }
+        if (chungnam != null) {
             Glide.with(getApplicationContext()).load(chungnam).
                     into(porterShapeImageViews[4]);
-        if (jeonbuk != null)
+            mBorders[4].setVisibility(View.VISIBLE);
+        }
+        if (jeonbuk != null) {
             Glide.with(getApplicationContext()).load(jeonbuk).
                     into(porterShapeImageViews[5]);
-        if (jeonnam != null)
+            mBorders[5].setVisibility(View.VISIBLE);
+        }
+        if (jeonnam != null) {
             Glide.with(getApplicationContext()).load(jeonnam).
                     into(porterShapeImageViews[6]);
-        if (gyeongbuk != null)
+            mBorders[6].setVisibility(View.VISIBLE);
+        }
+        if (gyeongbuk != null) {
             Glide.with(getApplicationContext()).load(gyeongbuk).
                     into(porterShapeImageViews[7]);
-        if (gyeongnam != null)
+            mBorders[7].setVisibility(View.VISIBLE);
+        }
+        if (gyeongnam != null) {
             Glide.with(getApplicationContext()).load(gyeongnam).
                     into(porterShapeImageViews[8]);
-        if (jeju != null)
+            mBorders[8].setVisibility(View.VISIBLE);
+        }
+        if (jeju != null) {
             Glide.with(getApplicationContext()).load(jeju).
                     into(porterShapeImageViews[9]);
+            mBorders[9].setVisibility(View.VISIBLE);
+        }
     }
 }
 
