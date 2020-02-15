@@ -60,6 +60,7 @@ public class MainFragmentRep extends Fragment {
 
     final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
     final ImageView[] imageViews = new ImageView[10];
+    final ImageView[] mBorders = new ImageView[10];
 
     private RelativeLayout noRep, existRep;
     private DynamicBox box;
@@ -92,46 +93,55 @@ public class MainFragmentRep extends Fragment {
         imageView_gyeonggi_front = view.findViewById(R.id.imageView_gyeonggi_front);
         porterShapeImageViews[1] = imageView_gyeonggi;
         imageViews[1] = imageView_gyeonggi_front;
+        mBorders[1] = view.findViewById(R.id.imageView_gyeonggi_white);
 
         imageView_gangwon = view.findViewById(R.id.imageView_gangwon);
         imageView_gangwon_front = view.findViewById(R.id.imageView_gangwon_front);
         porterShapeImageViews[2] = imageView_gangwon;
         imageViews[2] = imageView_gangwon_front;
+        mBorders[2] = view.findViewById(R.id.imageView_gangwon_white);
 
         imageView_chungbuk = view.findViewById(R.id.imageView_chungbuk);
         imageView_chungbuk_front = view.findViewById(R.id.imageView_chungbuk_front);
         porterShapeImageViews[3] = imageView_chungbuk;
         imageViews[3] = imageView_chungbuk_front;
+        mBorders[3] = view.findViewById(R.id.imageView_chungbuk_white);
 
         imageView_chungnam = view.findViewById(R.id.imageView_chungnam);
         imageView_chungnam_front = view.findViewById(R.id.imageView_chungnam_front);
         porterShapeImageViews[4] = imageView_chungnam;
         imageViews[4] = imageView_chungnam_front;
+        mBorders[4] = view.findViewById(R.id.imageView_chungnam_white);
 
         imageView_jeonbuk = view.findViewById(R.id.imageView_jeonbuk);
         imageView_jeonbuk_front = view.findViewById(R.id.imageView_jeonbuk_front);
         porterShapeImageViews[5] = imageView_jeonbuk;
         imageViews[5] = imageView_jeonbuk_front;
+        mBorders[5] = view.findViewById(R.id.imageView_jeonbuk_white);
 
         imageView_jeonnam = view.findViewById(R.id.imageView_jeonnam);
         imageView_jeonnam_front = view.findViewById(R.id.imageView_jeonnam_front);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
+        mBorders[6] = view.findViewById(R.id.imageView_jeonbuk_white);
 
         imageView_gyeongbuk = view.findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk_front = view.findViewById(R.id.imageView_gyeongbuk_front);
         porterShapeImageViews[7] = imageView_gyeongbuk;
         imageViews[7] = imageView_gyeongbuk_front;
+        mBorders[7] = view.findViewById(R.id.imageView_gyeongbuk_white);
 
         imageView_gyeongnam = view.findViewById(R.id.imageView_gyeongnam);
         imageView_gyeongnam_front = view.findViewById(R.id.imageView_gyeongnam_front);
         porterShapeImageViews[8] = imageView_gyeongnam;
         imageViews[8] = imageView_gyeongnam_front;
+        mBorders[8] = view.findViewById(R.id.imageView_gyeongnam_white);
 
         imageView_jeju = view.findViewById(R.id.imageView_jeju);
         imageView_jeju_front = view.findViewById(R.id.imageView_jeju_front);
         porterShapeImageViews[9] = imageView_jeju;
         imageViews[9] = imageView_jeju_front;
+        mBorders[9] = view.findViewById(R.id.imageView_jeju_white);
 
         return view;
     }
@@ -185,50 +195,86 @@ public class MainFragmentRep extends Fragment {
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
 
-        if (gyeonggi != null)
+        if (gyeonggi != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
-        else
+            mBorders[1].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
+            mBorders[1].setVisibility(View.INVISIBLE);
+        }
 
-        if (gangwon != null)
+        if (gangwon != null) {
             Glide.with(getActivity().getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
-        else
+            mBorders[2].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
+            mBorders[2].setVisibility(View.INVISIBLE);
+        }
 
-        if (chungbuk != null)
+        if (chungbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
-        else
+            mBorders[3].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
+            mBorders[3].setVisibility(View.INVISIBLE);
+        }
 
-        if (chungnam != null)
+        if (chungnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
-        else
+            mBorders[4].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
+            mBorders[4].setVisibility(View.INVISIBLE);
+        }
 
-        if (jeonbuk != null)
+        if (jeonbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
-        else
+            mBorders[5].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
+            mBorders[5].setVisibility(View.INVISIBLE);
+        }
 
-        if (jeonnam != null)
+        if (jeonnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
-        else
+            mBorders[6].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
+            mBorders[6].setVisibility(View.INVISIBLE);
+        }
 
-        if (gyeongbuk != null)
+        if (gyeongbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
-        else
+            mBorders[7].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
+            mBorders[7].setVisibility(View.INVISIBLE);
+        }
 
-        if (gyeongnam != null)
+        if (gyeongnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
-        else
+            mBorders[8].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
+            mBorders[8].setVisibility(View.INVISIBLE);
+        }
 
-        if (jeju != null)
+        if (jeju != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
-        else
+            mBorders[9].setVisibility(View.VISIBLE);
+        }
+        else {
             porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
+            mBorders[9].setVisibility(View.INVISIBLE);
+        }
 
         setLayout(true);
     }
