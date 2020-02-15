@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -208,7 +209,7 @@ public class MainFragmentGroup extends Fragment {
     // get intent result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == getActivity().RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case ADD_GROUP:
                     String mapTokpen = data.getStringExtra("mapToken");
