@@ -17,8 +17,9 @@
 
     <!-- tab style -->
     <style name="TabTheme" parent="AppTheme.NoActionBar">
-        <item name="colorAccent">@color/windowBackground</item>
-        <item name="colorPrimary">@color/windowBackground</item>
+        <item name="colorAccent">#f9f9f9</item>
+        <item name="colorPrimary">#f9f9f9</item>
+        <item name="android:elevation">20dp</item>
     </style>
 
     <!-- Toolbar style -->
