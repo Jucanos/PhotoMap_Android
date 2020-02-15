@@ -97,7 +97,6 @@ public class SeletedMediaInfo {
         mCropView.setVisibility(View.GONE);
         mImgMedia.setSelected(false);
 
-
         mLayout.setCount(false, 0);
         mLayout.setCurrent(false);
 

@@ -573,11 +573,13 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                 SeletedMediaInfo seletedMediaInfo = seletedMediaInfoHashMap.get(photoMedia.getId());
                 if (seletedMediaInfo.getCur()) {
                     Log.e("seletedMediaInfo", "getCur() is true");
+                    int removeCount = seletedMediaInfo.getCount();
                     int removePos = seletedMediaInfo.clear();
                     mMediaAdapter.getPq().offer(removePos);
+
                     seletedMediaInfoHashMap.remove(photoMedia.getId());
                     for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
-                        if (seletedMediaInfoEntry.getValue().getCount() > removePos) {
+                        if (seletedMediaInfoEntry.getValue().getCount() > removeCount) {
                             seletedMediaInfoEntry.getValue().setCount(seletedMediaInfoEntry.getValue().getCount() - 1);
                         }
                         if (seletedMediaInfoEntry.getValue().getCount() == selectedMedias.size() - 2) {
@@ -616,12 +618,13 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         int lPos = selectedMedias.size() - 1;
                         int nPos = selectedMedias.size();
 
-                        if (lPos >= 0) {
-                            String lId = selectedMedias.get(lPos).getId();
-                            SeletedMediaInfo lSeletedMediaInfo = seletedMediaInfoHashMap.get(lId);
-                            lSeletedMediaInfo.setCur(false);
+                        for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
+                            if (seletedMediaInfoEntry.getValue().getCur()) {
+                                seletedMediaInfoEntry.getValue().setCur(false);
+                                Log.e("seletedMediaInfoEntry", seletedMediaInfoEntry.getKey() + "is set False");
+                                break;
+                            }
                         }
-
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
                         seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, imageCropViews.get(cropViewPos)));

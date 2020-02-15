@@ -128,7 +128,7 @@ public class StoryActivity extends AppCompatActivity {
                 ArrayList<String> files = data.getStringArrayListExtra("files");
                 String sid = data.getStringExtra("sid");
                 String mid = data.getStringExtra("mid");
-                Date createdAt =  new Date(System.currentTimeMillis());
+                Date createdAt = new Date(System.currentTimeMillis());
                 Date updatedAt = new Date(System.currentTimeMillis());
                 storyListViewItem.setThumbnail(globalApplication.authorization.getUserData().getThumbnail());
                 storyListViewItem.setCreator(globalApplication.authorization.getUserData().getUid());
@@ -139,7 +139,7 @@ public class StoryActivity extends AppCompatActivity {
                 storyListViewItem.setFiles(files);
                 storyListViewItem.setSid(sid);
                 storyListViewItem.setMid(mid);
-                addStoryTest(storyListViewItem,false);
+                addStoryTest(storyListViewItem, false);
             } else if (requestCode == EDIT_STORY_REQUEST) {
                 int pos = data.getIntExtra("pos", -1);
                 String title = data.getStringExtra("title");
@@ -163,7 +163,7 @@ public class StoryActivity extends AppCompatActivity {
                         Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
                             @Override
                             public int compare(GetStoryListData o1, GetStoryListData o2) {
-                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+                                return o1.getCreatedAt().compareTo(o2.getCreatedAt());
                             }
                         });
                         for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
@@ -196,7 +196,7 @@ public class StoryActivity extends AppCompatActivity {
                             storyListViewItem.setSid(sid);
                             storyListViewItem.setMid(mid);
                             storyListViewItem.setCreator(creator);
-                            addStoryTest(storyListViewItem, true);
+                            addStoryTest(storyListViewItem, false);
                         }
                         box.hideAll();
                     }
@@ -214,7 +214,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     void addStoryTest(StoryListViewItem storyListViewItem, boolean pushBack) {
-        listView_storyApater.addItem(storyListViewItem,pushBack);
+        listView_storyApater.addItem(storyListViewItem, pushBack);
         listView_storyApater.notifyDataSetChanged();
     }
 }
