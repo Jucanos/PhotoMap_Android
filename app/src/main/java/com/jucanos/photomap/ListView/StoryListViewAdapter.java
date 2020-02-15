@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
-import com.jucanos.photomap.Activity.EditStoryActivity;
 import com.jucanos.photomap.Activity.SetRepActivity;
 import com.jucanos.photomap.Activity.StoryActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
@@ -29,10 +27,8 @@ import com.jucanos.photomap.Viewpager.CustomViewPager;
 import com.jucanos.photomap.Viewpager.StoryViewPagerAdapter;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -108,8 +104,8 @@ public class StoryListViewAdapter extends BaseAdapter {
                     @Override
                     public void onEditClicked() {
                         Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
-                        final Intent intent = new Intent(context, EditStoryActivity.class);
-                        ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
+//                        final Intent intent = new Intent(context, EditStoryActivity.class);
+//                        ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
                     }
 
                     @Override
@@ -143,8 +139,10 @@ public class StoryListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(StoryListViewItem item) {
-        listViewItemList.add(item);
+    public void addItem(StoryListViewItem item, boolean pushBack) {
+        if (!pushBack) listViewItemList.add(0, item);
+        else listViewItemList.add(item);
+
     }
 
 

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jucanos.photomap.ListView.StoryListViewItem;
 import com.jucanos.photomap.MyRecyclerViewAdapter;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.SliderViewAdapter.SliderAdapterExample;
@@ -30,6 +31,7 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, View.OnClickListener {
@@ -37,11 +39,16 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         System.loadLibrary("NativeImageProcessor");
     }
 
+    private String mid, cityKey;
+
     private SliderView sliderView;
     private ArrayList<String> paths = new ArrayList<>();
     private SliderAdapterExample mSlideradapter;
     private MyRecyclerViewAdapter mFilterAdapter;
     private TextView textView_next;
+
+    // intent request code
+    private final int ADD_STORY_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,8 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     public void getIntentData() {
         paths = getIntent().getStringArrayListExtra("paths");
+        mid = getIntent().getStringExtra("mid");
+        cityKey = getIntent().getStringExtra("cityKey");
         Log.e("paths size : ", Integer.toString(paths.size()));
 
     }
@@ -152,7 +161,35 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
         Intent intent = new Intent(this, AddStoryPeedActivity.class);
         intent.putStringArrayListExtra("paths",paths);
-        startActivity(intent);
+        intent.putExtra("mid",mid);
+        intent.putExtra("cityKey",cityKey);
+        startActivityForResult(intent,ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_STORY_REQUEST) {
+                Intent intent = new Intent();
+                Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+
+                String title = data.getStringExtra("title");
+                String context = data.getStringExtra("context");
+                ArrayList<String> files = data.getStringArrayListExtra("files");
+                String sid = data.getStringExtra("sid");
+                String mid = data.getStringExtra("mid");
+
+                intent.putExtra("title",title);
+                intent.putExtra("context",context);
+                intent.putStringArrayListExtra("files",files);
+                intent.putExtra("sid",sid);
+                intent.putExtra("mid",mid);
+
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }
     }
 }

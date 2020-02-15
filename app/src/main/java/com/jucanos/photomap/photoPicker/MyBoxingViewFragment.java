@@ -73,6 +73,9 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private PopupWindow mAlbumPopWindow;
     private ProgressBar mLoadingView;
 
+    // intent data
+    private String mid, cityKey;
+
     private int mMaxCount;
 
     /**
@@ -142,8 +145,14 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        getIntentData();
         initViews(view);
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void getIntentData() {
+        mid = getActivity().getIntent().getStringExtra("mid");
+        cityKey = getActivity().getIntent().getStringExtra("cityKey");
     }
 
     private void initViews(View view) {
@@ -609,7 +618,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
                         seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, imageCropViews.get(cropViewPos)));
-                        Log.e("nPos",Integer.toString(nPos));
+                        Log.e("nPos", Integer.toString(nPos));
                         return;
                     }
                 }
@@ -619,36 +628,38 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     public void redirectAddStoryActivity() throws IOException {
 
-        ArrayList<Pair<Integer,String>> aPaths = new ArrayList<>();
+        ArrayList<Pair<Integer, String>> aPaths = new ArrayList<>();
         ArrayList<String> bPaths = new ArrayList<>();
 
         for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : mMediaAdapter.getSeletedMediaInfoHashMap().entrySet()) {
             String fileName = "image_" + System.currentTimeMillis();
             Bitmap bm = seletedMediaInfoEntry.getValue().getmCropView().getCroppedImage();
-            String path = BitmapUtils.saveBitmap(fileName,bm,100,getActivity().getApplicationContext());
+            String path = BitmapUtils.saveBitmap(fileName, bm, 100, getActivity().getApplicationContext());
             Integer order = seletedMediaInfoEntry.getValue().getCount();
-            aPaths.add(new Pair<Integer, String>(order,path));
+            aPaths.add(new Pair<Integer, String>(order, path));
         }
 
         Collections.sort(aPaths, new Comparator<Pair<Integer, String>>() {
             @Override
             public int compare(Pair<Integer, String> o1, Pair<Integer, String> o2) {
-                return o1.first.compareTo(o2.first) ;
+                return o1.first.compareTo(o2.first);
             }
         });
 
-        for(int i = 0 ; i < aPaths.size(); i++){
-            Log.e(Integer.toString(aPaths.get(i).first),aPaths.get(i).second);
+        for (int i = 0; i < aPaths.size(); i++) {
+            Log.e(Integer.toString(aPaths.get(i).first), aPaths.get(i).second);
         }
 
-        for(int i = 0 ; i < aPaths.size(); i++){
+        for (int i = 0; i < aPaths.size(); i++) {
             bPaths.add(aPaths.get(i).second);
         }
 
         Intent intent = new Intent(getActivity(), AddStoryPreviewActivity.class);
-        intent.putStringArrayListExtra("paths",bPaths);
+        intent.putStringArrayListExtra("paths", bPaths);
+        intent.putExtra("mid", mid);
+        intent.putExtra("cityKey", cityKey);
 
-        startActivityForResult(intent, ADD_STORY_REQUEST);
+        getActivity().startActivityForResult(intent, ADD_STORY_REQUEST);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 }
