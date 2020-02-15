@@ -66,20 +66,20 @@ public class SandboxView extends View implements OnTouchListener {
 
         canvas.drawBitmap(bitmap, transform, paint);
 
-        try {
-            paint.setColor(0xFF007F00);
-            canvas.drawCircle(vca.getX(), vca.getY(), 64, paint);
-            paint.setColor(0xFF7F0000);
-            canvas.drawCircle(vcb.getX(), vcb.getY(), 64, paint);
-
-            paint.setColor(0xFFFF0000);
-            canvas.drawLine(vpa.getX(), vpa.getY(), vpb.getX(), vpb.getY(), paint);
-            paint.setColor(0xFF00FF00);
-            canvas.drawLine(vca.getX(), vca.getY(), vcb.getX(), vcb.getY(), paint);
-        }
-        catch(NullPointerException e) {
-            // Just being lazy here...
-        }
+//        try {
+//            paint.setColor(0xFF007F00);
+//            canvas.drawCircle(vca.getX(), vca.getY(), 64, paint);
+//            paint.setColor(0xFF7F0000);
+//            canvas.drawCircle(vcb.getX(), vcb.getY(), 64, paint);
+//
+//            paint.setColor(0xFFFF0000);
+//            canvas.drawLine(vpa.getX(), vpa.getY(), vpb.getX(), vpb.getY(), paint);
+//            paint.setColor(0xFF00FF00);
+//            canvas.drawLine(vca.getX(), vca.getY(), vcb.getX(), vcb.getY(), paint);
+//        }
+//        catch(NullPointerException e) {
+//            // Just being lazy here...
+//        }
     }
 
 

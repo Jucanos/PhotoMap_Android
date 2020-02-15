@@ -43,7 +43,9 @@
             android:layout_above="@+id/imageView_image"
             android:layout_alignTop="@+id/imageView_image"
             android:layout_alignParentTop="true"
-            android:background="#99000000" />
+            android:background="#99000000"
+            android:clickable="false"
+            />
 
         <ImageView
             android:id="@+id/imageView_image"
@@ -51,7 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:adjustViewBounds="true"
-            android:src="@drawable/map_gangwon_empty" />
+            android:src="@drawable/map_gangwon_empty"
+            android:clickable="false"
+            />
 
         <ImageView
             android:layout_width="match_parent"
