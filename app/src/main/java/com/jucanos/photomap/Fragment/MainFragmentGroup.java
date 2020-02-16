@@ -119,6 +119,8 @@ public class MainFragmentGroup extends Fragment {
                 lastClickTime = SystemClock.elapsedRealtime();
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
                 String mid = groupListViewItem.getMid();
+                adapter.getItem(position).setPastLog(adapter.getItem(position).getCurLog());
+                adapter.getItem(position).setLog(adapter.getItem(position).getPastLog());
                 redirectGroupActivity(mid);
             }
         });
@@ -249,13 +251,13 @@ public class MainFragmentGroup extends Fragment {
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
-        groupListViewItem.setInitLog(globalApplication.mLog.get(mid));
+        groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
         myRef.child(mid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String mid = dataSnapshot.getKey();
                 Long log = dataSnapshot.getValue(Long.class);
-                Log.e("addGroup",mid + " : " + log);
+                Log.e("addGroup", mid + " : " + log);
                 groupListViewItem.setLog(log);
             }
 
@@ -284,7 +286,7 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
-                             setFireBase(mid);
+                            setFireBase(mid);
                             addGroup(name, mid, updatedAt);
                         }
                     }
@@ -339,8 +341,8 @@ public class MainFragmentGroup extends Fragment {
     }
 
     void setFireBase(final String mid) {
-        Log.e("setFireBase",mid + " is set");
-        Log.e(mid,myRef.child(mid).getDatabase().toString());
+        Log.e("setFireBase", mid + " is set");
+        Log.e(mid, myRef.child(mid).getDatabase().toString());
         myRef.child(mid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

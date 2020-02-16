@@ -74,10 +74,13 @@ public class GroupListViewAdapter extends BaseAdapter {
             @Override
             public void onSetLog(long log) {
                 Log.e("onSetLog", "callback is success");
-                long gap = log - listViewItem.getLog();
+                listViewItem.setCurLog(log);
+                long gap = log - listViewItem.getPastLog();
                 if (gap > 0) {
                     textView_log.setText(Long.toString(gap));
                     textView_log.setVisibility(View.VISIBLE);
+                }else{
+                    textView_log.setVisibility(View.INVISIBLE);
                 }
             }
         };

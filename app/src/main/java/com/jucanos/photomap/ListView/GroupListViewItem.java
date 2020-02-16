@@ -6,18 +6,20 @@ public class GroupListViewItem {
     private String mid;
     private String title;
     private Date updatedAt;
-    private Long log;
+    private Long pastLog;
+    private Long curLog;
     private OnlogCb callback;
 
-    public interface OnlogCb{
+    public interface OnlogCb {
         void onSetLog(long log);
     }
 
-    public GroupListViewItem( ) {
+    public GroupListViewItem() {
         mid = "";
         title = "";
         updatedAt = null;
-        log = (long)0;
+        pastLog = (long) 0;
+        curLog = (long) 0;
     }
 
     public String getMid() {
@@ -44,21 +46,27 @@ public class GroupListViewItem {
         this.updatedAt = updatedAt;
     }
 
-    public Long getLog() {
-        return log;
-    }
-
     public void setLog(long log) {
-        if(callback != null){
-            callback.onSetLog(log);
-        }
+        callback.onSetLog(log);
     }
 
-    public void setOnLogCb(OnlogCb callback){
+    public void setOnLogCb(OnlogCb callback) {
         this.callback = callback;
     }
 
-    public void setInitLog(long log){
-        this.log = log;
+    public Long getPastLog() {
+        return pastLog;
+    }
+
+    public void setPastLog(Long pastLog) {
+        this.pastLog = pastLog;
+    }
+
+    public Long getCurLog() {
+        return curLog;
+    }
+
+    public void setCurLog(Long curLog) {
+        this.curLog = curLog;
     }
 }
