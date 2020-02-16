@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "575847640785",
-    "firebase_url": "https://photomap-ba430.firebaseio.com",
-    "project_id": "photomap-ba430",
-    "storage_bucket": "photomap-ba430.appspot.com"
+    "project_number": "322552622932",
+    "firebase_url": "https://photomap-22e48.firebaseio.com",
+    "project_id": "photomap-22e48",
+    "storage_bucket": "photomap-22e48.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:575847640785:android:5283260651aaf153071ff0",
+        "mobilesdk_app_id": "1:322552622932:android:b4b3e32194683a4514e2c1",
         "android_client_info": {
           "package_name": "com.jucanos.photomap"
         }
       },
       "oauth_client": [
         {
-          "client_id": "575847640785-6p81gacmlm8ul9ie102qqnaoj7ihgic0.apps.googleusercontent.com",
+          "client_id": "322552622932-906p99taagf6l2h07bce037io6nlnipr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jucanos.photomap",
@@ -23,21 +23,28 @@
           }
         },
         {
-          "client_id": "575847640785-78b5n3fqbetfle1khdcadeeadul3ljeq.apps.googleusercontent.com",
+          "client_id": "322552622932-8ge0qpngepmkci9pv420dbli8mel8o89.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCGT_kK5Mf2T0UhSz0_Di8vG6zSm-zKMpE"
+          "current_key": "AIzaSyCXaemnLiO4OKbp9rjzEkJhQ88ltY6qOyg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "575847640785-78b5n3fqbetfle1khdcadeeadul3ljeq.apps.googleusercontent.com",
+              "client_id": "322552622932-8ge0qpngepmkci9pv420dbli8mel8o89.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "322552622932-tjkfisff7iijhgrtbt6k6goaiodrl9sm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apps.jucanos.PhotoMap-IOS"
+              }
             }
           ]
         }

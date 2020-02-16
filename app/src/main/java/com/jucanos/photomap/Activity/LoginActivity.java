@@ -16,6 +16,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.jucanos.photomap.GlobalApplication;
@@ -43,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
     private String mid;
     private Boolean fromLink = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.e("[hash_key]", getKeyHash(getApplicationContext()));
         globalApplication = GlobalApplication.getGlobalApplicationContext();
 
-        if(getIntent().getData() != null) {
+        if (getIntent().getData() != null) {
             mid = Objects.requireNonNull(getIntent().getData()).getQueryParameter("mid");
             fromLink = true;
             ActivityCompat.finishAffinity(this);
@@ -114,30 +120,30 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void redirectSignupActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
-        if(fromLink){
-            Log.e("LoginActivity","[redirectSignupActivity][mid]" + mid);
-            intent.putExtra("mid",mid);
+        if (fromLink) {
+            Log.e("LoginActivity", "[redirectSignupActivity][mid]" + mid);
+            intent.putExtra("mid", mid);
         }
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("FCM Login","getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        Log.e("FCM Token : ", token);
-
-                        MyFirebaseMessagingService.subscribe(globalApplication.authorization.getUserData().getUid());
-                        // Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-                    }
-                });
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w("FCM Login", "getInstanceId failed", task.getException());
+//                            return;
+//                        }
+//
+//                        // Get new Instance ID token
+//                        String token = task.getResult().getToken();
+//
+//                        // Log and toast
+//                        Log.e("FCM Token : ", token);
+//
+//                        MyFirebaseMessagingService.subscribe(globalApplication.authorization.getUserData().getUid());
+//                        // Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
 
         startActivity(intent);
@@ -155,8 +161,8 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("getUid", globalApplication.authorization.getUserData().getUid());
                         Log.e("getThumbnail", globalApplication.authorization.getUserData().getThumbnail());
                         Log.e("getNickname", globalApplication.authorization.getUserData().getNickname());
-                        if(globalApplication.authorization.getUserData().getPrimary() != null)
-                            Log.e("getNickname",globalApplication.authorization.getUserData().getPrimary());
+                        if (globalApplication.authorization.getUserData().getPrimary() != null)
+                            Log.e("getNickname", globalApplication.authorization.getUserData().getPrimary());
 
                         redirectSignupActivity();
                     }

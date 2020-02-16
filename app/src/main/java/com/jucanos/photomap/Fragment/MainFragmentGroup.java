@@ -16,10 +16,18 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
@@ -56,6 +64,12 @@ public class MainFragmentGroup extends Fragment {
     private final int EDIT_GROUP = 2;
 
     private long lastClickTime = 0;
+
+    // for realtime database
+// Write a message to the database
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("maps");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
@@ -99,7 +113,7 @@ public class MainFragmentGroup extends Fragment {
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
@@ -256,6 +270,7 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
+                            setFireBase(mid);
                             addGroup(name, mid, updatedAt);
                         }
                     }
@@ -307,6 +322,11 @@ public class MainFragmentGroup extends Fragment {
             noGroup.setVisibility(View.GONE);
             existGroup.setVisibility(View.VISIBLE);
         }
+    }
+
+    void setFireBase(String mid) {
+        Log.e("setFireBase",mid + " is set");
+        Log.e(mid,myRef.child(mid).getDatabase().toString());
     }
 
     // lifeCycle
