@@ -324,9 +324,21 @@ public class MainFragmentGroup extends Fragment {
         }
     }
 
-    void setFireBase(String mid) {
+    void setFireBase(final String mid) {
         Log.e("setFireBase",mid + " is set");
         Log.e(mid,myRef.child(mid).getDatabase().toString());
+        myRef.child(mid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Long count = dataSnapshot.getValue(Long.class);
+                Log.e("[Firebase]", mid + " = " + Long.toString(count));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // lifeCycle
