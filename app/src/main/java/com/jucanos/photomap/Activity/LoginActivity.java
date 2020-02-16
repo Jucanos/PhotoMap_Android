@@ -8,19 +8,20 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
-import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.GetUserInfo;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
@@ -28,6 +29,9 @@ import com.kakao.util.helper.log.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -41,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
     private String mid;
     private Boolean fromLink = false;
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public DatabaseReference mUserRef = database.getReference("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (globalApplication.authorization.getUserData().getPrimary() != null)
                             Log.e("getNickname", globalApplication.authorization.getUserData().getPrimary());
 
+
+                        loadFireBase();
                         redirectSignupActivity();
                     }
                 } else {
@@ -171,5 +179,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void loadFireBase() {
+        mUserRef.child(globalApplication.authorization.getUserData().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Long> map = new HashMap<>();
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.e("loadFireBase",ds.getKey() + " : " + String.valueOf(ds.getValue(Long.class)));
+                    globalApplication.mLog.put(ds.getKey(),ds.getValue(Long.class));
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+    }
 }

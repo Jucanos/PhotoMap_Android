@@ -19,6 +19,24 @@
             android:layout_centerInParent="true"
             android:layout_margin="10dp" />
 
+        <TextView
+            android:id="@+id/textView_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:text="99"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:paddingHorizontal="5dp"
+            android:background="@drawable/bg_rounded_red"
+            android:visibility="invisible"
+            >
+        </TextView>
+
+
+
         <LinearLayout
             android:id="@+id/linearLayout_mid"
             android:layout_width="wrap_content"

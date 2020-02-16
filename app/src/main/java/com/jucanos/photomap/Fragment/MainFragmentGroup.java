@@ -245,13 +245,27 @@ public class MainFragmentGroup extends Fragment {
 
     // addGroup
     public void addGroup(String title, String mid, Date updatedAt) {
-        GroupListViewItem groupListViewItem = new GroupListViewItem();
+        final GroupListViewItem groupListViewItem = new GroupListViewItem();
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
+        groupListViewItem.setInitLog(globalApplication.mLog.get(mid));
+        myRef.child(mid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String mid = dataSnapshot.getKey();
+                Long log = dataSnapshot.getValue(Long.class);
+                Log.e("addGroup",mid + " : " + log);
+                groupListViewItem.setLog(log);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         adapter.addItem(groupListViewItem);
         adapter.notifyDataSetChanged();
-
     }
 
     // request : getMapList
@@ -270,7 +284,7 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
-                            setFireBase(mid);
+                             setFireBase(mid);
                             addGroup(name, mid, updatedAt);
                         }
                     }
@@ -330,8 +344,8 @@ public class MainFragmentGroup extends Fragment {
         myRef.child(mid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Long count = dataSnapshot.getValue(Long.class);
-                Log.e("[Firebase]", mid + " = " + Long.toString(count));
+                String mid = dataSnapshot.getKey();
+                Long log = dataSnapshot.getValue(Long.class);
             }
 
             @Override
