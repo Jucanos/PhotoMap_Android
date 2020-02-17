@@ -54,8 +54,9 @@ public class GroupListViewAdapter extends BaseAdapter {
         ImageView imgView_thumbnail = convertView.findViewById(R.id.imageView_thumbnail);
         TextView textView_groupName = convertView.findViewById(R.id.textView_groupName);
         TextView textView_lastUpdated = convertView.findViewById(R.id.textView_lastUpdated);
+        final TextView textView_log = convertView.findViewById(R.id.textView_log);
 
-        GroupListViewItem listViewItem = listViewItemList.get(position);
+        final GroupListViewItem listViewItem = listViewItemList.get(position);
 
 
         String thumbnail_path = "https://s3.soybeans.tech/uploads/" + listViewItem.getMid() + "/main.png";
@@ -67,7 +68,29 @@ public class GroupListViewAdapter extends BaseAdapter {
 
         textView_groupName.setText(listViewItem.getTitle());
 
-        textView_lastUpdated.setText((new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(listViewItem.getUpdatedAt())));
+        textView_lastUpdated.setText((new SimpleDateFormat("yyyy/MM/dd hh").format(listViewItem.getUpdatedAt())));
+
+        GroupListViewItem.OnlogCb callback = new GroupListViewItem.OnlogCb() {
+            @Override
+            public void onSetLog(long log) {
+                Log.e("onSetLog", "callback is success");
+                listViewItem.setCurLog(log);
+                long gap = log - listViewItem.getPastLog();
+                if (gap > 0) {
+                    if(gap > 99){
+                        textView_log.setText("99");
+                    }else{
+                        textView_log.setText(Long.toString(gap));
+                    }
+                    textView_log.setVisibility(View.VISIBLE);
+                }else{
+                    textView_log.setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+
+        listViewItem.setOnLogCb(callback);
+
         return convertView;
     }
 
