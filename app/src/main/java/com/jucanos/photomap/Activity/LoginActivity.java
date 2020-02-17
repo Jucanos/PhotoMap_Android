@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
+import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetUserInfo;
@@ -118,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void redirectSignupActivity() {
+        MyFirebaseMessagingService.subscribe(globalApplication.authorization.getUserData().getUid());
         final Intent intent = new Intent(this, MainActivity.class);
         if (fromLink) {
             Log.e("LoginActivity", "[redirectSignupActivity][mid]" + mid);
