@@ -165,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         loadFireBase();
-                        redirectSignupActivity();
                     }
                 } else {
                     Log.e("requestLoginAccount", "!!!isSuccessful");
@@ -188,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("loadFireBase",ds.getKey() + " : " + String.valueOf(ds.getValue(Long.class)));
                     globalApplication.mLog.put(ds.getKey(),ds.getValue(Long.class));
                 }
+                redirectSignupActivity();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

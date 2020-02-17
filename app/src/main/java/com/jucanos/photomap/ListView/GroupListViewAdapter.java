@@ -77,7 +77,11 @@ public class GroupListViewAdapter extends BaseAdapter {
                 listViewItem.setCurLog(log);
                 long gap = log - listViewItem.getPastLog();
                 if (gap > 0) {
-                    textView_log.setText(Long.toString(gap));
+                    if(gap > 99){
+                        textView_log.setText("99");
+                    }else{
+                        textView_log.setText(Long.toString(gap));
+                    }
                     textView_log.setVisibility(View.VISIBLE);
                 }else{
                     textView_log.setVisibility(View.INVISIBLE);
