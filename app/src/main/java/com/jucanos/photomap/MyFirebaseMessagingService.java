@@ -50,8 +50,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         manager.notify(0, builder.build());
     }
 
-    public static void subscribe(String mid) {
-        FirebaseMessaging.getInstance().subscribeToTopic(mid)
+    public static void subscribe(String uid) {
+        FirebaseMessaging.getInstance().subscribeToTopic(uid)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -65,8 +65,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    public static void unSubscribe(String mid) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(mid)
+    public static void unSubscribe(String uid) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(uid)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
