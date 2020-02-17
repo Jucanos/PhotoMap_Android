@@ -317,18 +317,19 @@ public class GroupActivity extends AppCompatActivity {
             longClickId = -1;
             Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
             final int regionCode = msg.what;
-            RepDialog dialog = new RepDialog(GroupActivity.this);
+            final RepDialog dialog = new RepDialog(GroupActivity.this);
             dialog.setDialogListener(new RepDialogListener() {
                 @Override
                 public void onSetClicked() {
                     Toast.makeText(GroupActivity.this, "onSetClicked", Toast.LENGTH_SHORT).show();
                     redirectSetRepActivity(regionCode);
+                    dialog.dismiss();
                 }
 
                 @Override
                 public void onDeleteClicked() {
                     Toast.makeText(GroupActivity.this, "onDeleteClicked", Toast.LENGTH_SHORT).show();
-
+                    dialog.dismiss();
                 }
             });
             dialog.show();

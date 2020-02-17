@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +25,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.security.auth.callback.Callback;
+
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
     private static Context appContext;
@@ -33,6 +37,8 @@ public class GlobalApplication extends Application {
 
     public HashMap<String, String> userThumbnail = new HashMap<>();
     public HashMap<String, String> userNickName = new HashMap<>();
+
+    public HashMap<String, Long> mLog = new HashMap<>();
 
     public static GlobalApplication getInstance() {
         return instance;
