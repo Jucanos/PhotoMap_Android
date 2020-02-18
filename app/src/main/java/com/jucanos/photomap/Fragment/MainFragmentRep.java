@@ -1,14 +1,8 @@
 package com.jucanos.photomap.Fragment;
 
-/**
- * Created by user on 2016-12-26.
- */
-
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,15 +20,16 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
-import com.jucanos.photomap.ListView.MemberListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
-import pl.polidea.view.ZoomView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -149,13 +145,24 @@ public class MainFragmentRep extends Fragment {
     // 대표 지도 유뮤 체크 후 대표 사진 불러오기
     void setRep() {
         box.showLoadingLayout();
-        String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
+        final String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
         if (repMid == null) {
             Log.e("MainFragmentRep", "[setRep] : repMid is null");
             setLayout(false);
         } else {
             Log.e("MainFragmentRep", "[setRep] : mid : " + repMid);
-            getMapInfoRequest(repMid);
+            GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.e("MainFragmentRep", "[mRefMaps] onDataChange");
+                    getMapInfoRequest(repMid);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("MainFragmentRep", "[mRefMaps] onCancelled");
+                }
+            });
         }
     }
 
@@ -198,8 +205,7 @@ public class MainFragmentRep extends Fragment {
         if (gyeonggi != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
             mBorders[1].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
             mBorders[1].setVisibility(View.INVISIBLE);
         }
@@ -207,8 +213,7 @@ public class MainFragmentRep extends Fragment {
         if (gangwon != null) {
             Glide.with(getActivity().getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
             mBorders[2].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
             mBorders[2].setVisibility(View.INVISIBLE);
         }
@@ -216,8 +221,7 @@ public class MainFragmentRep extends Fragment {
         if (chungbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
             mBorders[3].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
             mBorders[3].setVisibility(View.INVISIBLE);
         }
@@ -225,8 +229,7 @@ public class MainFragmentRep extends Fragment {
         if (chungnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
             mBorders[4].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
             mBorders[4].setVisibility(View.INVISIBLE);
         }
@@ -234,8 +237,7 @@ public class MainFragmentRep extends Fragment {
         if (jeonbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
             mBorders[5].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
             mBorders[5].setVisibility(View.INVISIBLE);
         }
@@ -243,8 +245,7 @@ public class MainFragmentRep extends Fragment {
         if (jeonnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
             mBorders[6].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
             mBorders[6].setVisibility(View.INVISIBLE);
         }
@@ -252,8 +253,7 @@ public class MainFragmentRep extends Fragment {
         if (gyeongbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
             mBorders[7].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
             mBorders[7].setVisibility(View.INVISIBLE);
         }
@@ -261,8 +261,7 @@ public class MainFragmentRep extends Fragment {
         if (gyeongnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
             mBorders[8].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
             mBorders[8].setVisibility(View.INVISIBLE);
         }
@@ -270,8 +269,7 @@ public class MainFragmentRep extends Fragment {
         if (jeju != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
             mBorders[9].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
             mBorders[9].setVisibility(View.INVISIBLE);
         }
