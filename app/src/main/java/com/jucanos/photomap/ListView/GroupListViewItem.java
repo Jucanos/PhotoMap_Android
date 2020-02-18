@@ -11,7 +11,7 @@ public class GroupListViewItem {
     private OnlogCb callback;
 
     public interface OnlogCb {
-        void onSetLog(long log);
+        void onSetLog(long log, boolean own);
     }
 
     public GroupListViewItem() {
@@ -46,8 +46,8 @@ public class GroupListViewItem {
         this.updatedAt = updatedAt;
     }
 
-    public void setLog(long log) {
-        callback.onSetLog(log);
+    public void setLog(long log, boolean own) {
+        callback.onSetLog(log,own);
     }
 
     public void setOnLogCb(OnlogCb callback) {

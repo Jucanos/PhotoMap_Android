@@ -118,11 +118,11 @@ public class MainFragmentGroup extends Fragment {
                 GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
                 String mid = groupListViewItem.getMid();
 
-                adapter.getItem(position).setPastLog(adapter.getItem(position).getCurLog());
-                adapter.getItem(position).setLog(adapter.getItem(position).getPastLog());
-                mRefUser.child(adapter.getItem(position).getMid()).setValue(adapter.getItem(position).getPastLog());
+                // adapter.getItem(position).setPastLog(adapter.getItem(position).getCurLog());
+                // adapter.getItem(position).setLog(adapter.getItem(position).getPastLog());
+                // mRefUser.child(adapter.getItem(position).getMid()).setValue(adapter.getItem(position).getPastLog());
 
-
+                globalApplication.mRefUser.child(mid).setValue(adapter.getItem(position).getCurLog());
                 redirectGroupActivity(mid);
             }
         });
@@ -253,25 +253,13 @@ public class MainFragmentGroup extends Fragment {
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
+        groupListViewItem.setCurLog((long)0);
+        groupListViewItem.setPastLog((long)0);
 
-        groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
-        Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
+        // groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
+        // Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
 
 
-        mRefMap.child(mid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String mid = dataSnapshot.getKey();
-                Long log = dataSnapshot.getValue(Long.class);
-                Log.e("addGroup", mid + " : " + log);
-                groupListViewItem.setLog(log);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         adapter.addItem(groupListViewItem);
         adapter.notifyDataSetChanged();
     }
@@ -292,7 +280,6 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
-                            setFireBase(mid);
                             addGroup(name, mid, updatedAt);
                         }
                     }
@@ -344,23 +331,6 @@ public class MainFragmentGroup extends Fragment {
             noGroup.setVisibility(View.GONE);
             existGroup.setVisibility(View.VISIBLE);
         }
-    }
-
-    void setFireBase(final String mid) {
-        Log.e("setFireBase", mid + " is set");
-        Log.e(mid, mRefMap.child(mid).getDatabase().toString());
-        mRefMap.child(mid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String mid = dataSnapshot.getKey();
-                Long log = dataSnapshot.getValue(Long.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     // lifeCycle

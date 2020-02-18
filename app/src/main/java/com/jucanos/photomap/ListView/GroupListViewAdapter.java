@@ -13,12 +13,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 
 import java.io.InputStream;
@@ -70,26 +75,59 @@ public class GroupListViewAdapter extends BaseAdapter {
 
         textView_lastUpdated.setText((new SimpleDateFormat("yyyy/MM/dd hh").format(listViewItem.getUpdatedAt())));
 
-        GroupListViewItem.OnlogCb callback = new GroupListViewItem.OnlogCb() {
+        // firebase realtime log
+
+        final GlobalApplication globalContext = GlobalApplication.getGlobalApplicationContext();
+
+        listViewItem.setOnLogCb(new GroupListViewItem.OnlogCb() {
             @Override
-            public void onSetLog(long log) {
-                Log.e("onSetLog", "callback is success");
-                listViewItem.setCurLog(log);
-                long gap = log - listViewItem.getPastLog();
+            public void onSetLog(long log, boolean own) {
+                if(own){
+                    listViewItem.setPastLog(log);
+                }else{
+                    listViewItem.setCurLog(log);
+                }
+                long gap = listViewItem.getCurLog() - listViewItem.getPastLog();
+
                 if (gap > 0) {
-                    if(gap > 99){
+                    if (gap > 99) {
                         textView_log.setText("99");
-                    }else{
+                    } else {
                         textView_log.setText(Long.toString(gap));
                     }
                     textView_log.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     textView_log.setVisibility(View.INVISIBLE);
                 }
-            }
-        };
 
-        listViewItem.setOnLogCb(callback);
+            }
+        });
+
+        globalContext.mRefUser.child(listViewItem.getMid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.e("GroupListViewAdapter", listViewItem.getMid() + " is onDataChange");
+                listViewItem.setLog(dataSnapshot.getValue(long.class), true);
+                globalContext.mRefMaps.child(listViewItem.getMid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listViewItem.setLog(dataSnapshot.getValue(long.class), false);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("GroupListViewAdapter", listViewItem.getMid() + " is onCancelled");
+
+            }
+        });
+
 
         return convertView;
     }

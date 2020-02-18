@@ -181,20 +181,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loadFireBase() {
-        mUserRef.child(globalApplication.authorization.getUserData().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Long> map = new HashMap<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.e("loadFireBase",ds.getKey() + " : " + String.valueOf(ds.getValue(Long.class)));
-                    globalApplication.mLog.put(ds.getKey(),ds.getValue(Long.class));
-                }
-                redirectSignupActivity();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        globalApplication.mRefUser = mUserRef.child(globalApplication.authorization.getUserData().getUid());
+        redirectSignupActivity();
     }
 }
