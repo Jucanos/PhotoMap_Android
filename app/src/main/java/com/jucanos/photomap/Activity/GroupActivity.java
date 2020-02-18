@@ -52,6 +52,7 @@ import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
+import com.jucanos.photomap.Structure.SetRep;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -62,9 +63,13 @@ import com.kakao.network.ErrorResult;
 import com.kakao.network.callback.ResponseCallback;
 import com.kakao.util.helper.log.Logger;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import pl.polidea.view.ZoomView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,6 +102,7 @@ public class GroupActivity extends AppCompatActivity {
     final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
     final ImageView[] mBorders = new ImageView[10];
     final ImageView[] imageViews = new ImageView[10];
+    final int[] mDefault = new int[10];
 
     private DrawerLayout drawerLayout_drawer;
     private ListView listView_member;
@@ -210,6 +216,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[1] = imageView_gyeonggi;
         imageViews[1] = imageView_gyeonggi_front;
         mBorders[1] = findViewById(R.id.imageView_gyeonggi_white);
+        mDefault[1] = R.drawable.map_gyeonggi;
 
         imageView_gangwon = findViewById(R.id.imageView_gangwon);
         imageView_gangwon_front = findViewById(R.id.imageView_gangwon_front);
@@ -217,6 +224,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[2] = imageView_gangwon;
         imageViews[2] = imageView_gangwon_front;
         mBorders[2] = findViewById(R.id.imageView_gangwon_white);
+        mDefault[2] = R.drawable.map_gangwon;
 
         imageView_chungbuk = findViewById(R.id.imageView_chungbuk);
         imageView_chungbuk_front = findViewById(R.id.imageView_chungbuk_front);
@@ -224,6 +232,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[3] = imageView_chungbuk;
         imageViews[3] = imageView_chungbuk_front;
         mBorders[3] = findViewById(R.id.imageView_chungbuk_white);
+        mDefault[3] = R.drawable.map_chungbuk;
 
         imageView_chungnam = findViewById(R.id.imageView_chungnam);
         imageView_chungnam_front = findViewById(R.id.imageView_chungnam_front);
@@ -231,6 +240,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[4] = imageView_chungnam;
         imageViews[4] = imageView_chungnam_front;
         mBorders[4] = findViewById(R.id.imageView_chungnam_white);
+        mDefault[4] = R.drawable.map_chungnam;
 
         imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
         imageView_jeonbuk_front = findViewById(R.id.imageView_jeonbuk_front);
@@ -238,6 +248,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[5] = imageView_jeonbuk;
         imageViews[5] = imageView_jeonbuk_front;
         mBorders[5] = findViewById(R.id.imageView_jeonbuk_white);
+        mDefault[5] = R.drawable.map_jeonbuk;
 
         imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
         imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
@@ -245,6 +256,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
         mBorders[6] = findViewById(R.id.imageView_jeonbuk_white);
+        mDefault[6] = R.drawable.map_jeonnam;
 
         imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk_front = findViewById(R.id.imageView_gyeongbuk_front);
@@ -252,6 +264,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[7] = imageView_gyeongbuk;
         imageViews[7] = imageView_gyeongbuk_front;
         mBorders[7] = findViewById(R.id.imageView_gyeongbuk_white);
+        mDefault[7] = R.drawable.map_gyeongbuk;
 
         imageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
         imageView_gyeongnam_front = findViewById(R.id.imageView_gyeongnam_front);
@@ -259,6 +272,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[8] = imageView_gyeongnam;
         imageViews[8] = imageView_gyeongnam_front;
         mBorders[8] = findViewById(R.id.imageView_gyeongnam_white);
+        mDefault[8] = R.drawable.map_gyeongnam;
 
         imageView_jeju = findViewById(R.id.imageView_jeju);
         imageView_jeju_front = findViewById(R.id.imageView_jeju_front);
@@ -266,6 +280,7 @@ public class GroupActivity extends AppCompatActivity {
         porterShapeImageViews[9] = imageView_jeju;
         imageViews[9] = imageView_jeju_front;
         mBorders[9] = findViewById(R.id.imageView_jeju_white);
+        mDefault[9] = R.drawable.map_jeju;
 
         floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
         floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
@@ -321,9 +336,10 @@ public class GroupActivity extends AppCompatActivity {
         GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("GroupActivity","[mRefMaps] onDataChange");
+                Log.e("GroupActivity", "[mRefMaps] onDataChange");
                 getMapInfoRequest();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("GroupActivity", "[mRefMaps] onCancelled");
@@ -352,6 +368,7 @@ public class GroupActivity extends AppCompatActivity {
                 @Override
                 public void onDeleteClicked() {
                     Toast.makeText(GroupActivity.this, "onDeleteClicked", Toast.LENGTH_SHORT).show();
+                    deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
                     dialog.dismiss();
                 }
             });
@@ -480,13 +497,13 @@ public class GroupActivity extends AppCompatActivity {
 
     /* request function */
     void getMapInfoRequest() {
-        Log.e("GroupActivity","getMapInfoRequest");
+        Log.e("GroupActivity", "getMapInfoRequest");
         final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
             @Override
             public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
                 if (response.isSuccessful()) {
-                    Log.e("GroupActivity","response.isSuccessful()");
+                    Log.e("GroupActivity", "response.isSuccessful()");
                     adapter.clear();
                     if (response.body() != null) {
                         setRep(response.body().getData().getGetMapInfoDataRepresents());
@@ -559,8 +576,7 @@ public class GroupActivity extends AppCompatActivity {
         if (gyeonggi != null) {
             Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
             mBorders[1].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
             mBorders[1].setVisibility(View.INVISIBLE);
         }
@@ -568,8 +584,7 @@ public class GroupActivity extends AppCompatActivity {
         if (gangwon != null) {
             Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
             mBorders[2].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
             mBorders[2].setVisibility(View.INVISIBLE);
         }
@@ -577,8 +592,7 @@ public class GroupActivity extends AppCompatActivity {
         if (chungbuk != null) {
             Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
             mBorders[3].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
             mBorders[3].setVisibility(View.INVISIBLE);
         }
@@ -586,8 +600,7 @@ public class GroupActivity extends AppCompatActivity {
         if (chungnam != null) {
             Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
             mBorders[4].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
             mBorders[4].setVisibility(View.INVISIBLE);
         }
@@ -595,8 +608,7 @@ public class GroupActivity extends AppCompatActivity {
         if (jeonbuk != null) {
             Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
             mBorders[5].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
             mBorders[5].setVisibility(View.INVISIBLE);
         }
@@ -604,8 +616,7 @@ public class GroupActivity extends AppCompatActivity {
         if (jeonnam != null) {
             Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
             mBorders[6].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
             mBorders[6].setVisibility(View.INVISIBLE);
         }
@@ -613,8 +624,7 @@ public class GroupActivity extends AppCompatActivity {
         if (gyeongbuk != null) {
             Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
             mBorders[7].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
             mBorders[7].setVisibility(View.INVISIBLE);
         }
@@ -622,8 +632,7 @@ public class GroupActivity extends AppCompatActivity {
         if (gyeongnam != null) {
             Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
             mBorders[8].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
             mBorders[8].setVisibility(View.INVISIBLE);
         }
@@ -631,11 +640,40 @@ public class GroupActivity extends AppCompatActivity {
         if (jeju != null) {
             Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
             mBorders[9].setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
             mBorders[9].setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void deleteRepRequest(String cityKey, final int regionCode) {
+        RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
+        RequestBody requetRemove = RequestBody.create(MediaType.parse("text/plain"), "true");
+        HashMap<String, RequestBody> hashMap = new HashMap<>();
+        hashMap.put("cityKey", requetCityKey);
+        hashMap.put("remove", requetRemove);
+
+        // request
+        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep("Bearer " + globalApplication.token, mid, hashMap, null);
+        res.enqueue(new Callback<SetRep>() {
+            @Override
+            public void onResponse(Call<SetRep> call, Response<SetRep> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e("GroupActivity", response.body().getData().toString());
+                        porterShapeImageViews[regionCode].setImageResource(mDefault[regionCode]);
+                        mBorders[regionCode].setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    Log.e("GroupActivity", "deleteRepRequest error : " + Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SetRep> call, Throwable t) {
+                Log.e("GroupActivity", "deleteRepRequest fail : " + t.getLocalizedMessage());
+            }
+        });
     }
 
 }
