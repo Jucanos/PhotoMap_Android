@@ -57,9 +57,13 @@ public class MainFragmentRep extends Fragment {
     final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
     final ImageView[] imageViews = new ImageView[10];
     final ImageView[] mBorders = new ImageView[10];
+    final int[] mWhite = new int[10];
+    final int[] mBlack = new int[10];
 
     private RelativeLayout noRep, existRep;
     private DynamicBox box;
+
+    // for shadow test
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -89,55 +93,74 @@ public class MainFragmentRep extends Fragment {
         imageView_gyeonggi_front = view.findViewById(R.id.imageView_gyeonggi_front);
         porterShapeImageViews[1] = imageView_gyeonggi;
         imageViews[1] = imageView_gyeonggi_front;
-        mBorders[1] = view.findViewById(R.id.imageView_gyeonggi_white);
+        mBorders[1] = view.findViewById(R.id.imageView_gyeonggi_border);
+        mWhite[1] = R.drawable.ic_map_gyeonggi_white;
+        mBlack[1] = R.drawable.ic_map_gyeonggi_black;
 
         imageView_gangwon = view.findViewById(R.id.imageView_gangwon);
         imageView_gangwon_front = view.findViewById(R.id.imageView_gangwon_front);
         porterShapeImageViews[2] = imageView_gangwon;
         imageViews[2] = imageView_gangwon_front;
-        mBorders[2] = view.findViewById(R.id.imageView_gangwon_white);
+        mBorders[2] = view.findViewById(R.id.imageView_gangwon_border);
+        mWhite[2] = R.drawable.ic_map_gangwon_white;
+        mBlack[2] = R.drawable.ic_map_gangwon_black;
 
         imageView_chungbuk = view.findViewById(R.id.imageView_chungbuk);
         imageView_chungbuk_front = view.findViewById(R.id.imageView_chungbuk_front);
         porterShapeImageViews[3] = imageView_chungbuk;
         imageViews[3] = imageView_chungbuk_front;
-        mBorders[3] = view.findViewById(R.id.imageView_chungbuk_white);
+        mBorders[3] = view.findViewById(R.id.imageView_chungbuk_border);
+        mWhite[3] = R.drawable.ic_map_chungbuk_white;
+        mBlack[3] = R.drawable.ic_map_chungbuk_black;
+
 
         imageView_chungnam = view.findViewById(R.id.imageView_chungnam);
         imageView_chungnam_front = view.findViewById(R.id.imageView_chungnam_front);
         porterShapeImageViews[4] = imageView_chungnam;
         imageViews[4] = imageView_chungnam_front;
-        mBorders[4] = view.findViewById(R.id.imageView_chungnam_white);
+        mBorders[4] = view.findViewById(R.id.imageView_chungnam_border);
+        mWhite[4] = R.drawable.ic_map_chungnam_white;
+        mBlack[4] = R.drawable.ic_map_chungnam_black;
 
         imageView_jeonbuk = view.findViewById(R.id.imageView_jeonbuk);
         imageView_jeonbuk_front = view.findViewById(R.id.imageView_jeonbuk_front);
         porterShapeImageViews[5] = imageView_jeonbuk;
         imageViews[5] = imageView_jeonbuk_front;
-        mBorders[5] = view.findViewById(R.id.imageView_jeonbuk_white);
+        mBorders[5] = view.findViewById(R.id.imageView_jeonbuk_border);
+        mWhite[5] = R.drawable.ic_map_junbuk_white;
+        mBlack[5] = R.drawable.ic_map_junbuk_black;
 
         imageView_jeonnam = view.findViewById(R.id.imageView_jeonnam);
         imageView_jeonnam_front = view.findViewById(R.id.imageView_jeonnam_front);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
-        mBorders[6] = view.findViewById(R.id.imageView_jeonbuk_white);
+        mBorders[6] = view.findViewById(R.id.imageView_jeonnam_border);
+        mWhite[6] = R.drawable.ic_map_junnam_white;
+        mBlack[6] = R.drawable.ic_map_junnam_black;
 
         imageView_gyeongbuk = view.findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk_front = view.findViewById(R.id.imageView_gyeongbuk_front);
         porterShapeImageViews[7] = imageView_gyeongbuk;
         imageViews[7] = imageView_gyeongbuk_front;
-        mBorders[7] = view.findViewById(R.id.imageView_gyeongbuk_white);
+        mBorders[7] = view.findViewById(R.id.imageView_gyeongbuk_border);
+        mWhite[7] = R.drawable.ic_map_gyeongbuk_white;
+        mBlack[7] = R.drawable.ic_map_gyeongbuk_black;
 
         imageView_gyeongnam = view.findViewById(R.id.imageView_gyeongnam);
         imageView_gyeongnam_front = view.findViewById(R.id.imageView_gyeongnam_front);
         porterShapeImageViews[8] = imageView_gyeongnam;
         imageViews[8] = imageView_gyeongnam_front;
-        mBorders[8] = view.findViewById(R.id.imageView_gyeongnam_white);
+        mBorders[8] = view.findViewById(R.id.imageView_gyeongnam_border);
+        mWhite[8] = R.drawable.ic_map_gyeongnam_white;
+        mBlack[8] = R.drawable.ic_map_gyeongnam_black;
 
         imageView_jeju = view.findViewById(R.id.imageView_jeju);
         imageView_jeju_front = view.findViewById(R.id.imageView_jeju_front);
         porterShapeImageViews[9] = imageView_jeju;
         imageViews[9] = imageView_jeju_front;
-        mBorders[9] = view.findViewById(R.id.imageView_jeju_white);
+        mBorders[9] = view.findViewById(R.id.imageView_jeju_border);
+        mWhite[9] = R.drawable.ic_map_jeju_white;
+        mBlack[9] = R.drawable.ic_map_jeju_black;
 
         return view;
     }
@@ -204,74 +227,74 @@ public class MainFragmentRep extends Fragment {
 
         if (gyeonggi != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
-            mBorders[1].setVisibility(View.VISIBLE);
+            mBorders[1].setImageResource(mWhite[1]);
         } else {
             porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
-            mBorders[1].setVisibility(View.INVISIBLE);
+            mBorders[1].setImageResource(mBlack[1]);
         }
 
         if (gangwon != null) {
             Glide.with(getActivity().getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
-            mBorders[2].setVisibility(View.VISIBLE);
+            mBorders[2].setImageResource(mWhite[2]);
         } else {
             porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
-            mBorders[2].setVisibility(View.INVISIBLE);
+            mBorders[2].setImageResource(mBlack[2]);
         }
 
         if (chungbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
-            mBorders[3].setVisibility(View.VISIBLE);
+            mBorders[3].setImageResource(mWhite[3]);
         } else {
             porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
-            mBorders[3].setVisibility(View.INVISIBLE);
+            mBorders[3].setImageResource(mBlack[3]);
         }
 
         if (chungnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
-            mBorders[4].setVisibility(View.VISIBLE);
+            mBorders[4].setImageResource(mWhite[4]);
         } else {
             porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
-            mBorders[4].setVisibility(View.INVISIBLE);
+            mBorders[4].setImageResource(mBlack[4]);
         }
 
         if (jeonbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
-            mBorders[5].setVisibility(View.VISIBLE);
+            mBorders[5].setImageResource(mWhite[5]);
         } else {
             porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
-            mBorders[5].setVisibility(View.INVISIBLE);
+            mBorders[5].setImageResource(mBlack[5]);
         }
 
         if (jeonnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
-            mBorders[6].setVisibility(View.VISIBLE);
+            mBorders[6].setImageResource(mWhite[6]);
         } else {
             porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
-            mBorders[6].setVisibility(View.INVISIBLE);
+            mBorders[6].setImageResource(mBlack[6]);
         }
 
         if (gyeongbuk != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
-            mBorders[7].setVisibility(View.VISIBLE);
+            mBorders[7].setImageResource(mWhite[7]);
         } else {
             porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
-            mBorders[7].setVisibility(View.INVISIBLE);
+            mBorders[7].setImageResource(mBlack[7]);
         }
 
         if (gyeongnam != null) {
             Glide.with(getActivity().getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
-            mBorders[8].setVisibility(View.VISIBLE);
+            mBorders[8].setImageResource(mWhite[8]);
         } else {
             porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
-            mBorders[8].setVisibility(View.INVISIBLE);
+            mBorders[8].setImageResource(mBlack[8]);
         }
 
         if (jeju != null) {
             Glide.with(getActivity().getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
-            mBorders[9].setVisibility(View.VISIBLE);
+            mBorders[9].setImageResource(mWhite[9]);
         } else {
             porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
-            mBorders[9].setVisibility(View.INVISIBLE);
+            mBorders[9].setImageResource(mBlack[9]);
         }
 
         setLayout(true);

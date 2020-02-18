@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -91,6 +93,9 @@ dependencies {
 
     // FOR IMAGE FILETER
     implementation 'info.androidhive:imagefilters:1.0.7'
+
+    // for custom shape imageView shadow
+    implementation 'com.github.devlight.shadowlayout:library:1.0.2'
 
 }
 

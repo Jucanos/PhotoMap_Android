@@ -138,12 +138,6 @@ public class MainFragmentGroup extends Fragment {
                     }
 
                     @Override
-                    public void onThumbnailClicked() {
-                        Toast.makeText(getContext(), "change onThumbnailClicked is clicked", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
                     public void onExitClicked() {
                         userRemove(globalApplication.token, adapter.getItem(position).getMid(), "true");
                         adapter.delete(position);

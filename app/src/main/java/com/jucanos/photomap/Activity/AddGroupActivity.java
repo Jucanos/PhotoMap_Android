@@ -92,7 +92,6 @@ public class AddGroupActivity extends AppCompatActivity {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
                 }
             }
-
             @Override
             public void onFailure(Call<CreateMap> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());

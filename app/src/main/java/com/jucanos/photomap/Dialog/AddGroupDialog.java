@@ -37,13 +37,11 @@ public class AddGroupDialog extends Dialog implements View.OnClickListener {
 
         final Button button_name = (Button) findViewById(R.id.button_name);
         final Button button_exit = (Button) findViewById(R.id.button_rep);
-        final Button button_thumbnail = (Button) findViewById(R.id.button_thumbnail);
         final TextView textView_groupName = (TextView) findViewById(R.id.textView_groupName);
         textView_groupName.setText(groupName);
 
         button_name.setOnClickListener(this);
         button_exit.setOnClickListener(this);
-        button_thumbnail.setOnClickListener(this);
     }
 
     @Override
@@ -51,10 +49,6 @@ public class AddGroupDialog extends Dialog implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.button_name:
                 longClickDialogListner.onGroupNameClicked();
-                dismiss();
-                break;
-            case R.id.button_thumbnail:
-                longClickDialogListner.onThumbnailClicked();
                 dismiss();
                 break;
             case R.id.button_rep:
