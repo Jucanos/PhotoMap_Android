@@ -43,6 +43,7 @@ import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 
 import java.util.Date;
+import java.util.Objects;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
@@ -115,13 +116,11 @@ public class MainFragmentGroup extends Fragment {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
-                GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
+                GroupListViewItem groupListViewItem = adapter.getItem(position);
                 String mid = groupListViewItem.getMid();
 
-                adapter.getItem(position).setPastLog(adapter.getItem(position).getCurLog());
-                adapter.getItem(position).setLog(adapter.getItem(position).getPastLog());
-                mRefUser.child(adapter.getItem(position).getMid()).setValue(adapter.getItem(position).getPastLog());
-
+                groupListViewItem.setActivated(true);
+                globalApplication.mRefUser.child(mid).setValue(groupListViewItem);
 
                 redirectGroupActivity(mid);
             }
@@ -177,7 +176,6 @@ public class MainFragmentGroup extends Fragment {
         } else {
             getMapList(globalApplication.token);
         }
-
         setLayout();
         return view;
     }
@@ -253,25 +251,13 @@ public class MainFragmentGroup extends Fragment {
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
+        groupListViewItem.setCurLog((long)0);
+        groupListViewItem.setPastLog((long)0);
 
-        groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
-        Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
+        // groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
+        // Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
 
 
-        mRefMap.child(mid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String mid = dataSnapshot.getKey();
-                Long log = dataSnapshot.getValue(Long.class);
-                Log.e("addGroup", mid + " : " + log);
-                groupListViewItem.setLog(log);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         adapter.addItem(groupListViewItem);
         adapter.notifyDataSetChanged();
     }
@@ -292,7 +278,6 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
-                            setFireBase(mid);
                             addGroup(name, mid, updatedAt);
                         }
                     }
@@ -346,28 +331,18 @@ public class MainFragmentGroup extends Fragment {
         }
     }
 
-    void setFireBase(final String mid) {
-        Log.e("setFireBase", mid + " is set");
-        Log.e(mid, mRefMap.child(mid).getDatabase().toString());
-        mRefMap.child(mid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String mid = dataSnapshot.getKey();
-                Long log = dataSnapshot.getValue(Long.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    @Override
+    public void onStop() {
+        adapter.setActivated(true);// adpater에 대해서 activated true로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        super.onStop();
     }
 
     // lifeCycle
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().invalidateOptionsMenu();
+        adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
 }
 

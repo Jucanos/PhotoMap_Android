@@ -9,17 +9,21 @@ public class GroupListViewItem {
     private Long pastLog;
     private Long curLog;
     private OnlogCb callback;
+    private Boolean activated;
+    private Boolean loadUserRef;
 
     public interface OnlogCb {
-        void onSetLog(long log);
+        void onSetLog(long log, boolean own);
     }
 
     public GroupListViewItem() {
-        mid = "";
-        title = "";
-        updatedAt = null;
-        pastLog = (long) 0;
-        curLog = (long) 0;
+        this.mid = "";
+        this.title = "";
+        this.updatedAt = null;
+        this.pastLog = (long) 0;
+        this.curLog = (long) 0;
+        this.activated = false;
+        this.loadUserRef = false;
     }
 
     public String getMid() {
@@ -46,8 +50,8 @@ public class GroupListViewItem {
         this.updatedAt = updatedAt;
     }
 
-    public void setLog(long log) {
-        callback.onSetLog(log);
+    public void setLog(long log, boolean own) {
+        callback.onSetLog(log, own);
     }
 
     public void setOnLogCb(OnlogCb callback) {
@@ -68,5 +72,29 @@ public class GroupListViewItem {
 
     public void setCurLog(Long curLog) {
         this.curLog = curLog;
+    }
+
+    public OnlogCb getCallback() {
+        return callback;
+    }
+
+    public void setCallback(OnlogCb callback) {
+        this.callback = callback;
+    }
+
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
+
+    public Boolean getLoadUserRef() {
+        return loadUserRef;
+    }
+
+    public void setLoadUserRef(Boolean loadUserRef) {
+        this.loadUserRef = loadUserRef;
     }
 }

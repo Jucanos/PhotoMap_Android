@@ -38,7 +38,8 @@ public class GlobalApplication extends Application {
     public HashMap<String, String> userThumbnail = new HashMap<>();
     public HashMap<String, String> userNickName = new HashMap<>();
 
-    public HashMap<String, Long> mLog = new HashMap<>();
+    public FirebaseDatabase database;
+    public DatabaseReference mRefMaps, mRefUsers, mRefUser;
 
     public static GlobalApplication getInstance() {
         return instance;
@@ -127,20 +128,14 @@ public class GlobalApplication extends Application {
         IBoxingMediaLoader loader = new BoxingGlideLoader();
         BoxingMediaLoader.getInstance().init(loader);
 
+        // firebase realtime db ref
+        database = FirebaseDatabase.getInstance();
+        mRefMaps = database.getReference("maps");
+        mRefUsers = database.getReference("users");
+
         instance = this;
         KakaoSDK.init(new KakaoSDKAdapter());
     }
 
-//    public void saveRepMid(String mid) {
-//        SharedPreferences pref = getSharedPreferences("mid", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putString("mid", mid); //키값, 저장값
-//        editor.commit();
-//    }
-//
-//    public String getRePMid() {
-//        SharedPreferences prefs = getSharedPreferences("mid", MODE_PRIVATE);
-//        String result = prefs.getString("mid", ""); //키값, 디폴트값
-//        return result;
-//    }
+
 }
