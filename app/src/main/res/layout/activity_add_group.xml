@@ -23,7 +23,7 @@
                 android:id="@+id/toolbar_tb"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/windowBackground"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/appBarLayout_ab"
-            android:background="#FFFFFF"
+            android:background="@color/windowBackground"
             android:padding="20dp">
 
             <EditText
@@ -44,6 +44,7 @@
                 android:hint="그룹 이름을 입력해주세요!"
                 android:padding="10dp"
                 android:singleLine="true"
+                android:textColor="#000"
                 android:textSize="20dp" />
         </RelativeLayout>
 

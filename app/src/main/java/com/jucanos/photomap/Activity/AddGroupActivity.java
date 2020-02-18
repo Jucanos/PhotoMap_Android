@@ -29,6 +29,7 @@ import retrofit2.Response;
 public class AddGroupActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
     private EditText editText_name;
+    private RelativeLayout relativeLayout_total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,8 @@ public class AddGroupActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("그룹 생성");
 
         editText_name = findViewById(R.id.editText_description);
-        RelativeLayout relativeLayout_total = findViewById(R.id.relativeLayout_total);
-        hideView(relativeLayout_total);
+        relativeLayout_total = findViewById(R.id.relativeLayout_total);
+        showView(relativeLayout_total);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class AddGroupActivity extends AppCompatActivity {
                         intent.putExtra("mapName", name);
                         setResult(RESULT_OK, intent);
                         finish();
-                        overridePendingTransition(R.anim.anim_slide_out_top, R.anim.anim_not_move);
+                        // overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
                     }
                 } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
@@ -99,7 +100,7 @@ public class AddGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void hideView(final View view) {
+    private void showView(final View view) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_slide_in_top);
         //use this to make it longer:  animation.setDuration(1000);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -117,8 +118,13 @@ public class AddGroupActivity extends AppCompatActivity {
 
             }
         });
-
         view.startAnimation(animation);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
+
+    }
 }

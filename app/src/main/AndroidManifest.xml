@@ -26,9 +26,9 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".Activity.EditGroupNameActivity"
-            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
+<!--        <activity-->
+<!--            android:name=".Activity.EditGroupNameActivity"-->
+<!--            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />-->
         <activity android:name=".Activity.NoticeActivity" />
         <activity android:name=".Activity.SetRepActivity" />
         <activity android:name=".Activity.StoryActivity" />
