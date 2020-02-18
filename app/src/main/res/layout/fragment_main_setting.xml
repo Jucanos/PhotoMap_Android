@@ -10,7 +10,7 @@
         android:id="@+id/appBarLayout_ab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/AppTheme"
         android:tooltipText="!!!!">
 
         <androidx.appcompat.widget.Toolbar
@@ -18,131 +18,192 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/layout1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appBarLayout_ab"
-        android:padding="5dp">
+        android:layout_margin="5dp"
+        app:cardCornerRadius="5dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageView_thumbnail"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/layout_rounded" />
+        <RelativeLayout
 
-        <TextView
-            android:id="@+id/textView_nickName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_toRightOf="@+id/circleImageView_thumbnail"
-            android:text="gjek136@naver.com"
-            android:textColor="#000000"
-            android:textSize="30dp" />
+            android:padding="5dp">
 
-    </RelativeLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageView_thumbnail"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/layout_rounded" />
 
-    <RelativeLayout
+            <TextView
+                android:id="@+id/textView_nickName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/circleImageView_thumbnail"
+                android:text="gjek136@naver.com"
+                android:textColor="#000000"
+                android:textSize="30dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/layout2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout1">
+        android:layout_below="@+id/layout1"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="5dp">
 
         <RelativeLayout
-            android:id="@+id/layout2_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/windowBackground">
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout2_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/view1_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000" />
+
+                <TextView
+                    android:id="@+id/textView_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view1_1"
+                    android:layout_margin="10dp"
+                    android:text="앱 정보"
+                    android:textColor="@color/windowBackground"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view1_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/textView_info"
+                    android:background="#000" />
+
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/textView_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="앱 정보"
+                android:layout_below="@+id/layout2_1"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="공지사항"
+                android:textColor="#000000"
                 android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_notice"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="리뷰 작성하기"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_review"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="앱 공유하기"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textView_notice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout2_1"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp"
-            android:text="공지사항"
-            android:textColor="#000000"
-            android:textSize="30dp" />
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/textView_review"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView_notice"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp"
-            android:text="리뷰 작성하기"
-            android:textColor="#000000"
-            android:textSize="30dp" />
-
-        <TextView
-            android:id="@+id/textView_share"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView_review"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp"
-            android:text="앱 공유하기"
-            android:textColor="#000000"
-            android:textSize="30dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/layout3"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout2">
+        android:layout_below="@+id/layout2"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="5dp">
 
         <RelativeLayout
-            android:id="@+id/layout3_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/windowBackground">>
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout3_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/view2_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000" />
+
+                <TextView
+                    android:id="@+id/textView_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view2_1"
+                    android:layout_margin="10dp"
+                    android:text="회원정보관리"
+                    android:textColor="@color/windowBackground"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view2_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/textView_admin"
+                    android:background="#000" />
+
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/textView_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="회원정보관리"
-
+                android:layout_below="@+id/layout3_1"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="로그아웃"
+                android:textColor="#000000"
                 android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView_signout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_logout"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="회원 탈퇴"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textView_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout3_1"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp"
-            android:text="로그아웃"
-            android:textColor="#000000"
-            android:textSize="30dp" />
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/textView_signout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView_logout"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp"
-            android:text="회원 탈퇴"
-            android:textColor="#000000"
-            android:textSize="30dp" />
-    </RelativeLayout>
 </RelativeLayout>

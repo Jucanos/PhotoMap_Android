@@ -188,6 +188,13 @@ public class GroupActivity extends AppCompatActivity {
         zoomView.setLayoutParams(layoutParams);
         zoomView.setMaxZoom(8f);
         // 컨테이너 설정후 zoomView 추가
+        RelativeLayout rl_drawer = findViewById(R.id.rl_drawer);
+        rl_drawer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         container = findViewById(R.id.fragmentViewPager_container);
         container.setClipChildren(false);
         container.addView(zoomView);

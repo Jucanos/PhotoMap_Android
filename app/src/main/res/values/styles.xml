@@ -1,11 +1,12 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/windowBackground</item>
+        <item name="colorPrimaryDark">@color/windowBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">#161817</item>
+        <item name="android:statusBarColor">@color/windowBackground</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!--???? -->
@@ -24,11 +25,12 @@
 
     <!-- Toolbar style -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorSecondary">#000000</item>
-        <item name="colorPrimaryDark">#000000</item>
         <item name="android:textColorPrimary">#000000</item>
-        <item name="colorPrimary">#ffffff</item>
+        <item name="android:textColorSecondary">#000000</item>
+
+        <item name="colorPrimaryDark">@color/windowBackground</item>
         <item name="colorControlHighlight">#000000</item>
+
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -37,9 +39,9 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="colorPrimary">#000000</item>
-        <item name="colorPrimaryDark">#ffffff</item>
-        <item name="android:statusBarColor">#000000</item>
+
+        <item name="android:statusBarColor">@color/windowBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- filePicker style   -->

@@ -120,7 +120,7 @@ public class MainFragmentGroup extends Fragment {
                 String mid = groupListViewItem.getMid();
 
                 groupListViewItem.setActivated(true);
-                globalApplication.mRefUser.child(mid).setValue(groupListViewItem);
+                globalApplication.mRefUser.child(mid).setValue(groupListViewItem.getCurLog());
 
                 redirectGroupActivity(mid);
             }
