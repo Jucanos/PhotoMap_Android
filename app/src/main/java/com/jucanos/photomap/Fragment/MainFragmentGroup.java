@@ -43,6 +43,7 @@ import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
 
 import java.util.Date;
+import java.util.Objects;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
@@ -115,14 +116,12 @@ public class MainFragmentGroup extends Fragment {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
-                GroupListViewItem groupListViewItem = (GroupListViewItem) parent.getItemAtPosition(position);
+                GroupListViewItem groupListViewItem = adapter.getItem(position);
                 String mid = groupListViewItem.getMid();
 
-                // adapter.getItem(position).setPastLog(adapter.getItem(position).getCurLog());
-                // adapter.getItem(position).setLog(adapter.getItem(position).getPastLog());
-                // mRefUser.child(adapter.getItem(position).getMid()).setValue(adapter.getItem(position).getPastLog());
+                groupListViewItem.setActivated(true);
+                globalApplication.mRefUser.child(mid).setValue(groupListViewItem);
 
-                globalApplication.mRefUser.child(mid).setValue(adapter.getItem(position).getCurLog());
                 redirectGroupActivity(mid);
             }
         });
@@ -177,7 +176,6 @@ public class MainFragmentGroup extends Fragment {
         } else {
             getMapList(globalApplication.token);
         }
-
         setLayout();
         return view;
     }
@@ -333,11 +331,18 @@ public class MainFragmentGroup extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        adapter.setActivated(true);// adpater에 대해서 activated true로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        super.onStop();
+    }
+
     // lifeCycle
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().invalidateOptionsMenu();
+        adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
 }
 
