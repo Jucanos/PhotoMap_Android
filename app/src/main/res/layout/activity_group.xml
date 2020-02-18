@@ -45,7 +45,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floatingActionMenu_menu"
@@ -95,6 +96,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
@@ -113,9 +115,11 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="10dp"
                 android:text="그룹멤버"
-                android:textSize="20dp" />
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/relativeLayout_addMember"
@@ -158,12 +162,12 @@
                         android:text="그룹 초대"
                         android:textColor="#000000"
                         android:textSize="24dp" />
+
                 </LinearLayout>
 
             </RelativeLayout>
 
         </RelativeLayout>
-
 
         <ListView
             android:id="@+id/listView_member"
