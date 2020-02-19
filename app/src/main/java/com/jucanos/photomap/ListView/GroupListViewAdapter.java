@@ -29,7 +29,8 @@ public class GroupListViewAdapter extends BaseAdapter {
     private ArrayList<GroupListViewItem> listViewItemList = new ArrayList<>();
     private boolean activated = false;
 
-    public GroupListViewAdapter() {}
+    public GroupListViewAdapter() {
+    }
 
     @Override
     public int getCount() {
@@ -96,34 +97,45 @@ public class GroupListViewAdapter extends BaseAdapter {
             }
         });
 
-
-        globalContext.mRefUser.child(listViewItem.getMid()).addValueEventListener(new ValueEventListener() {
+        listViewItem.setUesrValueEventListener(globalContext.mRefUser.child(listViewItem.getMid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("GroupListViewAdapter", "[mRefUser]" + " is onDataChange");
                 // noinspection ConstantConditions
+                Log.e("dataSapSHt", dataSnapshot.toString());
+                if (dataSnapshot.getValue() == null) {
+                    globalContext.mRefUser.child(listViewItem.getMid()).removeEventListener(listViewItem.getUesrValueEventListener());
+                    return;
+                }
                 listViewItem.setLog(dataSnapshot.getValue(long.class), true);
                 if (!listViewItem.getLoadUserRef()) {
                     listViewItem.setLoadUserRef(true);
-                    globalContext.mRefMaps.child(listViewItem.getMid()).addValueEventListener(new ValueEventListener() {
+                    listViewItem.setMapValueEventListener(globalContext.mRefMaps.child(listViewItem.getMid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() == null) {
+                                globalContext.mRefMaps.child(listViewItem.getMid()).removeEventListener(listViewItem.getMapValueEventListener());
+                                return;
+                            }
                             Log.e("GroupListViewAdapter", "[mRefMaps] onDataChange");
                             // noinspection ConstantConditions
                             listViewItem.setLog(dataSnapshot.getValue(long.class), false);
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             Log.e("GroupListViewAdapter", "[mRefMaps] onCancelled");
                         }
-                    });
+                    }));
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("GroupListViewAdapter", "[mRefUser]" + " is onCancelled");
             }
-        });
+        }));
+
+
         return convertView;
     }
 
@@ -142,6 +154,7 @@ public class GroupListViewAdapter extends BaseAdapter {
     }
 
     public void delete(int position) {
+
         listViewItemList.remove(position);
     }
 

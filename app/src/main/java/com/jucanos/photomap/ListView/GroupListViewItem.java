@@ -1,5 +1,7 @@
 package com.jucanos.photomap.ListView;
 
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Date;
 
 public class GroupListViewItem {
@@ -11,6 +13,7 @@ public class GroupListViewItem {
     private OnlogCb callback;
     private Boolean activated;
     private Boolean loadUserRef;
+    private ValueEventListener uesrValueEventListener, mapValueEventListener;
 
     public interface OnlogCb {
         void onSetLog(long log, boolean own);
@@ -96,5 +99,21 @@ public class GroupListViewItem {
 
     public void setLoadUserRef(Boolean loadUserRef) {
         this.loadUserRef = loadUserRef;
+    }
+
+    public ValueEventListener getUesrValueEventListener() {
+        return uesrValueEventListener;
+    }
+
+    public void setUesrValueEventListener(ValueEventListener uesrValueEventListener) {
+        this.uesrValueEventListener = uesrValueEventListener;
+    }
+
+    public ValueEventListener getMapValueEventListener() {
+        return mapValueEventListener;
+    }
+
+    public void setMapValueEventListener(ValueEventListener mapValueEventListener) {
+        this.mapValueEventListener = mapValueEventListener;
     }
 }
