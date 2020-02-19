@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -518,8 +519,6 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
-
-    /* request function */
     void getMapInfoRequest() {
         Log.e("GroupActivity", "getMapInfoRequest");
         final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
@@ -579,6 +578,7 @@ public class GroupActivity extends AppCompatActivity {
     void getMapImage() {
         pg.setVisibility(View.VISIBLE);
         View v = findViewById(R.id.relativeLayout_mapContainer);
+        v.setBackgroundColor(Color.WHITE);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
@@ -586,6 +586,7 @@ public class GroupActivity extends AppCompatActivity {
         // MediaStore 에 image 저장
         String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
         Uri myUri = Uri.parse(filePath);
+        v.setBackgroundColor(getColor(R.color.colorTransparent));
         pg.setVisibility(View.GONE);
     }
 
