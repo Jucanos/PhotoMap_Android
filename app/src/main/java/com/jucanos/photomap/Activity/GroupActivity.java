@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -35,7 +33,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
@@ -54,7 +51,6 @@ import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
 import com.jucanos.photomap.Structure.SetRep;
-import com.jucanos.photomap.util.BitmapUtils;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -111,7 +107,7 @@ public class GroupActivity extends AppCompatActivity {
     private ListView listView_member;
     private MemberListViewAdapter adapter;
     private View mView;
-    private RelativeLayout mContainer;
+    private RelativeLayout mContainer, pg;
 
     // floating action button 객체
     private FloatingActionMenu floatingActionMenu_menu;
@@ -311,18 +307,16 @@ public class GroupActivity extends AppCompatActivity {
         floatingActionButton_rep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GroupActivity.this, "floatingActionButton_rep", Toast.LENGTH_SHORT).show();
-                setMapRepRequest(mid);
                 floatingActionMenu_menu.close(true);
+                setMapRepRequest(mid);
             }
         });
 
         floatingActionButton_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GroupActivity.this, "floatingActionButton_save", Toast.LENGTH_SHORT).show();
-                getMapImage();
                 floatingActionMenu_menu.close(true);
+                getMapImage();
             }
         });
 
@@ -365,12 +359,20 @@ public class GroupActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         drawerLayout_drawer = findViewById(R.id.drawer_layout);
         listView_member = findViewById(R.id.listView_member);
         mView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
         layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rl_drawer = findViewById(R.id.rl_drawer);
+        pg = findViewById(R.id.pg);
+        pg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
 
     }
@@ -380,20 +382,17 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             longClickId = -1;
-            Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
             final int regionCode = msg.what;
             final RepDialog dialog = new RepDialog(GroupActivity.this);
             dialog.setDialogListener(new RepDialogListener() {
                 @Override
                 public void onSetClicked() {
-                    Toast.makeText(GroupActivity.this, "onSetClicked", Toast.LENGTH_SHORT).show();
                     redirectSetRepActivity(regionCode);
                     dialog.dismiss();
                 }
 
                 @Override
                 public void onDeleteClicked() {
-                    Toast.makeText(GroupActivity.this, "onDeleteClicked", Toast.LENGTH_SHORT).show();
                     deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
                     dialog.dismiss();
                 }
@@ -437,7 +436,6 @@ public class GroupActivity extends AppCompatActivity {
                     transparency = bm.getPixel(x, y);
                     Log.e("up transParency : ", Integer.toString(transparency));
                     if (transparency != 0 && longClickId != -1) {
-                        Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
                         redirectStoryActivity(Integer.parseInt(v.getContentDescription().toString()));
                         handler.removeMessages(longClickId);
                         longClickId = -1;
@@ -557,14 +555,15 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     void setMapRepRequest(final String mid) {
+        pg.setVisibility(View.VISIBLE);
         final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep("Bearer " + globalApplication.token, mid, new SetMapRepRequest(false));
         res.enqueue(new Callback<SetMapRep>() {
             @Override
             public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
                 if (response.isSuccessful()) {
                     Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
-
                     globalApplication.authorization.getUserData().setPrimary(mid);
+                    pg.setVisibility(View.GONE);
                 } else {
                     Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
                 }
@@ -578,6 +577,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     void getMapImage() {
+        pg.setVisibility(View.VISIBLE);
         View v = findViewById(R.id.relativeLayout_mapContainer);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
@@ -586,6 +586,7 @@ public class GroupActivity extends AppCompatActivity {
         // MediaStore 에 image 저장
         String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
         Uri myUri = Uri.parse(filePath);
+        pg.setVisibility(View.GONE);
     }
 
     void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents) {

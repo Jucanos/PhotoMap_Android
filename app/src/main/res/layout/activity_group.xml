@@ -45,8 +45,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floatingActionMenu_menu"
@@ -67,13 +66,13 @@
 
             app:menu_labels_colorNormal="@color/colorWhite"
             app:menu_labels_colorPressed="@color/light_gray"
-            app:menu_labels_textColor="@color/windowBackground"
-
             app:menu_labels_ellipsize="end"
+
             app:menu_labels_maxLines="-1"
             app:menu_labels_position="left"
             app:menu_labels_showShadow="true"
             app:menu_labels_singleLine="true"
+            app:menu_labels_textColor="@color/windowBackground"
             app:menu_openDirection="up">
 
             <com.github.clans.fab.FloatingActionButton
@@ -181,6 +180,13 @@
             android:divider="#00000000" />
 
     </RelativeLayout>
+
+    <include
+        android:id="@+id/pg"
+        layout="@layout/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
 
