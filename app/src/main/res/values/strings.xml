@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">photoMap</string>
+    <string name="exit_group">정말 나가시곘습니까?</string>
 </resources>

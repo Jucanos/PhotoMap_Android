@@ -122,29 +122,42 @@ public class MainFragmentGroup extends Fragment {
                 groupListViewItem.setActivated(true);
                 globalApplication.mRefUser.child(mid).setValue(groupListViewItem.getCurLog());
 
-                redirectGroupActivity(mid,groupListViewItem.getTitle());
+                redirectGroupActivity(mid, groupListViewItem.getTitle());
             }
         });
 
         listView_group.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                AddGroupDialog dialog = new AddGroupDialog(getContext(), "그룹이름");
+                final GroupListViewItem groupListViewItem = adapter.getItem(position);
+                final AddGroupDialog dialog = new AddGroupDialog(getContext(), groupListViewItem.getTitle());
                 dialog.setDialogListener(new AddGroupDialogListener() {
                     @Override
                     public void onGroupNameClicked() {
-                        Toast.makeText(getContext(), "change onGroupNameClicked is clicked", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                         redirectEditGroupNameActivity(adapter.getItem(position).getTitle(), adapter.getItem(position).getMid(), position);
                     }
 
                     @Override
                     public void onExitClicked() {
-                        userRemove(globalApplication.token, adapter.getItem(position).getMid(), "true");
-                        adapter.delete(position);
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), "exit onExitClicked is clicked", Toast.LENGTH_SHORT).show();
-                    }
+                        dialog.dismiss();
+                        // 정말 나가시겠습니까?
+                        final YesNoDialog yesNoDialog = new YesNoDialog(getContext(), getString(R.string.exit_group));
+                        yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                            @Override
+                            public void onPositiveClicked() {
+                                yesNoDialog.dismiss();
+                                Log.e("yesNoDialog","onPositiveClicked");
+                                userRemove(globalApplication.token, adapter.getItem(position).getMid(), "true",position);
 
+                            }
+                            @Override
+                            public void onNegativeClicked() {
+                                yesNoDialog.dismiss();
+                            }
+                        });
+                        yesNoDialog.show();
+                    }
                 });
                 dialog.show();
                 return true;
@@ -157,7 +170,7 @@ public class MainFragmentGroup extends Fragment {
                 @Override
                 public void onPositiveClicked() {
                     Toast.makeText(globalApplication, "onPositiveClicked", Toast.LENGTH_SHORT).show();
-                    userRemove(globalApplication.token, mid, "false");
+                    userRemove(globalApplication.token, mid, "false",-1);
                 }
 
                 @Override
@@ -197,7 +210,7 @@ public class MainFragmentGroup extends Fragment {
     private void redirectGroupActivity(String mid, String title) {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         intent.putExtra("mid", mid);
-        intent.putExtra("title",title);
+        intent.putExtra("title", title);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
@@ -246,8 +259,8 @@ public class MainFragmentGroup extends Fragment {
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
-        groupListViewItem.setCurLog((long)0);
-        groupListViewItem.setPastLog((long)0);
+        groupListViewItem.setCurLog((long) 0);
+        groupListViewItem.setPastLog((long) 0);
 
         // groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
         // Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
@@ -293,7 +306,7 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // request : uwerRemove
-    public void userRemove(String token, String mid, final String remove) {
+    public void userRemove(String token, String mid, final String remove, final int position) {
         final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RemoveUserRequest(remove));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
@@ -302,6 +315,10 @@ public class MainFragmentGroup extends Fragment {
                     Log.e("MainFragmentGroup", "[onResponse] is Successful");
                     if (remove.equals("false")) {
                         getMapList(globalApplication.token);
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        adapter.delete(position);
+                        adapter.notifyDataSetChanged();
                     }
                 } else {
                     Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
