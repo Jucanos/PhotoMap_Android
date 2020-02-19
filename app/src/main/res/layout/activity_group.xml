@@ -58,12 +58,16 @@
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
 
-            app:fab_shadowColor="#000000"
+            app:fab_shadowColor="#000"
             app:fab_showShadow="true"
 
             app:menu_backgroundColor="#99000000"
-            app:menu_colorNormal="#000000"
+            app:menu_colorNormal="@color/windowBackground"
             app:menu_colorPressed="#55000000"
+
+            app:menu_labels_colorNormal="@color/colorWhite"
+            app:menu_labels_colorPressed="@color/light_gray"
+            app:menu_labels_textColor="@color/windowBackground"
 
             app:menu_labels_ellipsize="end"
             app:menu_labels_maxLines="-1"
@@ -77,8 +81,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_icon_photo_white"
-                app:fab_colorNormal="#000000"
-                app:fab_colorPressed="#55000000"
+                app:fab_colorNormal="@color/colorWhite"
+                app:fab_colorPressed="@color/light_gray"
                 app:fab_label="이미지로 저장하기"
                 app:fab_size="mini" />
 
@@ -87,8 +91,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_icon_korea_white"
-                app:fab_colorNormal="#000000"
-                app:fab_colorPressed="#55000000"
+                app:fab_colorNormal="@color/colorWhite"
+                app:fab_colorPressed="@color/light_gray"
                 app:fab_label="대표지도 설정"
                 app:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>

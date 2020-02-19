@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,6 +63,7 @@ public class MainFragmentRep extends Fragment {
 
     private RelativeLayout noRep, existRep;
     private DynamicBox box;
+    private Context pContext;
 
     // for shadow test
 
@@ -76,6 +78,8 @@ public class MainFragmentRep extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("대표지도");
         setHasOptionsMenu(true);
 
+        pContext = getActivity().getApplicationContext();
+        
         noRep = view.findViewById(R.id.layout_noRep);
         existRep = view.findViewById(R.id.relativeLayout_existRep);
 
@@ -226,7 +230,7 @@ public class MainFragmentRep extends Fragment {
         String jeju = getMapInfoDataRepresents.getJeju();
 
         if (gyeonggi != null) {
-            Glide.with(getActivity().getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
+            Glide.with(pContext).load(gyeonggi).into(porterShapeImageViews[1]);
             mBorders[1].setImageResource(mWhite[1]);
         } else {
             porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
@@ -234,7 +238,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (gangwon != null) {
-            Glide.with(getActivity().getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
+            Glide.with(pContext).load(gangwon).into(porterShapeImageViews[2]);
             mBorders[2].setImageResource(mWhite[2]);
         } else {
             porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
@@ -242,7 +246,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (chungbuk != null) {
-            Glide.with(getActivity().getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
+            Glide.with(pContext).load(chungbuk).into(porterShapeImageViews[3]);
             mBorders[3].setImageResource(mWhite[3]);
         } else {
             porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
@@ -250,7 +254,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (chungnam != null) {
-            Glide.with(getActivity().getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
+            Glide.with(pContext).load(chungnam).into(porterShapeImageViews[4]);
             mBorders[4].setImageResource(mWhite[4]);
         } else {
             porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
@@ -258,7 +262,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (jeonbuk != null) {
-            Glide.with(getActivity().getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
+            Glide.with(pContext).load(jeonbuk).into(porterShapeImageViews[5]);
             mBorders[5].setImageResource(mWhite[5]);
         } else {
             porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
@@ -266,7 +270,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (jeonnam != null) {
-            Glide.with(getActivity().getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
+            Glide.with(pContext).load(jeonnam).into(porterShapeImageViews[6]);
             mBorders[6].setImageResource(mWhite[6]);
         } else {
             porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
@@ -274,7 +278,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (gyeongbuk != null) {
-            Glide.with(getActivity().getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
+            Glide.with(pContext).load(gyeongbuk).into(porterShapeImageViews[7]);
             mBorders[7].setImageResource(mWhite[7]);
         } else {
             porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
@@ -282,7 +286,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (gyeongnam != null) {
-            Glide.with(getActivity().getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
+            Glide.with(pContext).load(gyeongnam).into(porterShapeImageViews[8]);
             mBorders[8].setImageResource(mWhite[8]);
         } else {
             porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
@@ -290,7 +294,7 @@ public class MainFragmentRep extends Fragment {
         }
 
         if (jeju != null) {
-            Glide.with(getActivity().getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
+            Glide.with(pContext).load(jeju).into(porterShapeImageViews[9]);
             mBorders[9].setImageResource(mWhite[9]);
         } else {
             porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
