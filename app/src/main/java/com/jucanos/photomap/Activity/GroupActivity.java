@@ -285,20 +285,12 @@ public class GroupActivity extends AppCompatActivity {
         floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
         floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
 
-        floatingActionMenu_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
-            @Override
-            public void onMenuToggle(boolean opened) {
-
-            }
-        });
-
-
         floatingActionMenu_menu.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (floatingActionMenu_menu.isOpened()) {
                     floatingActionMenu_menu.close(true);
-                    return false;
+                    return true;
                 }
                 return false;
             }
