@@ -184,7 +184,7 @@ public class GroupActivity extends AppCompatActivity {
 
         // ZoomView 설정
         ZoomView zoomView = new ZoomView(this);
-        zoomView.setClipChildren(false);
+        zoomView.setClipChildren(true);
         zoomView.addView(mView);
         zoomView.setWillNotDraw(false);
         zoomView.setLayoutParams(layoutParams);
@@ -197,7 +197,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
         mContainer = findViewById(R.id.fragmentViewPager_container);
-        mContainer.setClipChildren(false);
+        mContainer.setClipChildren(true);
         mContainer.addView(zoomView);
 
         // PorterShapeImageView

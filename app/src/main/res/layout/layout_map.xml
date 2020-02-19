@@ -7,6 +7,7 @@
     android:background="@color/colorWhite">
 
     <RelativeLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
@@ -28,7 +29,6 @@
                 android:layout_marginLeft="74dp"
                 android:layout_marginTop="33dp"
                 android:clickable="false"
-                android:clipChildren="false"
                 android:contentDescription="1"
                 android:maxWidth="125dp"
                 android:maxHeight="150dp"
@@ -190,8 +190,11 @@
 
 
     <RelativeLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:gravity="center">
 
         <RelativeLayout
@@ -199,6 +202,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:background="#00FFFFFF">
 
             <!-- 1. 경기-->
@@ -228,7 +233,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="74dp"
                 android:layout_marginTop="33dp"
-                android:clipChildren="false"
                 android:contentDescription="1"
                 android:maxWidth="125dp"
                 android:maxHeight="150dp"
@@ -515,7 +519,7 @@
                 app:siShape="@drawable/ic_map_jeju" />
 
 
-            <!--white border -->
+            white border
             <!--1-->
             <ImageView
                 android:id="@+id/imageView_gyeonggi_border"
