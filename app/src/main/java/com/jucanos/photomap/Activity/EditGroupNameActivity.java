@@ -21,15 +21,9 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.EditGroup;
 import com.jucanos.photomap.Structure.EditGroupRequest;
-import com.jucanos.photomap.Structure.SetRep;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.Objects;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +50,7 @@ public class EditGroupNameActivity extends AppCompatActivity {
         mid = getIntent().getStringExtra("mid");
         pos = getIntent().getIntExtra("pos", -1);
 
-        RelativeLayout relativeLayout_total = findViewById(R.id.relativeLayout_total);
+        RelativeLayout relativeLayout_total = findViewById(R.id.rl_container);
         hideView(relativeLayout_total);
 
         editText_name = findViewById(R.id.editText_name);

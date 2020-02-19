@@ -8,7 +8,7 @@
     tools:context="com.jucanos.photomap.Activity.EditGroupNameActivity">
 
     <RelativeLayout
-        android:id="@+id/relativeLayout_total"
+        android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible">

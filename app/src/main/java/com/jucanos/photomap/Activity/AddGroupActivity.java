@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,29 +24,57 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.CreateMapRequest;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddGroupActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
-    private EditText editText_name;
-    private RelativeLayout relativeLayout_total;
+    private EditText et_title;
+    private RelativeLayout rl_container, rl_total;
+
+    private DynamicBox mBox;
+    private InputMethodManager mKeyBord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_group);
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
+        initMember();
+        setToolbar();
+        setBox();
+
+        showView(rl_container);
+        mKeyBord.showSoftInput(et_title, 0);
+    }
+
+    private void initMember() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        et_title = findViewById(R.id.editText_title);
+        rl_total = findViewById(R.id.rl_total);
+        rl_container = findViewById(R.id.rl_container);
+    }
+
+    private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("그룹 생성");
 
-        editText_name = findViewById(R.id.editText_description);
-        relativeLayout_total = findViewById(R.id.relativeLayout_total);
-        showView(relativeLayout_total);
+    }
+
+    private void setBox() {
+        mBox = new DynamicBox(this, rl_total);
+        mBox.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mKeyBord.showSoftInput(et_title, 0);
+                mBox.hideAll();
+            }
+        });
     }
 
     @Override
@@ -58,11 +88,14 @@ public class AddGroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            // 오른쪽 상단 메뉴 버튼
             case R.id.item_ok:
-                requestCreateMap(globalApplication.token, editText_name.getText().toString());
+                int size = et_title.getEditableText().toString().length();
+                if (size <= 0) {
+                    Toast.makeText(this, "그룹 이름을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                requestCreateMap(globalApplication.token, et_title.getText().toString());
                 return true;
-            // 뒤로가기 버튼
             case android.R.id.home:
                 finish();
                 return true;
@@ -71,8 +104,10 @@ public class AddGroupActivity extends AppCompatActivity {
     }
 
     public void requestCreateMap(String token, final String name) {
-        Log.e("token", token);
-        Log.e("name", name);
+        mKeyBord.hideSoftInputFromWindow(et_title.getWindowToken(), 0);
+        mBox.showLoadingLayout();
+        Log.e("AddGroupActivity", "[token] : " + token);
+        Log.e("AddGroupActivity", "[name] : " + name);
         final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, new CreateMapRequest(name));
         res.enqueue(new Callback<CreateMap>() {
             @Override
@@ -80,28 +115,30 @@ public class AddGroupActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         String mapToken = response.body().getCreateMapData().getMid();
-                        Log.e("requestCreateMap", mapToken);
+                        Log.e("AddGroupActivity", "response.isSuccessful()");
                         Intent intent = new Intent();
                         intent.putExtra("mapToken", mapToken);
                         intent.putExtra("mapName", name);
                         setResult(RESULT_OK, intent);
+                        mBox.hideAll();
                         finish();
-                        // overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
                     }
                 } else {
-                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                    mBox.showExceptionLayout();
+                    Log.e("AddGroupActivity", "response.isNotSuccessful() : " + response.code());
                 }
             }
+
             @Override
             public void onFailure(Call<CreateMap> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                mBox.showExceptionLayout();
+                Log.e("AddGroupActivity", "onFailure : " + t.getLocalizedMessage());
             }
         });
     }
 
     private void showView(final View view) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_slide_in_top);
-        //use this to make it longer:  animation.setDuration(1000);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -124,6 +161,5 @@ public class AddGroupActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
-
     }
 }
