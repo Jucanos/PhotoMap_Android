@@ -8,7 +8,7 @@
         android:strokeAlpha="1"
         android:strokeWidth="3"
         android:fillColor="#00000000"
-        android:fillAlpha="1"
+        android:fillAlpha="0"
         android:strokeColor="#FFFFFF"
         />
 </vector>

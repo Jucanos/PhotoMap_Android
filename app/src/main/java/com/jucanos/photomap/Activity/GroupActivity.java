@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
@@ -52,6 +54,7 @@ import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
 import com.jucanos.photomap.Structure.SetRep;
+import com.jucanos.photomap.util.BitmapUtils;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -183,6 +186,7 @@ public class GroupActivity extends AppCompatActivity {
         ZoomView zoomView = new ZoomView(this);
         zoomView.setClipChildren(false);
         zoomView.addView(mView);
+        zoomView.setWillNotDraw(false);
         zoomView.setLayoutParams(layoutParams);
         zoomView.setMaxZoom(8f);
         // 컨테이너 설정후 zoomView 추가

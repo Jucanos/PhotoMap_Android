@@ -9,6 +9,7 @@
       android:strokeWidth="1"
       android:fillColor="#FFF"
       android:fillAlpha="1"
+      android:fillType="nonZero"
       android:strokeColor="#000000"
       />
 </vector>
