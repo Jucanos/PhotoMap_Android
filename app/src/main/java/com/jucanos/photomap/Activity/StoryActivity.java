@@ -51,15 +51,8 @@ public class StoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
-
-        Toolbar toolbar = findViewById(R.id.toolbar_tb);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Group Name");
-
-        mid = getIntent().getStringExtra("mid");
-        cityKey = getIntent().getStringExtra("cityKey");
+        getIntentData();
+        setToolbar();
 
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
@@ -74,6 +67,19 @@ public class StoryActivity extends AppCompatActivity {
         });
 
         loadStoryList();
+    }
+
+    private void getIntentData() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        mid = getIntent().getStringExtra("mid");
+        cityKey = getIntent().getStringExtra("cityKey");
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(cityKey);
     }
 
     @Override

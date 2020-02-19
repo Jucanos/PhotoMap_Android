@@ -96,23 +96,25 @@ public class GroupActivity extends AppCompatActivity {
     PorterShapeImageView imageView_jeju; // 9
     ImageView imageView_jeju_front;
 
-    final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
-    final ImageView[] mBorders = new ImageView[10];
-    final int[] mWhite = new int[10];
-    final int[] mBlack = new int[10];
-    final ImageView[] imageViews = new ImageView[10];
+    private RelativeLayout rl_drawer;
+    private RelativeLayout.LayoutParams layoutParams;
+    private final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
+    private final ImageView[] mBorders = new ImageView[10];
+    private final int[] mWhite = new int[10];
+    private final int[] mBlack = new int[10];
+    private final ImageView[] imageViews = new ImageView[10];
 
     private DrawerLayout drawerLayout_drawer;
     private ListView listView_member;
     private MemberListViewAdapter adapter;
-    private View v;
-    private RelativeLayout container;
+    private View mView;
+    private RelativeLayout mContainer;
 
     // floating action button 객체
     private FloatingActionMenu floatingActionMenu_menu;
     private FloatingActionButton floatingActionButton_save, floatingActionButton_rep;
 
-    private String mid;
+    private String mid, title;
     private int longClickId = -1;
 
     private Integer SET_REP_REQUEST = 1;
@@ -124,27 +126,15 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        getIntentData();
+        setToolbar();
+        initView();
 
-        mContext = this;
-
-        Toolbar toolbar = findViewById(R.id.toolbar_tb);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Group Name");
-
-        drawerLayout_drawer = findViewById(R.id.drawer_layout);
         drawerLayout_drawer.openDrawer(Gravity.RIGHT);
         drawerLayout_drawer.closeDrawer(GravityCompat.END);
-
         adapter = new MemberListViewAdapter(getApplicationContext());
-        listView_member = findViewById(R.id.listView_member);
         listView_member.setAdapter(adapter);
 
-        mid = getIntent().getStringExtra("mid");
-
-        v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         RelativeLayout relativeLayout_addMember = findViewById(R.id.relativeLayout_addMember);
         relativeLayout_addMember.setOnClickListener(new View.OnClickListener() {
@@ -192,28 +182,28 @@ public class GroupActivity extends AppCompatActivity {
         // ZoomView 설정
         ZoomView zoomView = new ZoomView(this);
         zoomView.setClipChildren(false);
-        zoomView.addView(v);
+        zoomView.addView(mView);
         zoomView.setLayoutParams(layoutParams);
         zoomView.setMaxZoom(8f);
         // 컨테이너 설정후 zoomView 추가
-        RelativeLayout rl_drawer = findViewById(R.id.rl_drawer);
         rl_drawer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
-        container = findViewById(R.id.fragmentViewPager_container);
-        container.setClipChildren(false);
-        container.addView(zoomView);
+        mContainer = findViewById(R.id.fragmentViewPager_container);
+        mContainer.setClipChildren(false);
+        mContainer.addView(zoomView);
 
         // PorterShapeImageView
         imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
-        imageView_gyeonggi.setOnTouchListener(mClickListener);
         imageView_gyeonggi_front = findViewById(R.id.imageView_gyeonggi_front);
+        mBorders[1] = findViewById(R.id.imageView_gyeonggi_border);
+
+        imageView_gyeonggi.setOnTouchListener(mClickListener);
         porterShapeImageViews[1] = imageView_gyeonggi;
         imageViews[1] = imageView_gyeonggi_front;
-        mBorders[1] = findViewById(R.id.imageView_gyeonggi_border);
         mWhite[1] = R.drawable.ic_map_gyeonggi_white;
         mBlack[1] = R.drawable.ic_map_gyeonggi_black;
 
@@ -357,6 +347,30 @@ public class GroupActivity extends AppCompatActivity {
         // getMapInfoRequest();
     }
 
+    private void getIntentData() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        mContext = this;
+        mid = getIntent().getStringExtra("mid");
+        title = getIntent().getStringExtra("title");
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(title);
+    }
+
+    private void initView() {
+        drawerLayout_drawer = findViewById(R.id.drawer_layout);
+        listView_member = findViewById(R.id.listView_member);
+        mView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
+        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rl_drawer = findViewById(R.id.rl_drawer);
+
+
+    }
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -420,7 +434,7 @@ public class GroupActivity extends AppCompatActivity {
                     Log.e("up transParency : ", Integer.toString(transparency));
                     if (transparency != 0 && longClickId != -1) {
                         Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
-                        redirectRegionActivity(Integer.parseInt(v.getContentDescription().toString()));
+                        redirectStoryActivity(Integer.parseInt(v.getContentDescription().toString()));
                         handler.removeMessages(longClickId);
                         longClickId = -1;
                     }
@@ -469,7 +483,7 @@ public class GroupActivity extends AppCompatActivity {
         return px / density;     // dp 값 반환
     }
 
-    public void redirectRegionActivity(int cityKey) {
+    public void redirectStoryActivity(int cityKey) {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", globalApplication.cityKeyInt.get(cityKey));

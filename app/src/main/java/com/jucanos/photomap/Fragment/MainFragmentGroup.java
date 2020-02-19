@@ -122,7 +122,7 @@ public class MainFragmentGroup extends Fragment {
                 groupListViewItem.setActivated(true);
                 globalApplication.mRefUser.child(mid).setValue(groupListViewItem.getCurLog());
 
-                redirectGroupActivity(mid);
+                redirectGroupActivity(mid,groupListViewItem.getTitle());
             }
         });
 
@@ -194,9 +194,10 @@ public class MainFragmentGroup extends Fragment {
 
 
     // redirect
-    private void redirectGroupActivity(String mid) {
+    private void redirectGroupActivity(String mid, String title) {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         intent.putExtra("mid", mid);
+        intent.putExtra("title",title);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
