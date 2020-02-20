@@ -301,7 +301,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 floatingActionMenu_menu.close(true);
-                setMapRepRequest(mid);
+                setMapRepRequest(mid, "false");
             }
         });
 
@@ -465,18 +465,6 @@ public class GroupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public float pxToDp(Context context, float px) {
-        // 해상도 마다 다른 density 를 반환. xxxhdpi는 density = 4
-        float density = context.getResources().getDisplayMetrics().density;
-
-        if (density == 1.0)      // mpdi  (160dpi) -- xxxhdpi (density = 4)기준으로 density 값을 재설정 한다
-            density *= 4.0;
-        else if (density == 1.5) // hdpi  (240dpi)
-            density *= (8.0 / 3);
-        else if (density == 2.0) // xhdpi (320dpi)
-            density *= 2.0;
-        return px / density;     // dp 값 반환
-    }
 
     public void redirectStoryActivity(int cityKey) {
         Intent intent = new Intent(this, StoryActivity.class);
@@ -513,7 +501,7 @@ public class GroupActivity extends AppCompatActivity {
 
     void getMapInfoRequest() {
         Log.e("GroupActivity", "getMapInfoRequest");
-        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
+        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo(globalApplication.token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
             @Override
             public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
@@ -545,24 +533,24 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    void setMapRepRequest(final String mid) {
+    void setMapRepRequest(final String mid, String remove) {
         pg.setVisibility(View.VISIBLE);
-        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep("Bearer " + globalApplication.token, mid, new SetMapRepRequest(false));
+        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
         res.enqueue(new Callback<SetMapRep>() {
             @Override
             public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
                 if (response.isSuccessful()) {
-                    Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
+                    Log.e("setMapRepRequest", "response.isSuccessful()");
+                    pg.setVisibility(View.INVISIBLE);
                     globalApplication.authorization.getUserData().setPrimary(mid);
-                    pg.setVisibility(View.GONE);
-                } else {
-                    Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
+                }else {
+                    Log.e("setMapRepRequest", "response.isNotSuccessful()");
                 }
             }
 
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
-                Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
+                Log.e("setMapRepRequest", t.getLocalizedMessage());
             }
         });
     }
@@ -676,7 +664,7 @@ public class GroupActivity extends AppCompatActivity {
         hashMap.put("remove", requetRemove);
 
         // request
-        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep("Bearer " + globalApplication.token, mid, hashMap, null);
+        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep(globalApplication.token, mid, hashMap, null);
         res.enqueue(new Callback<SetRep>() {
             @Override
             public void onResponse(Call<SetRep> call, Response<SetRep> response) {
@@ -698,6 +686,20 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
+
+
+    public float pxToDp(Context context, float px) {
+        // 해상도 마다 다른 density 를 반환. xxxhdpi는 density = 4
+        float density = context.getResources().getDisplayMetrics().density;
+
+        if (density == 1.0)      // mpdi  (160dpi) -- xxxhdpi (density = 4)기준으로 density 값을 재설정 한다
+            density *= 4.0;
+        else if (density == 1.5) // hdpi  (240dpi)
+            density *= (8.0 / 3);
+        else if (density == 2.0) // xhdpi (320dpi)
+            density *= 2.0;
+        return px / density;     // dp 값 반환
+    }
 }
 
 

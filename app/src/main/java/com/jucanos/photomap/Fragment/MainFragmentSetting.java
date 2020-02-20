@@ -113,7 +113,7 @@ public class MainFragmentSetting extends Fragment {
     }
 
     public void requestSignoutAccount(String token) {
-        final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().signoutAccount("Bearer " + token);
+        final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().signoutAccount(token);
         res.enqueue(new Callback<GetUserInfo>() {
             @Override
             public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {

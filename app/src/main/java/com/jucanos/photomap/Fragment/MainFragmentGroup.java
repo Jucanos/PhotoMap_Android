@@ -16,16 +16,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
@@ -39,9 +35,14 @@ import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapList;
+import com.jucanos.photomap.Structure.GetMapListData;
 import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
+import com.jucanos.photomap.Structure.SetMapRep;
+import com.jucanos.photomap.Structure.SetMapRepRequest;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -54,7 +55,6 @@ public class MainFragmentGroup extends Fragment {
     private RelativeLayout noGroup, existGroup;
     private ListView listView_group;
     public GlobalApplication globalApplication;
-    private int groupCnt = 0;
     private GroupListViewAdapter adapter;
     private DynamicBox box;
 
@@ -99,7 +99,7 @@ public class MainFragmentGroup extends Fragment {
 
         // loading layout
         box = new DynamicBox(getActivity(), listView_group);
-        box.showLoadingLayout();
+        box.setLoadingMessage("처리중...");
         box.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,10 +147,10 @@ public class MainFragmentGroup extends Fragment {
                             @Override
                             public void onPositiveClicked() {
                                 yesNoDialog.dismiss();
-                                Log.e("yesNoDialog","onPositiveClicked");
-                                userRemove(globalApplication.token, adapter.getItem(position).getMid(), "true",position);
-
+                                Log.e("yesNoDialog", "onPositiveClicked");
+                                userRemoveRequest(globalApplication.token, adapter.getItem(position).getMid(), "true", position);
                             }
+
                             @Override
                             public void onNegativeClicked() {
                                 yesNoDialog.dismiss();
@@ -170,7 +170,7 @@ public class MainFragmentGroup extends Fragment {
                 @Override
                 public void onPositiveClicked() {
                     Toast.makeText(globalApplication, "onPositiveClicked", Toast.LENGTH_SHORT).show();
-                    userRemove(globalApplication.token, mid, "false",-1);
+                    userRemoveRequest(globalApplication.token, mid, "false", -1);
                 }
 
                 @Override
@@ -183,7 +183,6 @@ public class MainFragmentGroup extends Fragment {
         } else {
             getMapList(globalApplication.token);
         }
-        setLayout();
         return view;
     }
 
@@ -240,7 +239,9 @@ public class MainFragmentGroup extends Fragment {
                     String mapName = data.getStringExtra("mapName");
                     Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
                     Log.e("MainFragmentGroup", "[mapName]" + mapName);
-                    addGroup(mapName, mapTokpen, new Date(System.currentTimeMillis()));
+                    addGroup(mapName, mapTokpen, new Date(System.currentTimeMillis()), false);
+                    adapter.notifyDataSetChanged();
+                    setLayout();
                     break;
                 case EDIT_GROUP:
                     String name = data.getStringExtra("name");
@@ -254,30 +255,33 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // addGroup
-    public void addGroup(String title, String mid, Date updatedAt) {
+    public void addGroup(String title, String mid, Date updatedAt, boolean pushBack) {
         final GroupListViewItem groupListViewItem = new GroupListViewItem();
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
         groupListViewItem.setCurLog((long) 0);
         groupListViewItem.setPastLog((long) 0);
+        adapter.addItem(groupListViewItem, pushBack);
 
-        // groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
-        // Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
-
-
-        adapter.addItem(groupListViewItem);
-        adapter.notifyDataSetChanged();
     }
 
     // request : getMapList
     public void getMapList(String token) {
-        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList("Bearer " + token);
+        box.showLoadingLayout();
+        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList( token);
         res.enqueue(new Callback<GetMapList>() {
             @Override
             public void onResponse(Call<GetMapList> call, Response<GetMapList> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+                        Collections.sort(response.body().getGetMapListDatas(), new Comparator<GetMapListData>() {
+                            @Override
+                            public int compare(GetMapListData o1, GetMapListData o2) {
+                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+                            }
+                        });
+
                         GetMapList getMapList = response.body();
                         for (int i = 0; i < getMapList.getGetMapListDatas().size(); i++) {
                             Log.e("LoginActivity", "[mid]" + getMapList.getGetMapListDatas().get(i).getMid());
@@ -286,7 +290,7 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
-                            addGroup(name, mid, updatedAt);
+                            addGroup(name, mid, updatedAt, true);
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -294,20 +298,22 @@ public class MainFragmentGroup extends Fragment {
                     box.hideAll();
                 } else {
                     Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
-                    box.showInternetOffLayout();
+                    box.showExceptionLayout();
                 }
             }
 
             @Override
             public void onFailure(Call<GetMapList> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Log.e("LoginActivity", "[onFailure] " + t.getLocalizedMessage());
+                box.showExceptionLayout();
             }
         });
     }
 
     // request : uwerRemove
-    public void userRemove(String token, String mid, final String remove, final int position) {
-        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RemoveUserRequest(remove));
+    public void userRemoveRequest(String token, final String mid, final String remove, final int position) {
+        box.showLoadingLayout();
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest(remove));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
@@ -316,7 +322,11 @@ public class MainFragmentGroup extends Fragment {
                     if (remove.equals("false")) {
                         getMapList(globalApplication.token);
                         adapter.notifyDataSetChanged();
-                    }else{
+                        box.hideAll();
+                        setLayout();
+                    } else {
+                        Log.e("MainFragmentGroup", "globalApplication.authorization.getUserData().setPrimary(null);");
+                        setMapRepRequest(mid, "true");
                         adapter.delete(position);
                         adapter.notifyDataSetChanged();
                     }
@@ -328,6 +338,31 @@ public class MainFragmentGroup extends Fragment {
             @Override
             public void onFailure(Call<RemoveUser> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    void setMapRepRequest(final String mid, final String remove) {
+        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
+        res.enqueue(new Callback<SetMapRep>() {
+            @Override
+            public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
+                if (response.isSuccessful()) {
+                    Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
+                    if(remove.equals("true")){
+                        Log.e("GroupActivity", "     globalApplication.authorization.getUserData().setPrimary(null)");
+                        globalApplication.authorization.getUserData().setPrimary(null);
+                    }
+                    box.hideAll();
+                } else {
+                    Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
+                    box.hideAll();
+                }
+            }
+            @Override
+            public void onFailure(Call<SetMapRep> call, Throwable t) {
+                Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
+                box.hideAll();
             }
         });
     }

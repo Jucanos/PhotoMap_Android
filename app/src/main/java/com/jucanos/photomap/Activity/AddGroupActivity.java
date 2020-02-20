@@ -37,6 +37,7 @@ public class AddGroupActivity extends AppCompatActivity {
     private DynamicBox mBox;
     private InputMethodManager mKeyBord;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,8 @@ public class AddGroupActivity extends AppCompatActivity {
 
     private void setBox() {
         mBox = new DynamicBox(this, rl_total);
+        View customView = getLayoutInflater().inflate(R.layout.loading_progress, null, false);
+        mBox.addCustomView(customView,"loading");
         mBox.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,10 +108,10 @@ public class AddGroupActivity extends AppCompatActivity {
 
     public void requestCreateMap(String token, final String name) {
         mKeyBord.hideSoftInputFromWindow(et_title.getWindowToken(), 0);
-        mBox.showLoadingLayout();
+        mBox.showCustomView("loading");
         Log.e("AddGroupActivity", "[token] : " + token);
         Log.e("AddGroupActivity", "[name] : " + name);
-        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap("Bearer " + token, new CreateMapRequest(name));
+        final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap(token, new CreateMapRequest(name));
         res.enqueue(new Callback<CreateMap>() {
             @Override
             public void onResponse(Call<CreateMap> call, Response<CreateMap> response) {

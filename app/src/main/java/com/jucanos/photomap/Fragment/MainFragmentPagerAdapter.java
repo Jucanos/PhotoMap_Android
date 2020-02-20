@@ -5,12 +5,13 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class MainFragmentPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
-
+    public MainFragmentGroup tab1 = new MainFragmentGroup();
+    public MainFragmentRep tab2 = new MainFragmentRep();
+    public MainFragmentSetting tab3 = new MainFragmentSetting();
     public MainFragmentPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
-
     @Override
     public int getCount() {
         return mNumOfTabs;
@@ -20,13 +21,10 @@ public class MainFragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                MainFragmentGroup tab1 = new MainFragmentGroup();
                 return tab1;
             case 1:
-                MainFragmentRep tab2 = new MainFragmentRep();
                 return tab2;
             case 2:
-                MainFragmentSetting tab3 = new MainFragmentSetting();
                 return tab3;
             default:
                 return null;

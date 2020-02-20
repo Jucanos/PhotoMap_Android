@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.tabs.TabLayout;
 import com.jucanos.photomap.Fragment.FragmentViewPager;
 import com.jucanos.photomap.Fragment.MainFragmentPagerAdapter;
+import com.jucanos.photomap.Fragment.MainFragmentRep;
 import com.jucanos.photomap.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);
                         tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map_fill);
                         tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting);
+                        ((MainFragmentRep )adapter.getItem(1)). setRep();
                         break;
                     case 2:
                         tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);

@@ -9,15 +9,11 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
@@ -30,9 +26,6 @@ import com.kakao.util.helper.log.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -105,9 +98,8 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onSessionOpened() {
             Log.e("[getAccessToken]", Session.getCurrentSession().getAccessToken());
-            globalApplication.token = Session.getCurrentSession().getAccessToken();
-            requestLoginAccount(Session.getCurrentSession().getAccessToken());
-
+            globalApplication.token = "Bearer " + Session.getCurrentSession().getAccessToken();
+            requestLoginAccount();
         }
 
         @Override
@@ -151,8 +143,8 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void requestLoginAccount(final String token) {
-        final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().loginAccount("Bearer " + token);
+    public void requestLoginAccount() {
+        final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().loginAccount(globalApplication.token);
         res.enqueue(new Callback<GetUserInfo>() {
             @Override
             public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {

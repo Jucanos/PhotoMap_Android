@@ -183,7 +183,7 @@
 
     <include
         android:id="@+id/pg"
-        layout="@layout/layout_loading"
+        layout="@layout/loading_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />

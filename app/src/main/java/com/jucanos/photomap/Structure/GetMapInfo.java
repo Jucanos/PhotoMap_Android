@@ -1,7 +1,7 @@
 package com.jucanos.photomap.Structure;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+        import com.google.gson.annotations.Expose;
+        import com.google.gson.annotations.SerializedName;
 
 public class GetMapInfo {
     @SerializedName("data")
@@ -14,10 +14,6 @@ public class GetMapInfo {
 
     public GetMapInfoData getData() {
         return data;
-    }
-
-    public void setData(GetMapInfoData data) {
-        this.data = data;
     }
 
     public String getMessage() {

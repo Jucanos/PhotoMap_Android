@@ -12,6 +12,11 @@ public class SetMapRep {
     @Expose
     private String message;
 
+    public SetMapRep(String data, String message) {
+        this.data = data;
+        this.message = message;
+    }
+
     public String getData() {
         return data;
     }
