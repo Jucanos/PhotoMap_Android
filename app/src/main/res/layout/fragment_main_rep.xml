@@ -36,7 +36,7 @@
             android:layout_centerInParent="true"
             android:text="대표지도를 설정 해주세요!"
             android:textSize="32dp"
-            android:visibility="visible" />
+         />
     </RelativeLayout>
 
 
@@ -47,11 +47,12 @@
         android:layout_below="@+id/appBarLayout_ab"
         android:background="@color/colorWhite"
         android:visibility="gone">
-
         <include
             android:id="@+id/layout_map"
             layout="@layout/layout_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+
+            />
     </RelativeLayout>
 </RelativeLayout>

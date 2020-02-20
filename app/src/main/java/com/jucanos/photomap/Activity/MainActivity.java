@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);
                         tabLayout.getTabAt(1).setIcon(R.drawable.ic_icon_map_fill);
                         tabLayout.getTabAt(2).setIcon(R.drawable.ic_icon_setting);
-                        ((MainFragmentRep )adapter.getItem(1)). setRep();
+                        ((MainFragmentRep )adapter.getItem(1)).setRep();
                         break;
                     case 2:
                         tabLayout.getTabAt(0).setIcon(R.drawable.ic_icon_group);

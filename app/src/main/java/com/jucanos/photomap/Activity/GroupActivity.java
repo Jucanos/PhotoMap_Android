@@ -241,9 +241,10 @@ public class GroupActivity extends AppCompatActivity {
         imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
-        mBorders[6] = findViewById(R.id.imageView_jeonnam_border);
+        mBorders[5] = findViewById(R.id.imageView_jeonnam_border);
+        mBlack[6] = R.drawable.ic_map_junnam_black;
         mWhite[6] = R.drawable.ic_map_junnam_white;
-        mBlack[6] = R.drawable.map_jeonbuk;
+        mBlack[6] = R.drawable.map_jeonnam;
 
         imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk.setOnTouchListener(mClickListener);
@@ -263,7 +264,7 @@ public class GroupActivity extends AppCompatActivity {
         mBorders[8] = findViewById(R.id.imageView_gyeongnam_border);
         mWhite[8] = R.drawable.ic_map_gyeongnam_white;
         mBlack[8] = R.drawable.ic_map_gyeongnam_black;
-        mDefault[8] = R.drawable.map_gyeongbuk;
+        mDefault[8] = R.drawable.map_gyeongnam;
 
         imageView_jeju = findViewById(R.id.imageView_jeju);
         imageView_jeju.setOnTouchListener(mClickListener);
@@ -619,7 +620,7 @@ public class GroupActivity extends AppCompatActivity {
         paths.add(gyeongnam);
         paths.add(jeju);
 
-        for(int i = 1; i<=9; i++){
+        for (int i = 1; i <= 9; i++) {
             String path = paths.get(i);
             if (path != null) {
                 Glide.with(getApplicationContext()).load(path).into(porterShapeImageViews[i]);
@@ -722,7 +723,6 @@ public class GroupActivity extends AppCompatActivity {
                         Log.e("GroupActivity", "response.isSuccessful()");
                         mBorders[regionCode].setImageResource(mBlack[regionCode]);
                         porterShapeImageViews[regionCode].setImageResource(mDefault[regionCode]);
-                        globalApplication.authorization.getUserData().setPrimary(null);
                         box.hideAll();
                     }
                 } else {
