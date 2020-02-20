@@ -16,16 +16,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
@@ -39,9 +33,14 @@ import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapList;
-import com.jucanos.photomap.Structure.RemoveUserRequest;
+import com.jucanos.photomap.Structure.GetMapListData;
 import com.jucanos.photomap.Structure.RemoveUser;
+import com.jucanos.photomap.Structure.RemoveUserRequest;
+import com.jucanos.photomap.Structure.SetMapRep;
+import com.jucanos.photomap.Structure.SetMapRepRequest;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -54,7 +53,6 @@ public class MainFragmentGroup extends Fragment {
     private RelativeLayout noGroup, existGroup;
     private ListView listView_group;
     public GlobalApplication globalApplication;
-    private int groupCnt = 0;
     private GroupListViewAdapter adapter;
     private DynamicBox box;
 
@@ -63,50 +61,19 @@ public class MainFragmentGroup extends Fragment {
 
     private long lastClickTime = 0;
 
-    // for realtime database
-// Write a message to the database
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference mRefMap = database.getReference("maps");
-    DatabaseReference mRefUser = database.getReference("users").getRef().child(GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getUid());
+    private String mid;
+    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_group, fragmentContainer, false);
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
-        toolbar.inflateMenu(R.menu.menu_fragment_group);
-        setHasOptionsMenu(true);
-
-        final String mid = getActivity().getIntent().getStringExtra("mid");
-        boolean fromLink = false;
-        if (mid != null) {
-            fromLink = true;
-        }
-        Log.e("MainFragmentGroup", "[mid] : " + mid);
-
-        noGroup = view.findViewById(R.id.layout_noGroup);
-        existGroup = view.findViewById(R.id.layout_existGroup);
-        listView_group = view.findViewById(R.id.listView_group);
-
-        // groupListView
-        adapter = new GroupListViewAdapter();
-        listView_group.setAdapter(adapter);
-
-        // loading layout
-        box = new DynamicBox(getActivity(), listView_group);
-        box.showLoadingLayout();
-        box.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                box.showLoadingLayout();
-                getMapList(globalApplication.token);
-            }
-        });
+        setToolbar(view);
+        getIntentData();
+        initMember(view);
+        setBox();
+        checkLink();
 
         // listView item click
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -147,10 +114,10 @@ public class MainFragmentGroup extends Fragment {
                             @Override
                             public void onPositiveClicked() {
                                 yesNoDialog.dismiss();
-                                Log.e("yesNoDialog","onPositiveClicked");
-                                userRemove(globalApplication.token, adapter.getItem(position).getMid(), "true",position);
-
+                                Log.e("yesNoDialog", "onPositiveClicked");
+                                userRemoveRequest(globalApplication.token, adapter.getItem(position).getMid(), "true", position);
                             }
+
                             @Override
                             public void onNegativeClicked() {
                                 yesNoDialog.dismiss();
@@ -164,13 +131,54 @@ public class MainFragmentGroup extends Fragment {
             }
         });
 
+
+        return view;
+    }
+
+    private void getIntentData() {
+        mid = getActivity().getIntent().getStringExtra("mid");
+    }
+
+    private void setToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
+        toolbar.inflateMenu(R.menu.menu_fragment_group);
+        setHasOptionsMenu(true);
+    }
+
+    private void initMember(View view) {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+
+        noGroup = view.findViewById(R.id.layout_noGroup);
+        existGroup = view.findViewById(R.id.layout_existGroup);
+        listView_group = view.findViewById(R.id.listView_group);
+
+        // groupListView
+        adapter = new GroupListViewAdapter();
+        listView_group.setAdapter(adapter);
+    }
+
+    private void setBox() {
+        box = new DynamicBox(getActivity(), listView_group);
+        box = new DynamicBox(getActivity(), listView_group);
+        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
+    }
+
+    private void checkLink() {
+        boolean fromLink = false;
+        if (mid != null) {
+            fromLink = true;
+        }
         if (fromLink) {
             YesNoDialog dialog = new YesNoDialog(getContext(), "그룹에 참여 하시겠습니까?");
             dialog.setDialogListener(new YesNoDialogListener() {
                 @Override
                 public void onPositiveClicked() {
                     Toast.makeText(globalApplication, "onPositiveClicked", Toast.LENGTH_SHORT).show();
-                    userRemove(globalApplication.token, mid, "false",-1);
+                    userRemoveRequest(globalApplication.token, mid, "false", -1);
                 }
 
                 @Override
@@ -183,10 +191,7 @@ public class MainFragmentGroup extends Fragment {
         } else {
             getMapList(globalApplication.token);
         }
-        setLayout();
-        return view;
     }
-
 
     // toolbar menu
     @Override
@@ -236,16 +241,20 @@ public class MainFragmentGroup extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case ADD_GROUP:
+                    box.showCustomView(LOADING_ONLY_PROGRESS);
                     String mapTokpen = data.getStringExtra("mapToken");
                     String mapName = data.getStringExtra("mapName");
                     Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
                     Log.e("MainFragmentGroup", "[mapName]" + mapName);
-                    addGroup(mapName, mapTokpen, new Date(System.currentTimeMillis()));
+                    addGroup(mapName, mapTokpen, new Date(System.currentTimeMillis()), false);
+                    adapter.notifyDataSetChanged();
+                    setLayout();
                     break;
                 case EDIT_GROUP:
-                    String name = data.getStringExtra("name");
+                    String name = data.getStringExtra("title");
                     int pos = data.getIntExtra("pos", -1);
                     adapter.getItem(pos).setTitle(name);
+                    adapter.notifyDataSetChanged();
                     break;
                 default:
                     break;
@@ -254,30 +263,31 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // addGroup
-    public void addGroup(String title, String mid, Date updatedAt) {
+    public void addGroup(String title, String mid, Date updatedAt, boolean pushBack) {
         final GroupListViewItem groupListViewItem = new GroupListViewItem();
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
         groupListViewItem.setUpdatedAt(updatedAt);
         groupListViewItem.setCurLog((long) 0);
         groupListViewItem.setPastLog((long) 0);
-
-        // groupListViewItem.setPastLog(globalApplication.mLog.get(mid));
-        // Log.e("setPastLog",mid + " : " + globalApplication.mLog.get(mid));
-
-
-        adapter.addItem(groupListViewItem);
-        adapter.notifyDataSetChanged();
+        adapter.addItem(groupListViewItem, pushBack);
     }
 
     // request : getMapList
     public void getMapList(String token) {
-        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList("Bearer " + token);
+        box.showCustomView(LOADING_ONLY_PROGRESS);
+        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList(token);
         res.enqueue(new Callback<GetMapList>() {
             @Override
             public void onResponse(Call<GetMapList> call, Response<GetMapList> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+                        Collections.sort(response.body().getGetMapListDatas(), new Comparator<GetMapListData>() {
+                            @Override
+                            public int compare(GetMapListData o1, GetMapListData o2) {
+                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+                            }
+                        });
                         GetMapList getMapList = response.body();
                         for (int i = 0; i < getMapList.getGetMapListDatas().size(); i++) {
                             Log.e("LoginActivity", "[mid]" + getMapList.getGetMapListDatas().get(i).getMid());
@@ -286,7 +296,7 @@ public class MainFragmentGroup extends Fragment {
                             String name = getMapList.getGetMapListDatas().get(i).getName();
                             String mid = getMapList.getGetMapListDatas().get(i).getMid();
                             Date updatedAt = getMapList.getMapListDatas.get(i).getUpdatedAt();
-                            addGroup(name, mid, updatedAt);
+                            addGroup(name, mid, updatedAt, true);
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -294,20 +304,22 @@ public class MainFragmentGroup extends Fragment {
                     box.hideAll();
                 } else {
                     Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
-                    box.showInternetOffLayout();
+                    box.showExceptionLayout();
                 }
             }
 
             @Override
             public void onFailure(Call<GetMapList> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Log.e("LoginActivity", "[onFailure] " + t.getLocalizedMessage());
+                box.showExceptionLayout();
             }
         });
     }
 
     // request : uwerRemove
-    public void userRemove(String token, String mid, final String remove, final int position) {
-        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove("Bearer " + token, mid, new RemoveUserRequest(remove));
+    public void userRemoveRequest(String token, final String mid, final String remove, final int position) {
+        box.showLoadingLayout();
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest(remove));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
@@ -316,7 +328,10 @@ public class MainFragmentGroup extends Fragment {
                     if (remove.equals("false")) {
                         getMapList(globalApplication.token);
                         adapter.notifyDataSetChanged();
-                    }else{
+                        box.hideAll();
+                        setLayout();
+                    } else {
+                        setMapRepRequest(mid, "true");
                         adapter.delete(position);
                         adapter.notifyDataSetChanged();
                     }
@@ -332,8 +347,35 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
+    void setMapRepRequest(final String mid, final String remove) {
+        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
+        res.enqueue(new Callback<SetMapRep>() {
+            @Override
+            public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
+                if (response.isSuccessful()) {
+                    Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
+                    if (remove.equals("true")) {
+                        Log.e("GroupActivity", "     globalApplication.authorization.getUserData().setPrimary(null)");
+                        globalApplication.authorization.getUserData().setPrimary(null);
+                    }
+                    box.hideAll();
+                } else {
+                    Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
+                    box.hideAll();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SetMapRep> call, Throwable t) {
+                Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
+                box.hideAll();
+            }
+        });
+    }
+
     // decided by request result.
     void setLayout() {
+        box.hideAll();
         if (adapter.getCount() == 0) {
             noGroup.setVisibility(View.VISIBLE);
             existGroup.setVisibility(View.GONE);
@@ -352,9 +394,13 @@ public class MainFragmentGroup extends Fragment {
     // lifeCycle
     @Override
     public void onResume() {
-        super.onResume();
         adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        adapter.resort();
+        adapter.notifyDataSetChanged();
+        Log.e("MainFragmentGroup","[onResume] : after resort()");
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        super.onResume();
+
     }
 }
 

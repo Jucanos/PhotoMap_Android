@@ -27,6 +27,8 @@ public class GroupListViewItem {
         this.curLog = (long) 0;
         this.activated = false;
         this.loadUserRef = false;
+        uesrValueEventListener = null;
+        mapValueEventListener = null;
     }
 
     public String getMid() {

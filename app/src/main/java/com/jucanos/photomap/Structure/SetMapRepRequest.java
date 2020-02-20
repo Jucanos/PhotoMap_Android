@@ -6,17 +6,17 @@ import com.google.gson.annotations.SerializedName;
 public class SetMapRepRequest {
     @SerializedName("remove")
     @Expose
-    private boolean remove;
+    private String remove;
 
-    public SetMapRepRequest(boolean remove) {
+    public SetMapRepRequest(String remove) {
         this.remove = remove;
     }
 
-    public boolean isRemove() {
+    public String getRemove() {
         return remove;
     }
 
-    public void setRemove(boolean remove) {
+    public void setRemove(String remove) {
         this.remove = remove;
     }
 }

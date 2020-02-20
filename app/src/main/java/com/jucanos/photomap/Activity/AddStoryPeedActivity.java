@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -39,12 +41,15 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     private String cityKey;
     private String mid;
 
+    private RelativeLayout rv_total;
     private SliderView sliderView;
     private TextView textView_upload;
     private EditText editText_title, editText_context;
 
     private ArrayList<String> paths = new ArrayList<>();
     private SliderAdapterAddStoryImage mSlideradapter;
+
+    private DynamicBox mBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         initView();
         setLayoutSize();
         loadImages();
+        setBox();
     }
 
     public void getIntentData(){
@@ -71,6 +77,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         textView_upload = findViewById(R.id.textView_upload);
         editText_title= findViewById(R.id.editText_title);
         editText_context = findViewById(R.id.editText_context);
+        rv_total = findViewById(R.id.rv_total);
 
         textView_upload.setOnClickListener(this);
     }
@@ -89,7 +96,15 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         sliderView.setIndicatorUnselectedColor(Color.GRAY);
     }
 
-
+    private void setBox() {
+        mBox = new DynamicBox(this, rv_total);
+        mBox.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBox.hideAll();
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -103,6 +118,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void requestUploadImage(String title, String context, ArrayList<String> paths) {
+        mBox.showLoadingLayout();
         RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
         RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), title);
         RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), context);
@@ -137,16 +153,19 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
                         intent.putExtra("mid", response.body().getCreateStoryData().getMid());
                         intent.putExtra("sid", response.body().getCreateStoryData().getSid());
                         setResult(RESULT_OK, intent);
+                        mBox.hideAll();
                         finish();
                     }
                 } else {
                     Log.e("requestUploadImage", "requestUploadImage error : " + Integer.toString(response.code()));
+                    mBox.showExceptionLayout();
                 }
             }
 
             @Override
             public void onFailure(Call<CreateStory> call, Throwable t) {
                 Log.e("FragmentDescription", "requestUploadImage fail : " + t.getLocalizedMessage());
+                mBox.showExceptionLayout();
             }
         });
     }

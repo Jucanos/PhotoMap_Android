@@ -30,6 +30,8 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 
+import java.util.ArrayList;
+
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,46 +62,51 @@ public class MainFragmentRep extends Fragment {
     final ImageView[] mBorders = new ImageView[10];
     final int[] mWhite = new int[10];
     final int[] mBlack = new int[10];
+    private final int[] mDefault = new int[10];
 
-    private RelativeLayout noRep, existRep;
+    private RelativeLayout noRep, existRep,layout_map;
     private DynamicBox box;
     private Context pContext;
 
-    // for shadow test
+    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
+
+    private ValueEventListener mValueEventListener = null;
+    private String mValueEventListenerMid = null;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_rep, container, false);
+        setToolbar(view);
+        initMember(view);
+        setBox();
+        setRep();
+        return view;
+    }
 
+    private void setToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("대표지도");
         setHasOptionsMenu(true);
+    }
 
+    private void initMember(View view) {
         pContext = getActivity().getApplicationContext();
-        
         noRep = view.findViewById(R.id.layout_noRep);
         existRep = view.findViewById(R.id.relativeLayout_existRep);
-
-        box = new DynamicBox(getActivity(), existRep);
-        box.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRep();
-            }
-        });
-
+        layout_map = view.findViewById(R.id.layout_map);
 
         // PorterShapeImageView
         imageView_gyeonggi = view.findViewById(R.id.imageView_gyeonggi);
         imageView_gyeonggi_front = view.findViewById(R.id.imageView_gyeonggi_front);
+        mBorders[1] = view.findViewById(R.id.imageView_gyeonggi_border);
         porterShapeImageViews[1] = imageView_gyeonggi;
         imageViews[1] = imageView_gyeonggi_front;
-        mBorders[1] = view.findViewById(R.id.imageView_gyeonggi_border);
         mWhite[1] = R.drawable.ic_map_gyeonggi_white;
         mBlack[1] = R.drawable.ic_map_gyeonggi_black;
+        mDefault[1] = R.drawable.map_gyeonggi;
 
         imageView_gangwon = view.findViewById(R.id.imageView_gangwon);
         imageView_gangwon_front = view.findViewById(R.id.imageView_gangwon_front);
@@ -108,6 +115,8 @@ public class MainFragmentRep extends Fragment {
         mBorders[2] = view.findViewById(R.id.imageView_gangwon_border);
         mWhite[2] = R.drawable.ic_map_gangwon_white;
         mBlack[2] = R.drawable.ic_map_gangwon_black;
+        mDefault[2] = R.drawable.map_gangwon;
+
 
         imageView_chungbuk = view.findViewById(R.id.imageView_chungbuk);
         imageView_chungbuk_front = view.findViewById(R.id.imageView_chungbuk_front);
@@ -116,6 +125,7 @@ public class MainFragmentRep extends Fragment {
         mBorders[3] = view.findViewById(R.id.imageView_chungbuk_border);
         mWhite[3] = R.drawable.ic_map_chungbuk_white;
         mBlack[3] = R.drawable.ic_map_chungbuk_black;
+        mDefault[3] = R.drawable.map_chungbuk;
 
 
         imageView_chungnam = view.findViewById(R.id.imageView_chungnam);
@@ -125,6 +135,7 @@ public class MainFragmentRep extends Fragment {
         mBorders[4] = view.findViewById(R.id.imageView_chungnam_border);
         mWhite[4] = R.drawable.ic_map_chungnam_white;
         mBlack[4] = R.drawable.ic_map_chungnam_black;
+        mDefault[4] = R.drawable.map_chungnam;
 
         imageView_jeonbuk = view.findViewById(R.id.imageView_jeonbuk);
         imageView_jeonbuk_front = view.findViewById(R.id.imageView_jeonbuk_front);
@@ -133,14 +144,16 @@ public class MainFragmentRep extends Fragment {
         mBorders[5] = view.findViewById(R.id.imageView_jeonbuk_border);
         mWhite[5] = R.drawable.ic_map_junbuk_white;
         mBlack[5] = R.drawable.ic_map_junbuk_black;
+        mDefault[5] = R.drawable.map_jeonbuk;
 
         imageView_jeonnam = view.findViewById(R.id.imageView_jeonnam);
         imageView_jeonnam_front = view.findViewById(R.id.imageView_jeonnam_front);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
-        mBorders[6] = view.findViewById(R.id.imageView_jeonnam_border);
-        mWhite[6] = R.drawable.ic_map_junnam_white;
+        mBorders[5] = view.findViewById(R.id.imageView_jeonnam_border);
         mBlack[6] = R.drawable.ic_map_junnam_black;
+        mWhite[6] = R.drawable.ic_map_junnam_white;
+        mBlack[6] = R.drawable.map_jeonnam;
 
         imageView_gyeongbuk = view.findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk_front = view.findViewById(R.id.imageView_gyeongbuk_front);
@@ -149,6 +162,7 @@ public class MainFragmentRep extends Fragment {
         mBorders[7] = view.findViewById(R.id.imageView_gyeongbuk_border);
         mWhite[7] = R.drawable.ic_map_gyeongbuk_white;
         mBlack[7] = R.drawable.ic_map_gyeongbuk_black;
+        mDefault[7] = R.drawable.map_gyeongbuk;
 
         imageView_gyeongnam = view.findViewById(R.id.imageView_gyeongnam);
         imageView_gyeongnam_front = view.findViewById(R.id.imageView_gyeongnam_front);
@@ -157,6 +171,7 @@ public class MainFragmentRep extends Fragment {
         mBorders[8] = view.findViewById(R.id.imageView_gyeongnam_border);
         mWhite[8] = R.drawable.ic_map_gyeongnam_white;
         mBlack[8] = R.drawable.ic_map_gyeongnam_black;
+        mDefault[8] = R.drawable.map_gyeongnam;
 
         imageView_jeju = view.findViewById(R.id.imageView_jeju);
         imageView_jeju_front = view.findViewById(R.id.imageView_jeju_front);
@@ -165,54 +180,95 @@ public class MainFragmentRep extends Fragment {
         mBorders[9] = view.findViewById(R.id.imageView_jeju_border);
         mWhite[9] = R.drawable.ic_map_jeju_white;
         mBlack[9] = R.drawable.ic_map_jeju_black;
+        mDefault[9] = R.drawable.map_jeju;
 
-        return view;
+    }
+
+    private void setBox() {
+        box = new DynamicBox(getActivity(), existRep);
+        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
     }
 
     // 대표 지도 유뮤 체크 후 대표 사진 불러오기
-    void setRep() {
-        box.showLoadingLayout();
+    public void setRep() {
         final String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
+        box.showCustomView(LOADING_ONLY_PROGRESS);
         if (repMid == null) {
-            Log.e("MainFragmentRep", "[setRep] : repMid is null");
+            Log.e("setRep","repMid == null");
+            if (mValueEventListener != null) {
+                GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
+                mValueEventListener = null;
+                mValueEventListenerMid = null;
+            }
             setLayout(false);
         } else {
-            Log.e("MainFragmentRep", "[setRep] : mid : " + repMid);
-            GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.e("MainFragmentRep", "[mRefMaps] onDataChange");
-                    getMapInfoRequest(repMid);
-                }
+            if (mValueEventListener == null) {
+                Log.e("setRep","mValueEventListener == null");
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e("MainFragmentRep", "[mRefMaps] onCancelled");
-                }
-            });
+                mValueEventListenerMid = repMid;
+                mValueEventListener = GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null) {
+                            Log.e("onDataChange","GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
+                            mValueEventListener = null;
+                            mValueEventListenerMid = null;
+                            setLayout(false);
+                            return;
+                        }
+                        getMapInfoRequest(mValueEventListenerMid);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            } else {
+                Log.e("setRep","mValueEventListener != null");
+                GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
+                mValueEventListenerMid = repMid;
+                mValueEventListener = GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null) {
+                            Log.e("onDataChange","GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
+                            GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
+                            mValueEventListener = null;
+                            mValueEventListenerMid = null;
+                            setLayout(false);
+                            return;
+                        }
+                        getMapInfoRequest(mValueEventListenerMid);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
         }
     }
 
     // 맵 정보 가져오기 request
     void getMapInfoRequest(String mid) {
-        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + GlobalApplication.getGlobalApplicationContext().token, mid);
+        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo(GlobalApplication.getGlobalApplicationContext().token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
             @Override
             public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
                 if (response.isSuccessful()) {
+                    GetMapInfo getMapInfo = response.body();
                     if (response.body() != null) {
-                        Log.e("MainFragmentRep", "[getMapInfoRequest] is success");
-                        setRep(response.body().getData().getGetMapInfoDataRepresents());
-
+                        setRep(getMapInfo.getData().getGetMapInfoDataRepresents());
+                        Log.e("getMapInfoRequest", "response.isSuccessful()");
                     }
                 } else {
-                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                    Log.e("getMapInfoRequest", "response.isNotSuccessful()");
                 }
             }
-
             @Override
             public void onFailure(Call<GetMapInfo> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Log.e("getMapInfoRequest", t.getLocalizedMessage());
             }
         });
     }
@@ -228,79 +284,28 @@ public class MainFragmentRep extends Fragment {
         String gyeongbuk = getMapInfoDataRepresents.getGyeongbuk();
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("");
+        paths.add(gyeonggi);
+        paths.add(gangwon);
+        paths.add(chungbuk);
+        paths.add(chungnam);
+        paths.add(jeonbuk);
+        paths.add(jeonnam);
+        paths.add(gyeongbuk);
+        paths.add(gyeongnam);
+        paths.add(jeju);
 
-        if (gyeonggi != null) {
-            Glide.with(pContext).load(gyeonggi).into(porterShapeImageViews[1]);
-            mBorders[1].setImageResource(mWhite[1]);
-        } else {
-            porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
-            mBorders[1].setImageResource(mBlack[1]);
+        for(int i = 1; i<=9; i++){
+            String path = paths.get(i);
+            if (path != null) {
+                Glide.with(getActivity()).load(path).into(porterShapeImageViews[i]);
+                mBorders[i].setImageResource(mWhite[i]);
+            } else {
+                porterShapeImageViews[i].setImageResource(mDefault[i]);
+                mBorders[i].setImageResource(mBlack[i]);
+            }
         }
-
-        if (gangwon != null) {
-            Glide.with(pContext).load(gangwon).into(porterShapeImageViews[2]);
-            mBorders[2].setImageResource(mWhite[2]);
-        } else {
-            porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
-            mBorders[2].setImageResource(mBlack[2]);
-        }
-
-        if (chungbuk != null) {
-            Glide.with(pContext).load(chungbuk).into(porterShapeImageViews[3]);
-            mBorders[3].setImageResource(mWhite[3]);
-        } else {
-            porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
-            mBorders[3].setImageResource(mBlack[3]);
-        }
-
-        if (chungnam != null) {
-            Glide.with(pContext).load(chungnam).into(porterShapeImageViews[4]);
-            mBorders[4].setImageResource(mWhite[4]);
-        } else {
-            porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
-            mBorders[4].setImageResource(mBlack[4]);
-        }
-
-        if (jeonbuk != null) {
-            Glide.with(pContext).load(jeonbuk).into(porterShapeImageViews[5]);
-            mBorders[5].setImageResource(mWhite[5]);
-        } else {
-            porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
-            mBorders[5].setImageResource(mBlack[5]);
-        }
-
-        if (jeonnam != null) {
-            Glide.with(pContext).load(jeonnam).into(porterShapeImageViews[6]);
-            mBorders[6].setImageResource(mWhite[6]);
-        } else {
-            porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
-            mBorders[6].setImageResource(mBlack[6]);
-        }
-
-        if (gyeongbuk != null) {
-            Glide.with(pContext).load(gyeongbuk).into(porterShapeImageViews[7]);
-            mBorders[7].setImageResource(mWhite[7]);
-        } else {
-            porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
-            mBorders[7].setImageResource(mBlack[7]);
-        }
-
-        if (gyeongnam != null) {
-            Glide.with(pContext).load(gyeongnam).into(porterShapeImageViews[8]);
-            mBorders[8].setImageResource(mWhite[8]);
-        } else {
-            porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
-            mBorders[8].setImageResource(mBlack[8]);
-        }
-
-        if (jeju != null) {
-            Glide.with(pContext).load(jeju).into(porterShapeImageViews[9]);
-            mBorders[9].setImageResource(mWhite[9]);
-        } else {
-            porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
-            mBorders[9].setImageResource(mBlack[9]);
-        }
-
         setLayout(true);
     }
 
@@ -320,20 +325,17 @@ public class MainFragmentRep extends Fragment {
     }
 
     void setLayout(boolean rep) {
-        box.hideAll();
-        Log.e("[setLayout]", "rep " + rep);
+        Log.e("setLayout",Boolean.toString(rep));
         if (!rep) {
             noRep.setVisibility(View.VISIBLE);
             existRep.setVisibility(View.GONE);
+            layout_map.setVisibility(View.GONE);
         } else {
             noRep.setVisibility(View.GONE);
             existRep.setVisibility(View.VISIBLE);
-        }
-    }
+            layout_map.setVisibility(View.VISIBLE);
 
-    @Override
-    public void onResume() {
-        setRep();
-        super.onResume();
+        }
+        box.hideAll();
     }
 }

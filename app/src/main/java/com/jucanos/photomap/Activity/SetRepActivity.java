@@ -71,7 +71,7 @@ public class SetRepActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("사진 편집");
 
         mid = getIntent().getStringExtra("mid");
-        Log.e("SetRepActivity","mid : " + mid);
+        Log.e("SetRepActivity", "mid : " + mid);
         cityKey = getIntent().getStringExtra("cityKey");
         regionCode = getIntent().getIntExtra("regionCode", -1);
         Log.e("regionCode", Integer.toString(regionCode));
@@ -281,7 +281,7 @@ public class SetRepActivity extends AppCompatActivity {
         file = MultipartBody.Part.createFormData("img", f.getName(), requestFile);
 
         // request
-        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep("Bearer " + globalApplication.token, mid, hashMap, file);
+        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep(globalApplication.token, mid, hashMap, file);
         res.enqueue(new Callback<SetRep>() {
             @Override
             public void onResponse(Call<SetRep> call, Response<SetRep> response) {

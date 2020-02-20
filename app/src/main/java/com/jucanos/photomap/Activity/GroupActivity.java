@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -35,7 +34,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
@@ -54,7 +52,6 @@ import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
 import com.jucanos.photomap.Structure.SetRep;
-import com.jucanos.photomap.util.BitmapUtils;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -65,9 +62,11 @@ import com.kakao.network.ErrorResult;
 import com.kakao.network.callback.ResponseCallback;
 import com.kakao.util.helper.log.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import pl.polidea.view.ZoomView;
@@ -99,19 +98,21 @@ public class GroupActivity extends AppCompatActivity {
     PorterShapeImageView imageView_jeju; // 9
     ImageView imageView_jeju_front;
 
-    private RelativeLayout rl_drawer;
+    View mView;
+
+    private RelativeLayout rl_drawer, mContainer, rl_capture;
     private RelativeLayout.LayoutParams layoutParams;
+
     private final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
     private final ImageView[] mBorders = new ImageView[10];
     private final int[] mWhite = new int[10];
     private final int[] mBlack = new int[10];
+    private final int[] mDefault = new int[10];
     private final ImageView[] imageViews = new ImageView[10];
 
     private DrawerLayout drawerLayout_drawer;
     private ListView listView_member;
     private MemberListViewAdapter adapter;
-    private View mView;
-    private RelativeLayout mContainer;
 
     // floating action button 객체
     private FloatingActionMenu floatingActionMenu_menu;
@@ -120,7 +121,12 @@ public class GroupActivity extends AppCompatActivity {
     private String mid, title;
     private int longClickId = -1;
 
+    // request clode
     private Integer SET_REP_REQUEST = 1;
+
+    // loading Box;
+    DynamicBox box;
+    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("ClickableViewAccessibility")
@@ -129,16 +135,273 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        getIntentData();
         setToolbar();
-        initView();
+        getIntentData();
+        setZoomView();
+        initMember();
+        setFab();
+        setKaKaoLink();
+        setBox();
 
-        drawerLayout_drawer.openDrawer(Gravity.RIGHT);
-        drawerLayout_drawer.closeDrawer(GravityCompat.END);
+
+        GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.e("GroupActivity", "[mRefMaps] onDataChange");
+                getMapInfoRequest();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("GroupActivity", "[mRefMaps] onCancelled");
+            }
+        });
+    }
+
+    private void getIntentData() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        mContext = this;
+        mid = getIntent().getStringExtra("mid");
+        title = getIntent().getStringExtra("title");
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(title);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initMember() {
+        drawerLayout_drawer = findViewById(R.id.drawer_layout);
+        rl_drawer = findViewById(R.id.rl_drawer);
+        rl_capture = findViewById(R.id.rl_capture);
+
+        listView_member = findViewById(R.id.listView_member);
         adapter = new MemberListViewAdapter(getApplicationContext());
         listView_member.setAdapter(adapter);
 
 
+        // PorterShapeImageView
+        imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
+        imageView_gyeonggi_front = findViewById(R.id.imageView_gyeonggi_front);
+        mBorders[1] = findViewById(R.id.imageView_gyeonggi_border);
+        imageView_gyeonggi.setOnTouchListener(mClickListener);
+        porterShapeImageViews[1] = imageView_gyeonggi;
+        imageViews[1] = imageView_gyeonggi_front;
+        mWhite[1] = R.drawable.ic_map_gyeonggi_white;
+        mBlack[1] = R.drawable.ic_map_gyeonggi_black;
+        mDefault[1] = R.drawable.map_gyeonggi;
+
+        imageView_gangwon = findViewById(R.id.imageView_gangwon);
+        imageView_gangwon.setOnTouchListener(mClickListener);
+        imageView_gangwon_front = findViewById(R.id.imageView_gangwon_front);
+        porterShapeImageViews[2] = imageView_gangwon;
+        imageViews[2] = imageView_gangwon_front;
+        mBorders[2] = findViewById(R.id.imageView_gangwon_border);
+        mWhite[2] = R.drawable.ic_map_gangwon_white;
+        mBlack[2] = R.drawable.ic_map_gangwon_black;
+        mDefault[2] = R.drawable.map_gangwon;
+
+
+        imageView_chungbuk = findViewById(R.id.imageView_chungbuk);
+        imageView_chungbuk.setOnTouchListener(mClickListener);
+        imageView_chungbuk_front = findViewById(R.id.imageView_chungbuk_front);
+        porterShapeImageViews[3] = imageView_chungbuk;
+        imageViews[3] = imageView_chungbuk_front;
+        mBorders[3] = findViewById(R.id.imageView_chungbuk_border);
+        mWhite[3] = R.drawable.ic_map_chungbuk_white;
+        mBlack[3] = R.drawable.ic_map_chungbuk_black;
+        mDefault[3] = R.drawable.map_chungbuk;
+
+
+        imageView_chungnam = findViewById(R.id.imageView_chungnam);
+        imageView_chungnam.setOnTouchListener(mClickListener);
+        imageView_chungnam_front = findViewById(R.id.imageView_chungnam_front);
+        porterShapeImageViews[4] = imageView_chungnam;
+        imageViews[4] = imageView_chungnam_front;
+        mBorders[4] = findViewById(R.id.imageView_chungnam_border);
+        mWhite[4] = R.drawable.ic_map_chungnam_white;
+        mBlack[4] = R.drawable.ic_map_chungnam_black;
+        mDefault[4] = R.drawable.map_chungnam;
+
+        imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
+        imageView_jeonbuk.setOnTouchListener(mClickListener);
+        imageView_jeonbuk_front = findViewById(R.id.imageView_jeonbuk_front);
+        porterShapeImageViews[5] = imageView_jeonbuk;
+        imageViews[5] = imageView_jeonbuk_front;
+        mBorders[5] = findViewById(R.id.imageView_jeonbuk_border);
+        mWhite[5] = R.drawable.ic_map_junbuk_white;
+        mBlack[5] = R.drawable.ic_map_junbuk_black;
+        mDefault[5] = R.drawable.map_jeonbuk;
+
+        imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
+        imageView_jeonnam.setOnTouchListener(mClickListener);
+        imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
+        porterShapeImageViews[6] = imageView_jeonnam;
+        imageViews[6] = imageView_jeonnam_front;
+        mBorders[5] = findViewById(R.id.imageView_jeonnam_border);
+        mBlack[6] = R.drawable.ic_map_junnam_black;
+        mWhite[6] = R.drawable.ic_map_junnam_white;
+        mBlack[6] = R.drawable.map_jeonnam;
+
+        imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
+        imageView_gyeongbuk.setOnTouchListener(mClickListener);
+        imageView_gyeongbuk_front = findViewById(R.id.imageView_gyeongbuk_front);
+        porterShapeImageViews[7] = imageView_gyeongbuk;
+        imageViews[7] = imageView_gyeongbuk_front;
+        mBorders[7] = findViewById(R.id.imageView_gyeongbuk_border);
+        mWhite[7] = R.drawable.ic_map_gyeongbuk_white;
+        mBlack[7] = R.drawable.ic_map_gyeongbuk_black;
+        mDefault[7] = R.drawable.map_gyeongbuk;
+
+        imageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
+        imageView_gyeongnam.setOnTouchListener(mClickListener);
+        imageView_gyeongnam_front = findViewById(R.id.imageView_gyeongnam_front);
+        porterShapeImageViews[8] = imageView_gyeongnam;
+        imageViews[8] = imageView_gyeongnam_front;
+        mBorders[8] = findViewById(R.id.imageView_gyeongnam_border);
+        mWhite[8] = R.drawable.ic_map_gyeongnam_white;
+        mBlack[8] = R.drawable.ic_map_gyeongnam_black;
+        mDefault[8] = R.drawable.map_gyeongnam;
+
+        imageView_jeju = findViewById(R.id.imageView_jeju);
+        imageView_jeju.setOnTouchListener(mClickListener);
+        imageView_jeju_front = findViewById(R.id.imageView_jeju_front);
+        porterShapeImageViews[9] = imageView_jeju;
+        imageViews[9] = imageView_jeju_front;
+        mBorders[9] = findViewById(R.id.imageView_jeju_border);
+        mWhite[9] = R.drawable.ic_map_jeju_white;
+        mBlack[9] = R.drawable.ic_map_jeju_black;
+        mDefault[9] = R.drawable.map_jeju;
+
+        floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
+        floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
+        floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
+
+
+    }
+
+    PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener() {
+        int x = 0, y = 0;
+        float startX = 0, startY = 0, distanceSum = 0;
+        int transparency;
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
+            Log.e("touch", v.getContentDescription().toString());
+            if (event.getPointerCount() >= 2) {
+                handler.removeMessages(longClickId);
+                longClickId = -1;
+                return false;
+            }
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    x = (int) pxToDp(mContext, event.getX());
+                    y = (int) pxToDp(mContext, event.getY());
+                    distanceSum = 0;
+                    startX = event.getX(0);
+                    startY = event.getY(0);
+                    transparency = bm.getPixel(x, y);
+                    if (transparency != 0 && longClickId == -1) {
+                        longClickId = Integer.parseInt(v.getContentDescription().toString());
+                        handler.sendEmptyMessageAtTime(longClickId, event.getDownTime() + (long) 1000);
+                    } else if (longClickId != -1) {
+                        return true;
+                    }
+                    return transparency != 0;
+                case MotionEvent.ACTION_UP:
+                    transparency = bm.getPixel(x, y);
+                    if (transparency != 0 && longClickId != -1) {
+                        redirectStoryActivity(Integer.parseInt(v.getContentDescription().toString()));
+                        handler.removeMessages(longClickId);
+                        longClickId = -1;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private void setBox() {
+        box = new DynamicBox(this, rl_capture);
+        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setZoomView() {
+        mView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
+        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mContainer = findViewById(R.id.fragmentViewPager_container);
+
+        // ZoomView 설정
+        ZoomView zoomView = new ZoomView(this);
+        zoomView.setClipChildren(true);
+        zoomView.addView(mView);
+        zoomView.setWillNotDraw(false);
+        zoomView.setLayoutParams(layoutParams);
+        zoomView.setMaxZoom(8f);
+
+        mContainer.setClipChildren(true);
+        mContainer.addView(zoomView);
+
+        zoomView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                handler.removeMessages(longClickId);
+                longClickId = -1;
+                return false;
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setFab() {
+        floatingActionMenu_menu.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (floatingActionMenu_menu.isOpened()) {
+                    floatingActionMenu_menu.close(true);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        floatingActionButton_rep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                floatingActionMenu_menu.close(true);
+                setMapRepRequest(mid, "false");
+            }
+        });
+
+        floatingActionButton_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                floatingActionMenu_menu.close(true);
+                getMapImage();
+            }
+        });
+    }
+
+    @SuppressLint({"RtlHardcoded", "ClickableViewAccessibility"})
+    private void setKaKaoLink() {
+        drawerLayout_drawer.openDrawer(Gravity.RIGHT);
+        drawerLayout_drawer.closeDrawer(GravityCompat.END);
+        // 컨테이너 설정후 zoomView 추가
+        rl_drawer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         RelativeLayout relativeLayout_addMember = findViewById(R.id.relativeLayout_addMember);
         relativeLayout_addMember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,198 +444,6 @@ public class GroupActivity extends AppCompatActivity {
                 });
             }
         });
-
-        // ZoomView 설정
-        ZoomView zoomView = new ZoomView(this);
-        zoomView.setClipChildren(false);
-        zoomView.addView(mView);
-        zoomView.setWillNotDraw(false);
-        zoomView.setLayoutParams(layoutParams);
-        zoomView.setMaxZoom(8f);
-        // 컨테이너 설정후 zoomView 추가
-        rl_drawer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-        mContainer = findViewById(R.id.fragmentViewPager_container);
-        mContainer.setClipChildren(false);
-        mContainer.addView(zoomView);
-
-        // PorterShapeImageView
-        imageView_gyeonggi = findViewById(R.id.imageView_gyeonggi);
-        imageView_gyeonggi_front = findViewById(R.id.imageView_gyeonggi_front);
-        mBorders[1] = findViewById(R.id.imageView_gyeonggi_border);
-
-        imageView_gyeonggi.setOnTouchListener(mClickListener);
-        porterShapeImageViews[1] = imageView_gyeonggi;
-        imageViews[1] = imageView_gyeonggi_front;
-        mWhite[1] = R.drawable.ic_map_gyeonggi_white;
-        mBlack[1] = R.drawable.ic_map_gyeonggi_black;
-
-        imageView_gangwon = findViewById(R.id.imageView_gangwon);
-        imageView_gangwon.setOnTouchListener(mClickListener);
-        imageView_gangwon_front = findViewById(R.id.imageView_gangwon_front);
-        porterShapeImageViews[2] = imageView_gangwon;
-        imageViews[2] = imageView_gangwon_front;
-        mBorders[2] = findViewById(R.id.imageView_gangwon_border);
-        mWhite[2] = R.drawable.ic_map_gangwon_white;
-        mBlack[2] = R.drawable.ic_map_gangwon_black;
-
-        imageView_chungbuk = findViewById(R.id.imageView_chungbuk);
-        imageView_chungbuk.setOnTouchListener(mClickListener);
-        imageView_chungbuk_front = findViewById(R.id.imageView_chungbuk_front);
-        porterShapeImageViews[3] = imageView_chungbuk;
-        imageViews[3] = imageView_chungbuk_front;
-        mBorders[3] = findViewById(R.id.imageView_chungbuk_border);
-        mWhite[3] = R.drawable.ic_map_chungbuk_white;
-        mBlack[3] = R.drawable.ic_map_chungbuk_black;
-
-
-        imageView_chungnam = findViewById(R.id.imageView_chungnam);
-        imageView_chungnam.setOnTouchListener(mClickListener);
-        imageView_chungnam_front = findViewById(R.id.imageView_chungnam_front);
-        porterShapeImageViews[4] = imageView_chungnam;
-        imageViews[4] = imageView_chungnam_front;
-        mBorders[4] = findViewById(R.id.imageView_chungnam_border);
-        mWhite[4] = R.drawable.ic_map_chungnam_white;
-        mBlack[4] = R.drawable.ic_map_chungnam_black;
-
-        imageView_jeonbuk = findViewById(R.id.imageView_jeonbuk);
-        imageView_jeonbuk.setOnTouchListener(mClickListener);
-        imageView_jeonbuk_front = findViewById(R.id.imageView_jeonbuk_front);
-        porterShapeImageViews[5] = imageView_jeonbuk;
-        imageViews[5] = imageView_jeonbuk_front;
-        mBorders[5] = findViewById(R.id.imageView_jeonbuk_border);
-        mWhite[5] = R.drawable.ic_map_junbuk_white;
-        mBlack[5] = R.drawable.ic_map_junbuk_black;
-
-        imageView_jeonnam = findViewById(R.id.imageView_jeonnam);
-        imageView_jeonnam.setOnTouchListener(mClickListener);
-        imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
-        porterShapeImageViews[6] = imageView_jeonnam;
-        imageViews[6] = imageView_jeonnam_front;
-        mBorders[6] = findViewById(R.id.imageView_jeonnam_border);
-        mWhite[6] = R.drawable.ic_map_junnam_white;
-        mBlack[6] = R.drawable.ic_map_junnam_black;
-
-        imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
-        imageView_gyeongbuk.setOnTouchListener(mClickListener);
-        imageView_gyeongbuk_front = findViewById(R.id.imageView_gyeongbuk_front);
-        porterShapeImageViews[7] = imageView_gyeongbuk;
-        imageViews[7] = imageView_gyeongbuk_front;
-        mBorders[7] = findViewById(R.id.imageView_gyeongbuk_border);
-        mWhite[7] = R.drawable.ic_map_gyeongbuk_white;
-        mBlack[7] = R.drawable.ic_map_gyeongbuk_black;
-
-        imageView_gyeongnam = findViewById(R.id.imageView_gyeongnam);
-        imageView_gyeongnam.setOnTouchListener(mClickListener);
-        imageView_gyeongnam_front = findViewById(R.id.imageView_gyeongnam_front);
-        porterShapeImageViews[8] = imageView_gyeongnam;
-        imageViews[8] = imageView_gyeongnam_front;
-        mBorders[8] = findViewById(R.id.imageView_gyeongnam_border);
-        mWhite[8] = R.drawable.ic_map_gyeongnam_white;
-        mBlack[8] = R.drawable.ic_map_gyeongnam_black;
-
-        imageView_jeju = findViewById(R.id.imageView_jeju);
-        imageView_jeju.setOnTouchListener(mClickListener);
-        imageView_jeju_front = findViewById(R.id.imageView_jeju_front);
-        porterShapeImageViews[9] = imageView_jeju;
-        imageViews[9] = imageView_jeju_front;
-        mBorders[9] = findViewById(R.id.imageView_jeju_border);
-        mWhite[9] = R.drawable.ic_map_jeju_white;
-        mBlack[9] = R.drawable.ic_map_jeju_black;
-
-        floatingActionButton_rep = findViewById(R.id.floatingActionButton_rep);
-        floatingActionButton_save = findViewById(R.id.floatingActionButton_save);
-        floatingActionMenu_menu = findViewById(R.id.floatingActionMenu_menu);
-
-        floatingActionMenu_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
-            @Override
-            public void onMenuToggle(boolean opened) {
-
-            }
-        });
-
-
-        floatingActionMenu_menu.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (floatingActionMenu_menu.isOpened()) {
-                    floatingActionMenu_menu.close(true);
-                    return false;
-                }
-                return false;
-            }
-        });
-
-
-        floatingActionButton_rep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(GroupActivity.this, "floatingActionButton_rep", Toast.LENGTH_SHORT).show();
-                setMapRepRequest(mid);
-                floatingActionMenu_menu.close(true);
-            }
-        });
-
-        floatingActionButton_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(GroupActivity.this, "floatingActionButton_save", Toast.LENGTH_SHORT).show();
-                getMapImage();
-                floatingActionMenu_menu.close(true);
-            }
-        });
-
-        zoomView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                handler.removeMessages(longClickId);
-                longClickId = -1;
-                return false;
-            }
-        });
-
-        GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("GroupActivity", "[mRefMaps] onDataChange");
-                getMapInfoRequest();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("GroupActivity", "[mRefMaps] onCancelled");
-            }
-        });
-
-        // getMapInfoRequest();
-    }
-
-    private void getIntentData() {
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
-        mContext = this;
-        mid = getIntent().getStringExtra("mid");
-        title = getIntent().getStringExtra("title");
-    }
-
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar_tb);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(title);
-    }
-
-    private void initView() {
-        drawerLayout_drawer = findViewById(R.id.drawer_layout);
-        listView_member = findViewById(R.id.listView_member);
-        mView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_map, null, false);
-        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        rl_drawer = findViewById(R.id.rl_drawer);
-
-
     }
 
     @SuppressLint("HandlerLeak")
@@ -380,20 +451,17 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             longClickId = -1;
-            Toast.makeText(GroupActivity.this, "LongClick : " + Integer.toString(msg.what), Toast.LENGTH_SHORT).show();
             final int regionCode = msg.what;
             final RepDialog dialog = new RepDialog(GroupActivity.this);
             dialog.setDialogListener(new RepDialogListener() {
                 @Override
                 public void onSetClicked() {
-                    Toast.makeText(GroupActivity.this, "onSetClicked", Toast.LENGTH_SHORT).show();
                     redirectSetRepActivity(regionCode);
                     dialog.dismiss();
                 }
 
                 @Override
                 public void onDeleteClicked() {
-                    Toast.makeText(GroupActivity.this, "onDeleteClicked", Toast.LENGTH_SHORT).show();
                     deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
                     dialog.dismiss();
                 }
@@ -402,53 +470,6 @@ public class GroupActivity extends AppCompatActivity {
         }
     };
 
-    PorterShapeImageView.OnTouchListener mClickListener = new View.OnTouchListener() {
-        int x = 0, y = 0;
-        float startX = 0, startY = 0, distanceSum = 0;
-        int transparency;
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
-            Log.e("touch", v.getContentDescription().toString());
-            if (event.getPointerCount() >= 2) {
-                handler.removeMessages(longClickId);
-                longClickId = -1;
-                return false;
-            }
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    x = (int) pxToDp(mContext, event.getX());
-                    y = (int) pxToDp(mContext, event.getY());
-                    distanceSum = 0;
-                    startX = event.getX(0);
-                    startY = event.getY(0);
-                    transparency = bm.getPixel(x, y);
-                    Log.e("down transParency : ", Integer.toString(transparency));
-                    if (transparency != 0 && longClickId == -1) {
-                        longClickId = Integer.parseInt(v.getContentDescription().toString());
-                        handler.sendEmptyMessageAtTime(longClickId, event.getDownTime() + (long) 1000);
-                    } else if (longClickId != -1) {
-                        return true;
-                    }
-                    return transparency != 0;
-                case MotionEvent.ACTION_UP:
-                    transparency = bm.getPixel(x, y);
-                    Log.e("up transParency : ", Integer.toString(transparency));
-                    if (transparency != 0 && longClickId != -1) {
-                        Toast.makeText(getApplicationContext(), v.getContentDescription(), Toast.LENGTH_SHORT).show();
-                        redirectStoryActivity(Integer.parseInt(v.getContentDescription().toString()));
-                        handler.removeMessages(longClickId);
-                        longClickId = -1;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return false;
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -472,19 +493,6 @@ public class GroupActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public float pxToDp(Context context, float px) {
-        // 해상도 마다 다른 density 를 반환. xxxhdpi는 density = 4
-        float density = context.getResources().getDisplayMetrics().density;
-
-        if (density == 1.0)      // mpdi  (160dpi) -- xxxhdpi (density = 4)기준으로 density 값을 재설정 한다
-            density *= 4.0;
-        else if (density == 1.5) // hdpi  (240dpi)
-            density *= (8.0 / 3);
-        else if (density == 2.0) // xhdpi (320dpi)
-            density *= 2.0;
-        return px / density;     // dp 값 반환
     }
 
     public void redirectStoryActivity(int cityKey) {
@@ -520,11 +528,10 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
-
-    /* request function */
     void getMapInfoRequest() {
+        box.showCustomView(LOADING_ONLY_PROGRESS);
         Log.e("GroupActivity", "getMapInfoRequest");
-        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo("Bearer " + globalApplication.token, mid);
+        final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo(globalApplication.token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
             @Override
             public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
@@ -532,7 +539,6 @@ public class GroupActivity extends AppCompatActivity {
                     Log.e("GroupActivity", "response.isSuccessful()");
                     adapter.clear();
                     if (response.body() != null) {
-                        setRep(response.body().getData().getGetMapInfoDataRepresents());
                         for (int i = 0; i < response.body().getData().getGetMapInfoDataOwners().size(); i++) {
                             String thumbnail = response.body().getData().getGetMapInfoDataOwners().get(i).getThumbnail();
                             String name = response.body().getData().getGetMapInfoDataOwners().get(i).getNickname();
@@ -542,6 +548,7 @@ public class GroupActivity extends AppCompatActivity {
                             MemberListViewItem memberListViewItem = new MemberListViewItem(thumbnail, name);
                             adapter.addItem(memberListViewItem);
                         }
+                        setRep(response.body().getData().getGetMapInfoDataRepresents());
                         adapter.notifyDataSetChanged();
                     }
                 } else {
@@ -556,29 +563,31 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    void setMapRepRequest(final String mid) {
-        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep("Bearer " + globalApplication.token, mid, new SetMapRepRequest(false));
+    void setMapRepRequest(final String mid, String remove) {
+        box.showCustomView(LOADING_ONLY_PROGRESS);
+        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
         res.enqueue(new Callback<SetMapRep>() {
             @Override
             public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
                 if (response.isSuccessful()) {
-                    Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
-
+                    Log.e("setMapRepRequest", "response.isSuccessful()");
                     globalApplication.authorization.getUserData().setPrimary(mid);
+                    box.hideAll();
                 } else {
-                    Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
+                    Log.e("setMapRepRequest", "response.isNotSuccessful()");
                 }
             }
 
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
-                Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
+                Log.e("setMapRepRequest", t.getLocalizedMessage());
             }
         });
     }
 
     void getMapImage() {
-        View v = findViewById(R.id.relativeLayout_mapContainer);
+        box.showCustomView(LOADING_ONLY_PROGRESS);
+        View v = rl_capture;
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
@@ -586,6 +595,7 @@ public class GroupActivity extends AppCompatActivity {
         // MediaStore 에 image 저장
         String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
         Uri myUri = Uri.parse(filePath);
+        box.hideAll();
     }
 
     void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents) {
@@ -598,83 +608,105 @@ public class GroupActivity extends AppCompatActivity {
         String gyeongbuk = getMapInfoDataRepresents.getGyeongbuk();
         String gyeongnam = getMapInfoDataRepresents.getGyeongnam();
         String jeju = getMapInfoDataRepresents.getJeju();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("");
+        paths.add(gyeonggi);
+        paths.add(gangwon);
+        paths.add(chungbuk);
+        paths.add(chungnam);
+        paths.add(jeonbuk);
+        paths.add(jeonnam);
+        paths.add(gyeongbuk);
+        paths.add(gyeongnam);
+        paths.add(jeju);
 
-        if (gyeonggi != null) {
-            Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
-            mBorders[1].setImageResource(mWhite[1]);
-        } else {
-            porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
-            mBorders[1].setImageResource(mBlack[1]);
+        for (int i = 1; i <= 9; i++) {
+            String path = paths.get(i);
+            if (path != null) {
+                Glide.with(getApplicationContext()).load(path).into(porterShapeImageViews[i]);
+                mBorders[i].setImageResource(mWhite[i]);
+            } else {
+                porterShapeImageViews[i].setImageResource(mDefault[i]);
+                mBorders[i].setImageResource(mBlack[i]);
+            }
         }
-
-        if (gangwon != null) {
-            Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
-            mBorders[2].setImageResource(mWhite[2]);
-        } else {
-            porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
-            mBorders[2].setImageResource(mBlack[2]);
-        }
-
-        if (chungbuk != null) {
-            Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
-            mBorders[3].setImageResource(mWhite[3]);
-        } else {
-            porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
-            mBorders[3].setImageResource(mBlack[3]);
-        }
-
-        if (chungnam != null) {
-            Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
-            mBorders[4].setImageResource(mWhite[4]);
-        } else {
-            porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
-            mBorders[4].setImageResource(mBlack[4]);
-        }
-
-        if (jeonbuk != null) {
-            Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
-            mBorders[5].setImageResource(mWhite[5]);
-        } else {
-            porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
-            mBorders[5].setImageResource(mBlack[5]);
-        }
-
-        if (jeonnam != null) {
-            Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
-            mBorders[6].setImageResource(mWhite[6]);
-        } else {
-            porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
-            mBorders[6].setImageResource(mBlack[6]);
-        }
-
-        if (gyeongbuk != null) {
-            Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
-            mBorders[7].setImageResource(mWhite[7]);
-        } else {
-            porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
-            mBorders[7].setImageResource(mBlack[7]);
-        }
-
-        if (gyeongnam != null) {
-            Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
-            mBorders[8].setImageResource(mWhite[8]);
-        } else {
-            porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
-            mBorders[8].setImageResource(mBlack[8]);
-        }
-
-        if (jeju != null) {
-            Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
-            mBorders[9].setImageResource(mWhite[9]);
-        } else {
-            porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
-            mBorders[9].setImageResource(mBlack[9]);
-        }
-
-
+//
+//        if (gyeonggi != null) {
+//            Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
+//            mBorders[1].setImageResource(mWhite[1]);
+//        } else {
+//            porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
+//            mBorders[1].setImageResource(mBlack[1]);
+//        }
+//
+//        if (gangwon != null) {
+//            Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
+//            mBorders[2].setImageResource(mWhite[2]);
+//        } else {
+//            porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
+//            mBorders[2].setImageResource(mBlack[2]);
+//        }
+//
+//        if (chungbuk != null) {
+//            Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
+//            mBorders[3].setImageResource(mWhite[3]);
+//        } else {
+//            porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
+//            mBorders[3].setImageResource(mBlack[3]);
+//        }
+//
+//        if (chungnam != null) {
+//            Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
+//            mBorders[4].setImageResource(mWhite[4]);
+//        } else {
+//            porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
+//            mBorders[4].setImageResource(mBlack[4]);
+//        }
+//
+//        if (jeonbuk != null) {
+//            Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
+//            mBorders[5].setImageResource(mWhite[5]);
+//        } else {
+//            porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
+//            mBorders[5].setImageResource(mBlack[5]);
+//        }
+//
+//        if (jeonnam != null) {
+//            Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
+//            mBorders[6].setImageResource(mWhite[6]);
+//        } else {
+//            porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
+//            mBorders[6].setImageResource(mBlack[6]);
+//        }
+//
+//        if (gyeongbuk != null) {
+//            Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
+//            mBorders[7].setImageResource(mWhite[7]);
+//        } else {
+//            porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
+//            mBorders[7].setImageResource(mBlack[7]);
+//        }
+//
+//        if (gyeongnam != null) {
+//            Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
+//            mBorders[8].setImageResource(mWhite[8]);
+//        } else {
+//            porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
+//            mBorders[8].setImageResource(mBlack[8]);
+//        }
+//
+//        if (jeju != null) {
+//            Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
+//            mBorders[9].setImageResource(mWhite[9]);
+//        } else {
+//            porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
+//            mBorders[9].setImageResource(mBlack[9]);
+//        }
+        box.hideAll();
     }
 
     private void deleteRepRequest(String cityKey, final int regionCode) {
+        box.showCustomView(LOADING_ONLY_PROGRESS);
         RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
         RequestBody requetRemove = RequestBody.create(MediaType.parse("text/plain"), "true");
         HashMap<String, RequestBody> hashMap = new HashMap<>();
@@ -682,28 +714,39 @@ public class GroupActivity extends AppCompatActivity {
         hashMap.put("remove", requetRemove);
 
         // request
-        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep("Bearer " + globalApplication.token, mid, hashMap, null);
+        final Call<SetRep> res = NetworkHelper.getInstance().getService().setRep(globalApplication.token, mid, hashMap, null);
         res.enqueue(new Callback<SetRep>() {
             @Override
             public void onResponse(Call<SetRep> call, Response<SetRep> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.e("GroupActivity", response.body().getData().toString());
-                        porterShapeImageViews[regionCode].setImageResource(mBlack[regionCode]);
+                        Log.e("GroupActivity", "response.isSuccessful()");
                         mBorders[regionCode].setImageResource(mBlack[regionCode]);
+                        porterShapeImageViews[regionCode].setImageResource(mDefault[regionCode]);
+                        box.hideAll();
                     }
                 } else {
-                    Log.e("GroupActivity", "deleteRepRequest error : " + Integer.toString(response.code()));
+                    Log.e("GroupActivity", "response.isSuccessful()");
                 }
             }
 
             @Override
             public void onFailure(Call<SetRep> call, Throwable t) {
-                Log.e("GroupActivity", "deleteRepRequest fail : " + t.getLocalizedMessage());
+                Log.e("GroupActivity", "response.isSuccessful()");
             }
         });
     }
 
+
+    public float pxToDp(Context context, float px) {
+        // 해상도 마다 다른 density 를 반환. xxxhdpi는 density = 4
+        float density = context.getResources().getDisplayMetrics().density;
+        if (density == 1.0)      // mpdi  (160dpi) -- xxxhdpi (density = 4)기준으로 density 값을 재설정 한다
+            density *= 4.0;
+        else if (density == 1.5) // hdpi  (240dpi)
+            density *= (8.0 / 3);
+        else if (density == 2.0) // xhdpi (320dpi)
+            density *= 2.0;
+        return px / density;     // dp 값 반환
+    }
 }
-
-
