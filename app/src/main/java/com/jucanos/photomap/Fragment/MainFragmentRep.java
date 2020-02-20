@@ -95,7 +95,7 @@ public class MainFragmentRep extends Fragment {
         pContext = getActivity().getApplicationContext();
         noRep = view.findViewById(R.id.layout_noRep);
         existRep = view.findViewById(R.id.relativeLayout_existRep);
-        box = new DynamicBox(getActivity(), existRep);
+
 
         // PorterShapeImageView
         imageView_gyeonggi = view.findViewById(R.id.imageView_gyeonggi);
@@ -173,6 +173,7 @@ public class MainFragmentRep extends Fragment {
     }
 
     private void setBox() {
+        box = new DynamicBox(getActivity(), existRep);
         View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
     }

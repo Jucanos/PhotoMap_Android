@@ -691,7 +691,6 @@ public class GroupActivity extends AppCompatActivity {
     public float pxToDp(Context context, float px) {
         // 해상도 마다 다른 density 를 반환. xxxhdpi는 density = 4
         float density = context.getResources().getDisplayMetrics().density;
-
         if (density == 1.0)      // mpdi  (160dpi) -- xxxhdpi (density = 4)기준으로 density 값을 재설정 한다
             density *= 4.0;
         else if (density == 1.5) // hdpi  (240dpi)

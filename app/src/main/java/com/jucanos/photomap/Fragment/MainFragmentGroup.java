@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.jucanos.photomap.Activity.AddGroupActivity;
 import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
@@ -36,8 +34,8 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapList;
 import com.jucanos.photomap.Structure.GetMapListData;
-import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.RemoveUser;
+import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
 
@@ -63,50 +61,19 @@ public class MainFragmentGroup extends Fragment {
 
     private long lastClickTime = 0;
 
-    // for realtime database
-// Write a message to the database
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference mRefMap = database.getReference("maps");
-    DatabaseReference mRefUser = database.getReference("users").getRef().child(GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getUid());
+    private String mid;
+    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_group, fragmentContainer, false);
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
-        toolbar.inflateMenu(R.menu.menu_fragment_group);
-        setHasOptionsMenu(true);
-
-        final String mid = getActivity().getIntent().getStringExtra("mid");
-        boolean fromLink = false;
-        if (mid != null) {
-            fromLink = true;
-        }
-        Log.e("MainFragmentGroup", "[mid] : " + mid);
-
-        noGroup = view.findViewById(R.id.layout_noGroup);
-        existGroup = view.findViewById(R.id.layout_existGroup);
-        listView_group = view.findViewById(R.id.listView_group);
-
-        // groupListView
-        adapter = new GroupListViewAdapter();
-        listView_group.setAdapter(adapter);
-
-        // loading layout
-        box = new DynamicBox(getActivity(), listView_group);
-        box.setLoadingMessage("처리중...");
-        box.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                box.showLoadingLayout();
-                getMapList(globalApplication.token);
-            }
-        });
+        setToolbar(view);
+        getIntentData();
+        initMember(view);
+        setBox();
+        checkLink();
 
         // listView item click
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -164,6 +131,47 @@ public class MainFragmentGroup extends Fragment {
             }
         });
 
+
+        return view;
+    }
+
+    private void getIntentData() {
+        mid = getActivity().getIntent().getStringExtra("mid");
+    }
+
+    private void setToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
+        toolbar.inflateMenu(R.menu.menu_fragment_group);
+        setHasOptionsMenu(true);
+    }
+
+    private void initMember(View view) {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+
+        noGroup = view.findViewById(R.id.layout_noGroup);
+        existGroup = view.findViewById(R.id.layout_existGroup);
+        listView_group = view.findViewById(R.id.listView_group);
+
+        // groupListView
+        adapter = new GroupListViewAdapter();
+        listView_group.setAdapter(adapter);
+    }
+
+    private void setBox() {
+        box = new DynamicBox(getActivity(), listView_group);
+        box = new DynamicBox(getActivity(), listView_group);
+        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
+    }
+
+    private void checkLink() {
+        boolean fromLink = false;
+        if (mid != null) {
+            fromLink = true;
+        }
         if (fromLink) {
             YesNoDialog dialog = new YesNoDialog(getContext(), "그룹에 참여 하시겠습니까?");
             dialog.setDialogListener(new YesNoDialogListener() {
@@ -183,9 +191,7 @@ public class MainFragmentGroup extends Fragment {
         } else {
             getMapList(globalApplication.token);
         }
-        return view;
     }
-
 
     // toolbar menu
     @Override
@@ -235,6 +241,7 @@ public class MainFragmentGroup extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case ADD_GROUP:
+                    box.showCustomView(LOADING_ONLY_PROGRESS);
                     String mapTokpen = data.getStringExtra("mapToken");
                     String mapName = data.getStringExtra("mapName");
                     Log.e("MainFragmentGroup", "[mapToken] : " + mapTokpen);
@@ -263,13 +270,12 @@ public class MainFragmentGroup extends Fragment {
         groupListViewItem.setCurLog((long) 0);
         groupListViewItem.setPastLog((long) 0);
         adapter.addItem(groupListViewItem, pushBack);
-
     }
 
     // request : getMapList
     public void getMapList(String token) {
-        box.showLoadingLayout();
-        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList( token);
+        box.showCustomView(LOADING_ONLY_PROGRESS);
+        final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList(token);
         res.enqueue(new Callback<GetMapList>() {
             @Override
             public void onResponse(Call<GetMapList> call, Response<GetMapList> response) {
@@ -281,7 +287,6 @@ public class MainFragmentGroup extends Fragment {
                                 return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
                             }
                         });
-
                         GetMapList getMapList = response.body();
                         for (int i = 0; i < getMapList.getGetMapListDatas().size(); i++) {
                             Log.e("LoginActivity", "[mid]" + getMapList.getGetMapListDatas().get(i).getMid());
@@ -325,7 +330,6 @@ public class MainFragmentGroup extends Fragment {
                         box.hideAll();
                         setLayout();
                     } else {
-                        Log.e("MainFragmentGroup", "globalApplication.authorization.getUserData().setPrimary(null);");
                         setMapRepRequest(mid, "true");
                         adapter.delete(position);
                         adapter.notifyDataSetChanged();
@@ -349,7 +353,7 @@ public class MainFragmentGroup extends Fragment {
             public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
                 if (response.isSuccessful()) {
                     Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
-                    if(remove.equals("true")){
+                    if (remove.equals("true")) {
                         Log.e("GroupActivity", "     globalApplication.authorization.getUserData().setPrimary(null)");
                         globalApplication.authorization.getUserData().setPrimary(null);
                     }
@@ -359,6 +363,7 @@ public class MainFragmentGroup extends Fragment {
                     box.hideAll();
                 }
             }
+
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
                 Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
@@ -369,6 +374,7 @@ public class MainFragmentGroup extends Fragment {
 
     // decided by request result.
     void setLayout() {
+        box.hideAll();
         if (adapter.getCount() == 0) {
             noGroup.setVisibility(View.VISIBLE);
             existGroup.setVisibility(View.GONE);
@@ -387,9 +393,13 @@ public class MainFragmentGroup extends Fragment {
     // lifeCycle
     @Override
     public void onResume() {
-        super.onResume();
         adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        adapter.resort();
+        adapter.notifyDataSetChanged();
+        Log.e("MainFragmentGroup","[onResume] : after resort()");
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        super.onResume();
+
     }
 }
 
