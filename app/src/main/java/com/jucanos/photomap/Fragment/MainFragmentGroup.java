@@ -251,9 +251,10 @@ public class MainFragmentGroup extends Fragment {
                     setLayout();
                     break;
                 case EDIT_GROUP:
-                    String name = data.getStringExtra("name");
+                    String name = data.getStringExtra("title");
                     int pos = data.getIntExtra("pos", -1);
                     adapter.getItem(pos).setTitle(name);
+                    adapter.notifyDataSetChanged();
                     break;
                 default:
                     break;

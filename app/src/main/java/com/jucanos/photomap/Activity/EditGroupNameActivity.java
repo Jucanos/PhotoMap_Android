@@ -1,8 +1,5 @@
 package com.jucanos.photomap.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,50 +9,84 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.jucanos.photomap.Structure.CreateMap;
+import com.jucanos.photomap.Structure.CreateMapRequest;
 import com.jucanos.photomap.Structure.EditGroup;
 import com.jucanos.photomap.Structure.EditGroupRequest;
 
-import java.util.Objects;
-
+import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditGroupNameActivity extends AppCompatActivity {
-    private GlobalApplication globalApplication;
-    private EditText editText_name;
-    private String mid;
-    private int pos;
+    public GlobalApplication globalApplication;
+    private EditText et_title;
+    private RelativeLayout rl_container, rl_total;
+    String title, mid;
+    Integer pos;
+
+    private DynamicBox mBox;
+    private InputMethodManager mKeyBord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group_name);
 
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        initMember();
+        setToolbar();
+        setBox();
+        getIntentData();
 
+        showView(rl_container);
+        mKeyBord.showSoftInput(et_title, 0);
+    }
+
+    private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("그룹 이름 수정");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("그룹 생성");
+    }
 
-        String name = getIntent().getStringExtra("name");
+    private void getIntentData() {
+        title = getIntent().getStringExtra("name");
         mid = getIntent().getStringExtra("mid");
         pos = getIntent().getIntExtra("pos", -1);
+    }
 
-        RelativeLayout relativeLayout_total = findViewById(R.id.rl_container);
-        hideView(relativeLayout_total);
+    private void initMember() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        et_title = findViewById(R.id.editText_title);
+        rl_total = findViewById(R.id.rl_total);
+        rl_container = findViewById(R.id.rl_container);
+    }
 
-        editText_name = findViewById(R.id.editText_name);
-        editText_name.setHint(name);
-        editText_name.requestFocus();
+
+    private void setBox() {
+        mBox = new DynamicBox(this, rl_total);
+        View customView = getLayoutInflater().inflate(R.layout.loading_progress, null, false);
+        mBox.addCustomView(customView, "loading");
+        mBox.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mKeyBord.showSoftInput(et_title, 0);
+                mBox.hideAll();
+            }
+        });
     }
 
     @Override
@@ -70,6 +101,11 @@ public class EditGroupNameActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.item_ok:
+                int size = et_title.getEditableText().toString().length();
+                if (size <= 0) {
+                    Toast.makeText(this, "그룹 이름을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
                 editGroupRequest();
                 return true;
             case android.R.id.home:
@@ -80,37 +116,33 @@ public class EditGroupNameActivity extends AppCompatActivity {
     }
 
     public void editGroupRequest() {
-        final Call<EditGroup> res = NetworkHelper.getInstance().getService().editGroup("Bearer " + globalApplication.token, mid, new EditGroupRequest(editText_name.getText().toString()));
+        final String title = et_title.getText().toString();
+        final Call<EditGroup> res = NetworkHelper.getInstance().getService().editGroup(globalApplication.token, mid, new EditGroupRequest(title));
         res.enqueue(new Callback<EditGroup>() {
             @Override
             public void onResponse(Call<EditGroup> call, Response<EditGroup> response) {
                 if (response.isSuccessful()) {
-                    Log.e("EditGroupNameActivity", " success");
-                    redirectResult();
+                    Log.e("EditGroupNameActivity", "response.isSuccessful()");
+                    Intent intent = new Intent();
+                    intent.putExtra("title", title);
+                    intent.putExtra("pos", pos);
+                    setResult(RESULT_OK, intent);
+                    mBox.hideAll();
+                    finish();
                 } else {
-                    Log.e("EditGroupNameActivity", "setRepRequest error : " + Integer.toString(response.code()));
+                    Log.e("EditGroupNameActivity", "response.isNotSuccessful()");
                 }
             }
 
             @Override
             public void onFailure(Call<EditGroup> call, Throwable t) {
-                Log.e("EditGroupNameActivity", "setRepRequest fail : " + t.getLocalizedMessage());
+                Log.e("EditGroupNameActivity", t.getLocalizedMessage());
             }
         });
     }
 
-    public void redirectResult() {
-        Intent intent = new Intent();
-        intent.putExtra("pos", pos);
-        intent.putExtra("name", editText_name.getText().toString());
-        setResult(RESULT_OK, intent);
-        Toast.makeText(this, "그룹 이름이 수정되었습니다", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    public void hideView(final View view) {
+    private void showView(final View view) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_slide_in_top);
-        //use this to make it longer:  animation.setDuration(1000);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -127,5 +159,11 @@ public class EditGroupNameActivity extends AppCompatActivity {
             }
         });
         view.startAnimation(animation);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
     }
 }
