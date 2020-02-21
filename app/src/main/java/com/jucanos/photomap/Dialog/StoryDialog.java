@@ -34,13 +34,11 @@ public class StoryDialog extends Dialog implements View.OnClickListener {
 
         final Button button_delete = (Button) findViewById(R.id.button_delete);
         final Button button_edit = (Button) findViewById(R.id.button_edit);
-        final Button button_rep = (Button) findViewById(R.id.button_rep);
         final Button button_cancel = (Button) findViewById(R.id.button_cancel);
 
 
         button_delete.setOnClickListener(this);
         button_edit.setOnClickListener(this);
-        button_rep.setOnClickListener(this);
         button_cancel.setOnClickListener(this);
     }
 
@@ -53,10 +51,6 @@ public class StoryDialog extends Dialog implements View.OnClickListener {
                 break;
             case R.id.button_edit:
                 ClickDialogListner.onEditClicked();
-                dismiss();
-                break;
-            case R.id.button_rep:
-                ClickDialogListner.onRepClicked();
                 dismiss();
                 break;
             case R.id.button_cancel:

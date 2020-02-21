@@ -21,6 +21,8 @@ import com.jucanos.photomap.Activity.SetRepActivity;
 import com.jucanos.photomap.Activity.StoryActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
+import com.jucanos.photomap.Dialog.YesNoDialog;
+import com.jucanos.photomap.Dialog.YesNoDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
@@ -124,21 +126,26 @@ public class StoryListViewAdapter extends BaseAdapter {
                 dialog.setDialogListener(new StoryDialogListener() {
                     @Override
                     public void onDeleteClicked() {
-                        Toast.makeText(context, "change onDeleteClicked is clicked", Toast.LENGTH_SHORT).show();
-                        removeStoryRequest(listViewItem.getSid(), position);
+                        final YesNoDialog yesNoDialog = new YesNoDialog(context,"정말 삭제 하시겠습니까?");
+                        yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                            @Override
+                            public void onPositiveClicked() {
+                                Toast.makeText(context, "change onDeleteClicked is clicked", Toast.LENGTH_SHORT).show();
+                                ((StoryActivity) context).removeStoryRequest(listViewItem.getSid(), position);
+                                yesNoDialog.dismiss();
+                            }
+                            @Override
+                            public void onNegativeClicked() {
+                                yesNoDialog.dismiss();
+                            }
+                        });
+                        yesNoDialog.show();
                     }
 
                     @Override
                     public void onEditClicked() {
                         Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
                         ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
-                    }
-
-                    @Override
-                    public void onRepClicked() {
-                        Toast.makeText(context, "change onRepClicked is clicked", Toast.LENGTH_SHORT).show();
-                        final Intent intent = new Intent(context, SetRepActivity.class);
-                        context.startActivity(intent);
                     }
 
                     @Override
@@ -168,29 +175,10 @@ public class StoryListViewAdapter extends BaseAdapter {
     public void addItem(StoryListViewItem item, boolean pushBack) {
         if (!pushBack) listViewItemList.add(0, item);
         else listViewItemList.add(item);
-
     }
 
-
-    public void removeStoryRequest(String sid, final int pos) {
-        final Call<RemoveStory> res = NetworkHelper.getInstance().getService().removeStory("Bearer " + GlobalApplication.getGlobalApplicationContext().token, sid);
-        res.enqueue(new Callback<RemoveStory>() {
-            @Override
-            public void onResponse(Call<RemoveStory> call, Response<RemoveStory> response) {
-                if (response.isSuccessful()) {
-                    Log.e("StoryActivity", "[removeStoryRequest] is Successful");
-                    listViewItemList.remove(pos);
-                    notifyDataSetChanged();
-                } else {
-                    Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RemoveStory> call, Throwable t) {
-                Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
-            }
-        });
+    public void removeItem(int pos){
+        listViewItemList.remove(pos);
     }
 
 

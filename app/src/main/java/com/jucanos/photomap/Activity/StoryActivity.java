@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -20,6 +21,7 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetStoryList;
 import com.jucanos.photomap.Structure.GetStoryListData;
+import com.jucanos.photomap.Structure.RemoveStory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +47,7 @@ public class StoryActivity extends AppCompatActivity {
 
     // for loading
     private DynamicBox box;
+    private RelativeLayout rl_box;
     private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @Override
@@ -73,12 +76,20 @@ public class StoryActivity extends AppCompatActivity {
         cityKey = getIntent().getStringExtra("cityKey");
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initMember(){
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
         listView_story.setAdapter(listView_storyApater);
         rl_existStory = findViewById(R.id.rl_existStory);
         rl_noStory = findViewById(R.id.rl_noStory);
+        rl_box = findViewById(R.id.rl_box);
+        rl_box.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
     }
 
     private void setBox(){
@@ -224,6 +235,30 @@ public class StoryActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void removeStoryRequest(String sid, final int pos) {
+        rl_box.setVisibility(View.VISIBLE);
+        final Call<RemoveStory> res = NetworkHelper.getInstance().getService().removeStory(GlobalApplication.getGlobalApplicationContext().token, sid);
+        res.enqueue(new Callback<RemoveStory>() {
+            @Override
+            public void onResponse(Call<RemoveStory> call, Response<RemoveStory> response) {
+                if (response.isSuccessful()) {
+                    Log.e("StoryActivity", "[removeStoryRequest] is Successful");
+                    listView_storyApater.removeItem(pos);
+                    listView_storyApater.notifyDataSetChanged();
+                    rl_box.setVisibility(View.GONE);
+                } else {
+                    Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RemoveStory> call, Throwable t) {
+                Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
+            }
+        });
+    }
+
 
     void addStoryTest(StoryListViewItem storyListViewItem, boolean pushBack) {
         listView_storyApater.addItem(storyListViewItem, pushBack);
