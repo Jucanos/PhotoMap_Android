@@ -77,7 +77,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initMember(){
+    private void initMember() {
         listView_storyApater = new StoryListViewAdapter();
         listView_story = findViewById(R.id.listView_story);
         listView_story.setAdapter(listView_storyApater);
@@ -92,7 +92,7 @@ public class StoryActivity extends AppCompatActivity {
         });
     }
 
-    private void setBox(){
+    private void setBox() {
         box = new DynamicBox(this, rl_existStory);
         View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
@@ -185,7 +185,7 @@ public class StoryActivity extends AppCompatActivity {
                         Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
                             @Override
                             public int compare(GetStoryListData o1, GetStoryListData o2) {
-                                return o1.getCreatedAt().compareTo(o2.getCreatedAt());
+                                return o1.getCreatedAt().compareTo(o2.getCreatedAt()) * -1;
                             }
                         });
                         for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
@@ -264,11 +264,11 @@ public class StoryActivity extends AppCompatActivity {
         listView_storyApater.addItem(storyListViewItem, pushBack);
     }
 
-    private void setLayout(){
-        if(listView_storyApater.getCount() > 0){
+    private void setLayout() {
+        if (listView_storyApater.getCount() > 0) {
             rl_existStory.setVisibility(View.VISIBLE);
             rl_noStory.setVisibility(View.GONE);
-        }else{
+        } else {
             rl_existStory.setVisibility(View.GONE);
             rl_noStory.setVisibility(View.VISIBLE);
         }
