@@ -18,32 +18,43 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
-        <activity android:name=".Activity.AddStoryPreviewActivity"></activity>
-        <activity android:name=".Activity.AddStoryPeedActivity" /> <!-- FCM 서비스 -->
-        <service android:name=".MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <activity
+            android:name=".Activity.AddStoryPreviewActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Activity.AddStoryPeedActivity"
+            android:launchMode="singleInstance" />
 
-        <!--        <activity-->
-        <!--            android:name=".Activity.EditGroupNameActivity"-->
-        <!--            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />-->
-        <activity android:name=".Activity.NoticeActivity" />
-        <activity android:name=".Activity.SetRepActivity" />
-        <activity android:name=".Activity.StoryActivity" />
-        <activity android:name=".Activity.GroupActivity" />
-        <activity android:name=".Activity.AddStoryImageActivity" />
+        <activity
+            android:name=".Activity.NoticeActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Activity.SetRepActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Activity.StoryActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Activity.GroupActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Activity.AddStoryImageActivity"
+            android:launchMode="singleInstance" />
         <activity
             android:name=".Activity.EditGroupNameActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
         <activity
             android:name=".Activity.AddGroupActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
         <activity
             android:name=".Activity.MainActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.LoginActivity">
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,6 +71,13 @@
                     android:scheme="@string/kakao_scheme" />
             </intent-filter>
         </activity>
+
+        <!-- FCM 서비스 -->
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
