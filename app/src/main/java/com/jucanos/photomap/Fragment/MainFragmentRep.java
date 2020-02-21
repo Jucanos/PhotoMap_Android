@@ -32,6 +32,7 @@ import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 
 import java.util.ArrayList;
 
+import dagger.multibindings.IntoMap;
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +65,7 @@ public class MainFragmentRep extends Fragment {
     final int[] mBlack = new int[10];
     private final int[] mDefault = new int[10];
 
-    private RelativeLayout noRep, existRep,layout_map;
+    private RelativeLayout noRep, existRep, layout_map;
     private DynamicBox box;
     private Context pContext;
 
@@ -150,10 +151,10 @@ public class MainFragmentRep extends Fragment {
         imageView_jeonnam_front = view.findViewById(R.id.imageView_jeonnam_front);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
-        mBorders[5] = view.findViewById(R.id.imageView_jeonnam_border);
+        mBorders[6] = view.findViewById(R.id.imageView_jeonnam_border);
         mBlack[6] = R.drawable.ic_map_junnam_black;
         mWhite[6] = R.drawable.ic_map_junnam_white;
-        mBlack[6] = R.drawable.map_jeonnam;
+        mDefault[6] = R.drawable.map_jeonnam;
 
         imageView_gyeongbuk = view.findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk_front = view.findViewById(R.id.imageView_gyeongbuk_front);
@@ -195,7 +196,7 @@ public class MainFragmentRep extends Fragment {
         final String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
         box.showCustomView(LOADING_ONLY_PROGRESS);
         if (repMid == null) {
-            Log.e("setRep","repMid == null");
+            Log.e("setRep", "repMid == null");
             if (mValueEventListener != null) {
                 GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
                 mValueEventListener = null;
@@ -204,14 +205,14 @@ public class MainFragmentRep extends Fragment {
             setLayout(false);
         } else {
             if (mValueEventListener == null) {
-                Log.e("setRep","mValueEventListener == null");
+                Log.e("setRep", "mValueEventListener == null");
 
                 mValueEventListenerMid = repMid;
                 mValueEventListener = GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null) {
-                            Log.e("onDataChange","GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
+                            Log.e("onDataChange", "GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
                             mValueEventListener = null;
                             mValueEventListenerMid = null;
                             setLayout(false);
@@ -225,14 +226,14 @@ public class MainFragmentRep extends Fragment {
                     }
                 });
             } else {
-                Log.e("setRep","mValueEventListener != null");
+                Log.e("setRep", "mValueEventListener != null");
                 GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
                 mValueEventListenerMid = repMid;
                 mValueEventListener = GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null) {
-                            Log.e("onDataChange","GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
+                            Log.e("onDataChange", "GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
                             GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
                             mValueEventListener = null;
                             mValueEventListenerMid = null;
@@ -266,6 +267,7 @@ public class MainFragmentRep extends Fragment {
                     Log.e("getMapInfoRequest", "response.isNotSuccessful()");
                 }
             }
+
             @Override
             public void onFailure(Call<GetMapInfo> call, Throwable t) {
                 Log.e("getMapInfoRequest", t.getLocalizedMessage());
@@ -296,7 +298,8 @@ public class MainFragmentRep extends Fragment {
         paths.add(gyeongnam);
         paths.add(jeju);
 
-        for(int i = 1; i<=9; i++){
+        for (int i = 1; i <= 9; i++) {
+            Log.e("error pos", Integer.toString(i));
             String path = paths.get(i);
             if (path != null) {
                 Glide.with(getActivity()).load(path).into(porterShapeImageViews[i]);
@@ -325,7 +328,7 @@ public class MainFragmentRep extends Fragment {
     }
 
     void setLayout(boolean rep) {
-        Log.e("setLayout",Boolean.toString(rep));
+        Log.e("setLayout", Boolean.toString(rep));
         if (!rep) {
             noRep.setVisibility(View.VISIBLE);
             existRep.setVisibility(View.GONE);
