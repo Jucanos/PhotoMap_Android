@@ -118,13 +118,12 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     public void redirectEditStoryActivity(String sid, String title, String context, int pos) {
-//        Intent intent = new Intent(this, EditStoryActivity.class);
-//        intent.putExtra("sid", sid);
-//        intent.putExtra("title", title);
-//        intent.putExtra("context", context);
-//        intent.putExtra("pos", pos);
-//        startActivityForResult(intent, EDIT_STORY_REQUEST);
-//        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+        Intent intent = new Intent(this, EditStoryActivity.class);
+        intent.putExtra("sid", sid);
+        intent.putExtra("title", title);
+        intent.putExtra("context", context);
+        intent.putExtra("pos", pos);
+        startActivityForResult(intent, EDIT_STORY_REQUEST);
     }
 
     @Override

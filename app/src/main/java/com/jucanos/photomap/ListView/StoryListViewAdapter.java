@@ -16,7 +16,9 @@ import androidx.annotation.RequiresApi;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.jucanos.photomap.Activity.EditStoryActivity;
 import com.jucanos.photomap.Activity.SetRepActivity;
+import com.jucanos.photomap.Activity.StoryActivity;
 import com.jucanos.photomap.Dialog.StoryDialog;
 import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
@@ -129,8 +131,7 @@ public class StoryListViewAdapter extends BaseAdapter {
                     @Override
                     public void onEditClicked() {
                         Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
-//                        final Intent intent = new Intent(context, EditStoryActivity.class);
-//                        ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
+                        ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
                     }
 
                     @Override
