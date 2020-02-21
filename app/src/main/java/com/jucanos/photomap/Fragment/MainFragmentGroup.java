@@ -278,7 +278,7 @@ public class MainFragmentGroup extends Fragment {
                         Collections.sort(response.body().getGetMapListDatas(), new Comparator<GetMapListData>() {
                             @Override
                             public int compare(GetMapListData o1, GetMapListData o2) {
-                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt());
+                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt())* -1;
                             }
                         });
                         GetMapList getMapList = response.body();

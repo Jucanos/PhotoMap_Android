@@ -101,7 +101,11 @@ public class GroupListViewAdapter extends BaseAdapter {
         listViewItem.setOnLogCb(new GroupListViewItem.OnlogCb() {
             @Override
             public void onSetLog(long log, boolean own) {
-                listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
+                if(!listViewItem.isLoaded()){
+                    listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
+                }else{
+                    listViewItem.setLoad(true);
+                }
                 Log.e("listViewItem", "setUpdatedAt  : " + listViewItem.getUpdatedAt().toString());
 
                 if (listViewItem.getActivated() && activated) {
