@@ -24,7 +24,7 @@ public class AddStoryImageActivity extends AbsBoxingActivity {
 
 
     // intent request code
-    private final int ADD_STORY_REQUEST  = 1;
+    private final int ADD_STORY_REQUEST = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,19 +58,17 @@ public class AddStoryImageActivity extends AbsBoxingActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == ADD_STORY_REQUEST) {
                 Intent intent = new Intent();
-                Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
-
                 String title = data.getStringExtra("title");
                 String context = data.getStringExtra("context");
                 ArrayList<String> files = data.getStringArrayListExtra("files");
                 String sid = data.getStringExtra("sid");
                 String mid = data.getStringExtra("mid");
 
-                intent.putExtra("title",title);
-                intent.putExtra("context",context);
-                intent.putStringArrayListExtra("files",files);
-                intent.putExtra("sid",sid);
-                intent.putExtra("mid",mid);
+                intent.putExtra("title", title);
+                intent.putExtra("context", context);
+                intent.putStringArrayListExtra("files", files);
+                intent.putExtra("sid", sid);
+                intent.putExtra("mid", mid);
 
                 setResult(RESULT_OK, intent);
                 finish();

@@ -59,8 +59,6 @@ public class MainFragmentGroup extends Fragment {
     private final int ADD_GROUP = 1;
     private final int EDIT_GROUP = 2;
 
-    private long lastClickTime = 0;
-
     private String mid;
     private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
@@ -79,10 +77,6 @@ public class MainFragmentGroup extends Fragment {
         listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
-                    return;
-                }
-                lastClickTime = SystemClock.elapsedRealtime();
                 GroupListViewItem groupListViewItem = adapter.getItem(position);
                 String mid = groupListViewItem.getMid();
 
@@ -217,7 +211,6 @@ public class MainFragmentGroup extends Fragment {
         intent.putExtra("mid", mid);
         intent.putExtra("title", title);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     public void redirectAddGroupActivity() {
@@ -397,7 +390,7 @@ public class MainFragmentGroup extends Fragment {
         adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
         adapter.resort();
         adapter.notifyDataSetChanged();
-        Log.e("MainFragmentGroup","[onResume] : after resort()");
+        Log.e("MainFragmentGroup", "[onResume] : after resort()");
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
         super.onResume();
 

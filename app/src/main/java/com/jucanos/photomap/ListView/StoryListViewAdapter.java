@@ -2,7 +2,6 @@ package com.jucanos.photomap.ListView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.jucanos.photomap.Activity.SetRepActivity;
@@ -22,13 +22,10 @@ import com.jucanos.photomap.Dialog.StoryDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.SliderViewAdapter.SliderAdapterStoryItem;
+import com.jucanos.photomap.SliderViewAdapter.AddStoryImageSliderAdapter;
 import com.jucanos.photomap.Structure.RemoveStory;
 import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
-import com.smarteist.autoimageslider.SliderView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +38,6 @@ import retrofit2.Response;
 public class StoryListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<StoryListViewItem> listViewItemList = new ArrayList<StoryListViewItem>();
-    private SliderAdapterStoryItem setSliderAdapter;
 
     // ListViewAdapter의 생성자
     public StoryListViewAdapter() {
@@ -72,10 +68,11 @@ public class StoryListViewAdapter extends BaseAdapter {
         final TextView textView_title = convertView.findViewById(R.id.textView_title);
         final TextView textView_upload = convertView.findViewById(R.id.textView_upload);
         final ImageView imageView_more = convertView.findViewById(R.id.imageView_more);
-        final SliderView sliderView = convertView.findViewById(R.id.imageSlider);
+        final ViewPager viewPager = convertView.findViewById(R.id.viewPager);
+        final TextView textView_indicator = convertView.findViewById(R.id.tv_indicator);
 
-        sliderView.getLayoutParams().height = ViewUtils.getScreenWidth();
-        sliderView.getLayoutParams().width = ViewUtils.getScreenWidth();
+        viewPager.getLayoutParams().height = ViewUtils.getScreenWidth();
+        viewPager.getLayoutParams().width = ViewUtils.getScreenWidth();
 
         final ExpandableTextView expandableTextView_description = convertView.findViewById(R.id.expandableTextView_context);
 
@@ -90,14 +87,28 @@ public class StoryListViewAdapter extends BaseAdapter {
 
 
         // story images
-        setSliderAdapter = new SliderAdapterStoryItem(context, listViewItem.getFiles());
-        sliderView.setSliderAdapter(setSliderAdapter);
-        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setAutoCycle(false);
-        sliderView.setIndicatorUnselectedColor(Color.WHITE);
-        sliderView.setIndicatorSelectedColor(Color.BLACK);
-        sliderView.setCircularHandlerEnabled(false);
+        AddStoryImageSliderAdapter addStoryImageSliderAdapter = new AddStoryImageSliderAdapter(context, listViewItem.getFiles());
+        viewPager.setAdapter(addStoryImageSliderAdapter);
+        String indicator = 1 + "/" + listViewItem.getFiles().size();
+        textView_indicator.setText(indicator);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String indicator = (position + 1) + "/" + listViewItem.getFiles().size();
+                textView_indicator.setText(indicator);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         textView_creator.setText(GlobalApplication.getGlobalApplicationContext().userNickName.get(listViewItem.getCreator()));
         textView_title.setText(listViewItem.getTitle());

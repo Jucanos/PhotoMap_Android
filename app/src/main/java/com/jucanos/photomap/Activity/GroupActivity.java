@@ -135,8 +135,8 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        setToolbar();
         getIntentData();
+        setToolbar();
         setZoomView();
         initMember();
         setFab();
@@ -501,7 +501,6 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra("cityKey", globalApplication.cityKeyInt.get(cityKey));
 
         startActivity(intent);
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     void redirectSetRepActivity(int regionCode) {

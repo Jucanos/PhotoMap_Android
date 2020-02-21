@@ -52,8 +52,8 @@ public class StoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
-        setToolbar();
         getIntentData();
+        setToolbar();
         initMember();
         setBox();
         loadStoryList();
@@ -104,7 +104,6 @@ public class StoryActivity extends AppCompatActivity {
                 return true;
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.anim_not_move, R.anim.anim_slide_out_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -116,7 +115,6 @@ public class StoryActivity extends AppCompatActivity {
         intent.putExtra("cityKey", cityKey);
 
         startActivityForResult(intent, ADD_STORY_REQUEST);
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
     public void redirectEditStoryActivity(String sid, String title, String context, int pos) {

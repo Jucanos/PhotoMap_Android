@@ -37,6 +37,7 @@ public class AddGroupActivity extends AppCompatActivity {
     private DynamicBox mBox;
     private InputMethodManager mKeyBord;
 
+    private String LOADING_PROGRESS = "loading_progress";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class AddGroupActivity extends AppCompatActivity {
     private void setBox() {
         mBox = new DynamicBox(this, rl_total);
         View customView = getLayoutInflater().inflate(R.layout.loading_progress, null, false);
-        mBox.addCustomView(customView,"loading");
+        mBox.addCustomView(customView, LOADING_PROGRESS);
         mBox.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +109,7 @@ public class AddGroupActivity extends AppCompatActivity {
 
     public void requestCreateMap(String token, final String name) {
         mKeyBord.hideSoftInputFromWindow(et_title.getWindowToken(), 0);
-        mBox.showCustomView("loading");
+        mBox.showCustomView(LOADING_PROGRESS);
         Log.e("AddGroupActivity", "[token] : " + token);
         Log.e("AddGroupActivity", "[name] : " + name);
         final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap(token, new CreateMapRequest(name));

@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.jucanos.photomap.Activity.LoginActivity">
+    tools:context="com.jucanos.photomap.Activity.LoginActivity"
+    android:background="@color/windowBackground"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout_ab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:theme="@style/AppTheme">
 
         <androidx.appcompat.widget.Toolbar
@@ -28,7 +28,6 @@
         android:layout_below="@+id/appBarLayout_ab"
         android:visibility="visible"
         >
-
         <ListView
             android:id="@+id/listView_story"
             android:layout_width="match_parent"
