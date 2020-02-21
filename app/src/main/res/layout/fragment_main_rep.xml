@@ -51,7 +51,7 @@
             android:id="@+id/layout_map"
             layout="@layout/layout_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+           android:layout_height="match_parent"
             />
     </RelativeLayout>
 </RelativeLayout>

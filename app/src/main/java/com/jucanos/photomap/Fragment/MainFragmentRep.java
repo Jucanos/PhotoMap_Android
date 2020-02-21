@@ -1,6 +1,8 @@
 package com.jucanos.photomap.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,6 +27,9 @@ import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.jucanos.photomap.Activity.GroupActivity;
+import com.jucanos.photomap.Dialog.YesNoDialog;
+import com.jucanos.photomap.Dialog.YesNoDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
@@ -74,6 +80,8 @@ public class MainFragmentRep extends Fragment {
     private ValueEventListener mValueEventListener = null;
     private String mValueEventListenerMid = null;
 
+    private String title;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,11 +101,34 @@ public class MainFragmentRep extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initMember(View view) {
         pContext = getActivity().getApplicationContext();
         noRep = view.findViewById(R.id.layout_noRep);
         existRep = view.findViewById(R.id.relativeLayout_existRep);
         layout_map = view.findViewById(R.id.layout_map);
+
+
+        layout_map.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "대표지도의 그룹으로 이동하시겠습니까?");
+                yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                    @Override
+                    public void onPositiveClicked() {
+                        yesNoDialog.dismiss();
+                        redirectGroupActivity(mValueEventListenerMid, title);
+                    }
+                    @Override
+                    public void onNegativeClicked() {
+                        yesNoDialog.dismiss();
+                    }
+                });
+                yesNoDialog.show();
+                return true;
+            }
+        });
+
 
         // PorterShapeImageView
         imageView_gyeonggi = view.findViewById(R.id.imageView_gyeonggi);
@@ -261,6 +292,7 @@ public class MainFragmentRep extends Fragment {
                     GetMapInfo getMapInfo = response.body();
                     if (response.body() != null) {
                         setRep(getMapInfo.getData().getGetMapInfoDataRepresents());
+                        title = getMapInfo.getData().getName();
                         Log.e("getMapInfoRequest", "response.isSuccessful()");
                     }
                 } else {
@@ -340,5 +372,15 @@ public class MainFragmentRep extends Fragment {
 
         }
         box.hideAll();
+    }
+
+
+
+    // redirect
+    private void redirectGroupActivity(String mid, String title) {
+        final Intent intent = new Intent(getActivity(), GroupActivity.class);
+        intent.putExtra("mid", mid);
+        intent.putExtra("title", title);
+        startActivity(intent);
     }
 }
