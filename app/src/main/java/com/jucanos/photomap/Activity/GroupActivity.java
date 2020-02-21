@@ -241,10 +241,10 @@ public class GroupActivity extends AppCompatActivity {
         imageView_jeonnam_front = findViewById(R.id.imageView_jeonnam_front);
         porterShapeImageViews[6] = imageView_jeonnam;
         imageViews[6] = imageView_jeonnam_front;
-        mBorders[5] = findViewById(R.id.imageView_jeonnam_border);
+        mBorders[6] = findViewById(R.id.imageView_jeonnam_border);
         mBlack[6] = R.drawable.ic_map_junnam_black;
         mWhite[6] = R.drawable.ic_map_junnam_white;
-        mBlack[6] = R.drawable.map_jeonnam;
+        mDefault[6] = R.drawable.map_jeonnam;
 
         imageView_gyeongbuk = findViewById(R.id.imageView_gyeongbuk);
         imageView_gyeongbuk.setOnTouchListener(mClickListener);
@@ -749,4 +749,16 @@ public class GroupActivity extends AppCompatActivity {
             density *= 2.0;
         return px / density;     // dp 값 반환
     }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout_drawer.isDrawerOpen(Gravity.RIGHT)) {
+            drawerLayout_drawer.closeDrawer(GravityCompat.END);
+        } else if (floatingActionMenu_menu.isOpened()) {
+            floatingActionMenu_menu.close(true);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }
