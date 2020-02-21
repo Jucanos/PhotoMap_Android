@@ -1,33 +1,33 @@
 package com.jucanos.photomap.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.SliderViewAdapter.SliderAdapterAddStoryImage;
+import com.jucanos.photomap.SliderViewAdapter.AddStoryImageSliderAdapter;
 import com.jucanos.photomap.Structure.CreateStory;
 import com.jucanos.photomap.photoPicker.ViewUtils;
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
-import com.smarteist.autoimageslider.SliderView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -41,15 +41,19 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     private String cityKey;
     private String mid;
 
-    private RelativeLayout rv_total;
-    private SliderView sliderView;
-    private TextView textView_upload;
+    private RelativeLayout rv_total, rl_loading;
+    private TextView textView_upload,textView_indicator;
     private EditText editText_title, editText_context;
 
     private ArrayList<String> paths = new ArrayList<>();
-    private SliderAdapterAddStoryImage mSlideradapter;
 
-    private DynamicBox mBox;
+    private AddStoryImageSliderAdapter addStoryImageSliderAdapter;
+    private ViewPager viewPager;
+
+
+    private CardView box;
+    private String LOADING_PROGRESS = "loading_progress";
+    private InputMethodManager mKeyBord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,47 +65,67 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         setLayoutSize();
         loadImages();
         setBox();
+
+        mKeyBord.showSoftInput(editText_title, 0);
     }
 
-    public void getIntentData(){
+    public void getIntentData() {
         globalApplication = GlobalApplication.getGlobalApplicationContext();
         paths = getIntent().getStringArrayListExtra("paths");
         mid = getIntent().getStringExtra("mid");
         cityKey = getIntent().getStringExtra("cityKey");
-        Log.e("AddStoryPeedActivity","[mid] : " + mid);
-        Log.e("AddStoryPeedActivity","[cityKey] : " + cityKey);
+        Log.e("AddStoryPeedActivity", "[mid] : " + mid);
+        Log.e("AddStoryPeedActivity", "[cityKey] : " + cityKey);
     }
 
-    public void initView(){
-        sliderView = findViewById(R.id.imageSlider);
+    public void initView() {
+        viewPager = findViewById(R.id.viewPager);
+        textView_indicator= findViewById(R.id.tv_indicator);
         textView_upload = findViewById(R.id.textView_upload);
-        editText_title= findViewById(R.id.editText_title);
+        editText_title = findViewById(R.id.editText_title);
         editText_context = findViewById(R.id.editText_context);
-        rv_total = findViewById(R.id.rv_total);
-
+        rv_total = findViewById(R.id.rl_total);
+        mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         textView_upload.setOnClickListener(this);
     }
 
     private void setLayoutSize() {
-        sliderView.getLayoutParams().height = ViewUtils.getScreenWidth();
-        sliderView.getLayoutParams().width = ViewUtils.getScreenWidth();
+        viewPager.getLayoutParams().height = ViewUtils.getScreenWidth();
+        viewPager.getLayoutParams().width = ViewUtils.getScreenWidth();
     }
 
-    public void loadImages(){
-        mSlideradapter = new SliderAdapterAddStoryImage(this, paths);
-        sliderView.setSliderAdapter(mSlideradapter);
-        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setIndicatorSelectedColor(Color.WHITE);
-        sliderView.setIndicatorUnselectedColor(Color.GRAY);
-    }
-
-    private void setBox() {
-        mBox = new DynamicBox(this, rv_total);
-        mBox.setClickListener(new View.OnClickListener() {
+    public void loadImages() {
+        addStoryImageSliderAdapter = new AddStoryImageSliderAdapter(this, paths);
+        viewPager.setAdapter(addStoryImageSliderAdapter);
+        String indicator =  1 + "/" + paths.size();
+        textView_indicator.setText(indicator);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View v) {
-                mBox.hideAll();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String indicator = (position + 1) + "/" + paths.size();
+                textView_indicator.setText(indicator);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setBox() {
+        box = findViewById(R.id.box);
+        box.setVisibility(View.GONE);
+        box.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
             }
         });
     }
@@ -109,16 +133,25 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.textView_upload){
+        if (id == R.id.textView_upload) {
             String title = editText_title.getText().toString();
             String context = editText_context.getText().toString();
-            requestUploadImage(title,context,paths);
-            Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+            if(title.length() <= 0){
+                Toast.makeText(this, "제목을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(context.length() <= 0){
+                Toast.makeText(this, "내용을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            requestUploadImage(title, context, paths);
         }
     }
 
     public void requestUploadImage(String title, String context, ArrayList<String> paths) {
-        mBox.showLoadingLayout();
+        mKeyBord.hideSoftInputFromWindow(editText_context.getWindowToken(), 0);
+        mKeyBord.hideSoftInputFromWindow(editText_title.getWindowToken(), 0);
+        box.setVisibility(View.VISIBLE);
         RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
         RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), title);
         RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), context);
@@ -135,17 +168,18 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
             files.add(MultipartBody.Part.createFormData("img", file.getName(), requestFile));
         }
 
-        final Call<CreateStory> res = NetworkHelper.getInstance().getService().createStory("Bearer " + globalApplication.token, mid, hashMap, files);
+        final Call<CreateStory> res = NetworkHelper.getInstance().getService().createStory(globalApplication.token, mid, hashMap, files);
         res.enqueue(new Callback<CreateStory>() {
             @Override
             public void onResponse(Call<CreateStory> call, Response<CreateStory> response) {
                 if (response.isSuccessful()) {
+                    Log.e("AddStoryPeedActivity", "response.isSuccessful()");
                     if (response.body() != null) {
-                        Log.e("AddStoryActivity", "[mid] : " + response.body().getCreateStoryData().getMid());
-                        Log.e("AddStoryActivity", "[title] : " + response.body().getCreateStoryData().getTitle());
-                        Log.e("AddStoryActivity", "[content] : " + response.body().getCreateStoryData().getContext());
-                        Log.e("AddStoryActivity", "[files] : " + response.body().getCreateStoryData().getFiles().toString());
-                        Log.e("AddStoryActivity", "[sid] : " + response.body().getCreateStoryData().getSid());
+//                        Log.e("AddStoryActivity", "[mid] : " + response.body().getCreateStoryData().getMid());
+//                        Log.e("AddStoryActivity", "[title] : " + response.body().getCreateStoryData().getTitle());
+//                        Log.e("AddStoryActivity", "[content] : " + response.body().getCreateStoryData().getContext());
+//                        Log.e("AddStoryActivity", "[files] : " + response.body().getCreateStoryData().getFiles().toString());
+//                        Log.e("AddStoryActivity", "[sid] : " + response.body().getCreateStoryData().getSid());
                         Intent intent = new Intent();
                         intent.putExtra("title", response.body().getCreateStoryData().getTitle());
                         intent.putExtra("context", response.body().getCreateStoryData().getContext());
@@ -153,19 +187,18 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
                         intent.putExtra("mid", response.body().getCreateStoryData().getMid());
                         intent.putExtra("sid", response.body().getCreateStoryData().getSid());
                         setResult(RESULT_OK, intent);
-                        mBox.hideAll();
+                        box.setVisibility(View.GONE);
                         finish();
                     }
                 } else {
-                    Log.e("requestUploadImage", "requestUploadImage error : " + Integer.toString(response.code()));
-                    mBox.showExceptionLayout();
+                    Log.e("AddStoryPeedActivity", "response.isNotSuccessful()");
+
                 }
             }
 
             @Override
             public void onFailure(Call<CreateStory> call, Throwable t) {
-                Log.e("FragmentDescription", "requestUploadImage fail : " + t.getLocalizedMessage());
-                mBox.showExceptionLayout();
+                Log.e("AddStoryPeedActivity", "onFailure : " + t.getLocalizedMessage());
             }
         });
     }

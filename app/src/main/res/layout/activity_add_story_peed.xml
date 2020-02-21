@@ -2,20 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_total"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:elevation="0dp"
-    android:id="@+id/rv_total"
     tools:context=".Activity.AddStoryPeedActivity">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
         style="@style/AppTheme.NoActionBar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="#FFFFFF"
-        android:elevation="20dp">
+        android:background="#FFFFFF">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -58,9 +57,9 @@
             android:id="@+id/editText_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorWhite"
             android:layout_margin="5dp"
-            android:hint="제목을 입력해주세요"/>
+            android:backgroundTint="@color/colorWhite"
+            android:hint="제목을 입력해주세요" />
 
     </androidx.cardview.widget.CardView>
 
@@ -94,24 +93,38 @@
         android:elevation="20dp"
         app:cardCornerRadius="6dp">
 
-        <com.smarteist.autoimageslider.SliderView
-            android:id="@+id/imageSlider"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:sliderAnimationDuration="600"
-            app:sliderAutoCycleEnabled="false"
-            app:sliderCircularHandlerEnabled="false"
-            app:sliderIndicatorAnimationDuration="600"
-            app:sliderIndicatorGravity="center_horizontal|bottom"
-            app:sliderIndicatorMargin="15dp"
-            app:sliderIndicatorOrientation="horizontal"
-            app:sliderIndicatorPadding="3dp"
-            app:sliderIndicatorRadius="2dp"
-            app:sliderIndicatorSelectedColor="#5A5A5A"
-            app:sliderIndicatorUnselectedColor="#FFF"
-            app:sliderScrollTimeInSec="1"
-            app:sliderStartAutoCycle="false" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <TextView
+            android:id="@+id/tv_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:background="@drawable/layout_image_indicator"
+            android:paddingHorizontal="5dp"
+            android:text="3/10"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/box"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/transparent_black">
+
+        <include
+            layout="@layout/loading_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>
