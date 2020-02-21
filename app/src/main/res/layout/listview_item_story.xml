@@ -88,24 +88,33 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout_upper">
 
-        <com.smarteist.autoimageslider.SliderView
-            android:id="@+id/imageSlider"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:sliderAnimationDuration="600"
-            app:sliderAutoCycleEnabled="false"
-            app:sliderCircularHandlerEnabled="false"
-            app:sliderIndicatorAnimationDuration="600"
-            app:sliderIndicatorGravity="center_horizontal|bottom"
-            app:sliderIndicatorMargin="15dp"
-            app:sliderIndicatorOrientation="horizontal"
-            app:sliderIndicatorPadding="3dp"
-            app:sliderIndicatorRadius="2dp"
-            app:sliderIndicatorSelectedColor="#000"
-            app:sliderIndicatorUnselectedColor="#FFF"
-            app:sliderScrollTimeInSec="1"
-            app:sliderStartAutoCycle="false" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/layout_image_indicator"
+            android:paddingHorizontal="5dp"
+            android:text="3/10"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
+
     </RelativeLayout>
+
+
+    <!--    sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!-->
+    <!--    sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);-->
+    <!--    sliderView.setAutoCycle(false);-->
+    <!--    sliderView.setIndicatorUnselectedColor(Color.WHITE);-->
+    <!--    sliderView.setIndicatorSelectedColor(Color.BLACK);-->
+    <!--    sliderView.setCircularHandlerEnabled(false);-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -142,8 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:background="@android:color/transparent"
-                />
+                android:background="@android:color/transparent" />
         </com.ms.square.android.expandabletextview.ExpandableTextView>
 
     </RelativeLayout>

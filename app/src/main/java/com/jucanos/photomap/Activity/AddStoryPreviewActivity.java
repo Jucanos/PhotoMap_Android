@@ -2,7 +2,6 @@ package com.jucanos.photomap.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,15 +11,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.jucanos.photomap.MyRecyclerViewAdapter;
 import com.jucanos.photomap.R;
-import com.jucanos.photomap.SliderViewAdapter.SliderAdapterAddStoryImage;
+import com.jucanos.photomap.SliderViewAdapter.AddStoryImagePreviewSliderAdapter;
 import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.jucanos.photomap.util.BitmapUtils;
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
-import com.smarteist.autoimageslider.SliderView;
 import com.zomato.photofilters.FilterPack;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.utils.ThumbnailItem;
@@ -37,11 +34,11 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     private String mid, cityKey;
 
-    private SliderView sliderView;
+    private ViewPager viewPager;
     private ArrayList<String> paths = new ArrayList<>();
-    private SliderAdapterAddStoryImage mSlideradapter;
+    private AddStoryImagePreviewSliderAdapter addStoryImagePreviewSliderAdapter;
     private MyRecyclerViewAdapter mFilterAdapter;
-    private TextView textView_next;
+    private TextView textView_next,textView_indicator;
 
     // intent request code
     private final int ADD_STORY_REQUEST = 1;
@@ -69,28 +66,42 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     }
 
     public void initView() {
-        sliderView = findViewById(R.id.imageSlider);
+        viewPager = findViewById(R.id.viewPager);
         textView_next = findViewById(R.id.textView_next);
         textView_next.setOnClickListener(this);
+        textView_indicator = findViewById(R.id.tv_indicator);
     }
 
     public void loadImages() {
-        mSlideradapter = new SliderAdapterAddStoryImage(this, paths);
-        sliderView.setSliderAdapter(mSlideradapter);
-        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setIndicatorSelectedColor(Color.WHITE);
-        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+        addStoryImagePreviewSliderAdapter = new AddStoryImagePreviewSliderAdapter(this, paths);
+        viewPager.setAdapter(addStoryImagePreviewSliderAdapter);
+        String indicator = 1 + "/" + paths.size();
+        textView_indicator.setText(indicator);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String indicator = (position + 1) + "/" + paths.size();
+                textView_indicator.setText(indicator);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void setLayoutSize() {
-        sliderView.getLayoutParams().height = ViewUtils.getScreenWidth();
-        sliderView.getLayoutParams().width = ViewUtils.getScreenWidth();
+        viewPager.getLayoutParams().height = ViewUtils.getScreenWidth();
+        viewPager.getLayoutParams().width = ViewUtils.getScreenWidth();
     }
 
     private void loadFilterImages() {
-// data to populate the RecyclerView with
-
         List<Filter> filters = FilterPack.getFilterPack(AddStoryPreviewActivity.this);
 
         Bitmap bm = BitmapUtils.getBitmapByPath(paths.get(0));
@@ -126,11 +137,11 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.e("current Position", Integer.toString(sliderView.getCurrentPagePosition()));
-        int viewPos = sliderView.getCurrentPagePosition();
+        int viewPos = viewPager.getCurrentItem();
+        Log.e("onClick",Integer.toString(viewPos));
         ThumbnailItem thumbnailItem = mFilterAdapter.getItem(position);
-        mSlideradapter.setFilter(viewPos, thumbnailItem);
-        mSlideradapter.notifyDataSetChanged();
+        addStoryImagePreviewSliderAdapter.setFilter(viewPos, thumbnailItem);
+        addStoryImagePreviewSliderAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -147,9 +158,8 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     public void redirectRegionActivity() throws IOException {
         ArrayList<String> paths = new ArrayList<>();
-
-        for (int i = 0; i < mSlideradapter.getCount(); i++) {
-            Bitmap bm = mSlideradapter.getBitmap(i);
+        for (int i = 0; i < addStoryImagePreviewSliderAdapter.getCount(); i++) {
+            Bitmap bm = addStoryImagePreviewSliderAdapter.getBitmap(i);
             String fileName = "image_" + System.currentTimeMillis();
             String path = BitmapUtils.saveBitmap(fileName, bm, 100, this);
             paths.add(path);

@@ -37,6 +37,7 @@ import com.bilibili.boxing_impl.WindowManagerHelper;
 import com.bilibili.boxing_impl.ui.BoxingViewActivity;
 import com.bilibili.boxing_impl.view.HackyGridLayoutManager;
 import com.bilibili.boxing_impl.view.SpacesItemDecoration;
+import com.jucanos.photomap.Activity.AddStoryImageActivity;
 import com.jucanos.photomap.Activity.AddStoryPreviewActivity;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.photoPicker.BoxingAlbumAdapter;
@@ -329,6 +330,11 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         int id = v.getId();
         switch (id) {
             case R.id.textView_next:
+                if( mMediaAdapter.getSeletedMediaInfoHashMap().size() <= 0){
+                    Toast.makeText(getActivity(), "1장 이상 선택해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 try {
                     redirectAddStoryActivity();
                 } catch (IOException e) {
@@ -637,7 +643,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     public void redirectAddStoryActivity() throws IOException {
-
         ArrayList<Pair<Integer, String>> aPaths = new ArrayList<>();
         ArrayList<String> bPaths = new ArrayList<>();
 
