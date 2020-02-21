@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,7 +52,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainFragmentGroup extends Fragment {
-    private RelativeLayout noGroup, existGroup;
+    private RelativeLayout noGroup, existGroup, rl_box;
     private ListView listView_group;
     public GlobalApplication globalApplication;
     private GroupListViewAdapter adapter;
@@ -107,9 +109,9 @@ public class MainFragmentGroup extends Fragment {
                         yesNoDialog.setDialogListener(new YesNoDialogListener() {
                             @Override
                             public void onPositiveClicked() {
-                                yesNoDialog.dismiss();
                                 Log.e("yesNoDialog", "onPositiveClicked");
-                                userRemoveRequest(globalApplication.token, adapter.getItem(position).getMid(), "true", position);
+                                userRemoveRequest(globalApplication.token, adapter.getItem(position).getMid(), position);
+                                yesNoDialog.dismiss();
                             }
 
                             @Override
@@ -142,12 +144,20 @@ public class MainFragmentGroup extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initMember(View view) {
         globalApplication = GlobalApplication.getGlobalApplicationContext();
 
         noGroup = view.findViewById(R.id.layout_noGroup);
         existGroup = view.findViewById(R.id.layout_existGroup);
         listView_group = view.findViewById(R.id.listView_group);
+        rl_box = view.findViewById(R.id.rl_box);
+        rl_box.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
         // groupListView
         adapter = new GroupListViewAdapter();
@@ -155,7 +165,6 @@ public class MainFragmentGroup extends Fragment {
     }
 
     private void setBox() {
-        box = new DynamicBox(getActivity(), listView_group);
         box = new DynamicBox(getActivity(), listView_group);
         View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
@@ -172,7 +181,7 @@ public class MainFragmentGroup extends Fragment {
                 @Override
                 public void onPositiveClicked() {
                     Toast.makeText(globalApplication, "onPositiveClicked", Toast.LENGTH_SHORT).show();
-                    userRemoveRequest(globalApplication.token, mid, "false", -1);
+                    userAddRequest(globalApplication.token, mid, -1);
                 }
 
                 @Override
@@ -278,7 +287,7 @@ public class MainFragmentGroup extends Fragment {
                         Collections.sort(response.body().getGetMapListDatas(), new Comparator<GetMapListData>() {
                             @Override
                             public int compare(GetMapListData o1, GetMapListData o2) {
-                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt())* -1;
+                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt()) * -1;
                             }
                         });
                         GetMapList getMapList = response.body();
@@ -294,7 +303,6 @@ public class MainFragmentGroup extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                     setLayout();
-                    box.hideAll();
                 } else {
                     Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
                     box.showExceptionLayout();
@@ -310,24 +318,38 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // request : uwerRemove
-    public void userRemoveRequest(String token, final String mid, final String remove, final int position) {
-        box.showLoadingLayout();
-        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest(remove));
+    public void userRemoveRequest(String token, final String mid, final int position) {
+        rl_box.setVisibility(View.VISIBLE);
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest("true"));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
                 if (response.isSuccessful()) {
                     Log.e("MainFragmentGroup", "[onResponse] is Successful");
-                    if (remove.equals("false")) {
-                        getMapList(globalApplication.token);
-                        adapter.notifyDataSetChanged();
-                        box.hideAll();
-                        setLayout();
-                    } else {
-                        setMapRepRequest(mid, "true");
-                        adapter.delete(position);
-                        adapter.notifyDataSetChanged();
-                    }
+                    adapter.delete(position);
+                    adapter.notifyDataSetChanged();
+                    setMapRepRequest(mid, "true");
+                } else {
+                    Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RemoveUser> call, Throwable t) {
+                Log.e("[onFailure]", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void userAddRequest(String token, final String mid, final int position) {
+        box.showCustomView(LOADING_ONLY_PROGRESS);
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest("false"));
+        res.enqueue(new Callback<RemoveUser>() {
+            @Override
+            public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
+                if (response.isSuccessful()) {
+                    Log.e("MainFragmentGroup", "[onResponse] is Successful");
+                    getMapList(globalApplication.token);
                 } else {
                     Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
                 }
@@ -350,18 +372,16 @@ public class MainFragmentGroup extends Fragment {
                     if (remove.equals("true")) {
                         Log.e("GroupActivity", "     globalApplication.authorization.getUserData().setPrimary(null)");
                         globalApplication.authorization.getUserData().setPrimary(null);
+                        rl_box.setVisibility(View.GONE);
                     }
-                    box.hideAll();
                 } else {
                     Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
-                    box.hideAll();
                 }
             }
 
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
                 Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
-                box.hideAll();
             }
         });
     }
