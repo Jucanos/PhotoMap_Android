@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/windowBackground"
-        a>
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
