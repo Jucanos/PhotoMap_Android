@@ -14,7 +14,7 @@
         style="@style/AppTheme.NoActionBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:background="#FFFFFF"
+        android:background="@color/windowBackground"
         android:elevation="20dp">
 
         <RelativeLayout
@@ -22,13 +22,25 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textView_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="취소"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
                 android:id="@+id/album_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="필터" />
+                android:text="필터"
+                android:textColor="@color/colorWhite" />
 
             <TextView
                 android:id="@+id/textView_next"
@@ -40,7 +52,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="10dp"
                 android:text="다음"
-                android:textColor="#6173FF" />
+                android:textColor="@color/colorTextButton" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -49,12 +61,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_bar"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="6dp">
+        android:layout_margin="10dp"
+        app:cardElevation="15dp"
+        app:cardCornerRadius="3dp">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="300dp" />
 
         <TextView
@@ -76,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="40dp" />
 
 </RelativeLayout>
