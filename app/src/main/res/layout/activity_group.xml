@@ -65,18 +65,19 @@
             app:fab_showShadow="true"
 
             app:menu_backgroundColor="#99000000"
-            app:menu_colorNormal="@color/windowBackground"
-            app:menu_colorPressed="#55000000"
+            app:menu_colorNormal="@color/colorWhite"
+            app:menu_colorPressed="@color/light_gray"
+            app:menu_icon="@drawable/ic_icon_fab"
 
-            app:menu_labels_colorNormal="@color/colorWhite"
-            app:menu_labels_colorPressed="@color/light_gray"
+            app:menu_labels_colorNormal="#00000000"
+            app:menu_labels_colorPressed="#00000000"
             app:menu_labels_ellipsize="end"
 
             app:menu_labels_maxLines="-1"
             app:menu_labels_position="left"
-            app:menu_labels_showShadow="true"
+            app:menu_labels_showShadow="false"
             app:menu_labels_singleLine="true"
-            app:menu_labels_textColor="@color/windowBackground"
+            app:menu_labels_textColor="@color/colorWhite"
             app:menu_openDirection="up">
 
             <com.github.clans.fab.FloatingActionButton
