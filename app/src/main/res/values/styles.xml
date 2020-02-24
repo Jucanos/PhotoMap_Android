@@ -32,7 +32,11 @@
 
         <item name="colorPrimaryDark">@color/windowBackground</item>
         <item name="colorControlHighlight">#000000</item>
+    </style>
 
+    <!--  home style  -->
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -76,6 +80,7 @@
 
     <!-- loading style -->
     <style name="exception"></style>
+
     <style name="exception.title">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:layout_gravity">center_horizontal</item>
