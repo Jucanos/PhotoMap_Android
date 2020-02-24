@@ -14,14 +14,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.SliderViewAdapter.AddStoryImageSliderAdapter;
 import com.jucanos.photomap.Structure.CreateStory;
-import com.jucanos.photomap.photoPicker.ViewUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,13 +40,13 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     private String mid;
 
     private RelativeLayout rv_total, rl_loading;
-    private TextView textView_upload,textView_indicator;
+    //private  // ,textView_indicator;
     private EditText editText_title, editText_context;
 
     private ArrayList<String> paths = new ArrayList<>();
 
     private AddStoryImageSliderAdapter addStoryImageSliderAdapter;
-    private ViewPager viewPager;
+    //  private ViewPager viewPager;
 
 
     private CardView box;
@@ -61,9 +59,10 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_add_story_peed);
 
         getIntentData();
-        initView();
-        setLayoutSize();
-        loadImages();
+        initMember();
+        setToolbar();
+//        setLayoutSize();
+//        loadImages();
         setBox();
 
         mKeyBord.showSoftInput(editText_title, 0);
@@ -78,45 +77,52 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         Log.e("AddStoryPeedActivity", "[cityKey] : " + cityKey);
     }
 
-    public void initView() {
-        viewPager = findViewById(R.id.viewPager);
-        textView_indicator= findViewById(R.id.tv_indicator);
-        textView_upload = findViewById(R.id.textView_upload);
+    public void initMember() {
+//        viewPager = findViewById(R.id.viewPager);
+//        textView_indicator= findViewById(R.id.tv_indicator);
+        // textView_upload = findViewById(R.id.textView_upload);
         editText_title = findViewById(R.id.editText_title);
         editText_context = findViewById(R.id.editText_context);
         rv_total = findViewById(R.id.rl_total);
         mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        //textView_upload.setOnClickListener(this);
+    }
+
+    public void setToolbar() {
+        TextView textView_upload = findViewById(R.id.textView_upload);
         textView_upload.setOnClickListener(this);
+        TextView textView_cancel = findViewById(R.id.textView_upload);
+        textView_cancel.setOnClickListener(this);
     }
 
-    private void setLayoutSize() {
-        viewPager.getLayoutParams().height = ViewUtils.getScreenWidth();
-        viewPager.getLayoutParams().width = ViewUtils.getScreenWidth();
-    }
+//    private void setLayoutSize() {
+//        viewPager.getLayoutParams().height = ViewUtils.getScreenWidth();
+//        viewPager.getLayoutParams().width = ViewUtils.getScreenWidth();
+//    }
 
-    public void loadImages() {
-        addStoryImageSliderAdapter = new AddStoryImageSliderAdapter(this, paths);
-        viewPager.setAdapter(addStoryImageSliderAdapter);
-        String indicator =  1 + "/" + paths.size();
-        textView_indicator.setText(indicator);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                String indicator = (position + 1) + "/" + paths.size();
-                textView_indicator.setText(indicator);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
+//    public void loadImages() {
+//        addStoryImageSliderAdapter = new AddStoryImageSliderAdapter(this, paths);
+//        viewPager.setAdapter(addStoryImageSliderAdapter);
+//        String indicator =  1 + "/" + paths.size();
+//        textView_indicator.setText(indicator);
+//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                String indicator = (position + 1) + "/" + paths.size();
+//                textView_indicator.setText(indicator);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+//    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void setBox() {
@@ -133,18 +139,26 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.textView_upload) {
-            String title = editText_title.getText().toString();
-            String context = editText_context.getText().toString();
-            if(title.length() <= 0){
-                Toast.makeText(this, "제목을 입력해주세요!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(context.length() <= 0){
-                Toast.makeText(this, "내용을 입력해주세요!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            requestUploadImage(title, context, paths);
+
+        switch (id) {
+            case R.id.textView_upload:
+                String title = editText_title.getText().toString();
+                String context = editText_context.getText().toString();
+                if (title.length() <= 0) {
+                    Toast.makeText(this, "제목을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (context.length() <= 0) {
+                    Toast.makeText(this, "내용을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                requestUploadImage(title, context, paths);
+                break;
+            case R.id.textView_cancel:
+                finish();
+                break;
+            default:
+                break;
         }
     }
 

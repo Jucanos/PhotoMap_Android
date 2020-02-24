@@ -38,7 +38,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     private ArrayList<String> paths = new ArrayList<>();
     private AddStoryImagePreviewSliderAdapter addStoryImagePreviewSliderAdapter;
     private MyRecyclerViewAdapter mFilterAdapter;
-    private TextView textView_next,textView_indicator;
+    private TextView textView_indicator;
 
     // intent request code
     private final int ADD_STORY_REQUEST = 1;
@@ -49,7 +49,8 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         setContentView(R.layout.activity_add_story_preview);
 
         getIntentData();
-        initView();
+        initMember();
+        setToolbar();
         loadImages();
         setLayoutSize();
         loadFilterImages();
@@ -65,11 +66,17 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     }
 
-    public void initView() {
+    public void initMember() {
         viewPager = findViewById(R.id.viewPager);
-        textView_next = findViewById(R.id.textView_next);
-        textView_next.setOnClickListener(this);
         textView_indicator = findViewById(R.id.tv_indicator);
+    }
+
+    public void setToolbar() {
+        TextView textView_next = findViewById(R.id.textView_next);
+        textView_next.setOnClickListener(this);
+        TextView textView_cancel = findViewById(R.id.textView_cancel);
+        textView_cancel.setOnClickListener(this);
+
     }
 
     public void loadImages() {
@@ -138,7 +145,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     @Override
     public void onItemClick(View view, int position) {
         int viewPos = viewPager.getCurrentItem();
-        Log.e("onClick",Integer.toString(viewPos));
+        Log.e("onClick", Integer.toString(viewPos));
         ThumbnailItem thumbnailItem = mFilterAdapter.getItem(position);
         addStoryImagePreviewSliderAdapter.setFilter(viewPos, thumbnailItem);
         addStoryImagePreviewSliderAdapter.notifyDataSetChanged();
@@ -147,12 +154,19 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.textView_next) {
-            try {
-                redirectRegionActivity();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        switch (id) {
+            case R.id.textView_next:
+                try {
+                    redirectRegionActivity();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.textView_cancel:
+                finish();
+                break;
+            default:
+                break;
         }
     }
 
@@ -166,10 +180,10 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         }
 
         Intent intent = new Intent(this, AddStoryPeedActivity.class);
-        intent.putStringArrayListExtra("paths",paths);
-        intent.putExtra("mid",mid);
-        intent.putExtra("cityKey",cityKey);
-        startActivityForResult(intent,ADD_STORY_REQUEST);
+        intent.putStringArrayListExtra("paths", paths);
+        intent.putExtra("mid", mid);
+        intent.putExtra("cityKey", cityKey);
+        startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 
@@ -187,11 +201,11 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
                 String sid = data.getStringExtra("sid");
                 String mid = data.getStringExtra("mid");
 
-                intent.putExtra("title",title);
-                intent.putExtra("context",context);
-                intent.putStringArrayListExtra("files",files);
-                intent.putExtra("sid",sid);
-                intent.putExtra("mid",mid);
+                intent.putExtra("title", title);
+                intent.putExtra("context", context);
+                intent.putStringArrayListExtra("files", files);
+                intent.putExtra("sid", sid);
+                intent.putExtra("mid", mid);
 
                 setResult(RESULT_OK, intent);
                 finish();

@@ -36,9 +36,11 @@ public class RepDialog extends Dialog implements View.OnClickListener {
 
         Button button_set = findViewById(R.id.button_set);
         Button button_delete = findViewById(R.id.button_delete);
+        Button button_cancel = findViewById(R.id.button_cancel);
 
         button_set.setOnClickListener(this);
         button_delete.setOnClickListener(this);
+        button_cancel.setOnClickListener(this);
 
     }
 
@@ -53,6 +55,11 @@ public class RepDialog extends Dialog implements View.OnClickListener {
                 longClickDialogListner.onDeleteClicked();
                 dismiss();
                 break;
+            case R.id.button_cancel:
+                longClickDialogListner.onCancelClicked();
+                dismiss();
+                break;
+
         }
     }
 

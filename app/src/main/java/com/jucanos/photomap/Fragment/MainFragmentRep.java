@@ -112,19 +112,21 @@ public class MainFragmentRep extends Fragment {
         layout_map.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                final YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "대표지도의 그룹으로 이동하시겠습니까?");
-                yesNoDialog.setDialogListener(new YesNoDialogListener() {
-                    @Override
-                    public void onPositiveClicked() {
-                        yesNoDialog.dismiss();
-                        redirectGroupActivity(mValueEventListenerMid, title);
-                    }
-                    @Override
-                    public void onNegativeClicked() {
-                        yesNoDialog.dismiss();
-                    }
-                });
-                yesNoDialog.show();
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    final YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "대표지도의 그룹으로 이동하시겠습니까?");
+                    yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                        @Override
+                        public void onPositiveClicked() {
+                            yesNoDialog.dismiss();
+                            redirectGroupActivity(mValueEventListenerMid, title);
+                        }
+                        @Override
+                        public void onNegativeClicked() {
+                            yesNoDialog.dismiss();
+                        }
+                    });
+                    yesNoDialog.show();
+                }
                 return true;
             }
         });

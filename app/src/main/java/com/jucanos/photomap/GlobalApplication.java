@@ -34,6 +34,7 @@ public class GlobalApplication extends Application {
     public GetUserInfo authorization;
     public HashMap<String, String> cityKeyString = new HashMap<>();
     public HashMap<Integer, String> cityKeyInt = new HashMap<>();
+    public HashMap<Integer, String> cityKoreanInt = new HashMap<>();
 
     public HashMap<String, String> userThumbnail = new HashMap<>();
     public HashMap<String, String> userNickName = new HashMap<>();
@@ -121,6 +122,16 @@ public class GlobalApplication extends Application {
         cityKeyInt.put(7, "gyeongbuk");
         cityKeyInt.put(8, "gyeongnam");
         cityKeyInt.put(9, "jeju");
+
+        cityKoreanInt.put(1,"경기도");
+        cityKoreanInt.put(2,"강원도");
+        cityKoreanInt.put(3,"충청북도");
+        cityKoreanInt.put(4,"충청남도");
+        cityKoreanInt.put(5,"전라북도");
+        cityKoreanInt.put(6,"전라남도");
+        cityKoreanInt.put(7,"경상북도");
+        cityKoreanInt.put(8,"경상남도");
+        cityKoreanInt.put(9,"제주도");
 
 
         // for photoPicker image glider
