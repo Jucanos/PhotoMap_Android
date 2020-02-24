@@ -11,4 +11,5 @@
     <color name="colorWhite">#ffffff</color>
     
     <color name="colorToolbar">#FFFFFF</color>
+    <color name="colorActivityBackGround">#F7F7F7</color>
 </resources>
