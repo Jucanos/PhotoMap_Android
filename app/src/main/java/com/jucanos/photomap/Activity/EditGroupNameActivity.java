@@ -50,6 +50,7 @@ public class EditGroupNameActivity extends AppCompatActivity {
         setBox();
         getIntentData();
 
+        et_title.setHint(title);
         showView(rl_container);
         mKeyBord.showSoftInput(et_title, 0);
     }
@@ -58,7 +59,7 @@ public class EditGroupNameActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("그룹 생성");
+        getSupportActionBar().setTitle("그룹 이름 편집");
     }
 
     private void getIntentData() {
