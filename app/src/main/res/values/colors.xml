@@ -9,4 +9,6 @@
     <color name="colorTransparent">#00000000</color>
     <color name="light_gray">#d3d3d3</color>
     <color name="colorWhite">#ffffff</color>
+    
+    <color name="colorToolbar">#FFFFFF</color>
 </resources>

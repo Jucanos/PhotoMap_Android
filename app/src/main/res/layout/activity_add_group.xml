@@ -11,13 +11,13 @@
     <RelativeLayout
         android:id="@+id/rl_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/toolbar_height"
         android:visibility="visible">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout_ab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_height"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
