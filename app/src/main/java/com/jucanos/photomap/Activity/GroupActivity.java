@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -42,6 +43,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.Dialog.RepDialog;
 import com.jucanos.photomap.Dialog.RepDialogListener;
+import com.jucanos.photomap.Dialog.YesNoDialog;
+import com.jucanos.photomap.Dialog.YesNoDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.ListView.MemberListViewAdapter;
 import com.jucanos.photomap.ListView.MemberListViewItem;
@@ -167,9 +170,10 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(title);
+        toolbar_title.setText(title);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -462,7 +466,23 @@ public class GroupActivity extends AppCompatActivity {
 
                 @Override
                 public void onDeleteClicked() {
-                    deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
+                    final YesNoDialog yesNoDialog = new YesNoDialog(GroupActivity.this,"정말 삭제 하시겠습니까?");
+                    yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                        @Override
+                        public void onPositiveClicked() {
+                            yesNoDialog.dismiss();
+                            deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
+                        }
+                        @Override
+                        public void onNegativeClicked() {
+                            yesNoDialog.dismiss();
+                        }
+                    });
+                    yesNoDialog.show();
+                }
+
+                @Override
+                public void onCancelClicked() {
                     dialog.dismiss();
                 }
             });
@@ -499,6 +519,7 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", globalApplication.cityKeyInt.get(cityKey));
+        intent.putExtra("cityName", globalApplication.cityKoreanInt.get(cityKey));
 
         startActivity(intent);
     }

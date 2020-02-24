@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -42,8 +43,7 @@ public class StoryActivity extends AppCompatActivity {
     private int ADD_STORY_REQUEST = 1;
     private int EDIT_STORY_REQUEST = 2;
 
-    private String mid;
-    private String cityKey;
+    private String mid, cityKey, cityName;
 
     // for loading
     private DynamicBox box;
@@ -64,9 +64,10 @@ public class StoryActivity extends AppCompatActivity {
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(cityKey);
+        toolbar_title.setText(cityName);
     }
 
 
@@ -74,6 +75,7 @@ public class StoryActivity extends AppCompatActivity {
         globalApplication = GlobalApplication.getGlobalApplicationContext();
         mid = getIntent().getStringExtra("mid");
         cityKey = getIntent().getStringExtra("cityKey");
+        cityName = getIntent().getStringExtra("cityName");
     }
 
     @SuppressLint("ClickableViewAccessibility")

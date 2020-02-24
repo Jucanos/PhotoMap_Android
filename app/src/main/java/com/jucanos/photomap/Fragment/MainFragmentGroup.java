@@ -121,6 +121,11 @@ public class MainFragmentGroup extends Fragment {
                         });
                         yesNoDialog.show();
                     }
+
+                    @Override
+                    public void onCancelClicked() {
+                        dialog.dismiss();
+                    }
                 });
                 dialog.show();
                 return true;

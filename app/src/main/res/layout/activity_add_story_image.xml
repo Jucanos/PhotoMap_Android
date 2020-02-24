@@ -4,13 +4,11 @@
     android:layout_height="match_parent">
 
 
-
     <FrameLayout
         android:id="@+id/container_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/viewPager_vp"
-        android:orientation="vertical"></FrameLayout>
+        android:orientation="vertical"/>
 
 </RelativeLayout>
 

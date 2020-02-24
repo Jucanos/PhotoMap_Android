@@ -4,4 +4,6 @@ public abstract class AddGroupDialogListener {
     public abstract void onGroupNameClicked();
 
     public abstract void onExitClicked();
+
+    public abstract  void onCancelClicked();
 }

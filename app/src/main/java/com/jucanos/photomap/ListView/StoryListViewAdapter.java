@@ -130,9 +130,9 @@ public class StoryListViewAdapter extends BaseAdapter {
                         yesNoDialog.setDialogListener(new YesNoDialogListener() {
                             @Override
                             public void onPositiveClicked() {
-                                Toast.makeText(context, "change onDeleteClicked is clicked", Toast.LENGTH_SHORT).show();
-                                ((StoryActivity) context).removeStoryRequest(listViewItem.getSid(), position);
                                 yesNoDialog.dismiss();
+
+                                ((StoryActivity) context).removeStoryRequest(listViewItem.getSid(), position);
                             }
                             @Override
                             public void onNegativeClicked() {
@@ -144,13 +144,11 @@ public class StoryListViewAdapter extends BaseAdapter {
 
                     @Override
                     public void onEditClicked() {
-                        Toast.makeText(context, "change onEditClicked is clicked", Toast.LENGTH_SHORT).show();
                         ((StoryActivity) context).redirectEditStoryActivity(listViewItem.getSid(), listViewItem.getTitle(), listViewItem.getContext(), position);
                     }
 
                     @Override
                     public void onCancelClicked() {
-                        Toast.makeText(context, "change onCancelClicked is clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
                 dialog.show();
