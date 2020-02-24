@@ -14,20 +14,33 @@
         style="@style/AppTheme.NoActionBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:background="#FFFFFF">
+        android:background="@color/windowBackground"
+        a>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textView_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:padding="10dp"
+                android:text="취소"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
                 android:id="@+id/album_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="피드" />
+                android:text="피드"
+                android:textColor="@color/colorWhite" />
 
             <TextView
                 android:id="@+id/textView_upload"
@@ -39,7 +52,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="10dp"
                 android:text="업로드"
-                android:textColor="#6173FF" />
+                android:textColor="@color/colorTextButton" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -49,17 +62,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_bar"
-        android:layout_margin="16dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="6dp">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="16dp"
+        android:descendantFocusability="beforeDescendants"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="20dp">
 
         <EditText
             android:id="@+id/editText_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:backgroundTint="@color/colorWhite"
-            android:hint="제목을 입력해주세요" />
+            android:background="@null"
+            android:hint="제목을 입력 해주세요!"
+            android:padding="10dp"
+            android:textColor="#000" />
 
     </androidx.cardview.widget.CardView>
 
@@ -68,48 +85,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cardView_title"
-        android:layout_margin="16dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="6dp">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="16dp"
+        android:descendantFocusability="beforeDescendants"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="20dp">
 
         <EditText
             android:id="@+id/editText_context"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:backgroundTint="@color/colorWhite"
+            android:background="@null"
             android:gravity="top|left"
-            android:hint="내용을 입력해주세요 !"
+            android:hint="내용을 입력 해주세요!"
             android:inputType="textMultiLine"
-            android:lines="3" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cardView_content"
-        android:layout_margin="16dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="6dp">
-
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" />
-
-        <TextView
-            android:id="@+id/tv_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="10dp"
-            android:background="@drawable/layout_image_indicator"
-            android:paddingHorizontal="5dp"
-            android:text="3/10"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold" />
+            android:lines="3"
+            android:padding="10dp"
+            android:textColor="#000" />
 
     </androidx.cardview.widget.CardView>
 
@@ -117,7 +109,8 @@
         android:id="@+id/box"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/transparent_black">
+        app:cardBackgroundColor="@color/transparent_black"
+        app:cardElevation="20dp">
 
         <include
             layout="@layout/loading_progress"
