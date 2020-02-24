@@ -46,44 +46,38 @@
             android:layout_below="@+id/appBarLayout_ab"
             android:background="@color/colorWhite">
 
-            <RelativeLayout
-                android:id="@+id/fragmentViewPager_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-                android:clipChildren="false" />
-
         </RelativeLayout>
 
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/fragmentViewPager_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:clipChildren="false"
+            app:layout_anchor="@+id/rl_capture"
+            app:layout_anchorGravity="center" />
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floatingActionMenu_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
 
             app:fab_shadowColor="#000"
             app:fab_showShadow="true"
 
+            app:layout_anchor="@+id/rl_capture"
+            app:layout_anchorGravity="center"
             app:menu_backgroundColor="#99000000"
             app:menu_colorNormal="@color/colorWhite"
+
             app:menu_colorPressed="@color/light_gray"
             app:menu_icon="@drawable/ic_icon_fab"
-
             app:menu_labels_colorNormal="#00000000"
+
             app:menu_labels_colorPressed="#00000000"
             app:menu_labels_ellipsize="end"
-
             app:menu_labels_maxLines="-1"
             app:menu_labels_position="left"
             app:menu_labels_showShadow="false"
@@ -111,6 +105,13 @@
                 app:fab_label="대표지도 설정"
                 app:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </RelativeLayout>
 
@@ -147,42 +148,33 @@
             android:layout_below="@+id/layout_title"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="10dp">
+           >
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
                 <ImageView
-                    android:id="@+id/imageView_addMember"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_icon_couple_users" />
+                    android:id="@+id/imageView_thumbnail"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_icon_add_friend"
+                    />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout_mid"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView_groupName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/imageView_addMember"
-                    android:layout_weight="4"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp">
+                    android:layout_toRightOf="@+id/imageView_thumbnail"
+                    android:text="초대 하기"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorTextButton"
+                    android:textSize="24dp" />
 
-                    <TextView
-                        android:id="@+id/textView_addMember"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="초대"
-                        android:textColor="#000000"
-                        android:textSize="24dp" />
 
-                </LinearLayout>
 
             </RelativeLayout>
 
