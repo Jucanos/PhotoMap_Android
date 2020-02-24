@@ -501,6 +501,7 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StoryActivity.class);
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", globalApplication.cityKeyInt.get(cityKey));
+        intent.putExtra("cityName", globalApplication.cityKoreanInt.get(cityKey));
 
         startActivity(intent);
     }
