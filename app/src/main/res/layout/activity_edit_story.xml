@@ -6,9 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".Activity.AddStoryPeedActivity"
     android:fillViewport="true"
-    >
+    tools:context=".Activity.AddStoryPeedActivity">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -30,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appBarLayout_ab"
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="10dp"
         android:descendantFocusability="beforeDescendants"
         android:elevation="20dp"
         app:cardCornerRadius="6dp">
@@ -40,7 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:backgroundTint="@color/colorWhite" />
+            android:background="@null"
+            android:padding="10dp"
+            android:textColor="#000" />
 
     </androidx.cardview.widget.CardView>
 
@@ -59,10 +61,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:backgroundTint="@color/colorWhite"
+            android:background="@null"
             android:gravity="top|left"
             android:inputType="textMultiLine"
-            android:lines="3" />
+            android:lines="3"
+            android:textColor="#000"
+            android:padding="10dp"
+            />
 
     </androidx.cardview.widget.CardView>
 
@@ -71,7 +76,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:cardBackgroundColor="@color/transparent_black">
+        app:cardBackgroundColor="@color/transparent_black"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="10dp"
+        >
 
         <include
             layout="@layout/loading_progress"
