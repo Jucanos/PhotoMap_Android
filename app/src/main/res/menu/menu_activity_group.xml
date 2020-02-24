@@ -5,7 +5,7 @@
     <item
         android:id="@+id/item_menu"
         android:title="더보기"
-        android:icon="@drawable/ic_icon_group"
+        android:icon="@drawable/ic_icon_three_vertical_dot_black"
         app:showAsAction="always"
         />
 </menu>

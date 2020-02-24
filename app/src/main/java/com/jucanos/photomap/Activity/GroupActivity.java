@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -167,9 +168,10 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(title);
+        toolbar_title.setText(title);
     }
 
     @SuppressLint("ClickableViewAccessibility")
