@@ -35,13 +35,15 @@ public class AddGroupDialog extends Dialog implements View.OnClickListener {
         setContentView(LAYOUT);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        final Button button_name = (Button) findViewById(R.id.button_name);
-        final Button button_exit = (Button) findViewById(R.id.button_rep);
-        final TextView textView_groupName = (TextView) findViewById(R.id.textView_groupName);
+        final Button button_name = findViewById(R.id.button_name);
+        final Button button_exit = findViewById(R.id.button_rep);
+        final Button button_cancel = findViewById(R.id.button_cancel);
+        final TextView textView_groupName = findViewById(R.id.textView_groupName);
         textView_groupName.setText(groupName);
 
         button_name.setOnClickListener(this);
         button_exit.setOnClickListener(this);
+        button_cancel.setOnClickListener(this);
     }
 
     @Override
@@ -53,6 +55,10 @@ public class AddGroupDialog extends Dialog implements View.OnClickListener {
                 break;
             case R.id.button_rep:
                 longClickDialogListner.onExitClicked();
+                dismiss();
+                break;
+            case R.id.button_cancel:
+                longClickDialogListner.onCancelClicked();
                 dismiss();
                 break;
         }

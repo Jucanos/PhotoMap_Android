@@ -13,4 +13,5 @@
     <color name="colorToolbar">#FFFFFF</color>
     <color name="colorActivityBackGround">#F7F7F7</color>
     <color name="colorTextButton">#2196F3</color>
+    <color name="colorTextCancelButton">#F44336</color>
 </resources>
