@@ -37,7 +37,6 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/appBarLayout_ab"
             android:background="@color/colorWhite">
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -97,14 +96,11 @@
                 app:fab_label="대표지도 설정"
                 app:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </RelativeLayout>
 
     <RelativeLayout

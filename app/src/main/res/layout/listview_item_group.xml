@@ -7,7 +7,7 @@
         android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="20dp"
+        android:layout_margin="5dp"
         android:background="@drawable/listview_item_group"
         android:elevation="10dp">
 

@@ -55,6 +55,7 @@ import com.jucanos.photomap.Structure.GetMapInfoDataRepresents;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
 import com.jucanos.photomap.Structure.SetRep;
+import com.jucanos.photomap.util.BitmapUtils;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -606,14 +607,18 @@ public class GroupActivity extends AppCompatActivity {
 
     void getMapImage() {
         box.showCustomView(LOADING_ONLY_PROGRESS);
-        View v = rl_capture;
+        View v = findViewById(R.id.map);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.draw(c);
         // MediaStore 에 image 저장
-        String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
-        Uri myUri = Uri.parse(filePath);
+//        String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
+//        Uri myUri = Uri.parse(filePath);
+
+        String fileName = "image_" + System.currentTimeMillis();
+        BitmapUtils.createDirectoryAndSaveFile(b,fileName,this);
+
         box.hideAll();
     }
 

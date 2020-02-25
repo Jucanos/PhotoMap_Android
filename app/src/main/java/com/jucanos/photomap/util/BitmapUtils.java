@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +23,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Random;
 
 /**
  * Created by Administrator on 11/2/2015.
@@ -225,6 +228,30 @@ public class BitmapUtils {
             return myBitmap;
         }else{
             return null;
+        }
+    }
+
+    public static void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName,Context context) {
+        String path = Environment.getExternalStorageDirectory().toString();
+        OutputStream fOutputStream = null;
+        File file = new File(path + "/Captures/", "screen.jpg");
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        try {
+            fOutputStream = new FileOutputStream(file);
+            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
+            fOutputStream.flush();
+            fOutputStream.close();
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Save Failed", Toast.LENGTH_SHORT).show();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Save Failed", Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 }
