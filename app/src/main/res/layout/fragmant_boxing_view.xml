@@ -1,158 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jucanos.photomap.photoPicker.CoordinatorLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:imagecrop="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:background="@color/colorWhite">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
+
+
+
+    <com.jucanos.photomap.photoPicker.CoordinatorLinearLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:background="@color/windowBackground"
-        imagecrop:contentInsetStart="0dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/windowBackground">
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/windowBackground"
+            imagecrop:contentInsetStart="0dp">
 
-            <TextView
-                android:id="@+id/textView_cancel"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:background="?attr/selectableItemBackground"
-                android:fontFamily="@font/nanumsquareroundextrabold"
-                android:padding="10dp"
-                android:text="취소"
-                android:textColor="@color/colorWhite" />
+                android:background="@color/windowBackground">
 
-            <TextView
-                android:id="@+id/album_text_view"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/nanumsquareroundextrabold"
+                    android:padding="10dp"
+                    android:text="취소"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/album_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:drawableRight="@drawable/abc_spinner_mtrl_am_alpha"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/nanumsquareroundextrabold"
+                    android:gravity="center_vertical"
+                    android:text="갤러리"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/textView_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/nanumsquareroundextrabold"
+                    android:padding="10dp"
+                    android:text="다음"
+                    android:textColor="@color/colorTextButton" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/frameLayout_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite">
+
+            <com.naver.android.helloyako.imagecrop.view.ImageCropView
+                android:id="@+id/imageCropView_image1"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:drawableRight="@drawable/abc_spinner_mtrl_am_alpha"
-                android:drawablePadding="8dp"
-                android:fontFamily="@font/nanumsquareroundextrabold"
-                android:gravity="center_vertical"
-                android:text="갤러리"
-                android:textColor="@color/colorWhite" />
+                imagecrop:gridInnerColor="#ffffff"
+                imagecrop:gridInnerStroke="1dp"
+                imagecrop:gridOuterColor="#000000"
+                imagecrop:gridOuterStroke="2dp"
+                imagecrop:outsideLayerColor="#00000000"
+                imagecrop:setInnerGridMode="on"
+                imagecrop:setOuterGridMode="on" />
 
-            <TextView
-                android:id="@+id/textView_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="?attr/selectableItemBackground"
-                android:fontFamily="@font/nanumsquareroundextrabold"
-                android:padding="10dp"
-                android:text="다음"
-                android:textColor="@color/colorTextButton" />
+            <com.naver.android.helloyako.imagecrop.view.ImageCropView
+                android:id="@+id/imageCropView_image2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                imagecrop:gridInnerColor="#ffffff"
+                imagecrop:gridInnerStroke="1dp"
+                imagecrop:gridOuterColor="#000000"
+                imagecrop:gridOuterStroke="2dp"
+                imagecrop:outsideLayerColor="#00000000"
+                imagecrop:setInnerGridMode="on"
+                imagecrop:setOuterGridMode="on" />
 
-        </RelativeLayout>
+            <com.naver.android.helloyako.imagecrop.view.ImageCropView
+                android:id="@+id/imageCropView_image3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                imagecrop:gridInnerColor="#ffffff"
+                imagecrop:gridInnerStroke="1dp"
+                imagecrop:gridOuterColor="#000000"
+                imagecrop:gridOuterStroke="2dp"
+                imagecrop:outsideLayerColor="#00000000"
+                imagecrop:setInnerGridMode="on"
+                imagecrop:setOuterGridMode="on" />
 
-    </androidx.appcompat.widget.Toolbar>
+            <com.naver.android.helloyako.imagecrop.view.ImageCropView
+                android:id="@+id/imageCropView_image4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                imagecrop:gridInnerColor="#ffffff"
+                imagecrop:gridInnerStroke="1dp"
+                imagecrop:gridOuterColor="#000000"
+                imagecrop:gridOuterStroke="2dp"
+                imagecrop:outsideLayerColor="#00000000"
+                imagecrop:setInnerGridMode="on"
+                imagecrop:setOuterGridMode="on" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+            <com.naver.android.helloyako.imagecrop.view.ImageCropView
+                android:id="@+id/imageCropView_image5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                imagecrop:gridInnerColor="#ffffff"
+                imagecrop:gridInnerStroke="1dp"
+                imagecrop:gridOuterColor="#000000"
+                imagecrop:gridOuterStroke="2dp"
+                imagecrop:outsideLayerColor="#00000000"
+                imagecrop:setInnerGridMode="on"
+                imagecrop:setOuterGridMode="on" />
 
-        <com.naver.android.helloyako.imagecrop.view.ImageCropView
-            android:id="@+id/imageCropView_image1"
+        </FrameLayout>
+
+
+        <com.jucanos.photomap.photoPicker.CoordinatorRecyclerView
+            android:id="@+id/media_recycleview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            imagecrop:gridInnerColor="#ffffff"
-            imagecrop:gridInnerStroke="1dp"
-            imagecrop:gridOuterColor="#000000"
-            imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#00000000"
-            imagecrop:setInnerGridMode="on"
-            imagecrop:setOuterGridMode="on" />
-
-        <com.naver.android.helloyako.imagecrop.view.ImageCropView
-            android:id="@+id/imageCropView_image2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            imagecrop:gridInnerColor="#ffffff"
-            imagecrop:gridInnerStroke="1dp"
-            imagecrop:gridOuterColor="#000000"
-            imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#00000000"
-            imagecrop:setInnerGridMode="on"
-            imagecrop:setOuterGridMode="on" />
-
-        <com.naver.android.helloyako.imagecrop.view.ImageCropView
-            android:id="@+id/imageCropView_image3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            imagecrop:gridInnerColor="#ffffff"
-            imagecrop:gridInnerStroke="1dp"
-            imagecrop:gridOuterColor="#000000"
-            imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#00000000"
-            imagecrop:setInnerGridMode="on"
-            imagecrop:setOuterGridMode="on" />
-
-        <com.naver.android.helloyako.imagecrop.view.ImageCropView
-            android:id="@+id/imageCropView_image4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            imagecrop:gridInnerColor="#ffffff"
-            imagecrop:gridInnerStroke="1dp"
-            imagecrop:gridOuterColor="#000000"
-            imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#00000000"
-            imagecrop:setInnerGridMode="on"
-            imagecrop:setOuterGridMode="on" />
-
-        <com.naver.android.helloyako.imagecrop.view.ImageCropView
-            android:id="@+id/imageCropView_image5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            imagecrop:gridInnerColor="#ffffff"
-            imagecrop:gridInnerStroke="1dp"
-            imagecrop:gridOuterColor="#000000"
-            imagecrop:gridOuterStroke="2dp"
-            imagecrop:outsideLayerColor="#00000000"
-            imagecrop:setInnerGridMode="on"
-            imagecrop:setOuterGridMode="on" />
-
-    </FrameLayout>
+            android:scrollbars="vertical" />
 
 
-    <com.jucanos.photomap.photoPicker.CoordinatorRecyclerView
-        android:id="@+id/media_recycleview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+    </com.jucanos.photomap.photoPicker.CoordinatorLinearLayout>
 
     <include
-        android:id="@+id/empty_txt"
-        layout="@layout/layout_boxing_empty_txt"
-        android:visibility="gone" />
-
-    <ProgressBar
-        android:id="@+id/loading"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
+        android:id="@+id/rl_loading"
+        layout="@layout/loading_progress"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:indeterminate="true" />
+        android:visibility="visible"
+        />
 
-</com.jucanos.photomap.photoPicker.CoordinatorLinearLayout>
+</RelativeLayout>
 
 

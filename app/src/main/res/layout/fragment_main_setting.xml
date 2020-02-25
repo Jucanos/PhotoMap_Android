@@ -21,7 +21,6 @@
             app:popupTheme="@style/AppTheme"
             app:theme="@style/ToolbarColoredBackArrow">
 
-
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -32,10 +31,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/appBarLayout_ab"
         android:layout_margin="5dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp">
 
         <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp">
@@ -57,7 +56,7 @@
                 android:fontFamily="@font/nanumsquareroundregular"
                 android:text="gjek136@naver.com"
                 android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </RelativeLayout>
 
@@ -69,7 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout1"
         android:layout_margin="5dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -80,30 +80,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <View
-                    android:id="@+id/view1_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#000" />
-
                 <TextView
                     android:id="@+id/textView_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/view1_1"
                     android:layout_margin="10dp"
                     android:fontFamily="@font/nanumsquareroundregular"
                     android:text="앱 정보"
                     android:textColor="@color/windowBackground"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
-
-                <View
-                    android:id="@+id/view1_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/textView_info"
-                    android:background="#000" />
 
             </RelativeLayout>
 
@@ -153,7 +139,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout2"
         android:layout_margin="5dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -164,30 +151,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <View
-                    android:id="@+id/view2_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#000" />
-
                 <TextView
                     android:id="@+id/textView_admin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/view2_1"
                     android:layout_margin="10dp"
                     android:fontFamily="@font/nanumsquareroundregular"
+                    android:textStyle="bold"
                     android:text="회원정보관리"
                     android:textColor="@color/windowBackground"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:id="@+id/view2_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/textView_admin"
-                    android:background="#000" />
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 

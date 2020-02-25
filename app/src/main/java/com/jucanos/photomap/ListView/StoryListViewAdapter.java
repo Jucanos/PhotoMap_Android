@@ -29,6 +29,7 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.SliderViewAdapter.AddStoryImageSliderAdapter;
 import com.jucanos.photomap.Structure.RemoveStory;
 import com.jucanos.photomap.photoPicker.ViewUtils;
+import com.jucanos.photomap.util.DateString;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.text.SimpleDateFormat;
@@ -116,7 +117,7 @@ public class StoryListViewAdapter extends BaseAdapter {
 
         textView_creator.setText(GlobalApplication.getGlobalApplicationContext().userNickName.get(listViewItem.getCreator()));
         textView_title.setText(listViewItem.getTitle());
-        textView_upload.setText((new SimpleDateFormat("yyyy/MM/dd").format(listViewItem.getCreatedAt())));
+        textView_upload.setText(DateString.getString(listViewItem.getCreatedAt()));
         expandableTextView_description.setText(listViewItem.getContext());
 
         imageView_more.setOnClickListener(new View.OnClickListener() {
