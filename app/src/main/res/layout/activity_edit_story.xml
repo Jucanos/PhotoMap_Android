@@ -77,11 +77,10 @@
         android:id="@+id/box"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="16dp"
         android:visibility="gone"
         app:cardElevation="20dp"
-        app:cardBackgroundColor="@color/transparent_black">
+        app:cardBackgroundColor="@color/transparent_black"
+        >
 
         <include
             layout="@layout/loading_progress"

@@ -412,7 +412,7 @@ public class GroupActivity extends AppCompatActivity {
                 Log.e("[addMember]", "onClick");
                 FeedTemplate params = FeedTemplate
                         .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
-                                "https://ifh.cc/g/ODD7n.png",
+                                "https://ifh.cc/g/qJZiN.png",
                                 LinkObject.newBuilder()
                                         .setMobileWebUrl("https://play.google.com")
                                         .setWebUrl("https://play.google.com")
