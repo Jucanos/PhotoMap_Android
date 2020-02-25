@@ -12,6 +12,13 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:color">@color/colorWhite</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <!--???? -->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

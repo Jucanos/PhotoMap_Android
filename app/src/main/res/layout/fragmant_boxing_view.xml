@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/windowBackground"
-       >
+        imagecrop:contentInsetStart="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,8 +25,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundextrabold"
                 android:padding="10dp"
                 android:text="취소"
                 android:textColor="@color/colorWhite" />
@@ -38,6 +39,7 @@
                 android:layout_centerInParent="true"
                 android:drawableRight="@drawable/abc_spinner_mtrl_am_alpha"
                 android:drawablePadding="8dp"
+                android:fontFamily="@font/nanumsquareroundextrabold"
                 android:gravity="center_vertical"
                 android:text="갤러리"
                 android:textColor="@color/colorWhite" />
@@ -50,6 +52,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundextrabold"
                 android:padding="10dp"
                 android:text="다음"
                 android:textColor="@color/colorTextButton" />

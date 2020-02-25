@@ -193,7 +193,6 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         if (resultCode == RESULT_OK) {
             if (requestCode == ADD_STORY_REQUEST) {
                 Intent intent = new Intent();
-                Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 
                 String title = data.getStringExtra("title");
                 String context = data.getStringExtra("context");

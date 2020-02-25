@@ -102,7 +102,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     // requestcode
     private final int ADD_STORY_REQUEST = 1;
 
-    private TextView textView_next;
+    private TextView textView_next,textView_cancel;
 
 
     public static MyBoxingViewFragment newInstance() {
@@ -173,8 +173,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image5));
         album_text_view = view.findViewById(R.id.album_text_view);
         textView_next = view.findViewById(R.id.textView_next);
+        textView_cancel = view.findViewById(R.id.textView_cancel);
 
         textView_next.setOnClickListener(this);
+        textView_cancel.setOnClickListener(this);
 
 //        imageCropView1.setGridInnerMode(ImageCropView.GRID_OFF);
 //        imageCropView1.setGridOuterMode(ImageCropView.GRID_OFF);
@@ -340,6 +342,9 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.textView_cancel:
+                getActivity().finish();
                 break;
         }
 //        if (id == R.id.choose_ok_btn) {

@@ -27,7 +27,7 @@
                 android:background="?attr/colorPrimary"
                 android:fontFamily="@font/nanumsquareroundregular"
                 app:popupTheme="@style/AppTheme"
-                app:theme="@style/ToolbarColoredBackArrow"></androidx.appcompat.widget.Toolbar>
+                app:theme="@style/ToolbarColoredBackArrow"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout

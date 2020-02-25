@@ -32,6 +32,7 @@
                 android:id="@+id/textView_creator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:text="title"
                 android:textColor="#000"
                 android:textStyle="bold" />
@@ -47,6 +48,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="@font/nanumsquareroundregular"
+
                     android:text="upload at" />
 
                 <TextView
@@ -55,7 +58,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/textView_uploadLeft"
+                    android:fontFamily="@font/nanumsquareroundregular"
                     android:text="0000/00/00 00:00"
+
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -91,8 +96,7 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            />
+            android:layout_height="300dp" />
 
         <TextView
             android:id="@+id/tv_indicator"
@@ -101,6 +105,7 @@
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
             android:background="@drawable/layout_image_indicator"
+            android:fontFamily="@font/nanumsquareroundregular"
             android:paddingHorizontal="5dp"
             android:text="3/10"
             android:textColor="@color/colorWhite"
@@ -126,9 +131,10 @@
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nanumsquareroundregular"
             android:text="title"
             android:textColor="#000"
-            android:textSize="16dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <com.ms.square.android.expandabletextview.ExpandableTextView
@@ -136,6 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_title"
+            android:fontFamily="@font/nanumsquareroundregular"
             expandableTextView:animDuration="200"
             expandableTextView:maxCollapsedLines="2">
 
@@ -143,14 +150,16 @@
                 android:id="@id/expandable_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:textColor="#000"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <ImageButton
                 android:id="@id/expand_collapse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
+                android:padding="3dp"
                 android:background="@android:color/transparent" />
         </com.ms.square.android.expandabletextview.ExpandableTextView>
 
