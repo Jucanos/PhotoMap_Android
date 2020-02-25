@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_total"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_total"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#55000000"
@@ -25,10 +25,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 android:background="?attr/colorPrimary"
+                android:fontFamily="@font/nanumsquareroundregular"
                 app:popupTheme="@style/AppTheme"
-                app:theme="@style/ToolbarColoredBackArrow">
-            </androidx.appcompat.widget.Toolbar>
+                app:theme="@style/ToolbarColoredBackArrow"></androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,13 +43,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/listview_item_group"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:gravity="center_horizontal"
-                android:hint="그룹 이름을 입력해주세요!"
+                android:hint="그룹 이름을 입력해주세요"
+                android:maxLength="30"
                 android:padding="10dp"
                 android:singleLine="true"
                 android:textColor="#000"
-                android:maxLength="30"
-                android:textSize="20dp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </RelativeLayout>
