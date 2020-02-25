@@ -31,8 +31,9 @@
                 android:layout_marginVertical="30dp"
                 android:text="PhotoMap"
                 android:textColor="@color/colorWhite"
+                android:fontFamily="@font/recipekorea"
                 android:textSize="56dp"
-                android:textStyle="bold" />
+                 />
 
             <ImageView
                 android:id="@+id/textView_logo"
@@ -58,8 +59,8 @@
             android:layout_height="wrap_content"
             android:text="포토맵에 오신걸 환영합니다"
             android:textAlignment="center"
+            android:fontFamily="@font/recipekorea"
             android:textColor="@color/colorWhite"
-            android:textStyle="bold"
             android:textSize="20dp" />
 
         <com.kakao.usermgmt.LoginButton

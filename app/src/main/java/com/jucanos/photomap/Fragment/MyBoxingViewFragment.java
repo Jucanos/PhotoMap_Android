@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,7 +104,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     // requestcode
     private final int ADD_STORY_REQUEST = 1;
 
-    private TextView textView_next;
+    private TextView textView_next,textView_cancel;
+
+    // for loading proegress
+    RelativeLayout loading_progress;
 
 
     public static MyBoxingViewFragment newInstance() {
@@ -127,10 +132,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     public void onRequestPermissionError(String[] permissions, Exception e) {
         if (permissions.length > 0) {
             if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(getContext(), com.bilibili.boxing_impl.R.string.boxing_storage_permission_deny, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "사진을 선택하려면 저장 장치에 액세스해야합니다. \"시스템 설정\"또는 인증 대화 상자에서 \"저장 공간\"권한을 허용하십시오.", Toast.LENGTH_SHORT).show();
                 showEmptyData();
             } else if (permissions[0].equals(Manifest.permission.CAMERA)) {
-                Toast.makeText(getContext(), com.bilibili.boxing_impl.R.string.boxing_camera_permission_deny, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "사진을 찍으려면 카메라에 액세스해야합니다. \"시스템 설정\"또는 인증 대화 상자에서 \"카메라 사용\"권한을 허용하십시오.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -165,6 +170,13 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     private void initViews(View view) {
         parentLayout = view.findViewById(R.id.parent_layout);
+        loading_progress = view.findViewById(R.id.rl_loading);
+        loading_progress.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         frameLayout_container = view.findViewById(R.id.frameLayout_container);
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image1));
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image2));
@@ -173,8 +185,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image5));
         album_text_view = view.findViewById(R.id.album_text_view);
         textView_next = view.findViewById(R.id.textView_next);
+        textView_cancel = view.findViewById(R.id.textView_cancel);
 
         textView_next.setOnClickListener(this);
+        textView_cancel.setOnClickListener(this);
 
 //        imageCropView1.setGridInnerMode(ImageCropView.GRID_OFF);
 //        imageCropView1.setGridOuterMode(ImageCropView.GRID_OFF);
@@ -246,15 +260,12 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     private void showEmptyData() {
-        mLoadingView.setVisibility(View.GONE);
-        mEmptyTxt.setVisibility(View.VISIBLE);
         mRecycleView.setVisibility(View.GONE);
     }
 
     private void showData() {
-        mLoadingView.setVisibility(View.GONE);
-        mEmptyTxt.setVisibility(View.GONE);
         mRecycleView.setVisibility(View.VISIBLE);
+        loading_progress.setVisibility(View.GONE);
 
     }
 
@@ -334,12 +345,14 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                     Toast.makeText(getActivity(), "1장 이상 선택해주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 try {
                     redirectAddStoryActivity();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.textView_cancel:
+                getActivity().finish();
                 break;
         }
 //        if (id == R.id.choose_ok_btn) {
@@ -643,13 +656,15 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     public void redirectAddStoryActivity() throws IOException {
+        ((RelativeLayout)loading_progress).setVisibility(View.VISIBLE);
+
         ArrayList<Pair<Integer, String>> aPaths = new ArrayList<>();
         ArrayList<String> bPaths = new ArrayList<>();
 
         for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : mMediaAdapter.getSeletedMediaInfoHashMap().entrySet()) {
             String fileName = "image_" + System.currentTimeMillis();
             Bitmap bm = seletedMediaInfoEntry.getValue().getmCropView().getCroppedImage();
-            String path = BitmapUtils.saveBitmap(fileName, bm, 100, getActivity().getApplicationContext());
+            String path = BitmapUtils.saveBitmap(fileName, bm, 50, getActivity().getApplicationContext());
             Integer order = seletedMediaInfoEntry.getValue().getCount();
             aPaths.add(new Pair<Integer, String>(order, path));
         }
@@ -674,6 +689,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", cityKey);
 
+        ((RelativeLayout)loading_progress).setVisibility(View.GONE);
         getActivity().startActivityForResult(intent, ADD_STORY_REQUEST);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }

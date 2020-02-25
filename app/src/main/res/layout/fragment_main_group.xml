@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:background="?attr/colorPrimary"
+            android:fontFamily="@font/nanumsquareroundregular"
             app:popupTheme="@style/AppTheme"
             app:theme="@style/ToolbarColoredBackArrow">
 
@@ -29,15 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayout_ab"
-        android:visibility="invisible"
-        >
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="그룹을 생성해주세요!"
-            android:textSize="32dp" />
+            android:fontFamily="@font/nanumsquareroundregular"
+            android:text="그룹을 생성해주세요"
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -59,7 +60,6 @@
         layout="@layout/loading_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -227,6 +227,9 @@ public class MainFragmentRep extends Fragment {
     // 대표 지도 유뮤 체크 후 대표 사진 불러오기
     public void setRep() {
         final String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
+        noRep.setVisibility(View.GONE);
+        existRep.setVisibility(View.GONE);
+        layout_map.setVisibility(View.GONE);
         box.showCustomView(LOADING_ONLY_PROGRESS);
         if (repMid == null) {
             Log.e("setRep", "repMid == null");

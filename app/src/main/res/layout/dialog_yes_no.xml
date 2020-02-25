@@ -11,6 +11,7 @@
         android:id="@+id/textView_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquareroundregular"
         android:padding="15dp"
         android:text="title"
         android:textColor="#000000"
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/button_ok"
             android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nanumsquareroundregular"
             android:padding="10dp"
             android:text="취소"
             android:textColor="@color/colorTextCancelButton" />
@@ -41,6 +43,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nanumsquareroundregular"
             android:padding="10dp"
             android:text="확인"
             android:textColor="@color/colorTextButton" />

@@ -113,7 +113,6 @@ public class MainFragmentGroup extends Fragment {
                                 userRemoveRequest(globalApplication.token, adapter.getItem(position).getMid(), position);
                                 yesNoDialog.dismiss();
                             }
-
                             @Override
                             public void onNegativeClicked() {
                                 yesNoDialog.dismiss();

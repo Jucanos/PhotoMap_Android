@@ -9,9 +9,11 @@
         android:id="@+id/button_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#DBE1EE"
+        android:background="@color/windowBackground"
         android:drawableRight="@android:drawable/arrow_down_float"
         android:gravity="start|center"
+        android:fontFamily="@font/nanumsquareroundregular"
+        android:textStyle="bold"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Expandable Layout Example"
@@ -31,6 +33,7 @@
             android:id="@+id/textView_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nanumsquareroundbold"
             android:textColor="#000000"
             android:text="Expandable Layout provides an easy way to create a view called header with an expandable view. Views are external layout to allow a maximum of customization." />
     </net.cachapa.expandablelayout.ExpandableLayout>

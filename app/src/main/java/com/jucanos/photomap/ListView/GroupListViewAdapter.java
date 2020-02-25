@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +31,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.GetMapListData;
+import com.jucanos.photomap.util.DateString;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 
@@ -82,8 +87,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         // box.showCustomView(LOADING_ONLY_PROGRESS);
 
         // title thumbnail
-        String thumbnail_path = "https://s3.soybeans.tech/dev/"  + listViewItem.getMid() + "/main.png";
-
+        String thumbnail_path = "https://s3.soybeans.tech/uploads/dev/"  + listViewItem.getMid() + "/main.png";
 
         Glide.with(context)
                 .load(thumbnail_path)
@@ -97,7 +101,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         textView_groupName.setText(listViewItem.getTitle());
 
         // set updated
-        textView_lastUpdated.setText((new SimpleDateFormat("yyyy/MM/dd hh").format(listViewItem.getUpdatedAt())));
+        textView_lastUpdated.setText(DateString.getString(listViewItem.getUpdatedAt()));
 
         // firebase realtime log
         listViewItem.setOnLogCb(new GroupListViewItem.OnlogCb() {
@@ -211,4 +215,6 @@ public class GroupListViewAdapter extends BaseAdapter {
             }
         });
     }
+
+
 }

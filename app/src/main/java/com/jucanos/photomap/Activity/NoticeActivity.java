@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +18,16 @@ import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetNotice;
+import com.jucanos.photomap.Structure.GetNoticeData;
+import com.jucanos.photomap.Structure.GetStoryListData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +36,10 @@ import retrofit2.Response;
 public class NoticeActivity extends AppCompatActivity {
     ListView listView_notice;
     NoticeListViewAdapter noticeListViewAdapter;
+
+    // loading progress
+    DynamicBox box;
+    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +54,17 @@ public class NoticeActivity extends AppCompatActivity {
         noticeListViewAdapter = new NoticeListViewAdapter();
         listView_notice = findViewById(R.id.listView_notice);
 
+        setBox();
+
         // 리스뷰 참조 및 Adapter달기
         listView_notice.setAdapter(noticeListViewAdapter);
         getNoticeRequest();
+    }
+
+    void setBox(){
+        box = new DynamicBox(this, listView_notice);
+        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
     }
 
     @Override
@@ -68,11 +86,19 @@ public class NoticeActivity extends AppCompatActivity {
 
 
     void getNoticeRequest() {
+        box.showCustomView(LOADING_ONLY_PROGRESS);
         final Call<GetNotice> res = NetworkHelper.getInstance().getService().getNotice();
         res.enqueue(new Callback<GetNotice>() {
             @Override
             public void onResponse(Call<GetNotice> call, Response<GetNotice> response) {
                 if (response.isSuccessful()) {
+                    Collections.sort(response.body().getGetNoticeData(), new Comparator<GetNoticeData>() {
+                        @Override
+                        public int compare(GetNoticeData o1, GetNoticeData o2) {
+                            return o1.getCreatedAt().compareTo(o2.getCreatedAt()) * -1;
+                        }
+                    });
+
                     for (int i = 0; i < response.body().getGetNoticeData().size(); i++) {
                         Log.e("NoticeActivity", "[Context] : " + response.body().getGetNoticeData().get(i).getContext());
                         Log.e("NoticeActivity", "[CreatedAt] : " + response.body().getGetNoticeData().get(i).getCreatedAt());
@@ -88,6 +114,7 @@ public class NoticeActivity extends AppCompatActivity {
                         noticeListViewAdapter.addItem(noticeListViewItem);
                     }
                     noticeListViewAdapter.notifyDataSetChanged();
+                    box.hideAll();
                 } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
                 }

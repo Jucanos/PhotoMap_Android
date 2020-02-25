@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.jucanos.photomap.Activity.LoginActivity;
 import com.jucanos.photomap.Activity.NoticeActivity;
+import com.jucanos.photomap.Dialog.YesNoDialog;
+import com.jucanos.photomap.Dialog.YesNoDialogListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
@@ -66,12 +68,26 @@ public class MainFragmentSetting extends Fragment {
         textView_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                YesNoDialog yesNoDialog = new YesNoDialog(getActivity(),"정말 로그아웃 하시겠습니까?");
+                yesNoDialog.setDialogListener(new YesNoDialogListener() {
                     @Override
-                    public void onCompleteLogout() {
-                        redirectLoginActivity();
+                    public void onPositiveClicked() {
+                        yesNoDialog.dismiss();
+                        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                            @Override
+                            public void onCompleteLogout() {
+                                redirectLoginActivity();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNegativeClicked() {
+                        yesNoDialog.dismiss();
                     }
                 });
+                yesNoDialog.show();;
+
             }
         });
 
@@ -79,7 +95,20 @@ public class MainFragmentSetting extends Fragment {
         textView_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSignoutAccount(globalApplication.token);
+                YesNoDialog yesNoDialog = new YesNoDialog(getActivity(),"정말 회원 탈퇴 하시겠습니까?");
+                yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                    @Override
+                    public void onPositiveClicked() {
+                        requestSignoutAccount(globalApplication.token);
+                        yesNoDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNegativeClicked() {
+                        yesNoDialog.dismiss();
+                    }
+                });
+                yesNoDialog.show();
             }
         });
 

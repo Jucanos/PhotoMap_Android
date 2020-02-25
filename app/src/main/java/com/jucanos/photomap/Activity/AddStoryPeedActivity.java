@@ -83,6 +83,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         // textView_upload = findViewById(R.id.textView_upload);
         editText_title = findViewById(R.id.editText_title);
         editText_context = findViewById(R.id.editText_context);
+
         rv_total = findViewById(R.id.rl_total);
         mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         //textView_upload.setOnClickListener(this);
@@ -91,7 +92,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     public void setToolbar() {
         TextView textView_upload = findViewById(R.id.textView_upload);
         textView_upload.setOnClickListener(this);
-        TextView textView_cancel = findViewById(R.id.textView_upload);
+        TextView textView_cancel = findViewById(R.id.textView_cancel);
         textView_cancel.setOnClickListener(this);
     }
 

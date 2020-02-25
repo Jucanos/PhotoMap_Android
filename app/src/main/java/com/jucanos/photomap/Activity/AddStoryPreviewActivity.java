@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -43,6 +46,9 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     // intent request code
     private final int ADD_STORY_REQUEST = 1;
 
+    // for loading
+    private CardView rl_laoding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +75,13 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     public void initMember() {
         viewPager = findViewById(R.id.viewPager);
         textView_indicator = findViewById(R.id.tv_indicator);
+        rl_laoding = findViewById(R.id.rl_laoding);
+        rl_laoding.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
     }
 
     public void setToolbar() {
@@ -157,7 +170,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         switch (id) {
             case R.id.textView_next:
                 try {
-                    redirectRegionActivity();
+                    redirectAddStoryPeedActivity();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -170,7 +183,8 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         }
     }
 
-    public void redirectRegionActivity() throws IOException {
+    public void redirectAddStoryPeedActivity() throws IOException {
+        ((CardView)rl_laoding).setVisibility(View.VISIBLE);
         ArrayList<String> paths = new ArrayList<>();
         for (int i = 0; i < addStoryImagePreviewSliderAdapter.getCount(); i++) {
             Bitmap bm = addStoryImagePreviewSliderAdapter.getBitmap(i);
@@ -183,6 +197,8 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         intent.putStringArrayListExtra("paths", paths);
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", cityKey);
+
+        ((CardView)rl_laoding).setVisibility(View.GONE);
         startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
@@ -193,7 +209,6 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         if (resultCode == RESULT_OK) {
             if (requestCode == ADD_STORY_REQUEST) {
                 Intent intent = new Intent();
-                Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 
                 String title = data.getStringExtra("title");
                 String context = data.getStringExtra("context");

@@ -7,7 +7,7 @@
         android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="20dp"
+        android:layout_margin="5dp"
         android:background="@drawable/listview_item_group"
         android:elevation="10dp">
 
@@ -16,27 +16,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            >
+            android:layout_margin="10dp">
 
             <ImageView
                 android:id="@+id/imageView_thumbnail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/textView_log"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_red"
-                android:layout_toRightOf="@+id/imageView_thumbnail"
                 android:layout_marginLeft="-15dp"
+                android:layout_toRightOf="@+id/imageView_thumbnail"
+                android:background="@drawable/bg_rounded_red"
                 android:paddingHorizontal="5dp"
                 android:text="99"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -51,13 +49,16 @@
 
             <TextView
                 android:id="@+id/textView_groupName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:gravity="bottom"
-                android:text="Group Name"
+                android:text="그룹 이름"
                 android:textColor="#000000"
-                android:textSize="24dp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -68,13 +69,18 @@
                     android:id="@+id/textView_left_of_lastUpdated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Updated : " />
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="5dp"
+                    android:fontFamily="@font/nanumsquareroundregular"
+                    android:text="update:" />
 
                 <TextView
                     android:id="@+id/textView_lastUpdated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
                     android:layout_toRightOf="@+id/textView_left_of_lastUpdated"
+                    android:fontFamily="@font/nanumsquareroundregular"
                     android:text="0000/00/00" />
 
             </RelativeLayout>

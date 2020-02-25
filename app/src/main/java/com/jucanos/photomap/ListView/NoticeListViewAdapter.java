@@ -15,6 +15,7 @@ import com.jucanos.photomap.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class NoticeListViewAdapter extends BaseAdapter {
@@ -60,7 +61,8 @@ public class NoticeListViewAdapter extends BaseAdapter {
         });
 
         button_title.setText(listViewItem.getTitle());
-        textView_description.setText(listViewItem.getContext());
+        textView_description.setText("게시 : " + (new SimpleDateFormat("yyyy/MM/dd HH:mm").format(listViewItem.getCreatedAt())) + "\n\n" +
+                listViewItem.getCreatedAt() + listViewItem.getContext());
         return convertView;
     }
 
@@ -74,7 +76,7 @@ public class NoticeListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    public void addItem(NoticeListViewItem noticeListViewItem){
+    public void addItem(NoticeListViewItem noticeListViewItem) {
         listViewItemList.add(noticeListViewItem);
     }
 
