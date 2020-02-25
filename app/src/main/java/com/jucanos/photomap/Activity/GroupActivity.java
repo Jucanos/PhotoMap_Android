@@ -170,10 +170,9 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
-        TextView toolbar_title = findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar_title.setText(title);
+        getSupportActionBar().setTitle(title);
     }
 
     @SuppressLint("ClickableViewAccessibility")
