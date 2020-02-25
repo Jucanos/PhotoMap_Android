@@ -39,6 +39,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/pg"
                 android:text="처리중..."
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:textColor="#000" />
 
         </LinearLayout>

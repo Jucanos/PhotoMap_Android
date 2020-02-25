@@ -16,27 +16,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            >
+            android:layout_margin="10dp">
 
             <ImageView
                 android:id="@+id/imageView_thumbnail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/textView_log"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_red"
-                android:layout_toRightOf="@+id/imageView_thumbnail"
                 android:layout_marginLeft="-15dp"
+                android:layout_toRightOf="@+id/imageView_thumbnail"
+                android:background="@drawable/bg_rounded_red"
                 android:paddingHorizontal="5dp"
                 android:text="99"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -54,11 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareroundregular"
+                android:textStyle="bold"
                 android:gravity="bottom"
                 android:text="그룹 이름"
                 android:textColor="#000000"
-                android:fontFamily="@font/nanum"
-                android:textSize="24sp" />
+                android:textSize="20sp"
+               />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -69,6 +69,7 @@
                     android:id="@+id/textView_left_of_lastUpdated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanumsquareroundregular"
                     android:text="Last Updated : " />
 
                 <TextView
@@ -76,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/textView_left_of_lastUpdated"
+                    android:fontFamily="@font/nanumsquareroundregular"
                     android:text="0000/00/00" />
 
             </RelativeLayout>

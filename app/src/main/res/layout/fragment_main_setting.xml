@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:background="?attr/colorPrimary"
+            android:fontFamily="@font/nanumsquareroundregular"
             app:popupTheme="@style/AppTheme"
             app:theme="@style/ToolbarColoredBackArrow">
 
@@ -51,11 +52,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/circleImageView_thumbnail"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:text="gjek136@naver.com"
                 android:textColor="#000000"
-                android:textSize="30dp" />
+                android:textSize="24sp" />
 
         </RelativeLayout>
 
@@ -90,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/view1_1"
                     android:layout_margin="10dp"
+                    android:fontFamily="@font/nanumsquareroundregular"
                     android:text="앱 정보"
                     android:textColor="@color/windowBackground"
                     android:textSize="20dp"
@@ -110,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout2_1"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="공지사항"
                 android:textColor="#000000"
@@ -121,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_notice"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="리뷰 작성하기"
                 android:textColor="#000000"
@@ -132,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_review"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="앱 공유하기"
                 android:textColor="#000000"
@@ -170,6 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/view2_1"
                     android:layout_margin="10dp"
+                    android:fontFamily="@font/nanumsquareroundregular"
                     android:text="회원정보관리"
                     android:textColor="@color/windowBackground"
                     android:textSize="20dp"
@@ -190,6 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout3_1"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="로그아웃"
                 android:textColor="#000000"
@@ -201,6 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_logout"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="회원 탈퇴"
                 android:textColor="#000000"

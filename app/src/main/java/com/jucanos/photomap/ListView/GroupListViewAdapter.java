@@ -82,8 +82,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         // box.showCustomView(LOADING_ONLY_PROGRESS);
 
         // title thumbnail
-        String thumbnail_path = "https://s3.soybeans.tech/dev/"  + listViewItem.getMid() + "/main.png";
-
+        String thumbnail_path = "https://s3.soybeans.tech/uploads/dev/"  + listViewItem.getMid() + "/main.png";
 
         Glide.with(context)
                 .load(thumbnail_path)
