@@ -127,10 +127,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     public void onRequestPermissionError(String[] permissions, Exception e) {
         if (permissions.length > 0) {
             if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(getContext(), com.bilibili.boxing_impl.R.string.boxing_storage_permission_deny, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "사진을 선택하려면 저장 장치에 액세스해야합니다. \"시스템 설정\"또는 인증 대화 상자에서 \"저장 공간\"권한을 허용하십시오.", Toast.LENGTH_SHORT).show();
                 showEmptyData();
             } else if (permissions[0].equals(Manifest.permission.CAMERA)) {
-                Toast.makeText(getContext(), com.bilibili.boxing_impl.R.string.boxing_camera_permission_deny, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "사진을 찍으려면 카메라에 액세스해야합니다. \"시스템 설정\"또는 인증 대화 상자에서 \"카메라 사용\"권한을 허용하십시오.", Toast.LENGTH_SHORT).show();
             }
         }
     }
