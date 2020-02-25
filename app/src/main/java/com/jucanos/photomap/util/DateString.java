@@ -43,8 +43,6 @@ public class DateString {
             ret = calDateSecond + "초전";
         }
         return ret;
-
-
     }
 
     public static Date getCurrentDate() {

@@ -49,16 +49,16 @@
 
             <TextView
                 android:id="@+id/textView_groupName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareroundregular"
-                android:textStyle="bold"
                 android:gravity="bottom"
                 android:text="그룹 이름"
                 android:textColor="#000000"
                 android:textSize="20sp"
-               />
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -69,13 +69,16 @@
                     android:id="@+id/textView_left_of_lastUpdated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="5dp"
                     android:fontFamily="@font/nanumsquareroundregular"
-                    android:text="Last Updated : " />
+                    android:text="update:" />
 
                 <TextView
                     android:id="@+id/textView_lastUpdated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
                     android:layout_toRightOf="@+id/textView_left_of_lastUpdated"
                     android:fontFamily="@font/nanumsquareroundregular"
                     android:text="0000/00/00" />
