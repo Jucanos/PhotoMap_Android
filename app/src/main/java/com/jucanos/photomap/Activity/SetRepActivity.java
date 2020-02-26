@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -160,14 +161,10 @@ public class SetRepActivity extends AppCompatActivity {
             // 뒤로가기 버튼
             case R.id.item_cut:
                 if (view == null) {
+                    Toast.makeText(this, "사진을 선택해주세요", Toast.LENGTH_SHORT).show();
                     openGallery();
                     return true;
                 }
-                // Log.e("[imageView_front]","x : " + Float.toString(imageView_front.getX()));
-                // Log.e("[imageView_front]","y : " + Float.toString(imageView_front.getY()));
-
-                // Log.e("[imageView_front]","width : " + Float.toString(imageView_front.getWidth()));
-                // Log.e("[imageView_front]","height : " + Float.toString(imageView_front.getHeight()));
 
                 Bitmap b = Bitmap.createBitmap(imageView_front.getWidth(), imageView_front.getHeight(),
                         Bitmap.Config.ARGB_8888);

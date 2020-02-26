@@ -61,9 +61,9 @@
     <!-- filePicker style   -->
     <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimary">@color/windowBackground</item>
         <item name="colorPrimaryDark">#ffffff</item>
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:statusBarColor">@color/windowBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorBackground">@android:color/background_light</item>
         <item name="android:windowBackground">@android:color/white</item>
