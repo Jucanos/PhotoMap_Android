@@ -180,5 +180,8 @@ public class StoryListViewAdapter extends BaseAdapter {
         listViewItemList.remove(pos);
     }
 
+    public void clear(){
+        listViewItemList.clear();
+    }
 
 }

@@ -114,6 +114,9 @@ public class StoryActivity extends AppCompatActivity {
             case R.id.item_add:
                 redirectAddStoryActivity(mid);
                 return true;
+            case R.id.item_refresh:
+                loadStoryList();
+                break;
             case android.R.id.home:
                 finish();
                 return true;
@@ -181,6 +184,7 @@ public class StoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {
                 if (response.isSuccessful()) {
+                    listView_storyApater.clear();
                     Log.e("StoryActivity", "response.isSuccessful()");
                     if (response.body() != null) {
                         Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
