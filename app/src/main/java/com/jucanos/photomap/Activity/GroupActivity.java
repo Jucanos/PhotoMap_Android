@@ -401,11 +401,13 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 floatingActionMenu_menu.close(true);
+                rl_loading.setVisibility(View.VISIBLE);
                 try {
-                    getMapImage();
+                    BitmapUtils.saveViewImage(GroupActivity.this,findViewById(R.id.map));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                rl_loading.setVisibility(View.GONE);
             }
         });
     }
@@ -481,13 +483,15 @@ public class GroupActivity extends AppCompatActivity {
 
                 @Override
                 public void onDeleteClicked() {
-                    final YesNoDialog yesNoDialog = new YesNoDialog(GroupActivity.this,"정말 삭제 하시겠습니까?");
+                    final YesNoDialog yesNoDialog = new YesNoDialog(GroupActivity.this, "정말 삭제 하시겠습니까?");
                     yesNoDialog.setDialogListener(new YesNoDialogListener() {
                         @Override
                         public void onPositiveClicked() {
                             yesNoDialog.dismiss();
+                            box.showCustomView(LOADING_ONLY_PROGRESS);
                             deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
                         }
+
                         @Override
                         public void onNegativeClicked() {
                             yesNoDialog.dismiss();
@@ -552,17 +556,19 @@ public class GroupActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SET_REP_REQUEST) {
             if (resultCode == RESULT_OK) {
-                rl_loading.setVisibility(View.VISIBLE);
+                box.showCustomView(LOADING_ONLY_PROGRESS);
                 Integer regionCode = data.getIntExtra("regionCode", -1);
                 String path = data.getStringExtra("path");
                 Log.e("GroupActivity", "regionCode : " + Integer.toString(regionCode));
                 Log.e("GroupActivity", "path : " + path);
                 porterShapeImageViews[regionCode].setImageBitmap(BitmapUtils.getBitmapByPath(path));
                 mBorders[regionCode].setVisibility(View.VISIBLE);
-                rl_loading.setVisibility(View.GONE);
             }
         }
     }
+
+
+
 
     void getMapInfoRequest() {
         box.showCustomView(LOADING_ONLY_PROGRESS);
@@ -597,47 +603,6 @@ public class GroupActivity extends AppCompatActivity {
                 Log.e("[onFailure]", t.getLocalizedMessage());
             }
         });
-    }
-
-    void setMapRepRequest(final String mid, String remove) {
-        rl_loading.setVisibility(View.VISIBLE);
-        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
-        res.enqueue(new Callback<SetMapRep>() {
-            @Override
-            public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
-                if (response.isSuccessful()) {
-                    Log.e("setMapRepRequest", "response.isSuccessful()");
-                    globalApplication.authorization.getUserData().setPrimary(mid);
-                    Toast.makeText(GroupActivity.this, "대표 지도로 설정되었습니다", Toast.LENGTH_SHORT).show();
-                    rl_loading.setVisibility(View.GONE);
-                } else {
-                    Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                    Log.e("setMapRepRequest", "response.isNotSuccessful()");
-                    rl_loading.setVisibility(View.GONE);
-                }
-            }
-            @Override
-            public void onFailure(Call<SetMapRep> call, Throwable t) {
-                Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("setMapRepRequest", t.getLocalizedMessage());
-                rl_loading.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    void getMapImage() throws IOException {
-        rl_loading.setVisibility(View.VISIBLE);
-
-        View v = findViewById(R.id.map);
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        v.draw(c);
-
-        String fileName = "image_" + System.currentTimeMillis() + ".jpg";
-        BitmapUtils.createDirectoryAndSaveFile(b,fileName,this);
-
-        rl_loading.setVisibility(View.GONE);
     }
 
     void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents) {
@@ -690,8 +655,8 @@ public class GroupActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         Log.e("GroupActivity", "response.isSuccessful()");
-                        mBorders[regionCode].setImageResource(mBlack[regionCode]);
-                        porterShapeImageViews[regionCode].setImageResource(mDefault[regionCode]);
+//                        mBorders[regionCode].setImageResource(mBlack[regionCode]);
+//                        porterShapeImageViews[regionCode].setImageResource(mDefault[regionCode]);
                         Toast.makeText(GroupActivity.this, "지역 대표 사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -708,7 +673,32 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
+    void setMapRepRequest(final String mid, String remove) {
+        rl_loading.setVisibility(View.VISIBLE);
+        final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
+        res.enqueue(new Callback<SetMapRep>() {
+            @Override
+            public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
+                if (response.isSuccessful()) {
+                    Log.e("setMapRepRequest", "response.isSuccessful()");
+                    globalApplication.authorization.getUserData().setPrimary(mid);
+                    Toast.makeText(GroupActivity.this, "대표 지도로 설정되었습니다", Toast.LENGTH_SHORT).show();
+                    rl_loading.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Log.e("setMapRepRequest", "response.isNotSuccessful()");
+                   rl_loading.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<SetMapRep> call, Throwable t) {
+                Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("setMapRepRequest", t.getLocalizedMessage());
+                rl_loading.setVisibility(View.GONE);
+            }
+        });
+    }
 
 
     @Override

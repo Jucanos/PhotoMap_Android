@@ -16,9 +16,12 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import com.jucanos.photomap.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -273,5 +276,14 @@ public class BitmapUtils {
         else if (density == 2.0) // xhdpi (320dpi)
             density *= 2.0;
         return px / density;     // dp 값 반환
+    }
+
+    public static void saveViewImage(Context context,View v) throws IOException {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+        String fileName = "image_" + System.currentTimeMillis() + ".jpg";
+        BitmapUtils.createDirectoryAndSaveFile(b, fileName, context);
     }
 }
