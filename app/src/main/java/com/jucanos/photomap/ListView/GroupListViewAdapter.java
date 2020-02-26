@@ -87,7 +87,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         // box.showCustomView(LOADING_ONLY_PROGRESS);
 
         // title thumbnail
-        String thumbnail_path = "https://s3.soybeans.tech/uploads/dev/"  + listViewItem.getMid() + "/main.png";
+        String thumbnail_path = "https://s3.soybeans.tech/uploads/dev/" + listViewItem.getMid() + "/main.png";
 
         Glide.with(context)
                 .load(thumbnail_path)
@@ -107,10 +107,12 @@ public class GroupListViewAdapter extends BaseAdapter {
         listViewItem.setOnLogCb(new GroupListViewItem.OnlogCb() {
             @Override
             public void onSetLog(long log, boolean own) {
-                if(!listViewItem.isLoaded()){
-                    listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
-                }else{
+                if (!listViewItem.isLoaded()) {
+                    Log.e("listViewItem.isLoaded()", "here1");
                     listViewItem.setLoad(true);
+                } else {
+                    listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
+                    Log.e("listViewItem.isLoaded()", "here2");
                 }
                 Log.e("listViewItem", "setUpdatedAt  : " + listViewItem.getUpdatedAt().toString());
 
@@ -131,6 +133,8 @@ public class GroupListViewAdapter extends BaseAdapter {
                 } else {
                     textView_log.setVisibility(View.INVISIBLE);
                 }
+                resort();
+                notifyDataSetChanged();
             }
         });
 
@@ -144,7 +148,7 @@ public class GroupListViewAdapter extends BaseAdapter {
                         globalContext.mRefUser.child(listViewItem.getMid()).removeEventListener(listViewItem.getUesrValueEventListener());
                         return;
                     }
-                    listViewItem.setLog(dataSnapshot.getValue(long.class), true);
+                    listViewItem.setPastLog(dataSnapshot.getValue(long.class));
                     if (!listViewItem.getLoadUserRef()) {
                         listViewItem.setLoadUserRef(true);
                         if (listViewItem.getMapValueEventListener() == null) {

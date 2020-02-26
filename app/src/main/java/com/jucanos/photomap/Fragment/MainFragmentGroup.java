@@ -412,12 +412,10 @@ public class MainFragmentGroup extends Fragment {
     @Override
     public void onResume() {
         adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
-        adapter.resort();
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
         Log.e("MainFragmentGroup", "[onResume] : after resort()");
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
         super.onResume();
-
     }
 }
 

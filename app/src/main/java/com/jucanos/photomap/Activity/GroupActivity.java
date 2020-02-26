@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -105,7 +106,7 @@ public class GroupActivity extends AppCompatActivity {
 
     View mView;
 
-    private RelativeLayout rl_drawer, mContainer, rl_capture;
+    private RelativeLayout rl_drawer, mContainer;
     private RelativeLayout.LayoutParams layoutParams;
 
     private final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
@@ -182,7 +183,6 @@ public class GroupActivity extends AppCompatActivity {
     private void initMember() {
         drawerLayout_drawer = findViewById(R.id.drawer_layout);
         rl_drawer = findViewById(R.id.rl_drawer);
-        rl_capture = findViewById(R.id.rl_capture);
 
         listView_member = findViewById(R.id.listView_member);
         adapter = new MemberListViewAdapter(getApplicationContext());
@@ -314,8 +314,8 @@ public class GroupActivity extends AppCompatActivity {
             }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    x = (int) pxToDp(mContext, event.getX());
-                    y = (int) pxToDp(mContext, event.getY());
+                    x = (int) BitmapUtils.pxToDp(mContext, event.getX());
+                    y = (int) BitmapUtils.pxToDp(mContext, event.getY());
                     distanceSum = 0;
                     startX = event.getX(0);
                     startY = event.getY(0);
@@ -343,9 +343,10 @@ public class GroupActivity extends AppCompatActivity {
     };
 
     private void setBox() {
-        box = new DynamicBox(this, rl_capture);
+        box = new DynamicBox(this, mContainer);
         View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
+        box.showCustomView(LOADING_ONLY_PROGRESS);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -551,13 +552,14 @@ public class GroupActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SET_REP_REQUEST) {
             if (resultCode == RESULT_OK) {
+                rl_loading.setVisibility(View.VISIBLE);
                 Integer regionCode = data.getIntExtra("regionCode", -1);
                 String path = data.getStringExtra("path");
                 Log.e("GroupActivity", "regionCode : " + Integer.toString(regionCode));
                 Log.e("GroupActivity", "path : " + path);
-                Bitmap bm = BitmapFactory.decodeFile(path);
-                porterShapeImageViews[regionCode].setImageBitmap(bm);
+                porterShapeImageViews[regionCode].setImageBitmap(BitmapUtils.getBitmapByPath(path));
                 mBorders[regionCode].setVisibility(View.VISIBLE);
+                rl_loading.setVisibility(View.GONE);
             }
         }
     }
@@ -598,7 +600,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     void setMapRepRequest(final String mid, String remove) {
-        box.showCustomView(LOADING_ONLY_PROGRESS);
+        rl_loading.setVisibility(View.VISIBLE);
         final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
         res.enqueue(new Callback<SetMapRep>() {
             @Override
@@ -606,29 +608,31 @@ public class GroupActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.e("setMapRepRequest", "response.isSuccessful()");
                     globalApplication.authorization.getUserData().setPrimary(mid);
-                    box.hideAll();
+                    Toast.makeText(GroupActivity.this, "대표 지도로 설정되었습니다", Toast.LENGTH_SHORT).show();
+                    rl_loading.setVisibility(View.GONE);
                 } else {
+                    Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("setMapRepRequest", "response.isNotSuccessful()");
+                    rl_loading.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
+                Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e("setMapRepRequest", t.getLocalizedMessage());
+                rl_loading.setVisibility(View.GONE);
             }
         });
     }
 
     void getMapImage() throws IOException {
         rl_loading.setVisibility(View.VISIBLE);
+
         View v = findViewById(R.id.map);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.draw(c);
-        // MediaStore 에 image 저장
-//        String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
-//        Uri myUri = Uri.parse(filePath);
 
         String fileName = "image_" + System.currentTimeMillis() + ".jpg";
         BitmapUtils.createDirectoryAndSaveFile(b,fileName,this);
@@ -668,83 +672,10 @@ public class GroupActivity extends AppCompatActivity {
                 mBorders[i].setImageResource(mBlack[i]);
             }
         }
-//
-//        if (gyeonggi != null) {
-//            Glide.with(getApplicationContext()).load(gyeonggi).into(porterShapeImageViews[1]);
-//            mBorders[1].setImageResource(mWhite[1]);
-//        } else {
-//            porterShapeImageViews[1].setImageResource(R.drawable.map_gyeonggi);
-//            mBorders[1].setImageResource(mBlack[1]);
-//        }
-//
-//        if (gangwon != null) {
-//            Glide.with(getApplicationContext()).load(gangwon).into(porterShapeImageViews[2]);
-//            mBorders[2].setImageResource(mWhite[2]);
-//        } else {
-//            porterShapeImageViews[2].setImageResource(R.drawable.map_gangwon);
-//            mBorders[2].setImageResource(mBlack[2]);
-//        }
-//
-//        if (chungbuk != null) {
-//            Glide.with(getApplicationContext()).load(chungbuk).into(porterShapeImageViews[3]);
-//            mBorders[3].setImageResource(mWhite[3]);
-//        } else {
-//            porterShapeImageViews[3].setImageResource(R.drawable.map_chungbuk);
-//            mBorders[3].setImageResource(mBlack[3]);
-//        }
-//
-//        if (chungnam != null) {
-//            Glide.with(getApplicationContext()).load(chungnam).into(porterShapeImageViews[4]);
-//            mBorders[4].setImageResource(mWhite[4]);
-//        } else {
-//            porterShapeImageViews[4].setImageResource(R.drawable.map_chungnam);
-//            mBorders[4].setImageResource(mBlack[4]);
-//        }
-//
-//        if (jeonbuk != null) {
-//            Glide.with(getApplicationContext()).load(jeonbuk).into(porterShapeImageViews[5]);
-//            mBorders[5].setImageResource(mWhite[5]);
-//        } else {
-//            porterShapeImageViews[5].setImageResource(R.drawable.map_jeonbuk);
-//            mBorders[5].setImageResource(mBlack[5]);
-//        }
-//
-//        if (jeonnam != null) {
-//            Glide.with(getApplicationContext()).load(jeonnam).into(porterShapeImageViews[6]);
-//            mBorders[6].setImageResource(mWhite[6]);
-//        } else {
-//            porterShapeImageViews[6].setImageResource(R.drawable.map_jeonnam);
-//            mBorders[6].setImageResource(mBlack[6]);
-//        }
-//
-//        if (gyeongbuk != null) {
-//            Glide.with(getApplicationContext()).load(gyeongbuk).into(porterShapeImageViews[7]);
-//            mBorders[7].setImageResource(mWhite[7]);
-//        } else {
-//            porterShapeImageViews[7].setImageResource(R.drawable.map_gyeongbuk);
-//            mBorders[7].setImageResource(mBlack[7]);
-//        }
-//
-//        if (gyeongnam != null) {
-//            Glide.with(getApplicationContext()).load(gyeongnam).into(porterShapeImageViews[8]);
-//            mBorders[8].setImageResource(mWhite[8]);
-//        } else {
-//            porterShapeImageViews[8].setImageResource(R.drawable.map_gyeongnam);
-//            mBorders[8].setImageResource(mBlack[8]);
-//        }
-//
-//        if (jeju != null) {
-//            Glide.with(getApplicationContext()).load(jeju).into(porterShapeImageViews[9]);
-//            mBorders[9].setImageResource(mWhite[9]);
-//        } else {
-//            porterShapeImageViews[9].setImageResource(R.drawable.map_jeju);
-//            mBorders[9].setImageResource(mBlack[9]);
-//        }
         box.hideAll();
     }
 
     private void deleteRepRequest(String cityKey, final int regionCode) {
-        box.showCustomView(LOADING_ONLY_PROGRESS);
         RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
         RequestBody requetRemove = RequestBody.create(MediaType.parse("text/plain"), "true");
         HashMap<String, RequestBody> hashMap = new HashMap<>();
@@ -761,32 +692,24 @@ public class GroupActivity extends AppCompatActivity {
                         Log.e("GroupActivity", "response.isSuccessful()");
                         mBorders[regionCode].setImageResource(mBlack[regionCode]);
                         porterShapeImageViews[regionCode].setImageResource(mDefault[regionCode]);
-                        box.hideAll();
+                        Toast.makeText(GroupActivity.this, "지역 대표 사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.e("GroupActivity", "response.isSuccessful()");
+                    Toast.makeText(GroupActivity.this, "실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SetRep> call, Throwable t) {
                 Log.e("GroupActivity", "response.isSuccessful()");
+                Toast.makeText(GroupActivity.this, "실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    public float pxToDp(Context context, float px) {
-        // 해상도 마다 다른 density 를 반환. xxxhdpi는 density = 4
-        float density = context.getResources().getDisplayMetrics().density;
-        if (density == 1.0)      // mpdi  (160dpi) -- xxxhdpi (density = 4)기준으로 density 값을 재설정 한다
-            density *= 4.0;
-        else if (density == 1.5) // hdpi  (240dpi)
-            density *= (8.0 / 3);
-        else if (density == 2.0) // xhdpi (320dpi)
-            density *= 2.0;
-        return px / density;     // dp 값 반환
-    }
+
 
     @Override
     public void onBackPressed() {
