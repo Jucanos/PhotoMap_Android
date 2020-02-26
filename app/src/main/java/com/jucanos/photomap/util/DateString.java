@@ -14,13 +14,13 @@ public class DateString {
         long calDate = now.getTime() - date.getTime();
 
         long calDateSecond = calDate / 1000;
-        Log.e("calDateSecond", "" + calDateSecond);
+        //Log.e("calDateSecond", "" + calDateSecond);
         long calDateMin = calDate / (60 * 1000);
-        Log.e("calDateMin", "" + calDateMin);
+        //Log.e("calDateMin", "" + calDateMin);
         long calDateHour = calDate / (60 * 60 * 1000);
-        Log.e("calDateHour", "" + calDateHour);
+        //Log.e("calDateHour", "" + calDateHour);
         long calDateDay = calDate / (60 * 60 * 24 * 1000);
-        Log.e("calDateDay", "" + calDateDay);
+       // Log.e("calDateDay", "" + calDateDay);
         long calDateMonth = calDate / (60 * 60 * 24 * 30 * 1000);
         long calDateYear = calDate / (60 * 60 * 24 * 30 * 12 * 1000);
 
