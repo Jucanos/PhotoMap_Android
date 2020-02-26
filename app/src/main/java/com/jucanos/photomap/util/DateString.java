@@ -1,7 +1,5 @@
 package com.jucanos.photomap.util;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -9,38 +7,46 @@ import java.util.TimeZone;
 
 public class DateString {
     public static String getString(Date date) {
-        Date now = getCurrentDate();
-        String ret = null;
-        long calDate = now.getTime() - date.getTime();
+        String ret = "";
+        long now, nowSecond, nowMin, nowHour, nowDay, nowMonth, nowYear;
+        long m, mSecond, mMin, mHour, mDay, mMonth, mYear;
+        now = getCurrentDate().getTime();
+        nowSecond = now / 1000;
+        nowMin = now / (1000 * 60);
+        nowHour = now / (1000 * 60 * 60);
+        nowDay = now / (1000 * 60 * 60 * 24);
+        nowMonth = now / (1000 * 60 * 60 * 24 * 30);
+        nowYear = now / (1000 * 60 * 60 * 24 * 30 * 12);
 
-        long calDateSecond = calDate / 1000;
-        //Log.e("calDateSecond", "" + calDateSecond);
-        long calDateMin = calDate / (60 * 1000);
-        //Log.e("calDateMin", "" + calDateMin);
-        long calDateHour = calDate / (60 * 60 * 1000);
-        //Log.e("calDateHour", "" + calDateHour);
-        long calDateDay = calDate / (60 * 60 * 24 * 1000);
-       // Log.e("calDateDay", "" + calDateDay);
-        long calDateMonth = calDate / (60 * 60 * 24 * 30 * 1000);
-        long calDateYear = calDate / (60 * 60 * 24 * 30 * 12 * 1000);
+        m = date.getTime();
+        mSecond = now / 1000;
+        mMin = now / (1000 * 60);
+        mHour = now / (1000 * 60 * 60);
+        mDay = now / (1000 * 60 * 60 * 24);
+        mMonth = now / (1000 * 60 * 60 * 24 * 30);
+        mYear = now / (1000 * 60 * 60 * 24 * 30 * 12);
 
-//
-//        else if (calDateMonth > 0) {
-//            ret = calDateMonth + "달전";
-//        } else if (calDateDay > 0) {
-//            ret = calDateDay + "달전";
-//        }
-
-        if (calDateDay > 0) {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.KOREA);
+        // 같은 날인경우
+        if (mDay == nowDay) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("aaa H:m", Locale.KOREA);
             inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             ret = inputFormat.format(date);
-        } else if (calDateHour > 0) {
-            ret = calDateHour + "시간전";
-        } else if (calDateMin > 0) {
-            ret = calDateMin + "분전";
-        } else if (calDateSecond >= 0) {
-            ret = calDateSecond + "초전";
+        } else if (mDay + 1 == nowDay) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("어제 aaa H:m", Locale.KOREA);
+            inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            ret = inputFormat.format(date);
+        } else if (mMonth == nowMonth) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("d일 H:m", Locale.KOREA);
+            inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            ret = inputFormat.format(date);
+        } else if (mYear == nowYear) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("M월d일", Locale.KOREA);
+            inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            ret = inputFormat.format(date);
+        } else {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yy년M월d일", Locale.KOREA);
+            inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            ret = inputFormat.format(date);
         }
         return ret;
     }

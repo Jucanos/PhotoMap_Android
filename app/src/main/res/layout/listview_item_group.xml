@@ -66,20 +66,10 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/textView_left_of_lastUpdated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginRight="5dp"
-                    android:fontFamily="@font/nanumsquareroundregular"
-                    android:text="update:" />
-
-                <TextView
                     android:id="@+id/textView_lastUpdated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
-                    android:layout_toRightOf="@+id/textView_left_of_lastUpdated"
                     android:fontFamily="@font/nanumsquareroundregular"
                     android:text="0000/00/00" />
 
