@@ -66,6 +66,7 @@ import com.kakao.network.ErrorResult;
 import com.kakao.network.callback.ResponseCallback;
 import com.kakao.util.helper.log.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -130,6 +131,7 @@ public class GroupActivity extends AppCompatActivity {
 
     // loading Box;
     DynamicBox box;
+    RelativeLayout rl_loading;
     private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -185,6 +187,14 @@ public class GroupActivity extends AppCompatActivity {
         listView_member = findViewById(R.id.listView_member);
         adapter = new MemberListViewAdapter(getApplicationContext());
         listView_member.setAdapter(adapter);
+
+        rl_loading = findViewById(R.id.rl_loading);
+        rl_loading.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
 
         // PorterShapeImageView
@@ -390,7 +400,11 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 floatingActionMenu_menu.close(true);
-                getMapImage();
+                try {
+                    getMapImage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -605,8 +619,8 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    void getMapImage() {
-        box.showCustomView(LOADING_ONLY_PROGRESS);
+    void getMapImage() throws IOException {
+        rl_loading.setVisibility(View.VISIBLE);
         View v = findViewById(R.id.map);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
@@ -616,10 +630,10 @@ public class GroupActivity extends AppCompatActivity {
 //        String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), b, "title", "description");
 //        Uri myUri = Uri.parse(filePath);
 
-        String fileName = "image_" + System.currentTimeMillis();
+        String fileName = "image_" + System.currentTimeMillis() + ".jpg";
         BitmapUtils.createDirectoryAndSaveFile(b,fileName,this);
 
-        box.hideAll();
+        rl_loading.setVisibility(View.GONE);
     }
 
     void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents) {

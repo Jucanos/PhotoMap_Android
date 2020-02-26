@@ -67,7 +67,7 @@
             app:menu_icon="@drawable/ic_icon_fab"
             app:menu_labels_colorNormal="#00000000"
 
-            app:menu_labels_colorPressed="#00000000"
+            app:menu_labels_colorPressed="@color/light_gray"
             app:menu_labels_ellipsize="end"
             app:menu_labels_maxLines="-1"
             app:menu_labels_position="left"
@@ -176,6 +176,15 @@
             android:divider="#00000000" />
 
     </RelativeLayout>
+
+    <include
+        android:id="@+id/rl_loading"
+        layout="@layout/loading_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
 

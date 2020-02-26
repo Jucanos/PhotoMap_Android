@@ -3,6 +3,7 @@ package com.jucanos.photomap.util;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -231,27 +233,33 @@ public class BitmapUtils {
         }
     }
 
-    public static void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName,Context context) {
-        String path = Environment.getExternalStorageDirectory().toString();
-        OutputStream fOutputStream = null;
-        File file = new File(path + "/Captures/", "screen.jpg");
-        if (!file.exists()) {
-            file.mkdirs();
-        }
+    public static void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName,Context context) throws IOException {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/photoMap");
+        myDir.mkdirs();
+        String fname = fileName;
+        File file = new File (myDir, fname);
+        if (file.exists ())
+            file.delete ();
+        file.createNewFile();
         try {
-            fOutputStream = new FileOutputStream(file);
-            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
-            fOutputStream.flush();
-            fOutputStream.close();
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
-        } catch (FileNotFoundException e) {
+            FileOutputStream out = new FileOutputStream(file);
+            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            addPicToGallery(context,file.getPath());
+            Toast.makeText(context, "저장 성공", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(context, "저장 실패", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-            Toast.makeText(context, "Save Failed", Toast.LENGTH_SHORT).show();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(context, "Save Failed", Toast.LENGTH_SHORT).show();
-            return;
         }
+    }
+
+    public static void addPicToGallery(Context context, String photoPath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(photoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        context.sendBroadcast(mediaScanIntent);
     }
 }
