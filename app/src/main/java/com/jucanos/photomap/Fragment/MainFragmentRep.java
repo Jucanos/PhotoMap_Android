@@ -103,7 +103,7 @@ public class MainFragmentRep extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     private void initMember(View view) {
-        pContext = getActivity().getApplicationContext();
+        pContext = getActivity();
         noRep = view.findViewById(R.id.layout_noRep);
         existRep = view.findViewById(R.id.relativeLayout_existRep);
         layout_map = view.findViewById(R.id.layout_map);
@@ -339,7 +339,7 @@ public class MainFragmentRep extends Fragment {
             Log.e("error pos", Integer.toString(i));
             String path = paths.get(i);
             if (path != null) {
-                Glide.with(getActivity()).load(path).into(porterShapeImageViews[i]);
+                Glide.with(pContext).load(path).into(porterShapeImageViews[i]);
                 mBorders[i].setImageResource(mWhite[i]);
             } else {
                 porterShapeImageViews[i].setImageResource(mDefault[i]);
