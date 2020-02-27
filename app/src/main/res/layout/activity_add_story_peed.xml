@@ -107,19 +107,19 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/box"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/transparent_black"
-        app:cardElevation="10dp">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/box"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:cardBackgroundColor="@color/transparent_black"-->
+<!--        app:cardElevation="10dp">-->
 
-        <include
-            layout="@layout/loading_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <include-->
+<!--            layout="@layout/loading_progress"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
-    </androidx.cardview.widget.CardView>
+<!--    </androidx.cardview.widget.CardView>-->
 
 
 </RelativeLayout>
