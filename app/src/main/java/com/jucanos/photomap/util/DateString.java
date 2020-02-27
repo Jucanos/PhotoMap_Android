@@ -28,7 +28,7 @@ public class DateString {
 
         // 같은 날인경우
         if (mDay == nowDay) {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("aaa H:m", Locale.KOREA);
+            SimpleDateFormat inputFormat = new SimpleDateFormat("오늘 aaa H:m", Locale.KOREA);
             inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             ret = inputFormat.format(date);
         } else if (mDay + 1 == nowDay) {
@@ -36,7 +36,7 @@ public class DateString {
             inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             ret = inputFormat.format(date);
         } else if (mMonth == nowMonth) {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("d일 H:m", Locale.KOREA);
+            SimpleDateFormat inputFormat = new SimpleDateFormat("d일 h:m", Locale.KOREA);
             inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             ret = inputFormat.format(date);
         } else if (mYear == nowYear) {
