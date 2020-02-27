@@ -548,56 +548,39 @@ public class InstaCropperView extends View {
 
             if (drawableIsWiderThanView) {
                 LLog("imageSizeRatioIsValid pos 1-1");
-//                scale =  (float) mWidth / (float) mImageRawWidth;
                 scale = (float) mHeight / (float) mImageRawHeight;
             } else {
                 LLog("imageSizeRatioIsValid pos 1-2");
                 scale = (float) mWidth / (float) mImageRawWidth;
-//                scale = (float) mHeight / (float) mImageRawHeight;
             }
         } else if (mImageRawWidth < mWidth || mImageRawHeight < mHeight) {
-            LLog("imageSizeRatioIsValid pos 2");
+                LLog("imageSizeRatioIsValid pos 2");
             if (drawableSizeRatio < mMaximumRatio) {
                 LLog("imageSizeRatioIsValid pos 2-1");
-                getBoundsForWidthAndRatio(mImageRawWidth, mMinimumRatio, mHelperRect);
-                scale = mHelperRect.height() / (float) mHeight;
+                mHelperRect.set(0, 0, mImageRawWidth, mImageRawHeight);
+                scale = mHelperRect.height() / ((float) mImageRawWidth * mMinimumRatio);
             } else {
                 LLog("imageSizeRatioIsValid pos 2-2");
-                getBoundsForHeightAndRatio(mImageRawHeight, mMaximumRatio, mHelperRect);
-                scale = mHelperRect.width() / (float) mWidth;
+                mHelperRect.set(0, 0, mImageRawWidth, mImageRawHeight);
+                scale = mHelperRect.width() / ((float) mImageRawHeight * mMinimumRatio);
             }
         } else {
             if (drawableSizeRatio < mMinimumRatio) {
                 LLog("========imageSizeRatioIsValid pos 3-1========");
-
-                LLog("mHeight : " + mHeight);
-                LLog("mWidth : " + mWidth);
-
-                LLog("mMinimumRatio : " + mMinimumRatio);
-
                 getBoundsForHeightAndRatio(mHeight, mMinimumRatio, mHelperRect);
-
-                LLog("mHelperRect.width : " + mHelperRect.width());
-                LLog("mHelperRect.height : " + mHelperRect.height());
-                LLog("mImageRawWidth : " + mImageRawWidth);
-
                 scale = mHelperRect.width() / mImageRawWidth;
-                LLog("scale : " + scale);
             } else {
-                LLog("imageSizeRatioIsValid pos 3-2");
-                getBoundsForWidthAndRatio(mWidth, mMaximumRatio, mHelperRect);
+                LLog("========imageSizeRatioIsValid pos 3-2========");
+                getBoundsForHeightAndRatio(mHeight, mMinimumRatio, mHelperRect);
                 scale = mHelperRect.height() / mImageRawHeight;
             }
         }
-
         return scale;
     }
 
     private void setDrawableScale(float scale) {
         mDrawableScale = scale;
-
         invalidate();
-
     }
 
     private void placeDrawableInTheCenter() {
@@ -942,7 +925,7 @@ public class InstaCropperView extends View {
     };
 
     void LLog(String s) {
-        Log.e("InstaCropperView", s);
+        Log.i("InstaCropperView", s);
     }
 
 }
