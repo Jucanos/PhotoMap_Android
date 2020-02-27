@@ -340,7 +340,7 @@ public class MainFragmentRep extends Fragment {
             String path = paths.get(i);
             if (path != null) {
                 Glide.with(pContext).load(path).into(porterShapeImageViews[i]);
-                mBorders[i].setImageResource(mWhite[i]);
+                mBorders[i].setImageResource(mBlack[i]);
             } else {
                 porterShapeImageViews[i].setImageResource(mDefault[i]);
                 mBorders[i].setImageResource(mBlack[i]);

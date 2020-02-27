@@ -631,7 +631,7 @@ public class GroupActivity extends AppCompatActivity {
             String path = paths.get(i);
             if (path != null) {
                 Glide.with(getApplicationContext()).load(path).into(porterShapeImageViews[i]);
-                mBorders[i].setImageResource(mWhite[i]);
+                mBorders[i].setImageResource(mBlack[i]);
             } else {
                 porterShapeImageViews[i].setImageResource(mDefault[i]);
                 mBorders[i].setImageResource(mBlack[i]);
