@@ -2,6 +2,7 @@ package com.jucanos.photomap.photoPicker;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
@@ -106,16 +107,21 @@ public class CoordinatorLinearLayout extends LinearLayout implements Coordinator
 
     @Override
     public void onSwitch() {
+        Log.e("CoordinatorLinearLayout","onSwitch");
         if (state == WHOLE_STATE) {
             if (getScrollY() >= minScrollToTop) {
+                Log.i("CoordinatorLinearLayout","switchToTop");
                 switchToTop();
             } else {
+                Log.i("CoordinatorLinearLayout","switchToWhole");
                 switchToWhole();
             }
         } else if (state == COLLAPSE_STATE) {
             if (getScrollY() <= minScrollToWhole) {
+                Log.i("CoordinatorLinearLayout","switchToWhole");
                 switchToWhole();
             } else {
+                Log.i("CoordinatorLinearLayout","switchToTop");
                 switchToTop();
             }
         }

@@ -109,7 +109,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private TextView textView_next, textView_cancel;
 
     // for loading proegress
-    RelativeLayout loading_progress;
     LoadingDialog loadingDialog;
 
 
@@ -127,6 +126,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     @Override
     public void startLoading() {
+        loadingDialog.show();
         loadMedias();
         loadAlbum();
     }
@@ -172,15 +172,10 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     private void initViews(View view) {
-        loadingDialog = new LoadingDialog();
+        loadingDialog = new LoadingDialog(getActivity());
         parentLayout = view.findViewById(R.id.parent_layout);
-        loading_progress = view.findViewById(R.id.rl_loading);
-//        loading_progress.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return false;
-//            }
-//        });
+
+
         frameLayout_container = view.findViewById(R.id.frameLayout_container);
         instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView1));
         instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView2));
@@ -267,8 +262,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     private void showData() {
+        loadingDialog.dismiss();
         mRecycleView.setVisibility(View.VISIBLE);
-        loading_progress.setVisibility(View.GONE);
     }
 
     @Override
@@ -280,8 +275,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
             return;
         }
         mAlbumWindowAdapter.addAllData(albums);
-
-
     }
 
     public MyBoxingMediaAdapter getMediaAdapter() {
@@ -480,7 +473,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     private class ScrollListener extends RecyclerView.OnScrollListener {
-
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             final int childCount = recyclerView.getChildCount();
@@ -518,6 +510,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         }
 
         private void multiImageClick(View view, BaseMedia iMedia, int pos) {
+            parentLayout.switchToWhole();
             ClickImage(view, iMedia);
         }
 
@@ -656,9 +649,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     public void redirectAddStoryActivity() {
-        loading_progress.setVisibility(View.VISIBLE);
+        loadingDialog.show();
         ArrayList<Pair<Integer, String>> aPaths = new ArrayList<>();
-        Bitmap bm = null;
         for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : mMediaAdapter.getSeletedMediaInfoHashMap().entrySet()) {
             seletedMediaInfoEntry.getValue().getmCropView().crop(
                     View.MeasureSpec.makeMeasureSpec(1024, View.MeasureSpec.AT_MOST),
@@ -669,7 +661,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                             String path = BitmapUtils.saveBitmap(fileName, bitmap, 50, getActivity().getApplicationContext());
                             Integer order = seletedMediaInfoEntry.getValue().getCount();
                             aPaths.add(new Pair<Integer, String>(order, path));
-                            if(aPaths.size() == mMediaAdapter.getSeletedMediaInfoHashMap().size()){
+                            if (aPaths.size() == mMediaAdapter.getSeletedMediaInfoHashMap().size()) {
                                 redirectAddStoryActivity(aPaths);
                             }
                         } catch (IOException e) {
@@ -697,8 +689,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         intent.putStringArrayListExtra("paths", bPaths);
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", cityKey);
-
-        loading_progress.setVisibility(View.INVISIBLE);
+        loadingDialog.dismiss();
         getActivity().startActivityForResult(intent, ADD_STORY_REQUEST);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
