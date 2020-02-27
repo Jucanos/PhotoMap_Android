@@ -105,22 +105,13 @@
 
         </FrameLayout>
 
-
         <com.jucanos.photomap.photoPicker.CoordinatorRecyclerView
             android:id="@+id/media_recycleview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
-
     </com.jucanos.photomap.photoPicker.CoordinatorLinearLayout>
-
-    <include
-        android:id="@+id/rl_loading"
-        layout="@layout/loading_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
 
 </RelativeLayout>
 
