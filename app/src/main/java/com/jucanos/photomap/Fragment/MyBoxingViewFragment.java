@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -39,8 +40,9 @@ import com.bilibili.boxing_impl.WindowManagerHelper;
 import com.bilibili.boxing_impl.ui.BoxingViewActivity;
 import com.bilibili.boxing_impl.view.HackyGridLayoutManager;
 import com.bilibili.boxing_impl.view.SpacesItemDecoration;
-import com.jucanos.photomap.Activity.AddStoryImageActivity;
 import com.jucanos.photomap.Activity.AddStoryPreviewActivity;
+import com.jucanos.photomap.CropView.InstaCropperView;
+import com.jucanos.photomap.Dialog.LoadingDialog;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.photoPicker.BoxingAlbumAdapter;
 import com.jucanos.photomap.photoPicker.CoordinatorLinearLayout;
@@ -50,8 +52,8 @@ import com.jucanos.photomap.photoPicker.MyMediaItemLayout;
 import com.jucanos.photomap.photoPicker.SeletedMediaInfo;
 import com.jucanos.photomap.photoPicker.ViewUtils;
 import com.jucanos.photomap.util.BitmapUtils;
-import com.naver.android.helloyako.imagecrop.view.ImageCropView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,7 +98,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private CoordinatorLinearLayout parentLayout;
 
     // for controling cropView image
-    private ArrayList<ImageCropView> imageCropViews = new ArrayList<>();
+    private ArrayList<InstaCropperView> instaCropperViews = new ArrayList<>();
 
     // default album
     private TextView album_text_view;
@@ -104,10 +106,11 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     // requestcode
     private final int ADD_STORY_REQUEST = 1;
 
-    private TextView textView_next,textView_cancel;
+    private TextView textView_next, textView_cancel;
 
     // for loading proegress
     RelativeLayout loading_progress;
+    LoadingDialog loadingDialog;
 
 
     public static MyBoxingViewFragment newInstance() {
@@ -169,29 +172,28 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     private void initViews(View view) {
+        loadingDialog = new LoadingDialog();
         parentLayout = view.findViewById(R.id.parent_layout);
         loading_progress = view.findViewById(R.id.rl_loading);
-        loading_progress.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+//        loading_progress.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//            }
+//        });
         frameLayout_container = view.findViewById(R.id.frameLayout_container);
-        imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image1));
-        imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image2));
-        imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image3));
-        imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image4));
-        imageCropViews.add((ImageCropView) view.findViewById(R.id.imageCropView_image5));
+        instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView1));
+        instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView2));
+        instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView3));
+        instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView4));
+        instaCropperViews.add((InstaCropperView) view.findViewById(R.id.instaCropperView5));
+
         album_text_view = view.findViewById(R.id.album_text_view);
         textView_next = view.findViewById(R.id.textView_next);
         textView_cancel = view.findViewById(R.id.textView_cancel);
 
         textView_next.setOnClickListener(this);
         textView_cancel.setOnClickListener(this);
-
-//        imageCropView1.setGridInnerMode(ImageCropView.GRID_OFF);
-//        imageCropView1.setGridOuterMode(ImageCropView.GRID_OFF);
 
         mEmptyTxt = (TextView) view.findViewById(R.id.empty_txt);
         mRecycleView = (CoordinatorRecyclerView) view.findViewById(R.id.media_recycleview);
@@ -252,7 +254,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         showData();
         mMediaAdapter.addAllData(medias);
         checkSelectedMedia(medias, mMediaAdapter.getSelectedMedias());
-        imageCropViews.get(0).setImageFilePath(mMediaAdapter.getAllMedias().get(0).getPath());
+        instaCropperViews.get(0).setImageUri(Uri.fromFile(new File(mMediaAdapter.getAllMedias().get(0).getPath())));
+
     }
 
     private boolean isEmptyData(List<BaseMedia> medias) {
@@ -266,7 +269,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private void showData() {
         mRecycleView.setVisibility(View.VISIBLE);
         loading_progress.setVisibility(View.GONE);
-
     }
 
     @Override
@@ -341,15 +343,13 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         int id = v.getId();
         switch (id) {
             case R.id.textView_next:
-                if( mMediaAdapter.getSeletedMediaInfoHashMap().size() <= 0){
+
+                if (mMediaAdapter.getSeletedMediaInfoHashMap().size() <= 0) {
                     Toast.makeText(getActivity(), "1장 이상 선택해주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                try {
-                    redirectAddStoryActivity();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                redirectAddStoryActivity();
                 break;
             case R.id.textView_cancel:
                 getActivity().finish();
@@ -646,7 +646,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         }
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
-                        seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, imageCropViews.get(cropViewPos)));
+                        seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, instaCropperViews.get(cropViewPos)));
                         Log.e("nPos", Integer.toString(nPos));
                         return;
                     }
@@ -655,30 +655,39 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         }
     }
 
-    public void redirectAddStoryActivity() throws IOException {
-        ((RelativeLayout)loading_progress).setVisibility(View.VISIBLE);
-
+    public void redirectAddStoryActivity() {
+        loading_progress.setVisibility(View.VISIBLE);
         ArrayList<Pair<Integer, String>> aPaths = new ArrayList<>();
-        ArrayList<String> bPaths = new ArrayList<>();
-
+        Bitmap bm = null;
         for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : mMediaAdapter.getSeletedMediaInfoHashMap().entrySet()) {
-            String fileName = "image_" + System.currentTimeMillis();
-            Bitmap bm = seletedMediaInfoEntry.getValue().getmCropView().getCroppedImage();
-            String path = BitmapUtils.saveBitmap(fileName, bm, 50, getActivity().getApplicationContext());
-            Integer order = seletedMediaInfoEntry.getValue().getCount();
-            aPaths.add(new Pair<Integer, String>(order, path));
+            seletedMediaInfoEntry.getValue().getmCropView().crop(
+                    View.MeasureSpec.makeMeasureSpec(1024, View.MeasureSpec.AT_MOST),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    bitmap -> {
+                        try {
+                            String fileName = "image_" + System.currentTimeMillis();
+                            String path = BitmapUtils.saveBitmap(fileName, bitmap, 50, getActivity().getApplicationContext());
+                            Integer order = seletedMediaInfoEntry.getValue().getCount();
+                            aPaths.add(new Pair<Integer, String>(order, path));
+                            if(aPaths.size() == mMediaAdapter.getSeletedMediaInfoHashMap().size()){
+                                redirectAddStoryActivity(aPaths);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            );
         }
+    }
 
+    void redirectAddStoryActivity(ArrayList<Pair<Integer, String>> aPaths) {
+        ArrayList<String> bPaths = new ArrayList<>();
         Collections.sort(aPaths, new Comparator<Pair<Integer, String>>() {
             @Override
             public int compare(Pair<Integer, String> o1, Pair<Integer, String> o2) {
                 return o1.first.compareTo(o2.first);
             }
         });
-
-        for (int i = 0; i < aPaths.size(); i++) {
-            Log.e(Integer.toString(aPaths.get(i).first), aPaths.get(i).second);
-        }
 
         for (int i = 0; i < aPaths.size(); i++) {
             bPaths.add(aPaths.get(i).second);
@@ -689,7 +698,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", cityKey);
 
-        ((RelativeLayout)loading_progress).setVisibility(View.GONE);
+        loading_progress.setVisibility(View.INVISIBLE);
         getActivity().startActivityForResult(intent, ADD_STORY_REQUEST);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }

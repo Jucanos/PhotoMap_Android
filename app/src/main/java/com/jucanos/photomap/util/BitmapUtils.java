@@ -166,10 +166,10 @@ public class BitmapUtils {
      * quality set
      * to 100.
      *
-     * @param bm   The bitmap.
+     * @param bm The bitmap.
      */
     //create a file to write bitmap data
-    public static String saveBitmap(String filename, Bitmap bm,int quality,Context mContext) throws IOException {
+    public static String saveBitmap(String filename, Bitmap bm, int quality, Context mContext) throws IOException {
         File f = new File(mContext.getCacheDir(), filename);
         f.createNewFile();
 
@@ -215,42 +215,43 @@ public class BitmapUtils {
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-    public static Bitmap getBitmapByPath(String path){
+    public static Bitmap getBitmapByPath(String path) {
         File imgFile = new File(path);
         if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             return myBitmap;
-        }else{
+        } else {
             return null;
         }
     }
 
-    public static Bitmap getBitmapByPathMutable(String path){
+    public static Bitmap getBitmapByPathMutable(String path) {
         File imgFile = new File(path);
-        BitmapFactory.Options opts = new BitmapFactory.Options(); opts.inMutable = true;
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inMutable = true;
         if (imgFile.exists()) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(),opts);
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), opts);
             return myBitmap;
-        }else{
+        } else {
             return null;
         }
     }
 
-    public static void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName,Context context) throws IOException {
+    public static void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName, Context context) throws IOException {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/photoMap");
         myDir.mkdirs();
         String fname = fileName;
-        File file = new File (myDir, fname);
-        if (file.exists ())
-            file.delete ();
+        File file = new File(myDir, fname);
+        if (file.exists())
+            file.delete();
         file.createNewFile();
         try {
             FileOutputStream out = new FileOutputStream(file);
             imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
-            addPicToGallery(context,file.getPath());
+            addPicToGallery(context, file.getPath());
             Toast.makeText(context, "저장 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(context, "저장 실패", Toast.LENGTH_SHORT).show();
@@ -278,7 +279,7 @@ public class BitmapUtils {
         return px / density;     // dp 값 반환
     }
 
-    public static void saveViewImage(Context context,View v) throws IOException {
+    public static void saveViewImage(Context context, View v) throws IOException {
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
@@ -286,4 +287,16 @@ public class BitmapUtils {
         String fileName = "image_" + System.currentTimeMillis() + ".jpg";
         BitmapUtils.createDirectoryAndSaveFile(b, fileName, context);
     }
+
+    public static Uri getUriFromPath(Context context,String path) {
+        Cursor c = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, "_data = '" + path + "'", null, null);
+        c.moveToNext();
+        int id = c.getInt(c.getColumnIndex("_id"));
+        Uri uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+        return uri;
+
+    }
+
+
 }

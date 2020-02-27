@@ -1,17 +1,22 @@
 package com.jucanos.photomap.photoPicker;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 
 import com.bilibili.boxing.model.entity.impl.ImageMedia;
-import com.naver.android.helloyako.imagecrop.view.ImageCropView;
+import com.jucanos.photomap.CropView.InstaCropperView;
+
+import java.io.File;
 
 public class SeletedMediaInfo {
     private Integer mCount;
     private boolean mCur;
     private MyMediaItemLayout mLayout;
-    private ImageCropView mCropView;
+    private InstaCropperView mCropView;
     private ImageMedia mImgMedia;
     private Integer mCropViewPos;
+    private Context mContext;
 
     SeletedMediaInfo() {
         mCount = 0;
@@ -21,7 +26,7 @@ public class SeletedMediaInfo {
         mCropViewPos= 0;
     }
 
-    public SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, ImageCropView imageCropView) {
+    public SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, InstaCropperView imageCropView) {
         mCount = pos;
         mCropViewPos = pos;
         mCur = cur;
@@ -34,8 +39,8 @@ public class SeletedMediaInfo {
 
         mImgMedia.setSelected(true);
 
-        mCropView.resetDisplay();
-        mCropView.setImageFilePath(mImgMedia.getPath());
+        // mCropView.resetDisplay();
+        mCropView.setImageUri(Uri.fromFile(new File(mImgMedia.getPath())));
         mCropView.setVisibility(View.VISIBLE);
     }
 
@@ -69,11 +74,11 @@ public class SeletedMediaInfo {
         return mLayout;
     }
 
-    public void setCropView(ImageCropView imageCropView) {
+    public void setCropView(InstaCropperView imageCropView) {
         mCropView = imageCropView;
     }
 
-    public ImageCropView getmCropView() {
+    public InstaCropperView getmCropView() {
         return mCropView;
     }
 
