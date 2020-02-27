@@ -47,7 +47,6 @@ dependencies {
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
 
     // for image crop in story image upload
-    implementation "com.naver.android.helloyako:imagecropview:1.2.3"
     implementation 'com.bilibili:boxing:1.0.4'
     implementation 'com.bilibili:boxing-impl:1.0.4'
 
