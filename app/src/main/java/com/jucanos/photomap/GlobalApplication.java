@@ -141,8 +141,8 @@ public class GlobalApplication extends Application {
 
         // firebase realtime db ref
         database = FirebaseDatabase.getInstance();
-        mRefMaps = database.getReference("maps");
-        mRefUsers = database.getReference("users");
+        mRefMaps = database.getReference("dev/maps");
+        mRefUsers = database.getReference("dev/users");
 
         instance = this;
         KakaoSDK.init(new KakaoSDKAdapter());
