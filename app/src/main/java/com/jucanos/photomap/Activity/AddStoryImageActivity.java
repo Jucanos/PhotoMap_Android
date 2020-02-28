@@ -3,7 +3,6 @@ package com.jucanos.photomap.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,8 +11,8 @@ import com.bilibili.boxing.AbsBoxingActivity;
 import com.bilibili.boxing.AbsBoxingViewFragment;
 import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
-import com.jucanos.photomap.R;
 import com.jucanos.photomap.Fragment.MyBoxingViewFragment;
+import com.jucanos.photomap.R;
 
 import java.util.ArrayList;
 import java.util.List;

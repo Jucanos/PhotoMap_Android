@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.jucanos.photomap.Dialog.LoadingDialog;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
@@ -53,10 +54,10 @@ public class SetRepActivity extends AppCompatActivity {
 
     private Bitmap bitMap_front, bitMap_back;
     private ImageView imageView_front;
-    private Button btnCrop;
     private String mid, cityKey;
     private Integer regionCode;
     private View view;
+    private LoadingDialog loadingDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -64,32 +65,30 @@ public class SetRepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_rep);
 
-        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        getIntentData();
+        setToolbar();
+        initMember();
+        setFrontImage();
+        openGallery();
+    }
 
+    private void getIntentData() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
+        mid = getIntent().getStringExtra("mid");
+        cityKey = getIntent().getStringExtra("cityKey");
+        regionCode = getIntent().getIntExtra("regionCode", -1);
+    }
+
+    private void initMember() {
+        imageView_front = findViewById(R.id.imageView_image);
+        loadingDialog = new LoadingDialog(this);
+    }
+
+    private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("사진 편집");
-
-        mid = getIntent().getStringExtra("mid");
-        Log.e("SetRepActivity", "mid : " + mid);
-        cityKey = getIntent().getStringExtra("cityKey");
-        regionCode = getIntent().getIntExtra("regionCode", -1);
-        Log.e("regionCode", Integer.toString(regionCode));
-
-
-        // view component load
-        imageView_front = findViewById(R.id.imageView_image);
-
-        // 절대경로로 부터 뒷배경 이미지 설정
-        // String filePath = globalApplication.groupArrayList.get(mapPos).storys[regionPos].get(storyPos).getRealFilePath();
-        //bitMap_back = BitmapFactory.decodeFile(filePath);
-
-
-        // 마스크의 검은색 부분 -> 반투명 검은색으로 변경
-        setFrontImage();
-        openGallery();
-
     }
 
     // 지역코드에 따른 frontBitmap 설정
@@ -179,12 +178,9 @@ public class SetRepActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Intent intent = new Intent();
-                intent.putExtra("regionCode", regionCode);
-                intent.putExtra("path", path);
+
                 setRepRequest(path);
-                setResult(RESULT_OK, intent);
-                finish();
+
                 return true;
             case android.R.id.home:
                 finish();
@@ -264,7 +260,8 @@ public class SetRepActivity extends AppCompatActivity {
     }
 
     private void setRepRequest(String path) {
-        Log.e("setRepRequest", "cityKey : " + cityKey);
+        loadingDialog.show();
+        // Log.e("setRepRequest", "cityKey : " + cityKey);
 
         // body part
         RequestBody requetCityKey = RequestBody.create(MediaType.parse("text/plain"), cityKey);
@@ -284,16 +281,25 @@ public class SetRepActivity extends AppCompatActivity {
             public void onResponse(Call<SetRep> call, Response<SetRep> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.e("SetRepActivity", response.body().getData().toString());
+                        loadingDialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.putExtra("regionCode", regionCode);
+                        intent.putExtra("path", path);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
                 } else {
-                    Log.e("SetRepActivity", "setRepRequest error : " + Integer.toString(response.code()));
+                    loadingDialog.dismiss();
+                    Toast.makeText(SetRepActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("SetRepActivity", "setRepRequest isNotSuccessful() : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<SetRep> call, Throwable t) {
-                Log.e("SetRepActivity", "setRepRequest fail : " + t.getLocalizedMessage());
+                loadingDialog.dismiss();
+                Toast.makeText(SetRepActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
+                Log.e("SetRepActivity", "setRepRequest onFailure() : " + t.getLocalizedMessage());
             }
         });
     }

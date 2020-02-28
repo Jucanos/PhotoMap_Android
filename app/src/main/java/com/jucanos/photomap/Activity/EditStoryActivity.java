@@ -24,6 +24,8 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.EditStory;
 import com.jucanos.photomap.Structure.EditStoryRequest;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,17 +57,17 @@ public class EditStoryActivity extends AppCompatActivity {
         setHint();
     }
 
-    private void getIntentData(){
+    private void getIntentData() {
         title = getIntent().getStringExtra("title");
         context = getIntent().getStringExtra("context");
         sid = getIntent().getStringExtra("sid");
-        pos = getIntent().getIntExtra("pos",-1);
+        pos = getIntent().getIntExtra("pos", -1);
     }
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("스토리 편집");
     }
 
@@ -84,18 +86,18 @@ public class EditStoryActivity extends AppCompatActivity {
             case R.id.item_ok:
                 String title = editText_title.getText().toString();
                 String context = editText_context.getText().toString();
-                if(title.length() <=0 ){
+                if (title.length() <= 0) {
                     Toast.makeText(this, "제목을 입력 해주세요!", Toast.LENGTH_SHORT).show();
-                    showKeyBord(true,editText_title);
+                    showKeyBord(true, editText_title);
                 }
 
-                if(context.length() <= 0){
+                if (context.length() <= 0) {
                     Toast.makeText(this, "내용을 입력해주세요!", Toast.LENGTH_SHORT).show();
-                    showKeyBord(true,editText_context);
+                    showKeyBord(true, editText_context);
 
                 }
-                showKeyBord(false,editText_context);
-                editStoryRequest(title,context);
+                showKeyBord(false, editText_context);
+                editStoryRequest(title, context);
                 return true;
             // 뒤로가기 버튼
             case android.R.id.home:
@@ -106,59 +108,56 @@ public class EditStoryActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initMember(){
+    private void initMember() {
         editText_title = findViewById(R.id.editText_title);
         editText_context = findViewById(R.id.editText_context);
         mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         box = findViewById(R.id.box);
-        box.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        box.setOnTouchListener((v, event) -> true);
     }
 
-    private void setHint(){
+    private void setHint() {
         editText_title.setHint(title);
         editText_context.setHint(context);
         mKeyBord.showSoftInput(editText_title, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    private void showKeyBord(boolean show, EditText editText){
-        if(show){
+    private void showKeyBord(boolean show, EditText editText) {
+        if (show) {
             mKeyBord.showSoftInput(editText, 0);
-        }else{
+        } else {
             mKeyBord.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         }
     }
 
-    public void editStoryRequest(final String title, final String context){
+    public void editStoryRequest(final String title, final String context) {
         box.setVisibility(View.VISIBLE);
-        final Call<EditStory> res = NetworkHelper.getInstance().getService().editStory(GlobalApplication.getGlobalApplicationContext().token,sid,new EditStoryRequest(title,context));
+        final Call<EditStory> res = NetworkHelper.getInstance().getService().editStory(GlobalApplication.getGlobalApplicationContext().token, sid, new EditStoryRequest(title, context));
         res.enqueue(new Callback<EditStory>() {
             @Override
             public void onResponse(Call<EditStory> call, Response<EditStory> response) {
                 if (response.isSuccessful()) {
-                    Log.e("StoryActivity", "[removeStoryRequest] is Successful");
-                    redirectResult(title,context);
+                    // Log.e("StoryActivity", "[removeStoryRequest] is Successful");
+                    redirectResult(title, context);
                 } else {
-                    Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
+                    Log.e("StoryActivity", "removeStoryRequest isNotSuccessful" + response.code());
+                    Toast.makeText(EditStoryActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<EditStory> call, Throwable t) {
-                Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
+                Log.e("StoryActivity", "removeStoryRequest is onFailure" + t.getLocalizedMessage());
+                Toast.makeText(EditStoryActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void redirectResult(String title, String context){
+    public void redirectResult(String title, String context) {
         Intent intent = new Intent();
         intent.putExtra("title", title);
         intent.putExtra("context", context);
-        intent.putExtra("pos",pos);
+        intent.putExtra("pos", pos);
         setResult(RESULT_OK, intent);
         box.setVisibility(View.GONE);
         finish();

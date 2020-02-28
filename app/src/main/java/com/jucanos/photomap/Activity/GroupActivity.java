@@ -71,6 +71,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.MediaType;
@@ -133,7 +134,6 @@ public class GroupActivity extends AppCompatActivity {
     // loading Box;
     DynamicBox box;
     RelativeLayout rl_loading;
-    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("ClickableViewAccessibility")
@@ -154,13 +154,13 @@ public class GroupActivity extends AppCompatActivity {
         GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("GroupActivity", "[mRefMaps] onDataChange");
+                Log.e("GroupActivity", "mRefMaps : onDataChange");
                 getMapInfoRequest();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("GroupActivity", "[mRefMaps] onCancelled");
+                Log.e("GroupActivity", "mRefMaps : onCancelled");
             }
         });
     }
@@ -175,7 +175,7 @@ public class GroupActivity extends AppCompatActivity {
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title);
     }
 
@@ -189,12 +189,7 @@ public class GroupActivity extends AppCompatActivity {
         listView_member.setAdapter(adapter);
 
         rl_loading = findViewById(R.id.rl_loading);
-        rl_loading.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        rl_loading.setOnTouchListener((v, event) -> true);
 
 
         // PorterShapeImageView
@@ -344,9 +339,11 @@ public class GroupActivity extends AppCompatActivity {
 
     private void setBox() {
         box = new DynamicBox(this, mContainer);
-        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
-        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
-        box.showCustomView(LOADING_ONLY_PROGRESS);
+        View customView1 = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView1, globalApplication.LOADING_ONLY_PROGRESS);
+        View customView2 = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView2, globalApplication.LOADING_EXCEPTION);
+        box.showCustomView(globalApplication.LOADING_ONLY_PROGRESS);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -366,49 +363,37 @@ public class GroupActivity extends AppCompatActivity {
         mContainer.setClipChildren(true);
         mContainer.addView(zoomView);
 
-        zoomView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                handler.removeMessages(longClickId);
-                longClickId = -1;
-                return false;
-            }
+        zoomView.setOnTouchListener((v, event) -> {
+            handler.removeMessages(longClickId);
+            longClickId = -1;
+            return false;
         });
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void setFab() {
-        floatingActionMenu_menu.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (floatingActionMenu_menu.isOpened()) {
-                    floatingActionMenu_menu.close(true);
-                    return true;
-                }
-                return false;
+        floatingActionMenu_menu.setOnTouchListener((v, event) -> {
+            if (floatingActionMenu_menu.isOpened()) {
+                floatingActionMenu_menu.close(true);
+                return true;
             }
+            return false;
         });
 
-        floatingActionButton_rep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                floatingActionMenu_menu.close(true);
-                setMapRepRequest(mid, "false");
-            }
+        floatingActionButton_rep.setOnClickListener(v -> {
+            floatingActionMenu_menu.close(true);
+            setMapRepRequest(mid, "false");
         });
 
-        floatingActionButton_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                floatingActionMenu_menu.close(true);
-                rl_loading.setVisibility(View.VISIBLE);
-                try {
-                    BitmapUtils.saveViewImage(GroupActivity.this,findViewById(R.id.map));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                rl_loading.setVisibility(View.GONE);
+        floatingActionButton_save.setOnClickListener(v -> {
+            floatingActionMenu_menu.close(true);
+            rl_loading.setVisibility(View.VISIBLE);
+            try {
+                BitmapUtils.saveViewImage(GroupActivity.this, findViewById(R.id.map));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            rl_loading.setVisibility(View.GONE);
         });
     }
 
@@ -417,53 +402,45 @@ public class GroupActivity extends AppCompatActivity {
         drawerLayout_drawer.openDrawer(Gravity.RIGHT);
         drawerLayout_drawer.closeDrawer(GravityCompat.END);
         // 컨테이너 설정후 zoomView 추가
-        rl_drawer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        rl_drawer.setOnTouchListener((v, event) -> true);
         RelativeLayout relativeLayout_addMember = findViewById(R.id.relativeLayout_addMember);
-        relativeLayout_addMember.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("[addMember]", "onClick");
-                FeedTemplate params = FeedTemplate
-                        .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
-                                "https://ifh.cc/g/qJZiN.png",
-                                LinkObject.newBuilder()
-                                        .setMobileWebUrl("https://play.google.com")
-                                        .setWebUrl("https://play.google.com")
-                                        .setAndroidExecutionParams("mid=" + mid)
-                                        .setIosExecutionParams("mid=" + mid)
-                                        .build()
-                        )
-                                .build())
-                        .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
-                                .setMobileWebUrl("https://play.google.com")
-                                .setWebUrl("https://play.google.com")
-                                .setAndroidExecutionParams("mid=" + mid)
-                                .setIosExecutionParams("mid=" + mid)
-                                .build()))
-                        .build();
+        relativeLayout_addMember.setOnClickListener(v -> {
+            Log.e("[addMember]", "onClick");
+            FeedTemplate params = FeedTemplate
+                    .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
+                            "https://ifh.cc/g/qJZiN.png",
+                            LinkObject.newBuilder()
+                                    .setMobileWebUrl("https://play.google.com")
+                                    .setWebUrl("https://play.google.com")
+                                    .setAndroidExecutionParams("mid=" + mid)
+                                    .setIosExecutionParams("mid=" + mid)
+                                    .build()
+                    )
+                            .build())
+                    .addButton(new ButtonObject("초대 받기", LinkObject.newBuilder()
+                            .setMobileWebUrl("https://play.google.com")
+                            .setWebUrl("https://play.google.com")
+                            .setAndroidExecutionParams("mid=" + mid)
+                            .setIosExecutionParams("mid=" + mid)
+                            .build()))
+                    .build();
 
-                //  콜백으로 링크 잘갔는지 확인
-                Map<String, String> serverCallbackArgs = new HashMap<String, String>();
-                serverCallbackArgs.put("user_id", "${current_user_id}");
-                serverCallbackArgs.put("product_id", "${shared_product_id}");
+            //  콜백으로 링크 잘갔는지 확인
+            Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+            serverCallbackArgs.put("user_id", "${current_user_id}");
+            serverCallbackArgs.put("product_id", "${shared_product_id}");
 
-                KakaoLinkService.getInstance().sendDefault(GroupActivity.this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
-                    @Override
-                    public void onFailure(ErrorResult errorResult) {
-                        Logger.e(errorResult.toString());
-                    }
+            KakaoLinkService.getInstance().sendDefault(GroupActivity.this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    Logger.e(errorResult.toString());
+                }
 
-                    @Override
-                    public void onSuccess(KakaoLinkResponse result) {
-                        // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
-                    }
-                });
-            }
+                @Override
+                public void onSuccess(KakaoLinkResponse result) {
+                    // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
+                }
+            });
         });
     }
 
@@ -488,7 +465,7 @@ public class GroupActivity extends AppCompatActivity {
                         @Override
                         public void onPositiveClicked() {
                             yesNoDialog.dismiss();
-                            box.showCustomView(LOADING_ONLY_PROGRESS);
+                            box.showCustomView(globalApplication.LOADING_ONLY_PROGRESS);
                             deleteRepRequest(GlobalApplication.getGlobalApplicationContext().cityKeyInt.get(regionCode), regionCode);
                         }
 
@@ -556,10 +533,10 @@ public class GroupActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SET_REP_REQUEST) {
             if (resultCode == RESULT_OK) {
-                box.showCustomView(LOADING_ONLY_PROGRESS);
-                Integer regionCode = data.getIntExtra("regionCode", -1);
+                box.showCustomView(globalApplication.LOADING_ONLY_PROGRESS);
+                int regionCode = data.getIntExtra("regionCode", -1);
                 String path = data.getStringExtra("path");
-                Log.e("GroupActivity", "regionCode : " + Integer.toString(regionCode));
+                Log.e("GroupActivity", "regionCode : " + regionCode);
                 Log.e("GroupActivity", "path : " + path);
                 porterShapeImageViews[regionCode].setImageBitmap(BitmapUtils.getBitmapByPath(path));
                 mBorders[regionCode].setVisibility(View.VISIBLE);
@@ -568,17 +545,15 @@ public class GroupActivity extends AppCompatActivity {
     }
 
 
-
-
     void getMapInfoRequest() {
-        box.showCustomView(LOADING_ONLY_PROGRESS);
-        Log.e("GroupActivity", "getMapInfoRequest");
+        box.showCustomView(globalApplication.LOADING_ONLY_PROGRESS);
+        // Log.e("GroupActivity", "getMapInfoRequest");
         final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo(globalApplication.token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
             @Override
             public void onResponse(Call<GetMapInfo> call, Response<GetMapInfo> response) {
                 if (response.isSuccessful()) {
-                    Log.e("GroupActivity", "response.isSuccessful()");
+                    // Log.e("GroupActivity", "response.isSuccessful()");
                     adapter.clear();
                     if (response.body() != null) {
                         for (int i = 0; i < response.body().getData().getGetMapInfoDataOwners().size(); i++) {
@@ -594,13 +569,15 @@ public class GroupActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                     }
                 } else {
-                    Log.e("requestCreateMap", Integer.toString(response.code()));
+                    Log.e("GroupActivity", "getMapInfoRequest isNotSuccessfUl() : "+ response.code());
+                    box.showCustomView(globalApplication.LOADING_EXCEPTION);
                 }
             }
 
             @Override
             public void onFailure(Call<GetMapInfo> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Log.e("GroupActivity", "getMapInfoRequest onFailure : "+ t.getLocalizedMessage());
+                box.showCustomView(globalApplication.LOADING_EXCEPTION);
             }
         });
     }
@@ -661,14 +638,14 @@ public class GroupActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.e("GroupActivity", "response.isSuccessful()");
-                    Toast.makeText(GroupActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SetRep> call, Throwable t) {
                 Log.e("GroupActivity", "response.isSuccessful()");
-                Toast.makeText(GroupActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -680,21 +657,21 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
                 if (response.isSuccessful()) {
-                    Log.e("setMapRepRequest", "response.isSuccessful()");
+                    // Log.e("GroupActivity", "setMapRepRequest isSuccesful()");
                     globalApplication.authorization.getUserData().setPrimary(mid);
                     Toast.makeText(GroupActivity.this, "대표 지도로 설정되었습니다", Toast.LENGTH_SHORT).show();
                     rl_loading.setVisibility(View.GONE);
                 } else {
-                    Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                    Log.e("setMapRepRequest", "response.isNotSuccessful()");
-                   rl_loading.setVisibility(View.GONE);
+                    Toast.makeText(GroupActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("GroupActivity", "setMapRepRequest isNotSuccessful()" + response.code());
+                    rl_loading.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
-                Toast.makeText(GroupActivity.this, "대표 지도 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("setMapRepRequest", t.getLocalizedMessage());
+                Toast.makeText(GroupActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
+                Log.e("GroupActivity", "setMapRepRequest isNotSuccessful()" + t.getLocalizedMessage());
                 rl_loading.setVisibility(View.GONE);
             }
         });

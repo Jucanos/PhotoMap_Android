@@ -42,6 +42,11 @@ public class GlobalApplication extends Application {
     public FirebaseDatabase database;
     public DatabaseReference mRefMaps, mRefUsers, mRefUser;
 
+    public final String LOADING_ONLY_PROGRESS = "loading_only_progress";
+    public final String LOADING_EXCEPTION = "loading_exception";
+    public final String LOADING_INTERNET = "loading_exception";
+
+
     public static GlobalApplication getInstance() {
         return instance;
     }

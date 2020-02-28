@@ -2,22 +2,16 @@ package com.jucanos.photomap.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,9 +51,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.OnClickListener {
     public static final String TAG = "com.bilibili.boxing_impl.ui.BoxingViewFragment";
@@ -72,18 +66,11 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     private boolean mIsPreview;
     private boolean mIsCamera;
 
-    //private Button mPreBtn;
-    //private Button mOkBtn;
     private CoordinatorRecyclerView mRecycleView;
-
     private MyBoxingMediaAdapter mMediaAdapter;
     private BoxingAlbumAdapter mAlbumWindowAdapter;
-
-    private ProgressDialog mDialog;
-    private TextView mEmptyTxt;
     private TextView mTitleTxt;
     private PopupWindow mAlbumPopWindow;
-    private ProgressBar mLoadingView;
 
     // intent data
     private String mid, cityKey;
@@ -155,7 +142,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return inflater.inflate(com.bilibili.boxing_impl.R.layout.fragmant_boxing_view, container, false);
         return inflater.inflate(R.layout.fragmant_boxing_view, container, false);
     }
 
@@ -190,30 +176,12 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         textView_next.setOnClickListener(this);
         textView_cancel.setOnClickListener(this);
 
-        mEmptyTxt = (TextView) view.findViewById(R.id.empty_txt);
-        mRecycleView = (CoordinatorRecyclerView) view.findViewById(R.id.media_recycleview);
+        mRecycleView = view.findViewById(R.id.media_recycleview);
         mRecycleView.setHasFixedSize(true);
-        mLoadingView = (ProgressBar) view.findViewById(R.id.loading);
-
 
         setTitleTxt(album_text_view);
         setLayoutSize();
         initRecycleView();
-
-        //boolean isMultiImageMode = BoxingManager.getInstance().getBoxingConfig().isMultiImageMode();
-        //View multiImageLayout = view.findViewById(R.id.multi_picker_layout);
-        //multiImageLayout.setVisibility(isMultiImageMode ? View.VISIBLE : View.GONE);
-        //if (isMultiImageMode) {
-//            mPreBtn = (Button) view.findViewById(R.id.choose_preview_btn);
-//            mOkBtn = (Button) view.findViewById(R.id.choose_ok_btn);
-//
-//            mPreBtn.setText("미리보기");
-//            mOkBtn.setText("확인");
-//
-//            mPreBtn.setOnClickListener(this);
-//            mOkBtn.setOnClickListener(this);
-        //  updateMultiPickerLayoutState(mMediaAdapter.getSelectedMedias());
-        //}
     }
 
     private void setLayoutSize() {
@@ -287,31 +255,11 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     }
 
     private void updateMultiPickerLayoutState(List<BaseMedia> medias) {
-        updateOkBtnState(medias);
-        updatePreviewBtnState(medias);
-    }
 
-    private void updatePreviewBtnState(List<BaseMedia> medias) {
-//        if (mPreBtn == null || medias == null) {
-//            return;
-//        }
-//        boolean enabled = medias.size() > 0 && medias.size() <= mMaxCount;
-//        mPreBtn.setEnabled(enabled);
-    }
-
-    private void updateOkBtnState(List<BaseMedia> medias) {
-//        if (mOkBtn == null || medias == null) {
-//            return;
-//        }
-//        boolean enabled = medias.size() > 0 && medias.size() <= mMaxCount;
-//        mOkBtn.setEnabled(enabled);
-//        mOkBtn.setText(enabled ? getString(com.bilibili.boxing_impl.R.string.boxing_image_select_ok_fmt, String.valueOf(medias.size())
-//                , String.valueOf(mMaxCount)) : ("확인"));
     }
 
     @Override
     public void onCameraFinish(BaseMedia media) {
-        dismissProgressDialog();
         mIsCamera = false;
         if (media == null) {
             return;
@@ -328,7 +276,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
     @Override
     public void onCameraError() {
         mIsCamera = false;
-        dismissProgressDialog();
     }
 
     @Override
@@ -348,19 +295,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                 getActivity().finish();
                 break;
         }
-//        if (id == R.id.choose_ok_btn) {
-//            onFinish(mMediaAdapter.getSelectedMedias());
-//        } else if (id == R.id.choose_preview_btn) {
-//            if (!mIsPreview) {
-//                mIsPreview = true;
-//                ArrayList<BaseMedia> medias = (ArrayList<BaseMedia>) mMediaAdapter.getSelectedMedias();
-//                Boxing.get().withIntent(getActivity(), BoxingViewActivity.class, medias)
-//                        .start(this, MyBoxingViewFragment.IMAGE_PREVIEW_REQUEST_CODE, BoxingConfig.ViewMode.PRE_EDIT);
-//
-//            }
-//            onFinish(mMediaAdapter.getSelectedMedias());
-//        }
-
     }
 
     @Override
@@ -393,27 +327,9 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     @Override
     public void onCameraActivityResult(int requestCode, int resultCode) {
-        showProgressDialog();
         super.onCameraActivityResult(requestCode, resultCode);
     }
 
-    private void showProgressDialog() {
-        if (mDialog == null) {
-            mDialog = new ProgressDialog(getActivity());
-            mDialog.setIndeterminate(true);
-            mDialog.setMessage(getString(com.bilibili.boxing_impl.R.string.boxing_handling));
-        }
-        if (!mDialog.isShowing()) {
-            mDialog.show();
-        }
-    }
-
-    private void dismissProgressDialog() {
-        if (mDialog != null && mDialog.isShowing()) {
-            mDialog.hide();
-            mDialog.dismiss();
-        }
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -423,7 +339,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         onSaveMedias(outState, medias);
     }
 
-    public void setTitleTxt(TextView titleTxt) {
+    private void setTitleTxt(TextView titleTxt) {
         mTitleTxt = titleTxt;
         mTitleTxt.setOnClickListener(new View.OnClickListener() {
 
@@ -448,17 +364,12 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
             @NonNull
             private View createWindowView() {
                 View view = LayoutInflater.from(getActivity()).inflate(com.bilibili.boxing_impl.R.layout.layout_boxing_album, null);
-                RecyclerView recyclerView = (RecyclerView) view.findViewById(com.bilibili.boxing_impl.R.id.album_recycleview);
+                RecyclerView recyclerView = view.findViewById(com.bilibili.boxing_impl.R.id.album_recycleview);
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
                 recyclerView.addItemDecoration(new SpacesItemDecoration(2, 1));
 
                 View albumShadowLayout = view.findViewById(com.bilibili.boxing_impl.R.id.album_shadow);
-                albumShadowLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dismissAlbumWindow();
-                    }
-                });
+                albumShadowLayout.setOnClickListener(v -> dismissAlbumWindow());
                 mAlbumWindowAdapter.setAlbumOnClickListener(new MyBoxingViewFragment.OnAlbumItemOnClickListener());
                 recyclerView.setAdapter(mAlbumWindowAdapter);
                 return view;
@@ -570,7 +481,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     public void ClickImage(View view, BaseMedia iMedia) {
         if (!mIsPreview) {
-            Log.e("[multiImageClick]", "image click");
+//            Log.e("[multiImageClick]", "image click");
             if (!(iMedia instanceof ImageMedia)) {
                 return;
             }
@@ -580,11 +491,11 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
             List<BaseMedia> selectedMedias = mMediaAdapter.getSelectedMedias();
             HashMap<String, SeletedMediaInfo> seletedMediaInfoHashMap = mMediaAdapter.getSeletedMediaInfoHashMap();
-            Log.e("===============", photoMedia.getId() + "==============");
+//            Log.e("===============", photoMedia.getId() + "==============");
             if (preSelected) {
                 SeletedMediaInfo seletedMediaInfo = seletedMediaInfoHashMap.get(photoMedia.getId());
                 if (seletedMediaInfo.getCur()) {
-                    Log.e("seletedMediaInfo", "getCur() is true");
+//                    Log.e("seletedMediaInfo", "getCur() is true");
                     int removeCount = seletedMediaInfo.getCount();
                     int removePos = seletedMediaInfo.clear();
                     mMediaAdapter.getPq().offer(removePos);
@@ -601,21 +512,20 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                     photoMedia.setSelected(false);
                     selectedMedias.remove(photoMedia);
                 } else {
-                    Log.e("seletedMediaInfo", "getCur() is false");
+//                    Log.e("seletedMediaInfo", "getCur() is false");
                     for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
                         if (seletedMediaInfoEntry.getValue().getCur()) {
                             seletedMediaInfoEntry.getValue().setCur(false);
-                            Log.e("seletedMediaInfoEntry", seletedMediaInfoEntry.getKey() + "is set False");
+//                            Log.e("seletedMediaInfoEntry", seletedMediaInfoEntry.getKey() + "is set False");
                             break;
                         }
                     }
                     seletedMediaInfo.setCur(true);
-                    Log.e("seletedMediaInfoEntry", photoMedia.getId() + "is set true");
+//                    Log.e("seletedMediaInfoEntry", photoMedia.getId() + "is set true");
 
                 }
 
             } else {
-                // 일단 필요없는부분
                 if (selectedMedias.size() >= mMaxCount) {
                     Toast.makeText(getActivity(), "최대 5장만 선택 가능합니다", Toast.LENGTH_SHORT).show();
                     return;
@@ -625,23 +535,20 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         Toast.makeText(getActivity(), "이미지의 크기가 너무 큽니다", Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-                        Log.e("selectedMedias", "new insert");
-                        // 새롭게 들어가는 곳
-                        int lPos = selectedMedias.size() - 1;
+//                        Log.e("selectedMedias", "new insert");
                         int nPos = selectedMedias.size();
 
                         for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
                             if (seletedMediaInfoEntry.getValue().getCur()) {
                                 seletedMediaInfoEntry.getValue().setCur(false);
-                                Log.e("seletedMediaInfoEntry", seletedMediaInfoEntry.getKey() + "is set False");
+//                                Log.e("seletedMediaInfoEntry", seletedMediaInfoEntry.getKey() + "is set False");
                                 break;
                             }
                         }
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
                         seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, instaCropperViews.get(cropViewPos)));
-                        Log.e("nPos", Integer.toString(nPos));
-                        return;
+//                        Log.e("nPos", Integer.toString(nPos));
                     }
                 }
             }
@@ -658,7 +565,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                     bitmap -> {
                         try {
                             String fileName = "image_" + System.currentTimeMillis();
-                            String path = BitmapUtils.saveBitmap(fileName, bitmap, 50, getActivity().getApplicationContext());
+                            String path = BitmapUtils.saveBitmap(fileName, bitmap, 50, Objects.requireNonNull(getActivity()));
                             Integer order = seletedMediaInfoEntry.getValue().getCount();
                             aPaths.add(new Pair<Integer, String>(order, path));
                             if (aPaths.size() == mMediaAdapter.getSeletedMediaInfoHashMap().size()) {
@@ -674,12 +581,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
     void redirectAddStoryActivity(ArrayList<Pair<Integer, String>> aPaths) {
         ArrayList<String> bPaths = new ArrayList<>();
-        Collections.sort(aPaths, new Comparator<Pair<Integer, String>>() {
-            @Override
-            public int compare(Pair<Integer, String> o1, Pair<Integer, String> o2) {
-                return o1.first.compareTo(o2.first);
-            }
-        });
+        Collections.sort(aPaths, (o1, o2) -> o1.first.compareTo(o2.first));
 
         for (int i = 0; i < aPaths.size(); i++) {
             bPaths.add(aPaths.get(i).second);
@@ -690,7 +592,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", cityKey);
         loadingDialog.dismiss();
-        getActivity().startActivityForResult(intent, ADD_STORY_REQUEST);
+        Objects.requireNonNull(getActivity()).startActivityForResult(intent, ADD_STORY_REQUEST);
         getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }
 }

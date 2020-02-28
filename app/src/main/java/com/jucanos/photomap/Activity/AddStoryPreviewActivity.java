@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.jucanos.photomap.Dialog.LoadingDialog;
 import com.jucanos.photomap.MyRecyclerViewAdapter;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.SliderViewAdapter.AddStoryImagePreviewSliderAdapter;
@@ -45,9 +47,9 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     // intent request code
     private final int ADD_STORY_REQUEST = 1;
+    private LoadingDialog loadingDialog;
 
     // for loading
-    private CardView rl_laoding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +74,11 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void initMember() {
         viewPager = findViewById(R.id.viewPager);
         textView_indicator = findViewById(R.id.tv_indicator);
-        rl_laoding = findViewById(R.id.rl_laoding);
-        rl_laoding.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        loadingDialog= new LoadingDialog(this);
     }
 
     public void setToolbar() {
@@ -89,7 +86,6 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         textView_next.setOnClickListener(this);
         TextView textView_cancel = findViewById(R.id.textView_cancel);
         textView_cancel.setOnClickListener(this);
-
     }
 
     public void loadImages() {
@@ -184,7 +180,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
     }
 
     public void redirectAddStoryPeedActivity() throws IOException {
-        ((CardView)rl_laoding).setVisibility(View.VISIBLE);
+        loadingDialog.show();
         ArrayList<String> paths = new ArrayList<>();
         for (int i = 0; i < addStoryImagePreviewSliderAdapter.getCount(); i++) {
             Bitmap bm = addStoryImagePreviewSliderAdapter.getBitmap(i);
@@ -198,7 +194,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
         intent.putExtra("mid", mid);
         intent.putExtra("cityKey", cityKey);
 
-        ((CardView)rl_laoding).setVisibility(View.GONE);
+        loadingDialog.dismiss();
         startActivityForResult(intent, ADD_STORY_REQUEST);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
     }

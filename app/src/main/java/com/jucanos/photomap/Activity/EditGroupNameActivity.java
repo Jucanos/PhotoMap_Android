@@ -25,6 +25,8 @@ import com.jucanos.photomap.Structure.CreateMapRequest;
 import com.jucanos.photomap.Structure.EditGroup;
 import com.jucanos.photomap.Structure.EditGroupRequest;
 
+import java.util.Objects;
+
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +60,7 @@ public class EditGroupNameActivity extends AppCompatActivity {
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("그룹 이름 편집");
     }
 
@@ -123,7 +125,7 @@ public class EditGroupNameActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<EditGroup> call, Response<EditGroup> response) {
                 if (response.isSuccessful()) {
-                    Log.e("EditGroupNameActivity", "response.isSuccessful()");
+                    // Log.e("EditGroupNameActivity", "response.isSuccessful()");
                     Intent intent = new Intent();
                     intent.putExtra("title", title);
                     intent.putExtra("pos", pos);
@@ -131,13 +133,17 @@ public class EditGroupNameActivity extends AppCompatActivity {
                     mBox.hideAll();
                     finish();
                 } else {
-                    Log.e("EditGroupNameActivity", "response.isNotSuccessful()");
+                    Log.e("EditGroupNameActivity", "editGroupRequest is isNotSuccessful: " + response.code());
+                    Toast.makeText(EditGroupNameActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
+                    mBox.hideAll();
                 }
             }
 
             @Override
             public void onFailure(Call<EditGroup> call, Throwable t) {
-                Log.e("EditGroupNameActivity", t.getLocalizedMessage());
+                Toast.makeText(EditGroupNameActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
+                Log.e("EditGroupNameActivity", "editGroupRequest : " + t.getLocalizedMessage());
+                mBox.hideAll();
             }
         });
     }

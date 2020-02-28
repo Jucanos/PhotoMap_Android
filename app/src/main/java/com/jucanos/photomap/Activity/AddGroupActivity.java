@@ -24,6 +24,8 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.CreateMap;
 import com.jucanos.photomap.Structure.CreateMapRequest;
 
+import java.util.Objects;
+
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +65,7 @@ public class AddGroupActivity extends AppCompatActivity {
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("그룹 생성");
 
     }
@@ -125,14 +127,16 @@ public class AddGroupActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    mBox.showExceptionLayout();
+                    mBox.hideAll();
+                    Toast.makeText(AddGroupActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                     Log.e("AddGroupActivity", "requestCreateMap isNotSuccessful() : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<CreateMap> call, Throwable t) {
-                mBox.showExceptionLayout();
+                mBox.hideAll();
+                Toast.makeText(AddGroupActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                 Log.e("AddGroupActivity", "requestCreateMap is onFailure : " + t.getLocalizedMessage());
             }
         });

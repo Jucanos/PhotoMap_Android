@@ -4,22 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.jucanos.photomap.Dialog.LoadingDialog;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.SliderViewAdapter.AddStoryImageSliderAdapter;
 import com.jucanos.photomap.Structure.CreateStory;
 
 import java.io.File;
@@ -64,8 +60,8 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
         paths = getIntent().getStringArrayListExtra("paths");
         mid = getIntent().getStringExtra("mid");
         cityKey = getIntent().getStringExtra("cityKey");
-        Log.e("AddStoryPeedActivity", "[mid] : " + mid);
-        Log.e("AddStoryPeedActivity", "[cityKey] : " + cityKey);
+        // Log.e("AddStoryPeedActivity", "[mid] : " + mid);
+        // Log.e("AddStoryPeedActivity", "[cityKey] : " + cityKey);
     }
 
     public void initMember() {
@@ -155,7 +151,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
                     }
                 } else {
                     Log.e("AddStoryPeedActivity", "response.isNotSuccessful()");
-                    Toast.makeText(AddStoryPeedActivity.this, "업로드 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddStoryPeedActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                     loadingDialog.dismiss();
                 }
             }
@@ -163,7 +159,7 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onFailure(Call<CreateStory> call, Throwable t) {
                 Log.e("AddStoryPeedActivity", "onFailure : " + t.getLocalizedMessage());
-                Toast.makeText(AddStoryPeedActivity.this, "업로드 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddStoryPeedActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                 loadingDialog.dismiss();
             }
         });

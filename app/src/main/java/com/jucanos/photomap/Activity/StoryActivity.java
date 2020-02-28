@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 import retrofit2.Call;
@@ -37,18 +39,20 @@ import retrofit2.Response;
 public class StoryActivity extends AppCompatActivity {
     public GlobalApplication globalApplication;
 
+    // intent data
+    private String mid, cityKey, cityName;
+
     private RelativeLayout rl_existStory, rl_noStory;
     private ListView listView_story;
     private StoryListViewAdapter listView_storyApater;
+
+    // request code
     private int ADD_STORY_REQUEST = 1;
     private int EDIT_STORY_REQUEST = 2;
-
-    private String mid, cityKey, cityName;
 
     // for loading
     private DynamicBox box;
     private RelativeLayout rl_box;
-    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,7 @@ public class StoryActivity extends AppCompatActivity {
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_tb);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(cityName);
     }
 
@@ -85,18 +89,15 @@ public class StoryActivity extends AppCompatActivity {
         rl_existStory = findViewById(R.id.rl_existStory);
         rl_noStory = findViewById(R.id.rl_noStory);
         rl_box = findViewById(R.id.rl_box);
-        rl_box.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        rl_box.setOnTouchListener((v, event) -> true);
     }
 
     private void setBox() {
         box = new DynamicBox(this, rl_existStory);
-        View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
-        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
+        View customView1 = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView1, globalApplication.LOADING_ONLY_PROGRESS);
+        View customView2 = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
+        box.addCustomView(customView2, globalApplication.LOADING_EXCEPTION);
     }
 
 
@@ -178,14 +179,14 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     void loadStoryList() {
-        box.showCustomView(LOADING_ONLY_PROGRESS);
+        box.showCustomView(globalApplication.LOADING_ONLY_PROGRESS);
         final Call<GetStoryList> res = NetworkHelper.getInstance().getService().getStoryList(globalApplication.token, mid, cityKey);
         res.enqueue(new Callback<GetStoryList>() {
             @Override
             public void onResponse(Call<GetStoryList> call, Response<GetStoryList> response) {
                 if (response.isSuccessful()) {
                     listView_storyApater.clear();
-                    Log.e("StoryActivity", "response.isSuccessful()");
+                    // Log.e("StoryActivity", "response.isSuccessful()");
                     if (response.body() != null) {
                         Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
                             @Override
@@ -194,18 +195,18 @@ public class StoryActivity extends AppCompatActivity {
                             }
                         });
                         for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
-//                            Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
-//                            Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
-//                            Log.e("StoryActivity", "[title] : " + response.body().getGetStoryListItems().get(i).getTitle());
-//                            Log.e("StoryActivity", "[context] : " + response.body().getGetStoryListItems().get(i).getContext());
-//                            if (response.body().getGetStoryListItems().get(i).getFiles() == null) {
-//                                Log.e("StoryActivity", "[file] : is null");
-//                            } else {
-//                                Log.e("StoryActivity", "[files] : " + response.body().getGetStoryListItems().get(i).getFiles().toString());
-//                            }
-//                            Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
-//                            Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
-//                            Log.e("StoryActivity", "[creator] : " + response.body().getGetStoryListItems().get(i).getCreator());
+                            // Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
+                            // Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());
+                            // Log.e("StoryActivity", "[title] : " + response.body().getGetStoryListItems().get(i).getTitle());
+                            // Log.e("StoryActivity", "[context] : " + response.body().getGetStoryListItems().get(i).getContext());
+                            // if (response.body().getGetStoryListItems().get(i).getFiles() == null) {
+                            //     Log.e("StoryActivity", "[file] : is null");
+                            // } else {
+                            //     Log.e("StoryActivity", "[files] : " + response.body().getGetStoryListItems().get(i).getFiles().toString());
+                            // }
+                            // Log.e("StoryActivity", "[sid] : " + response.body().getGetStoryListItems().get(i).getSid());
+                            // Log.e("StoryActivity", "[mid] : " + response.body().getGetStoryListItems().get(i).getMid());
+                            // Log.e("StoryActivity", "[creator] : " + response.body().getGetStoryListItems().get(i).getCreator());
                             Date createdAt = response.body().getGetStoryListItems().get(i).getCreatedAt();
                             Date updatedAt = response.body().getGetStoryListItems().get(i).getUpdatedAt();
                             String title = response.body().getGetStoryListItems().get(i).getTitle();
@@ -230,13 +231,14 @@ public class StoryActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.e("StoryActivity", "response.isNotSuccessful() : " + response.code());
-                    box.showExceptionLayout();
+                    box.showCustomView(globalApplication.LOADING_EXCEPTION);
                 }
             }
 
             @Override
             public void onFailure(Call<GetStoryList> call, Throwable t) {
                 Log.e("StoryActivity", "onFailure : " + t.getLocalizedMessage());
+                box.showCustomView(globalApplication.LOADING_EXCEPTION);
             }
         });
     }
@@ -254,11 +256,13 @@ public class StoryActivity extends AppCompatActivity {
                     rl_box.setVisibility(View.GONE);
                 } else {
                     Log.e("StoryActivity", "[removeStoryRequest] " + Integer.toString(response.code()));
+                    Toast.makeText(StoryActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RemoveStory> call, Throwable t) {
+                Toast.makeText(StoryActivity.this, "요청 실패", Toast.LENGTH_SHORT).show();
                 Log.e("StoryActivity", "[removeStoryRequest fail] " + t.getLocalizedMessage());
             }
         });

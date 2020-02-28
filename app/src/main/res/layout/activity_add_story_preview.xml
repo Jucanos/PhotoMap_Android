@@ -96,20 +96,6 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="40dp" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/rl_laoding"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/transparent_black"
-        android:visibility="gone"
-        app:cardElevation="20dp">
-
-        <include
-            layout="@layout/loading_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>
