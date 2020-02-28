@@ -40,15 +40,9 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     private String cityKey;
     private String mid;
 
-    private RelativeLayout rv_total, rl_loading;
-    //private  // ,textView_indicator;
     private EditText editText_title, editText_context;
 
     private ArrayList<String> paths = new ArrayList<>();
-
-    private AddStoryImageSliderAdapter addStoryImageSliderAdapter;
-    //  private ViewPager viewPager;
-
 
     private InputMethodManager mKeyBord;
     private LoadingDialog loadingDialog;
@@ -77,7 +71,6 @@ public class AddStoryPeedActivity extends AppCompatActivity implements View.OnCl
     public void initMember() {
         editText_title = findViewById(R.id.editText_title);
         editText_context = findViewById(R.id.editText_context);
-        rv_total = findViewById(R.id.rl_total);
         mKeyBord = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
 

@@ -220,5 +220,9 @@ public class GroupListViewAdapter extends BaseAdapter {
         });
     }
 
+    public void clear(){
+        listViewItemList.clear();
+        notifyDataSetChanged();
+    }
 
 }

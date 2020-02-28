@@ -55,11 +55,4 @@
             android:dividerHeight="0dp" />
     </RelativeLayout>
 
-    <include
-        android:id="@+id/rl_box"
-        layout="@layout/loading_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
 </RelativeLayout>

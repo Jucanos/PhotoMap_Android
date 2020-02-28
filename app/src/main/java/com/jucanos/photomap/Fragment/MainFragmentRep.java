@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -64,11 +65,11 @@ public class MainFragmentRep extends Fragment {
     private PorterShapeImageView imageView_jeju; // 9
     private ImageView imageView_jeju_front;
 
-    final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
-    final ImageView[] imageViews = new ImageView[10];
-    final ImageView[] mBorders = new ImageView[10];
-    final int[] mWhite = new int[10];
-    final int[] mBlack = new int[10];
+    private final PorterShapeImageView[] porterShapeImageViews = new PorterShapeImageView[10];
+    private final ImageView[] imageViews = new ImageView[10];
+    private final ImageView[] mBorders = new ImageView[10];
+    private final int[] mWhite = new int[10];
+    private final int[] mBlack = new int[10];
     private final int[] mDefault = new int[10];
 
     private RelativeLayout noRep, existRep, layout_map;
@@ -98,7 +99,6 @@ public class MainFragmentRep extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("대표지도");
-        setHasOptionsMenu(true);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -109,30 +109,26 @@ public class MainFragmentRep extends Fragment {
         layout_map = view.findViewById(R.id.layout_map);
 
 
-        layout_map.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    final YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "대표지도의 그룹으로 이동하시겠습니까?");
-                    yesNoDialog.setDialogListener(new YesNoDialogListener() {
-                        @Override
-                        public void onPositiveClicked() {
-                            yesNoDialog.dismiss();
-                            redirectGroupActivity(mValueEventListenerMid, title);
-                        }
-                        @Override
-                        public void onNegativeClicked() {
-                            yesNoDialog.dismiss();
-                        }
-                    });
-                    yesNoDialog.show();
-                }
-                return true;
+        layout_map.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                final YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "대표지도의 그룹으로 이동하시겠습니까?");
+                yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                    @Override
+                    public void onPositiveClicked() {
+                        yesNoDialog.dismiss();
+                        redirectGroupActivity(mValueEventListenerMid, title);
+                    }
+
+                    @Override
+                    public void onNegativeClicked() {
+                        yesNoDialog.dismiss();
+                    }
+                });
+                yesNoDialog.show();
             }
+            return true;
         });
 
-
-        // PorterShapeImageView
         imageView_gyeonggi = view.findViewById(R.id.imageView_gyeonggi);
         imageView_gyeonggi_front = view.findViewById(R.id.imageView_gyeonggi_front);
         mBorders[1] = view.findViewById(R.id.imageView_gyeonggi_border);
@@ -215,7 +211,6 @@ public class MainFragmentRep extends Fragment {
         mWhite[9] = R.drawable.ic_map_jeju_white;
         mBlack[9] = R.drawable.ic_map_jeju_black;
         mDefault[9] = R.drawable.map_jeju;
-
     }
 
     private void setBox() {
@@ -224,7 +219,10 @@ public class MainFragmentRep extends Fragment {
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
     }
 
-    // 대표 지도 유뮤 체크 후 대표 사진 불러오기
+    /**
+     * 대표 지도 유뮤 체크 후 대표 사진 불러오기
+     * globalapplication, firebase, 전역변수mid 에 따라 경우를 나눔
+     */
     public void setRep() {
         final String repMid = GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary();
         noRep.setVisibility(View.GONE);
@@ -232,7 +230,7 @@ public class MainFragmentRep extends Fragment {
         layout_map.setVisibility(View.GONE);
         box.showCustomView(LOADING_ONLY_PROGRESS);
         if (repMid == null) {
-            Log.e("setRep", "repMid == null");
+            Log.e("MainFragmentRep", "setRep : repMid == null");
             if (mValueEventListener != null) {
                 GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
                 mValueEventListener = null;
@@ -241,14 +239,13 @@ public class MainFragmentRep extends Fragment {
             setLayout(false);
         } else {
             if (mValueEventListener == null) {
-                Log.e("setRep", "mValueEventListener == null");
-
+                Log.e("MainFragmentRep", "setRep : mValueEventListener == null");
                 mValueEventListenerMid = repMid;
                 mValueEventListener = GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null) {
-                            Log.e("onDataChange", "GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
+                            Log.e("setRep", "onDataChange : GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
                             mValueEventListener = null;
                             mValueEventListenerMid = null;
                             setLayout(false);
@@ -262,14 +259,14 @@ public class MainFragmentRep extends Fragment {
                     }
                 });
             } else {
-                Log.e("setRep", "mValueEventListener != null");
+                Log.e("MainFragmentRep", "setRep : mValueEventListener != null");
                 GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
                 mValueEventListenerMid = repMid;
                 mValueEventListener = GlobalApplication.getGlobalApplicationContext().mRefMaps.child(repMid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null) {
-                            Log.e("onDataChange", "GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
+                            Log.e("setRep", "onDataChange : GlobalApplication.getGlobalApplicationContext().authorization.getUserData().getPrimary() == null");
                             GlobalApplication.getGlobalApplicationContext().mRefMaps.child(mValueEventListenerMid).removeEventListener(mValueEventListener);
                             mValueEventListener = null;
                             mValueEventListenerMid = null;
@@ -287,8 +284,11 @@ public class MainFragmentRep extends Fragment {
         }
     }
 
-    // 맵 정보 가져오기 request
-    void getMapInfoRequest(String mid) {
+    /**
+     * 맵 정보 가져오기 request
+     * @param mid : mid에 해당하는 정보를 가져옴.
+     */
+    private void getMapInfoRequest(String mid) {
         final Call<GetMapInfo> res = NetworkHelper.getInstance().getService().getMapInfo(GlobalApplication.getGlobalApplicationContext().token, mid);
         res.enqueue(new Callback<GetMapInfo>() {
             @Override
@@ -298,21 +298,25 @@ public class MainFragmentRep extends Fragment {
                     if (response.body() != null) {
                         setRep(getMapInfo.getData().getGetMapInfoDataRepresents());
                         title = getMapInfo.getData().getName();
-                        Log.e("getMapInfoRequest", "response.isSuccessful()");
                     }
                 } else {
-                    Log.e("getMapInfoRequest", "response.isNotSuccessful()");
+                    Log.e("MainFragmentRep","getMapInfoRequest isNotSuccessful() : " + response.code());
+                    box.showExceptionLayout();
                 }
             }
 
             @Override
             public void onFailure(Call<GetMapInfo> call, Throwable t) {
-                Log.e("getMapInfoRequest", t.getLocalizedMessage());
+                Log.e("MainFragmentRep","getMapInfoRequest is onFailure : " + t.getLocalizedMessage());
+                box.showExceptionLayout();
             }
         });
     }
 
-    // 가져온 대표지도 사진정보로 지도 셋팅
+    /**
+     * 가져온 대표지도 사진정보로 지도 셋팅
+     * @param getMapInfoDataRepresents
+     */
     void setRep(GetMapInfoDataRepresents getMapInfoDataRepresents) {
         String gyeonggi = getMapInfoDataRepresents.getGyeonggi();
         String gangwon = getMapInfoDataRepresents.getGangwon();
@@ -349,23 +353,12 @@ public class MainFragmentRep extends Fragment {
         setLayout(true);
     }
 
-    // toolbar 메뉴
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_add:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     * 대표지도 유무에 따라서 layout 설정
+     * @param rep
+     */
     void setLayout(boolean rep) {
-        Log.e("setLayout", Boolean.toString(rep));
+        box.hideAll();
         if (!rep) {
             noRep.setVisibility(View.VISIBLE);
             existRep.setVisibility(View.GONE);
@@ -374,14 +367,9 @@ public class MainFragmentRep extends Fragment {
             noRep.setVisibility(View.GONE);
             existRep.setVisibility(View.VISIBLE);
             layout_map.setVisibility(View.VISIBLE);
-
         }
-        box.hideAll();
     }
 
-
-
-    // redirect
     private void redirectGroupActivity(String mid, String title) {
         final Intent intent = new Intent(getActivity(), GroupActivity.class);
         intent.putExtra("mid", mid);

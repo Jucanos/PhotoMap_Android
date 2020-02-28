@@ -38,6 +38,8 @@ public class YesNoDialog extends Dialog implements View.OnClickListener{
         setContentView(LAYOUT);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        setCancelable(false);
+
         TextView textView_title = findViewById(R.id.textView_title);
         textView_title.setText(title);
 

@@ -4,16 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -27,6 +24,7 @@ import com.jucanos.photomap.Activity.EditGroupNameActivity;
 import com.jucanos.photomap.Activity.GroupActivity;
 import com.jucanos.photomap.Dialog.AddGroupDialog;
 import com.jucanos.photomap.Dialog.AddGroupDialogListener;
+import com.jucanos.photomap.Dialog.LoadingDialog;
 import com.jucanos.photomap.Dialog.YesNoDialog;
 import com.jucanos.photomap.Dialog.YesNoDialogListener;
 import com.jucanos.photomap.GlobalApplication;
@@ -35,14 +33,12 @@ import com.jucanos.photomap.ListView.GroupListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.jucanos.photomap.Structure.GetMapList;
-import com.jucanos.photomap.Structure.GetMapListData;
 import com.jucanos.photomap.Structure.RemoveUser;
 import com.jucanos.photomap.Structure.RemoveUserRequest;
 import com.jucanos.photomap.Structure.SetMapRep;
 import com.jucanos.photomap.Structure.SetMapRepRequest;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -52,18 +48,24 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainFragmentGroup extends Fragment {
-    private RelativeLayout noGroup, existGroup, rl_box;
-    private ListView listView_group;
-    public GlobalApplication globalApplication;
-    private GroupListViewAdapter adapter;
-    private DynamicBox box;
 
+    private GlobalApplication globalApplication;
+
+    private RelativeLayout noGroup, existGroup;
+    private ListView listView_group;
+    private GroupListViewAdapter adapter;
+
+    // request Code
     private final int ADD_GROUP = 1;
     private final int EDIT_GROUP = 2;
 
+    // intentData
     private String mid;
-    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
+    // for loading
+    private DynamicBox box;
+    private LoadingDialog loadingDialog;
+    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup fragmentContainer, Bundle savedInstanceState) {
@@ -73,77 +75,67 @@ public class MainFragmentGroup extends Fragment {
         getIntentData();
         initMember(view);
         setBox();
-        checkLink();
+        checkLink(mid);
 
-        // listView item click
-        listView_group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GroupListViewItem groupListViewItem = adapter.getItem(position);
-                String mid = groupListViewItem.getMid();
+        listView_group.setOnItemClickListener((parent, view1, position, id) -> {
+            GroupListViewItem groupListViewItem = adapter.getItem(position);
+            String mid = groupListViewItem.getMid();
 
-                groupListViewItem.setActivated(true);
-                globalApplication.mRefUser.child(mid).setValue(groupListViewItem.getCurLog());
+            groupListViewItem.setActivated(true);
+            globalApplication.mRefUser.child(mid).setValue(groupListViewItem.getCurLog());
 
-                redirectGroupActivity(mid, groupListViewItem.getTitle());
-            }
+            redirectGroupActivity(mid, groupListViewItem.getTitle());
         });
 
-        listView_group.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                final GroupListViewItem groupListViewItem = adapter.getItem(position);
-                final AddGroupDialog dialog = new AddGroupDialog(getContext(), groupListViewItem.getTitle());
-                dialog.setDialogListener(new AddGroupDialogListener() {
-                    @Override
-                    public void onGroupNameClicked() {
-                        dialog.dismiss();
-                        redirectEditGroupNameActivity(adapter.getItem(position).getTitle(), adapter.getItem(position).getMid(), position);
-                    }
+        listView_group.setOnItemLongClickListener((parent, view12, position, id) -> {
+            final GroupListViewItem groupListViewItem = adapter.getItem(position);
+            final AddGroupDialog dialog = new AddGroupDialog(getContext(), groupListViewItem.getTitle());
+            dialog.setDialogListener(new AddGroupDialogListener() {
+                @Override
+                public void onGroupNameClicked() {
+                    dialog.dismiss();
+                    redirectEditGroupNameActivity(adapter.getItem(position).getTitle(), adapter.getItem(position).getMid(), position);
+                }
 
-                    @Override
-                    public void onExitClicked() {
-                        dialog.dismiss();
-                        // 정말 나가시겠습니까?
-                        final YesNoDialog yesNoDialog = new YesNoDialog(getContext(), getString(R.string.exit_group));
-                        yesNoDialog.setDialogListener(new YesNoDialogListener() {
-                            @Override
-                            public void onPositiveClicked() {
-                                Log.e("yesNoDialog", "onPositiveClicked");
-                                userRemoveRequest(globalApplication.token, adapter.getItem(position).getMid(), position);
-                                yesNoDialog.dismiss();
-                            }
-                            @Override
-                            public void onNegativeClicked() {
-                                yesNoDialog.dismiss();
-                            }
-                        });
-                        yesNoDialog.show();
-                    }
+                @Override
+                public void onExitClicked() {
+                    dialog.dismiss();
+                    final YesNoDialog yesNoDialog = new YesNoDialog(getContext(), getString(R.string.exit_group));
+                    yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                        @Override
+                        public void onPositiveClicked() {
+                            yesNoDialog.dismiss();
+                            userRemoveRequest(adapter.getItem(position).getMid(), position);
+                        }
 
-                    @Override
-                    public void onCancelClicked() {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-                return true;
-            }
+                        @Override
+                        public void onNegativeClicked() {
+                            yesNoDialog.dismiss();
+                        }
+                    });
+                    yesNoDialog.show();
+                }
+
+                @Override
+                public void onCancelClicked() {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            return true;
         });
-
-
         return view;
     }
 
     private void getIntentData() {
-        mid = getActivity().getIntent().getStringExtra("mid");
+        mid = Objects.requireNonNull(getActivity()).getIntent().getStringExtra("mid");
     }
 
     private void setToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("그룹");
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle("그룹");
         toolbar.inflateMenu(R.menu.menu_fragment_group);
         setHasOptionsMenu(true);
     }
@@ -151,19 +143,10 @@ public class MainFragmentGroup extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void initMember(View view) {
         globalApplication = GlobalApplication.getGlobalApplicationContext();
-
+        loadingDialog = new LoadingDialog(getActivity());
         noGroup = view.findViewById(R.id.layout_noGroup);
         existGroup = view.findViewById(R.id.layout_existGroup);
         listView_group = view.findViewById(R.id.listView_group);
-        rl_box = view.findViewById(R.id.rl_box);
-        rl_box.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-
-        // groupListView
         adapter = new GroupListViewAdapter();
         listView_group.setAdapter(adapter);
     }
@@ -174,23 +157,28 @@ public class MainFragmentGroup extends Fragment {
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
     }
 
-    private void checkLink() {
+    private void checkLink(String mid) {
         boolean fromLink = false;
         if (mid != null) {
             fromLink = true;
         }
+        Log.e("MainFragmentGroup", "fromLink : " + fromLink);
+
         if (fromLink) {
             YesNoDialog dialog = new YesNoDialog(getContext(), "그룹에 참여 하시겠습니까?");
             dialog.setDialogListener(new YesNoDialogListener() {
                 @Override
                 public void onPositiveClicked() {
-                    Toast.makeText(globalApplication, "onPositiveClicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "onPositiveClicked", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    loadingDialog.show();
                     userAddRequest(globalApplication.token, mid, -1);
                 }
 
                 @Override
                 public void onNegativeClicked() {
-                    Toast.makeText(globalApplication, "onNegativeClicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "onNegativeClicked", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                     getMapList(globalApplication.token);
                 }
             });
@@ -200,7 +188,6 @@ public class MainFragmentGroup extends Fragment {
         }
     }
 
-    // toolbar menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -209,10 +196,8 @@ public class MainFragmentGroup extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_add:
-                redirectAddGroupActivity();
-                break;
+        if (item.getItemId() == R.id.item_add) {
+            redirectAddGroupActivity();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -226,7 +211,7 @@ public class MainFragmentGroup extends Fragment {
         startActivity(intent);
     }
 
-    public void redirectAddGroupActivity() {
+    private void redirectAddGroupActivity() {
         Intent intent = new Intent(getActivity(), AddGroupActivity.class);
         getActivity().startActivityForResult(intent, ADD_GROUP);
         getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
@@ -237,7 +222,7 @@ public class MainFragmentGroup extends Fragment {
         intent.putExtra("name", name);
         intent.putExtra("mid", mid);
         intent.putExtra("pos", pos);
-        getActivity().startActivityForResult(intent, EDIT_GROUP);
+        Objects.requireNonNull(getActivity()).startActivityForResult(intent, EDIT_GROUP);
         getActivity().overridePendingTransition(R.anim.anim_not_move, R.anim.anim_not_move);
     }
 
@@ -269,7 +254,7 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // addGroup
-    public void addGroup(String title, String mid, Date updatedAt, boolean pushBack) {
+    private void addGroup(String title, String mid, Date updatedAt, boolean pushBack) {
         final GroupListViewItem groupListViewItem = new GroupListViewItem();
         groupListViewItem.setTitle(title);
         groupListViewItem.setMid(mid);
@@ -280,20 +265,15 @@ public class MainFragmentGroup extends Fragment {
     }
 
     // request : getMapList
-    public void getMapList(String token) {
-        box.showCustomView(LOADING_ONLY_PROGRESS);
+    private void getMapList(String token) {
         final Call<GetMapList> res = NetworkHelper.getInstance().getService().getMapList(token);
         res.enqueue(new Callback<GetMapList>() {
             @Override
             public void onResponse(Call<GetMapList> call, Response<GetMapList> response) {
+                adapter.clear();
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Collections.sort(response.body().getGetMapListDatas(), new Comparator<GetMapListData>() {
-                            @Override
-                            public int compare(GetMapListData o1, GetMapListData o2) {
-                                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt()) * -1;
-                            }
-                        });
+                        Collections.sort(response.body().getGetMapListDatas(), (o1, o2) -> o1.getUpdatedAt().compareTo(o2.getUpdatedAt()) * -1);
                         GetMapList getMapList = response.body();
                         for (int i = 0; i < getMapList.getGetMapListDatas().size(); i++) {
                             Log.e("LoginActivity", "[mid]" + getMapList.getGetMapListDatas().get(i).getMid());
@@ -308,7 +288,7 @@ public class MainFragmentGroup extends Fragment {
                     adapter.notifyDataSetChanged();
                     setLayout();
                 } else {
-                    Log.e("LoginActivity", "[onResponse] " + Integer.toString(response.code()));
+                    Log.e("LoginActivity", "[onResponse] " + response.code());
                     box.showExceptionLayout();
                 }
             }
@@ -321,10 +301,9 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
-    // request : uwerRemove
-    public void userRemoveRequest(String token, final String mid, final int position) {
-        rl_box.setVisibility(View.VISIBLE);
-        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest("true"));
+    private void userRemoveRequest(final String mid, final int position) {
+        loadingDialog.show();
+        final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(globalApplication.token, mid, new RemoveUserRequest("true"));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
@@ -334,7 +313,7 @@ public class MainFragmentGroup extends Fragment {
                     adapter.notifyDataSetChanged();
                     setMapRepRequest(mid, "true");
                 } else {
-                    Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
+                    Log.e("MainFragmentGroup", "[onResponse] " + response.code());
                 }
             }
 
@@ -345,46 +324,48 @@ public class MainFragmentGroup extends Fragment {
         });
     }
 
-    public void userAddRequest(String token, final String mid, final int position) {
+    private void userAddRequest(String token, final String mid, final int position) {
         box.showCustomView(LOADING_ONLY_PROGRESS);
         final Call<RemoveUser> res = NetworkHelper.getInstance().getService().userRemove(token, mid, new RemoveUserRequest("false"));
         res.enqueue(new Callback<RemoveUser>() {
             @Override
             public void onResponse(Call<RemoveUser> call, Response<RemoveUser> response) {
                 if (response.isSuccessful()) {
-                    Log.e("MainFragmentGroup", "[onResponse] is Successful");
                     getMapList(globalApplication.token);
                 } else {
-                    Log.e("MainFragmentGroup", "[onResponse] " + Integer.toString(response.code()));
+                    Log.e("MainFragmentGroup", "userAddRequest isNotSuccessful() : " + response.code());
+                    Toast.makeText(getActivity(), "이미 참여한 그룹입니다", Toast.LENGTH_SHORT).show();
+                    getMapList(globalApplication.token);
                 }
             }
 
             @Override
             public void onFailure(Call<RemoveUser> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Log.e("MainFragmentGroup", "userAddRequest onFailure : " + t.getLocalizedMessage());
+                Toast.makeText(getActivity(), "그룹에 참여할 수 없습니다", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    void setMapRepRequest(final String mid, final String remove) {
+    private void setMapRepRequest(final String mid, final String remove) {
         final Call<SetMapRep> res = NetworkHelper.getInstance().getService().setMapRep(globalApplication.token, mid, new SetMapRepRequest(remove));
         res.enqueue(new Callback<SetMapRep>() {
             @Override
             public void onResponse(Call<SetMapRep> call, Response<SetMapRep> response) {
                 if (response.isSuccessful()) {
-                    Log.e("GroupActivity", "[setMapRepRequest] is success , mid : " + mid);
                     if (remove.equals("true")) {
-                        Log.e("GroupActivity", "     globalApplication.authorization.getUserData().setPrimary(null)");
                         globalApplication.authorization.getUserData().setPrimary(null);
-                        rl_box.setVisibility(View.GONE);
+                        loadingDialog.dismiss();
                     }
                 } else {
+                    Toast.makeText(getActivity(), "처리 실패", Toast.LENGTH_SHORT).show();
                     Log.e("GroupActivity", "[setMapRepRequest] onResponse is fail : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<SetMapRep> call, Throwable t) {
+                Toast.makeText(getActivity(), "처리 실패", Toast.LENGTH_SHORT).show();
                 Log.e("GroupActivity", "[setMapRepRequest] is fail : " + t.getLocalizedMessage());
             }
         });
@@ -393,6 +374,7 @@ public class MainFragmentGroup extends Fragment {
     // decided by request result.
     void setLayout() {
         box.hideAll();
+        loadingDialog.dismiss();
         if (adapter.getCount() == 0) {
             noGroup.setVisibility(View.VISIBLE);
             existGroup.setVisibility(View.GONE);
@@ -402,19 +384,27 @@ public class MainFragmentGroup extends Fragment {
         }
     }
 
+
+    public void onNewIntent(String mid) {
+        this.mid = mid;
+    }
+
     @Override
     public void onStop() {
-        adapter.setActivated(true);// adpater에 대해서 activated true로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
+        adapter.setActivated(true);
         super.onStop();
     }
 
-    // lifeCycle
     @Override
     public void onResume() {
-        adapter.setActivated(false); // adpater에 대해서 activated false로 바꿔줌으로써 firebase realtime db와 싱크를 맞춘다.
-        //adapter.notifyDataSetChanged();
-        Log.e("MainFragmentGroup", "[onResume] : after resort()");
-        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        if (mid != null) {
+            checkLink(mid);
+            mid = null;
+        } else {
+            adapter.setActivated(false);
+            Log.e("MainFragmentGroup", "[onResume] : after resort()");
+            Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        }
         super.onResume();
     }
 }

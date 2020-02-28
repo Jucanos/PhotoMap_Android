@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,120 +29,103 @@ import com.jucanos.photomap.RestApi.NetworkHelper;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import java.util.Objects;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainFragmentSetting extends Fragment {
-    public GlobalApplication globalApplication;
+    private GlobalApplication globalApplication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_setting, container, false);
-        globalApplication  = GlobalApplication.getGlobalApplicationContext();
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("설정");
-        setHasOptionsMenu(true);
+        getIntentData();
+        setToolbar(view);
 
-        // userInfo
-        // nickName
+        // set nickName
         TextView textView_nickName = view.findViewById(R.id.textView_nickName);
         textView_nickName.setText(globalApplication.authorization.getUserData().getNickname());
 
-        // thumbnail
+        // set thumbNail
         CircleImageView circleImageView_thumbnail = view.findViewById(R.id.circleImageView_thumbnail);
-        Glide.with(getActivity()).load(globalApplication.authorization.getUserData().getThumbnail()).into(circleImageView_thumbnail);
+        Glide.with(Objects.requireNonNull(getActivity())).load(globalApplication.authorization.getUserData().getThumbnail()).into(circleImageView_thumbnail);
 
         TextView textView_notice = view.findViewById(R.id.textView_notice);
-        textView_notice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectNoticeActivity();
-            }
-        });
+        textView_notice.setOnClickListener(v -> redirectNoticeActivity());
 
         TextView textView_logout = view.findViewById(R.id.textView_logout);
-        textView_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YesNoDialog yesNoDialog = new YesNoDialog(getActivity(),"정말 로그아웃 하시겠습니까?");
-                yesNoDialog.setDialogListener(new YesNoDialogListener() {
-                    @Override
-                    public void onPositiveClicked() {
-                        yesNoDialog.dismiss();
-                        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                            @Override
-                            public void onCompleteLogout() {
-                                redirectLoginActivity();
-                            }
-                        });
-                    }
+        textView_logout.setOnClickListener(v -> {
+            YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "정말 로그아웃 하시겠습니까?");
+            yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                @Override
+                public void onPositiveClicked() {
+                    yesNoDialog.dismiss();
+                    UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                        @Override
+                        public void onCompleteLogout() {
+                            redirectLoginActivity();
+                        }
+                    });
+                }
 
-                    @Override
-                    public void onNegativeClicked() {
-                        yesNoDialog.dismiss();
-                    }
-                });
-                yesNoDialog.show();;
+                @Override
+                public void onNegativeClicked() {
+                    yesNoDialog.dismiss();
+                }
+            });
+            yesNoDialog.show();
+            ;
 
-            }
         });
 
         TextView textView_signout = view.findViewById(R.id.textView_signout);
-        textView_signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YesNoDialog yesNoDialog = new YesNoDialog(getActivity(),"정말 회원 탈퇴 하시겠습니까?");
-                yesNoDialog.setDialogListener(new YesNoDialogListener() {
-                    @Override
-                    public void onPositiveClicked() {
-                        requestSignoutAccount(globalApplication.token);
-                        yesNoDialog.dismiss();
-                    }
+        textView_signout.setOnClickListener(v -> {
+            YesNoDialog yesNoDialog = new YesNoDialog(getActivity(), "정말 회원 탈퇴 하시겠습니까?");
+            yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                @Override
+                public void onPositiveClicked() {
+                    requestSignoutAccount(globalApplication.token);
+                    yesNoDialog.dismiss();
+                }
 
-                    @Override
-                    public void onNegativeClicked() {
-                        yesNoDialog.dismiss();
-                    }
-                });
-                yesNoDialog.show();
-            }
+                @Override
+                public void onNegativeClicked() {
+                    yesNoDialog.dismiss();
+                }
+            });
+            yesNoDialog.show();
         });
-
 
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    private void getIntentData() {
+        globalApplication = GlobalApplication.getGlobalApplicationContext();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_add:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    private void setToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar_tb);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("설정");
     }
 
-    void redirectNoticeActivity() {
+    private void redirectNoticeActivity() {
         final Intent intent = new Intent(getActivity(), NoticeActivity.class);
-        getActivity().startActivity(intent);
+        Objects.requireNonNull(getActivity()).startActivity(intent);
     }
 
-    void redirectLoginActivity() {
+    private void redirectLoginActivity() {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
-        getActivity().startActivity(intent);
+        Objects.requireNonNull(getActivity()).startActivity(intent);
         getActivity().finish();
     }
 
-    public void requestSignoutAccount(String token) {
+    private void requestSignoutAccount(String token) {
         final Call<GetUserInfo> res = NetworkHelper.getInstance().getService().signoutAccount(token);
         res.enqueue(new Callback<GetUserInfo>() {
             @Override
@@ -150,18 +134,21 @@ public class MainFragmentSetting extends Fragment {
                     UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                         @Override
                         public void onCompleteLogout() {
+                            Toast.makeText(getActivity(), "회원 탈퇴", Toast.LENGTH_SHORT).show();
                             MyFirebaseMessagingService.unSubscribe(globalApplication.authorization.getUserData().getUid());
                             redirectLoginActivity();
                         }
                     });
                 } else {
-                    Log.e("[MainFragmentSetting]", Integer.toString(response.code()));
+                    Toast.makeText(getActivity(), "요청 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("MainFragmentSetting", "requestSignoutAccount isNotSuccessful : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserInfo> call, Throwable t) {
-                Log.e("[onFailure]", t.getLocalizedMessage());
+                Toast.makeText(getActivity(), "요청 실패", Toast.LENGTH_SHORT).show();
+                Log.e("MainFragmentSetting", "requestSignoutAccount onFailure : " + t.getLocalizedMessage());
             }
         });
     }
