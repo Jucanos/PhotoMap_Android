@@ -301,7 +301,7 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             Bitmap bm = ((BitmapDrawable) imageViews[Integer.parseInt(v.getContentDescription().toString())].getDrawable()).getBitmap();
-            Log.e("touch", v.getContentDescription().toString());
+             //Log.e("touch", v.getContentDescription().toString());
             if (event.getPointerCount() >= 2) {
                 handler.removeMessages(longClickId);
                 longClickId = -1;
@@ -533,7 +533,6 @@ public class GroupActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SET_REP_REQUEST) {
             if (resultCode == RESULT_OK) {
-                box.showCustomView(globalApplication.LOADING_ONLY_PROGRESS);
                 int regionCode = data.getIntExtra("regionCode", -1);
                 String path = data.getStringExtra("path");
                 Log.e("GroupActivity", "regionCode : " + regionCode);

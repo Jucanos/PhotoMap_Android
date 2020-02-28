@@ -137,11 +137,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         globalApplication.authorization = response.body();
+                        if(globalApplication.authorization.getUserData().getPrimary() == null)
+                            globalApplication.authorization.getUserData().setThumbnail("http://s3.soybeans.tech/default_user.png");
+
                         Log.e("getUid", globalApplication.authorization.getUserData().getUid());
                         Log.e("getThumbnail", globalApplication.authorization.getUserData().getThumbnail());
                         Log.e("getNickname", globalApplication.authorization.getUserData().getNickname());
-//                        if (globalApplication.authorization.getUserData().getPrimary() != null)
-//                            Log.e("getNickname", globalApplication.authorization.getUserData().getPrimary());
                         loadFireBase();
                     }
                 } else {

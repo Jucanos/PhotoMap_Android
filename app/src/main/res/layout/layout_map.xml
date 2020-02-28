@@ -107,7 +107,7 @@
                 android:src="@drawable/map_jeonbuk"
                 android:visibility="visible" />
 
-            <!--6-->
+            <!--6 전남-->
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="135dp"
@@ -406,7 +406,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="302dp"
+                android:layout_marginTop="303dp"
                 android:contentDescription="6"
                 android:maxWidth="150dp"
                 android:maxHeight="135dp"
@@ -499,7 +499,7 @@
                 android:minWidth="150dp"
                 android:minHeight="100dp"
                 android:src="@drawable/map_jeju"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
 
             <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
@@ -612,7 +612,7 @@
                 android:src="@drawable/ic_map_junbuk_black"
                 android:visibility="visible" />
 
-            <!--6-->
+            <!--6 전남-->
             <ImageView
                 android:id="@+id/imageView_jeonnam_border"
                 android:layout_width="150dp"
@@ -683,7 +683,8 @@
                 android:minWidth="150dp"
                 android:minHeight="100dp"
                 android:src="@drawable/ic_map_jeju_black"
-                android:visibility="visible" />
+                android:visibility="visible"
+               />
 
             <ImageView
                 android:layout_width="45dp"

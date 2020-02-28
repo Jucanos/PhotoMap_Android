@@ -87,7 +87,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         // box.showCustomView(LOADING_ONLY_PROGRESS);
 
         // title thumbnail
-        String thumbnail_path = "https://s3.soybeans.tech/uploads/dev/" + listViewItem.getMid() + "/main.png";
+        final String thumbnail_path = "https://s3.soybeans.tech/uploads/dev/" + listViewItem.getMid() + "/main.png";
 
         Glide.with(context)
                 .load(thumbnail_path)
@@ -106,13 +106,17 @@ public class GroupListViewAdapter extends BaseAdapter {
         // firebase realtime log
         listViewItem.setOnLogCb((log, own) -> {
             if (!listViewItem.isLoaded()) {
-                Log.e("listViewItem.isLoaded()", "here1");
                 listViewItem.setLoad(true);
             } else if (!own) {
                 listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
-                Log.e("listViewItem.isLoaded()", "here2");
             }
-            Log.e("listViewItem", "setUpdatedAt  : " + listViewItem.getUpdatedAt().toString());
+
+            Glide.with(context)
+                    .load(thumbnail_path)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .placeholder(R.drawable.progress_circle)
+                    .override(200, 200)
+                    .into(imgView_thumbnail);
 
             if (listViewItem.getActivated() && activated) {
                 listViewItem.setPastLog(log);
