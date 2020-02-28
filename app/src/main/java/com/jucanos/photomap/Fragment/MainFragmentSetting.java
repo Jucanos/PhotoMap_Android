@@ -26,6 +26,7 @@ import com.jucanos.photomap.MyFirebaseMessagingService;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.GetUserInfo;
 import com.jucanos.photomap.RestApi.NetworkHelper;
+import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -78,8 +79,6 @@ public class MainFragmentSetting extends Fragment {
                 }
             });
             yesNoDialog.show();
-            ;
-
         });
 
         TextView textView_signout = view.findViewById(R.id.textView_signout);
@@ -131,14 +130,22 @@ public class MainFragmentSetting extends Fragment {
             @Override
             public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
                 if (response.isSuccessful()) {
+                    // Log.e("MainFragmentSetting", "requestSignoutAccount isSuccessful : " + response.code());
                     UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                         @Override
                         public void onCompleteLogout() {
-                            Toast.makeText(getActivity(), "회원 탈퇴", Toast.LENGTH_SHORT).show();
+                        }
+                        @Override
+                        public void onSuccess(Long result) {
+                            Toast.makeText(getActivity(), "회원탈퇴 성공", Toast.LENGTH_SHORT).show();
                             MyFirebaseMessagingService.unSubscribe(globalApplication.authorization.getUserData().getUid());
-                            redirectLoginActivity();
+                            final Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            Objects.requireNonNull(getActivity()).startActivity(intent);
+                            getActivity().finish();
+                            super.onSuccess(result);
                         }
                     });
+
                 } else {
                     Toast.makeText(getActivity(), "요청 실패", Toast.LENGTH_SHORT).show();
                     Log.e("MainFragmentSetting", "requestSignoutAccount isNotSuccessful : " + response.code());
