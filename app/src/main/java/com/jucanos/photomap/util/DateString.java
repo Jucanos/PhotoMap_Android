@@ -1,5 +1,7 @@
 package com.jucanos.photomap.util;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -19,20 +21,20 @@ public class DateString {
         nowYear = now / (1000 * 60 * 60 * 24 * 30 * 12);
 
         m = date.getTime();
-        mSecond = now / 1000;
-        mMin = now / (1000 * 60);
-        mHour = now / (1000 * 60 * 60);
-        mDay = now / (1000 * 60 * 60 * 24);
-        mMonth = now / (1000 * 60 * 60 * 24 * 30);
-        mYear = now / (1000 * 60 * 60 * 24 * 30 * 12);
+        mSecond = m / 1000;
+        mMin = m / (1000 * 60);
+        mHour = m / (1000 * 60 * 60);
+        mDay = m / (1000 * 60 * 60 * 24);
+        mMonth = m / (1000 * 60 * 60 * 24 * 30);
+        mYear = m / (1000 * 60 * 60 * 24 * 30 * 12);
 
         // 같은 날인경우
         if (mDay == nowDay) {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("오늘 aaa H:m", Locale.KOREA);
+            SimpleDateFormat inputFormat = new SimpleDateFormat("오늘 aaa h:m", Locale.KOREA);
             inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             ret = inputFormat.format(date);
         } else if (mDay + 1 == nowDay) {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("어제 aaa H:m", Locale.KOREA);
+            SimpleDateFormat inputFormat = new SimpleDateFormat("어제 aaa h:m", Locale.KOREA);
             inputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             ret = inputFormat.format(date);
         } else if (mMonth == nowMonth) {

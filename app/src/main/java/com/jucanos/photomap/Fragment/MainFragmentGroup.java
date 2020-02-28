@@ -83,7 +83,7 @@ public class MainFragmentGroup extends Fragment {
 
             groupListViewItem.setActivated(true);
             globalApplication.mRefUser.child(mid).setValue(groupListViewItem.getCurLog());
-
+            groupListViewItem.setLog(groupListViewItem.getCurLog(), true);
             redirectGroupActivity(mid, groupListViewItem.getTitle());
         });
 

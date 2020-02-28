@@ -72,12 +72,9 @@ public class AddGroupActivity extends AppCompatActivity {
         mBox = new DynamicBox(this, rl_total);
         View customView = getLayoutInflater().inflate(R.layout.loading_progress, null, false);
         mBox.addCustomView(customView, LOADING_PROGRESS);
-        mBox.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mKeyBord.showSoftInput(et_title, 0);
-                mBox.hideAll();
-            }
+        mBox.setClickListener(v -> {
+            mKeyBord.showSoftInput(et_title, 0);
+            mBox.hideAll();
         });
     }
 
@@ -110,8 +107,8 @@ public class AddGroupActivity extends AppCompatActivity {
     public void requestCreateMap(String token, final String name) {
         mKeyBord.hideSoftInputFromWindow(et_title.getWindowToken(), 0);
         mBox.showCustomView(LOADING_PROGRESS);
-        Log.e("AddGroupActivity", "[token] : " + token);
-        Log.e("AddGroupActivity", "[name] : " + name);
+        // Log.e("AddGroupActivity", "[token] : " + token);
+        // Log.e("AddGroupActivity", "[name] : " + name);
         final Call<CreateMap> res = NetworkHelper.getInstance().getService().createMap(token, new CreateMapRequest(name));
         res.enqueue(new Callback<CreateMap>() {
             @Override
@@ -119,7 +116,7 @@ public class AddGroupActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         String mapToken = response.body().getCreateMapData().getMid();
-                        Log.e("AddGroupActivity", "response.isSuccessful()");
+                        // Log.e("AddGroupActivity", "response.isSuccessful()");
                         Intent intent = new Intent();
                         intent.putExtra("mapToken", mapToken);
                         intent.putExtra("mapName", name);
@@ -129,14 +126,14 @@ public class AddGroupActivity extends AppCompatActivity {
                     }
                 } else {
                     mBox.showExceptionLayout();
-                    Log.e("AddGroupActivity", "response.isNotSuccessful() : " + response.code());
+                    Log.e("AddGroupActivity", "requestCreateMap isNotSuccessful() : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<CreateMap> call, Throwable t) {
                 mBox.showExceptionLayout();
-                Log.e("AddGroupActivity", "onFailure : " + t.getLocalizedMessage());
+                Log.e("AddGroupActivity", "requestCreateMap is onFailure : " + t.getLocalizedMessage());
             }
         });
     }

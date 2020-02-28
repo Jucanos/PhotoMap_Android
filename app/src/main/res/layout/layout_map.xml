@@ -445,7 +445,7 @@
                 android:maxHeight="180dp"
                 android:minWidth="170dp"
                 android:minHeight="180dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:src="@color/colorWhite"
                 app:siShape="@drawable/ic_map_gyeongbuk" />
 

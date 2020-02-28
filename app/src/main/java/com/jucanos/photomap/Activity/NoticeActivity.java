@@ -11,19 +11,13 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.jucanos.photomap.ListView.MemberListViewItem;
 import com.jucanos.photomap.ListView.NoticeListViewAdapter;
 import com.jucanos.photomap.ListView.NoticeListViewItem;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.RestApi.NetworkHelper;
-import com.jucanos.photomap.Structure.GetMapInfo;
 import com.jucanos.photomap.Structure.GetNotice;
-import com.jucanos.photomap.Structure.GetNoticeData;
-import com.jucanos.photomap.Structure.GetStoryListData;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -34,11 +28,11 @@ import retrofit2.Response;
 
 
 public class NoticeActivity extends AppCompatActivity {
-    ListView listView_notice;
-    NoticeListViewAdapter noticeListViewAdapter;
+    private ListView listView_notice;
+    private NoticeListViewAdapter noticeListViewAdapter;
 
     // loading progress
-    DynamicBox box;
+    private DynamicBox box;
     private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     @Override
@@ -51,20 +45,21 @@ public class NoticeActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("공지사항");
 
-        noticeListViewAdapter = new NoticeListViewAdapter();
-        listView_notice = findViewById(R.id.listView_notice);
-
+        initMember();
         setBox();
-
-        // 리스뷰 참조 및 Adapter달기
-        listView_notice.setAdapter(noticeListViewAdapter);
         getNoticeRequest();
     }
 
-    void setBox(){
+    private void setBox(){
         box = new DynamicBox(this, listView_notice);
         View customView = getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
         box.addCustomView(customView, LOADING_ONLY_PROGRESS);
+    }
+
+    private void initMember(){
+        noticeListViewAdapter = new NoticeListViewAdapter();
+        listView_notice = findViewById(R.id.listView_notice);
+        listView_notice.setAdapter(noticeListViewAdapter);
     }
 
     @Override
@@ -76,10 +71,9 @@ public class NoticeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (id == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -92,19 +86,13 @@ public class NoticeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetNotice> call, Response<GetNotice> response) {
                 if (response.isSuccessful()) {
-                    Collections.sort(response.body().getGetNoticeData(), new Comparator<GetNoticeData>() {
-                        @Override
-                        public int compare(GetNoticeData o1, GetNoticeData o2) {
-                            return o1.getCreatedAt().compareTo(o2.getCreatedAt()) * -1;
-                        }
-                    });
-
+                    Collections.sort(response.body().getGetNoticeData(), (o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()) * -1);
                     for (int i = 0; i < response.body().getGetNoticeData().size(); i++) {
-                        Log.e("NoticeActivity", "[Context] : " + response.body().getGetNoticeData().get(i).getContext());
-                        Log.e("NoticeActivity", "[CreatedAt] : " + response.body().getGetNoticeData().get(i).getCreatedAt());
-                        Log.e("NoticeActivity", "[Id] : " + response.body().getGetNoticeData().get(i).getId());
-                        Log.e("NoticeActivity", "[Title] : " + response.body().getGetNoticeData().get(i).getTitle());
-                        Log.e("NoticeActivity", "[UpdatedAt] : " + response.body().getGetNoticeData().get(i).getUpdatedAt());
+                        // Log.e("NoticeActivity", "[Context] : " + response.body().getGetNoticeData().get(i).getContext());
+                        // Log.e("NoticeActivity", "[CreatedAt] : " + response.body().getGetNoticeData().get(i).getCreatedAt());
+                        // Log.e("NoticeActivity", "[Id] : " + response.body().getGetNoticeData().get(i).getId());
+                        // Log.e("NoticeActivity", "[Title] : " + response.body().getGetNoticeData().get(i).getTitle());
+                        // Log.e("NoticeActivity", "[UpdatedAt] : " + response.body().getGetNoticeData().get(i).getUpdatedAt());
                         String context = response.body().getGetNoticeData().get(i).getContext();
                         Date createdAt = response.body().getGetNoticeData().get(i).getCreatedAt();
                         String id = response.body().getGetNoticeData().get(i).getId();
@@ -117,12 +105,14 @@ public class NoticeActivity extends AppCompatActivity {
                     box.hideAll();
                 } else {
                     Log.e("requestCreateMap", Integer.toString(response.code()));
+                    box.showExceptionLayout();
                 }
             }
 
             @Override
             public void onFailure(Call<GetNotice> call, Throwable t) {
                 Log.e("[onFailure]", t.getLocalizedMessage());
+                box.showExceptionLayout();
             }
         });
     }

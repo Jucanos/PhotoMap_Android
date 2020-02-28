@@ -104,38 +104,35 @@ public class GroupListViewAdapter extends BaseAdapter {
         textView_lastUpdated.setText(DateString.getString(listViewItem.getUpdatedAt()));
 
         // firebase realtime log
-        listViewItem.setOnLogCb(new GroupListViewItem.OnlogCb() {
-            @Override
-            public void onSetLog(long log, boolean own) {
-                if (!listViewItem.isLoaded()) {
-                    Log.e("listViewItem.isLoaded()", "here1");
-                    listViewItem.setLoad(true);
-                } else {
-                    listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
-                    Log.e("listViewItem.isLoaded()", "here2");
-                }
-                Log.e("listViewItem", "setUpdatedAt  : " + listViewItem.getUpdatedAt().toString());
-
-                if (listViewItem.getActivated() && activated) {
-                    listViewItem.setPastLog(log);
-                    listViewItem.setCurLog(log);
-                    globalContext.mRefUser.child(listViewItem.getMid()).setValue(listViewItem.getCurLog());
-                } else {
-                    if (own) listViewItem.setPastLog(log);
-                    else listViewItem.setCurLog(log);
-                }
-
-                long gap = listViewItem.getCurLog() - listViewItem.getPastLog();
-                if (gap > 0) {
-                    if (gap > 99) textView_log.setText("99");
-                    else textView_log.setText(Long.toString(gap));
-                    textView_log.setVisibility(View.VISIBLE);
-                } else {
-                    textView_log.setVisibility(View.INVISIBLE);
-                }
-                resort();
-                notifyDataSetChanged();
+        listViewItem.setOnLogCb((log, own) -> {
+            if (!listViewItem.isLoaded()) {
+                Log.e("listViewItem.isLoaded()", "here1");
+                listViewItem.setLoad(true);
+            } else if (!own) {
+                listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
+                Log.e("listViewItem.isLoaded()", "here2");
             }
+            Log.e("listViewItem", "setUpdatedAt  : " + listViewItem.getUpdatedAt().toString());
+
+            if (listViewItem.getActivated() && activated) {
+                listViewItem.setPastLog(log);
+                listViewItem.setCurLog(log);
+                globalContext.mRefUser.child(listViewItem.getMid()).setValue(listViewItem.getCurLog());
+            } else {
+                if (own) listViewItem.setPastLog(log);
+                else listViewItem.setCurLog(log);
+            }
+
+            long gap = listViewItem.getCurLog() - listViewItem.getPastLog();
+            if (gap > 0) {
+                if (gap > 99) textView_log.setText("99");
+                else textView_log.setText(Long.toString(gap));
+                textView_log.setVisibility(View.VISIBLE);
+            } else {
+                textView_log.setVisibility(View.INVISIBLE);
+            }
+            resort();
+            notifyDataSetChanged();
         });
 
         if (listViewItem.getUesrValueEventListener() == null) {
@@ -220,7 +217,7 @@ public class GroupListViewAdapter extends BaseAdapter {
         });
     }
 
-    public void clear(){
+    public void clear() {
         listViewItemList.clear();
         notifyDataSetChanged();
     }
