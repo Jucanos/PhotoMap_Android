@@ -15,6 +15,7 @@ public class GroupListViewItem {
     private Boolean loadUserRef;
     private ValueEventListener uesrValueEventListener, mapValueEventListener;
     private Boolean load;
+    private Long userNumber;
 
     public interface OnlogCb {
         void onSetLog(long log, boolean own);
@@ -31,6 +32,7 @@ public class GroupListViewItem {
         uesrValueEventListener = null;
         mapValueEventListener = null;
         this.load = false;
+        this.userNumber = (long) 0;
     }
 
     public String getMid() {
@@ -127,5 +129,13 @@ public class GroupListViewItem {
 
     public void setLoad(Boolean load) {
         this.load = load;
+    }
+
+    public Long getUserNumber() {
+        return userNumber;
+    }
+
+    public void setUserNumber(Long userNumber) {
+        this.userNumber = userNumber;
     }
 }
