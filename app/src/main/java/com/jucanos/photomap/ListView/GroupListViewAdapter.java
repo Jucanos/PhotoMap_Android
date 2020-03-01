@@ -3,6 +3,7 @@ package com.jucanos.photomap.ListView;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,11 +26,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
+import com.jucanos.photomap.Structure.FirebaseUserData;
 import com.jucanos.photomap.Structure.GetMapListData;
 import com.jucanos.photomap.util.DateString;
 
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -91,11 +95,11 @@ public class GroupListViewAdapter extends BaseAdapter {
 
         Glide.with(context)
                 .load(thumbnail_path)
+                .signature(new ObjectKey(listViewItem.getUserNumber()))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.progress_circle)
                 .override(200, 200)
                 .into(imgView_thumbnail);
-
 
         // set Title
         textView_groupName.setText(listViewItem.getTitle());
@@ -111,12 +115,12 @@ public class GroupListViewAdapter extends BaseAdapter {
                 listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
             }
 
-            Glide.with(context)
-                    .load(thumbnail_path)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .placeholder(R.drawable.progress_circle)
-                    .override(200, 200)
-                    .into(imgView_thumbnail);
+//            Glide.with(context)
+//                    .load(thumbnail_path)
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .placeholder(R.drawable.progress_circle)
+//                    .override(200, 200)
+//                    .into(imgView_thumbnail);
 
             if (listViewItem.getActivated() && activated) {
                 listViewItem.setPastLog(log);
@@ -162,7 +166,12 @@ public class GroupListViewAdapter extends BaseAdapter {
                                     }
                                     Log.e("GroupListViewAdapter", "[mRefMaps] onDataChange");
                                     // noinspection ConstantConditions
-                                    listViewItem.setLog(dataSnapshot.getValue(long.class), false);
+                                    FirebaseUserData firebaseUserData = dataSnapshot.getValue(FirebaseUserData.class);
+                                    Log.e("GroupListViewAdapter", "[mRefMaps] logNumber " + firebaseUserData.getLogNumber());
+                                    Log.e("GroupListViewAdapter", "[mRefMaps] userNumber " + firebaseUserData.getUserNumber());
+
+                                    listViewItem.setUserNumber(firebaseUserData.getUserNumber());
+                                    listViewItem.setLog(firebaseUserData.getLogNumber(), false);
                                 }
 
                                 @Override
@@ -196,7 +205,6 @@ public class GroupListViewAdapter extends BaseAdapter {
     public void addItem(GroupListViewItem item, boolean pushBack) {
         if (pushBack) listViewItemList.add(item);
         else listViewItemList.add(0, item);
-
     }
 
     public void delete(int position) {
