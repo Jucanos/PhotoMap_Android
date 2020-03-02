@@ -172,11 +172,25 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/textView_logout"
+                android:id="@+id/textView_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout3_1"
                 android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundregular"
+                android:drawableStart="@drawable/ic_icon_info"
+                android:drawablePadding="5dp"
+                android:padding="10dp"
+                android:text="개인정보처리방침"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:layout_below="@+id/textView_policy"
                 android:fontFamily="@font/nanumsquareroundregular"
                 android:drawableStart="@drawable/ic_icon_logout"
                 android:drawablePadding="5dp"
