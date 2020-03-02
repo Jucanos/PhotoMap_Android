@@ -1,10 +1,14 @@
 package com.jucanos.photomap.RestApi;
 
+import com.jucanos.photomap.R;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkHelper {
-    private static String url = "https://soybeans.tech/dev/";
+    private static String url = "https://soybeans.tech/api/";
+
+
 
     private static NetworkHelper ourInstance = new NetworkHelper();
 
