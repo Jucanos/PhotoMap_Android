@@ -93,6 +93,7 @@
 
             </RelativeLayout>
 
+
             <TextView
                 android:id="@+id/textView_notice"
                 android:layout_width="match_parent"
@@ -100,6 +101,8 @@
                 android:layout_below="@+id/layout2_1"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="@font/nanumsquareroundregular"
+                android:drawableStart="@drawable/ic_icon_notice"
+                android:drawablePadding="5dp"
                 android:padding="10dp"
                 android:text="공지사항"
                 android:textColor="#000000"
@@ -110,6 +113,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_notice"
+                android:drawableStart="@drawable/ic_icon_review"
+                android:drawablePadding="5dp"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
@@ -122,6 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_review"
+                android:drawableStart="@drawable/ic_icon_share"
+                android:drawablePadding="5dp"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
@@ -171,6 +178,8 @@
                 android:layout_below="@+id/layout3_1"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="@font/nanumsquareroundregular"
+                android:drawableStart="@drawable/ic_icon_logout"
+                android:drawablePadding="5dp"
                 android:padding="10dp"
                 android:text="로그아웃"
                 android:textColor="#000000"
@@ -182,6 +191,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_logout"
                 android:background="?attr/selectableItemBackground"
+                android:drawableStart="@drawable/ic_icon_signout"
+                android:drawablePadding="5dp"
                 android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="회원 탈퇴"
