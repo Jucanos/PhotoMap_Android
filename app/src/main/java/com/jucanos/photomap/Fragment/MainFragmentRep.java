@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.gigamole.library.ShadowLayout;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,7 +73,8 @@ public class MainFragmentRep extends Fragment {
     private final int[] mBlack = new int[10];
     private final int[] mDefault = new int[10];
 
-    private RelativeLayout noRep, existRep, layout_map;
+    private RelativeLayout noRep, existRep;
+    private ShadowLayout layout_map;
     private DynamicBox box;
     private Context pContext;
 

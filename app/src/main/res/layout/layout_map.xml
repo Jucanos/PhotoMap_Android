@@ -1,703 +1,563 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.gigamole.library.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:id="@+id/map"
-    android:background="@color/colorWhite">
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="@color/colorWhite"
+    app:sl_shadow_angle="0"
+    app:sl_shadow_color="#000"
+    app:sl_shadow_distance="0dp"
+    app:sl_shadow_radius="10dp"
+    app:sl_shadowed="true">
 
-    <RelativeLayout
-        android:layout_marginTop="?attr/actionBarSize"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-
-        <com.gigamole.library.ShadowLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:sl_shadow_angle="0"
-            app:sl_shadow_color="#000"
-            app:sl_shadow_distance="0dp"
-            app:sl_shadow_radius="10dp"
-            app:sl_shadowed="true">
-
-            <ImageView
-                android:layout_width="125dp"
-                android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="33dp"
-                android:clickable="false"
-                android:contentDescription="1"
-                android:maxWidth="125dp"
-                android:maxHeight="150dp"
-                android:minWidth="125dp"
-                android:minHeight="150dp"
-                android:src="@drawable/map_gyeonggi"
-                android:visibility="visible" />
-
-            <!--2-->
-            <ImageView
-                android:layout_width="215dp"
-                android:layout_height="215dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="115dp"
-                android:layout_marginTop="-6dp"
-                android:clickable="false"
-                android:contentDescription="2"
-                android:maxWidth="215dp"
-                android:maxHeight="215dp"
-                android:minWidth="215dp"
-                android:minHeight="215dp"
-                android:src="@drawable/map_gangwon"
-                android:visibility="visible" />
-
-            <!--3-->
-            <ImageView
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="130dp"
-                android:layout_marginTop="132dp"
-                android:clickable="false"
-                android:contentDescription="3"
-                android:maxWidth="140dp"
-                android:maxHeight="140dp"
-
-                android:minWidth="140dp"
-                android:minHeight="140dp"
-                android:src="@drawable/map_chungbuk"
-                android:visibility="visible" />
-
-            <!--4-->
-            <ImageView
-                android:layout_width="135dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="148dp"
-                android:clickable="false"
-                android:contentDescription="4"
-                android:maxWidth="135dp"
-                android:maxHeight="130dp"
-                android:minWidth="135dp"
-                android:minHeight="130dp"
-                android:src="@drawable/map_chungnam"
-                android:visibility="visible" />
-
-            <!--5-->
-            <ImageView
-                android:layout_width="145dp"
-                android:layout_height="120dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="65dp"
-                android:layout_marginTop="232dp"
-                android:clickable="false"
-                android:contentDescription="5"
-                android:maxWidth="145dp"
-                android:maxHeight="120dp"
-                android:minWidth="145dp"
-                android:minHeight="120dp"
-                android:src="@drawable/map_jeonbuk"
-                android:visibility="visible" />
-
-            <!--6 전남-->
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="135dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="303dp"
-                android:clickable="false"
-                android:contentDescription="6"
-                android:maxWidth="150dp"
-                android:maxHeight="135dp"
-                android:minWidth="150dp"
-                android:minHeight="135dp"
-                android:src="@drawable/map_jeonnam"
-                android:visibility="visible" />
-
-            <!--7 경북 -->
-            <ImageView
-                android:layout_width="170dp"
-                android:layout_height="180dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="176dp"
-                android:layout_marginTop="143.5dp"
-                android:clickable="false"
-                android:contentDescription="7"
-                android:maxWidth="170dp"
-                android:maxHeight="180dp"
-                android:minWidth="170dp"
-                android:minHeight="180dp"
-                android:src="@drawable/map_gyeongbuk"
-                android:visibility="visible" />
-
-
-            <!--8 경남-->
-            <ImageView
-                android:layout_width="175dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="159dp"
-                android:layout_marginTop="259dp"
-                android:clickable="false"
-                android:contentDescription="8"
-                android:maxWidth="175dp"
-                android:maxHeight="130dp"
-                android:minWidth="175dp"
-                android:minHeight="130dp"
-                android:src="@drawable/map_gyeongnam"
-                android:visibility="visible" />
-
-            <!--9-->
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="92dp"
-                android:layout_marginTop="415dp"
-                android:clickable="false"
-                android:contentDescription="9"
-                android:maxWidth="150dp"
-                android:maxHeight="100dp"
-                android:minWidth="150dp"
-                android:minHeight="100dp"
-                android:src="@drawable/map_jeju"
-                android:visibility="visible" />
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="336dp"
-                android:layout_marginTop="157dp"
-                android:src="@drawable/ic_icon_dokdo" />
-        </com.gigamole.library.ShadowLayout>
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:gravity="center">
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout_mapContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:background="#00FFFFFF">
-
-            <!-- 1. 경기-->
-            <ImageView
-                android:id="@+id/imageView_gyeonggi_front"
-                android:layout_width="125dp"
-                android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="33dp"
-                android:clipChildren="false"
-                android:contentDescription="1"
-                android:maxWidth="125dp"
-                android:maxHeight="150dp"
-                android:minWidth="125dp"
-                android:minHeight="150dp"
-                android:src="@drawable/map_gyeonggi"
-                android:visibility="invisible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_gyeonggi"
-                android:layout_width="125dp"
-                android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="33dp"
-                android:contentDescription="1"
-                android:maxWidth="125dp"
-                android:maxHeight="150dp"
-                android:minWidth="125dp"
-                android:minHeight="150dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_gyeonggi" />
-
-
-            <!--강원도 : 2-->
-            <ImageView
-                android:id="@+id/imageView_gangwon_front"
-                android:layout_width="215dp"
-                android:layout_height="215dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="115dp"
-                android:layout_marginTop="-6dp"
-                android:contentDescription="2"
-                android:maxWidth="215dp"
-                android:maxHeight="215dp"
-                android:minWidth="215dp"
-                android:minHeight="215dp"
-                android:src="@drawable/map_gangwon"
-                android:visibility="invisible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_gangwon"
-                android:layout_width="215dp"
-                android:layout_height="215dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="115dp"
-                android:layout_marginTop="-6dp"
-                android:contentDescription="2"
-                android:maxWidth="215dp"
-                android:maxHeight="215dp"
-                android:minWidth="215dp"
-                android:minHeight="215dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_gangwon" />
-
-
-            <!--충북 : 3-->
-            <ImageView
-                android:id="@+id/imageView_chungbuk_front"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="130dp"
-                android:layout_marginTop="132dp"
-                android:contentDescription="3"
-                android:maxWidth="140dp"
-                android:maxHeight="140dp"
-                android:minWidth="140dp"
-                android:minHeight="140dp"
-                android:src="@drawable/map_chungbuk"
-                android:visibility="invisible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_chungbuk"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="130dp"
-                android:layout_marginTop="132dp"
-                android:contentDescription="3"
-                android:maxWidth="140dp"
-                android:maxHeight="140dp"
-                android:minWidth="140dp"
-                android:minHeight="140dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_chungbuk" />
-
-
-            <!--충남 : 4-->
-            <ImageView
-                android:id="@+id/imageView_chungnam_front"
-                android:layout_width="135dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="148dp"
-                android:contentDescription="4"
-                android:maxWidth="135dp"
-                android:maxHeight="130dp"
-                android:minWidth="135dp"
-                android:minHeight="130dp"
-                android:src="@drawable/map_chungnam"
-                android:visibility="invisible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_chungnam"
-                android:layout_width="135dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="148dp"
-                android:contentDescription="4"
-                android:maxWidth="135dp"
-                android:maxHeight="130dp"
-                android:minWidth="135dp"
-                android:minHeight="130dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_chungnam" />
-
-
-            <!--전북 : 5-->
-            <ImageView
-                android:id="@+id/imageView_jeonbuk_front"
-                android:layout_width="145dp"
-                android:layout_height="120dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="65dp"
-                android:layout_marginTop="232dp"
-                android:contentDescription="5"
-                android:maxWidth="145dp"
-                android:maxHeight="120dp"
-                android:minWidth="145dp"
-                android:minHeight="120dp"
-                android:src="@drawable/map_jeonbuk"
-                android:visibility="invisible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_jeonbuk"
-                android:layout_width="145dp"
-                android:layout_height="120dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="65dp"
-                android:layout_marginTop="232dp"
-                android:contentDescription="5"
-                android:maxWidth="145dp"
-                android:maxHeight="120dp"
-                android:minWidth="145dp"
-                android:minHeight="120dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_junbuk" />
-
-
-            <!--전남 : 6-->
-            <ImageView
-                android:id="@+id/imageView_jeonnam_front"
-                android:layout_width="150dp"
-                android:layout_height="135dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="303dp"
-                android:contentDescription="6"
-                android:maxWidth="150dp"
-                android:maxHeight="135dp"
-                android:minWidth="150dp"
-                android:minHeight="135dp"
-                android:src="@drawable/map_jeonnam"
-                android:visibility="invisible" />
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_jeonnam"
-                android:layout_width="150dp"
-                android:layout_height="135dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="303dp"
-                android:contentDescription="6"
-                android:maxWidth="150dp"
-                android:maxHeight="135dp"
-                android:minWidth="150dp"
-                android:minHeight="135dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_junnam" />
-
-            <!--경북 : 7-->
-            <ImageView
-                android:id="@+id/imageView_gyeongbuk_front"
-                android:layout_width="170dp"
-                android:layout_height="180dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="176dp"
-                android:layout_marginTop="143.5dp"
-                android:contentDescription="7"
-                android:maxWidth="170dp"
-                android:maxHeight="180dp"
-                android:minWidth="170dp"
-                android:minHeight="180dp"
-                android:src="@drawable/map_gyeongbuk"
-                android:visibility="invisible" />
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_gyeongbuk"
-                android:layout_width="170dp"
-                android:layout_height="180dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="176dp"
-                android:layout_marginTop="143.5dp"
-                android:contentDescription="7"
-                android:maxWidth="170dp"
-                android:maxHeight="180dp"
-                android:minWidth="170dp"
-                android:minHeight="180dp"
-                android:visibility="visible"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_gyeongbuk" />
-
-            <!--경남 : 8-->
-            <ImageView
-                android:id="@+id/imageView_gyeongnam_front"
-                android:layout_width="175dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="159dp"
-                android:layout_marginTop="259dp"
-                android:contentDescription="8"
-                android:maxWidth="175dp"
-                android:maxHeight="130dp"
-                android:minWidth="175dp"
-                android:minHeight="130dp"
-                android:src="@drawable/map_gyeongnam"
-                android:visibility="invisible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_gyeongnam"
-                android:layout_width="175dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="159dp"
-                android:layout_marginTop="259dp"
-                android:contentDescription="8"
-                android:maxWidth="175dp"
-                android:maxHeight="130dp"
-                android:minWidth="175dp"
-                android:minHeight="130dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_gyeongnam" />
-
-
-            <!--제주 : 9-->
-            <ImageView
-                android:id="@+id/imageView_jeju_front"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="92dp"
-                android:layout_marginTop="415dp"
-                android:contentDescription="9"
-                android:maxWidth="150dp"
-                android:maxHeight="100dp"
-                android:minWidth="150dp"
-                android:minHeight="100dp"
-                android:src="@drawable/map_jeju"
-                android:visibility="visible" />
-
-
-            <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-                android:id="@+id/imageView_jeju"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="92dp"
-                android:layout_marginTop="415dp"
-                android:contentDescription="9"
-                android:maxWidth="150dp"
-                android:maxHeight="100dp"
-                android:minWidth="150dp"
-                android:minHeight="100dp"
-                android:src="@color/colorWhite"
-                app:siShape="@drawable/ic_map_jeju" />
-
-
-<!--            white border-->
-            <!--1 경기-->
-            <ImageView
-                android:id="@+id/imageView_gyeonggi_border"
-                android:layout_width="125dp"
-                android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="33dp"
-                android:clickable="false"
-                android:clipChildren="false"
-                android:contentDescription="1"
-                android:maxWidth="125dp"
-                android:maxHeight="150dp"
-                android:minWidth="125dp"
-                android:minHeight="150dp"
-                android:src="@drawable/ic_map_gyeonggi_black"
-                android:visibility="visible" />
-
-            <!--2-->
-            <ImageView
-                android:id="@+id/imageView_gangwon_border"
-                android:layout_width="215dp"
-                android:layout_height="215dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="115dp"
-                android:layout_marginTop="-6dp"
-                android:clickable="false"
-                android:contentDescription="2"
-                android:maxWidth="215dp"
-                android:maxHeight="215dp"
-                android:minWidth="215dp"
-                android:minHeight="215dp"
-                android:src="@drawable/ic_map_gangwon_black"
-                android:visibility="visible" />
-
-            <!--3-->
-            <ImageView
-                android:id="@+id/imageView_chungbuk_border"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="130dp"
-                android:layout_marginTop="132dp"
-                android:clickable="false"
-                android:contentDescription="3"
-                android:maxWidth="140dp"
-                android:maxHeight="140dp"
-
-                android:minWidth="140dp"
-                android:minHeight="140dp"
-                android:src="@drawable/ic_map_chungbuk_black"
-                android:visibility="visible" />
-
-            <!--4-->
-            <ImageView
-                android:id="@+id/imageView_chungnam_border"
-                android:layout_width="135dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="148dp"
-                android:clickable="false"
-                android:contentDescription="4"
-                android:maxWidth="135dp"
-                android:maxHeight="130dp"
-                android:minWidth="135dp"
-                android:minHeight="130dp"
-                android:src="@drawable/ic_map_chungnam_black"
-                android:visibility="visible" />
-
-            <!--5-->
-            <ImageView
-                android:id="@+id/imageView_jeonbuk_border"
-                android:layout_width="145dp"
-                android:layout_height="120dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="65dp"
-                android:layout_marginTop="231.5dp"
-                android:clickable="false"
-                android:contentDescription="5"
-                android:maxWidth="145dp"
-                android:maxHeight="120dp"
-                android:minWidth="145dp"
-                android:minHeight="120dp"
-                android:src="@drawable/ic_map_junbuk_black"
-                android:visibility="visible" />
-
-            <!--6 전남-->
-            <ImageView
-                android:id="@+id/imageView_jeonnam_border"
-                android:layout_width="150dp"
-                android:layout_height="135dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="303dp"
-                android:clickable="false"
-                android:contentDescription="6"
-                android:maxWidth="150dp"
-                android:maxHeight="135dp"
-                android:minWidth="150dp"
-                android:minHeight="135dp"
-                android:src="@drawable/ic_map_junnam_black"
-                android:visibility="visible" />
-
-            <!--7 경북-->
-            <ImageView
-                android:id="@+id/imageView_gyeongbuk_border"
-                android:layout_width="170dp"
-                android:layout_height="180dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="176dp"
-                android:layout_marginTop="143.5dp"
-                android:clickable="false"
-                android:contentDescription="7"
-                android:maxWidth="170dp"
-                android:maxHeight="180dp"
-                android:minWidth="170dp"
-                android:minHeight="180dp"
-                android:src="@drawable/ic_map_gyeongbuk_black"
-                android:visibility="visible" />
-
-
-            <!--8 경남-->
-            <ImageView
-                android:id="@+id/imageView_gyeongnam_border"
-                android:layout_width="175dp"
-                android:layout_height="130dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="159dp"
-                android:layout_marginTop="259dp"
-                android:clickable="false"
-                android:contentDescription="8"
-                android:maxWidth="175dp"
-                android:maxHeight="130dp"
-                android:minWidth="175dp"
-                android:minHeight="130dp"
-                android:src="@drawable/ic_map_gyeongnam_black"
-                android:visibility="visible" />
-            <!--9-->
-
-            <ImageView
-                android:id="@+id/imageView_jeju_border"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="92dp"
-                android:layout_marginTop="415dp"
-                android:clickable="false"
-                android:contentDescription="9"
-                android:maxWidth="150dp"
-                android:maxHeight="100dp"
-                android:minWidth="150dp"
-                android:minHeight="100dp"
-                android:src="@drawable/ic_map_jeju_black"
-                android:visibility="visible"
-               />
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="336dp"
-                android:layout_marginTop="157dp"
-                android:src="@drawable/ic_icon_dokdo" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout>
-
+        android:background="@color/colorTransparent">
+
+
+        <!--         1. 경기-->
+        <ImageView
+            android:id="@+id/imageView_gyeonggi_front"
+            android:layout_width="125dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="131dp"
+            android:clickable="false"
+            android:contentDescription="1"
+            android:maxWidth="125dp"
+            android:maxHeight="150dp"
+            android:minWidth="125dp"
+            android:minHeight="150dp"
+            android:src="@drawable/map_gyeonggi"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gangwon_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gangwon_border" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_gyeonggi"
+            android:layout_width="125dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="131dp"
+            android:clickable="false"
+            android:contentDescription="1"
+            android:maxWidth="125dp"
+            android:maxHeight="150dp"
+            android:minWidth="125dp"
+            android:minHeight="150dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gangwon_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gangwon_border"
+            app:siShape="@drawable/ic_map_gyeonggi" />
+
+
+        <!--강원도 : 2-->
+        <ImageView
+            android:id="@+id/imageView_gangwon_front"
+            android:layout_width="215dp"
+            android:layout_height="215dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="67dp"
+            android:layout_marginBottom="63dp"
+            android:clickable="false"
+            android:contentDescription="2"
+            android:maxWidth="215dp"
+            android:maxHeight="215dp"
+            android:minWidth="215dp"
+            android:minHeight="215dp"
+            android:src="@drawable/map_gangwon"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungnam_border" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_gangwon"
+            android:layout_width="215dp"
+            android:layout_height="215dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="67dp"
+            android:layout_marginBottom="63dp"
+            android:clickable="false"
+            android:contentDescription="2"
+            android:maxWidth="215dp"
+            android:maxHeight="215dp"
+            android:minWidth="215dp"
+            android:minHeight="215dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungnam_border"
+            app:siShape="@drawable/ic_map_gangwon" />
+
+
+        <!--충북 : 3-->
+        <ImageView
+            android:id="@+id/imageView_chungbuk_front"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:clickable="false"
+            android:contentDescription="3"
+            android:maxWidth="140dp"
+            android:maxHeight="140dp"
+            android:minWidth="140dp"
+            android:minHeight="140dp"
+
+            android:src="@drawable/map_chungbuk"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_chungbuk"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:clickable="false"
+            android:contentDescription="3"
+            android:maxWidth="140dp"
+            android:maxHeight="140dp"
+            android:minWidth="140dp"
+            android:minHeight="140dp"
+
+            android:src="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:siShape="@drawable/ic_map_chungbuk" />
+
+
+        <!--충남 : 4-->
+        <ImageView
+            android:id="@+id/imageView_chungnam_front"
+            android:layout_width="135dp"
+            android:layout_height="130dp"
+            android:layout_centerInParent="true"
+            android:layout_marginHorizontal="3dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="87dp"
+            android:layout_toLeftOf="@+id/imageView_chungbuk_border"
+            android:clickable="false"
+            android:contentDescription="4"
+            android:maxWidth="135dp"
+            android:maxHeight="130dp"
+            android:minWidth="135dp"
+            android:minHeight="130dp"
+
+            android:src="@drawable/map_chungnam"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungbuk_border" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_chungnam"
+            android:layout_width="135dp"
+            android:layout_height="130dp"
+            android:layout_centerInParent="true"
+            android:layout_marginHorizontal="3dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="87dp"
+            android:layout_toLeftOf="@+id/imageView_chungbuk_border"
+            android:clickable="false"
+            android:contentDescription="4"
+            android:maxWidth="135dp"
+            android:maxHeight="130dp"
+            android:minWidth="135dp"
+            android:minHeight="130dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungbuk_border"
+            app:siShape="@drawable/ic_map_chungnam" />
+
+
+        <!--전북 : 5-->
+        <ImageView
+            android:id="@+id/imageView_jeonbuk_front"
+            android:layout_width="145dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="16.8dp"
+            android:layout_marginTop="83.5dp"
+            android:clickable="false"
+            android:contentDescription="5"
+            android:maxWidth="145dp"
+            android:maxHeight="120dp"
+            android:minWidth="145dp"
+            android:minHeight="120dp"
+            android:src="@drawable/map_jeonbuk"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungnam_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungnam_border" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_jeonbuk"
+            android:layout_width="145dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="16.8dp"
+            android:layout_marginTop="83.5dp"
+            android:clickable="false"
+            android:contentDescription="5"
+            android:maxWidth="145dp"
+            android:maxHeight="120dp"
+            android:minWidth="145dp"
+            android:minHeight="120dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungnam_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungnam_border"
+            app:siShape="@drawable/ic_map_junbuk" />
+
+        <!--전남 : 6-->
+        <ImageView
+            android:id="@+id/imageView_jeonnam_front"
+            android:layout_width="150dp"
+            android:layout_height="135dp"
+            android:layout_marginTop="45.5dp"
+            android:layout_marginEnd="134dp"
+            android:clickable="false"
+            android:contentDescription="6"
+            android:maxWidth="150dp"
+            android:maxHeight="135dp"
+            android:minWidth="150dp"
+            android:minHeight="135dp"
+            android:src="@drawable/map_jeonnam"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gyeongnam_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongnam_border" />
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_jeonnam"
+            android:layout_width="150dp"
+            android:layout_height="135dp"
+            android:layout_marginTop="45.5dp"
+            android:layout_marginEnd="134dp"
+            android:clickable="false"
+            android:contentDescription="6"
+            android:maxWidth="150dp"
+            android:maxHeight="135dp"
+            android:minWidth="150dp"
+            android:minHeight="135dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gyeongnam_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongnam_border"
+            app:siShape="@drawable/ic_map_junnam" />
+
+        <!--경북 : 7-->
+        <ImageView
+            android:id="@+id/imageView_gyeongbuk_front"
+            android:layout_width="170dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="45.5dp"
+            android:layout_marginTop="12dp"
+            android:clickable="false"
+            android:contentDescription="7"
+            android:maxWidth="170dp"
+            android:maxHeight="180dp"
+            android:minWidth="170dp"
+            android:minHeight="180dp"
+            android:src="@drawable/map_gyeongbuk"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungbuk_border" />
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_gyeongbuk"
+            android:layout_width="170dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="45.5dp"
+            android:layout_marginTop="12dp"
+            android:clickable="false"
+            android:contentDescription="7"
+            android:maxWidth="170dp"
+            android:maxHeight="180dp"
+            android:minWidth="170dp"
+            android:minHeight="180dp"
+            android:src="@color/colorWhite"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungbuk_border"
+            app:siShape="@drawable/ic_map_gyeongbuk" />
+
+        <!--경남 : 8-->
+        <ImageView
+            android:id="@+id/imageView_gyeongnam_front"
+            android:layout_width="175dp"
+            android:layout_height="130dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="115dp"
+            android:layout_marginEnd="12dp"
+            android:clickable="false"
+            android:contentDescription="8"
+            android:maxWidth="175dp"
+            android:maxHeight="130dp"
+            android:minWidth="175dp"
+            android:minHeight="130dp"
+            android:src="@drawable/map_gyeongnam"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gyeongbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongbuk_border" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_gyeongnam"
+            android:layout_width="175dp"
+            android:layout_height="130dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="115dp"
+            android:layout_marginEnd="12dp"
+            android:clickable="false"
+            android:contentDescription="8"
+            android:maxWidth="175dp"
+            android:maxHeight="130dp"
+            android:minWidth="175dp"
+            android:minHeight="130dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gyeongbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongbuk_border"
+            app:siShape="@drawable/ic_map_gyeongnam" />
+
+
+        <!--제주 : 9-->
+        <ImageView
+            android:id="@+id/imageView_jeju_front"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="16dp"
+            android:clickable="false"
+            android:contentDescription="9"
+            android:maxWidth="150dp"
+            android:maxHeight="100dp"
+            android:minWidth="150dp"
+            android:minHeight="100dp"
+            android:src="@drawable/map_jeju"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_jeonnam_border"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_gyeongnam_border" />
+
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@+id/imageView_jeju"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="16dp"
+            android:clickable="false"
+            android:contentDescription="9"
+            android:maxWidth="150dp"
+            android:maxHeight="100dp"
+            android:minWidth="150dp"
+            android:minHeight="100dp"
+            android:src="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@+id/imageView_jeonnam_border"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_gyeongnam_border"
+            app:siShape="@drawable/ic_map_jeju" />
+
+
+        <!--            white border-->
+        <!--    1. 경기-->
+        <ImageView
+            android:id="@+id/imageView_gyeonggi_border"
+            android:layout_width="125dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="131dp"
+            android:clickable="false"
+            android:contentDescription="1"
+            android:maxWidth="125dp"
+            android:maxHeight="150dp"
+            android:minWidth="125dp"
+            android:minHeight="150dp"
+            android:src="@drawable/ic_map_gyeonggi_black"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gangwon_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gangwon_border" />
+
+        <!--    2. 강원-->
+        <ImageView
+            android:id="@+id/imageView_gangwon_border"
+            android:layout_width="215dp"
+            android:layout_height="215dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="67dp"
+            android:layout_marginBottom="63dp"
+            android:background="@color/colorTransparent"
+            android:clickable="false"
+            android:contentDescription="2"
+            android:maxWidth="215dp"
+            android:maxHeight="215dp"
+            android:minWidth="215dp"
+            android:minHeight="215dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_map_gangwon_black"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungnam_border" />
+
+        <!--    3. 충북-->
+        <ImageView
+            android:id="@+id/imageView_chungbuk_border"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:clickable="false"
+            android:contentDescription="3"
+            android:maxWidth="140dp"
+            android:maxHeight="140dp"
+            android:minWidth="140dp"
+            android:minHeight="140dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_map_chungbuk_black"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--    4. 충남-->
+        <ImageView
+            android:id="@+id/imageView_chungnam_border"
+            android:layout_width="135dp"
+            android:layout_height="130dp"
+            android:layout_centerInParent="true"
+            android:layout_marginHorizontal="3dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="87dp"
+            android:layout_toLeftOf="@+id/imageView_chungbuk_border"
+            android:clickable="false"
+            android:contentDescription="4"
+            android:maxWidth="135dp"
+            android:maxHeight="130dp"
+            android:minWidth="135dp"
+            android:minHeight="130dp"
+            android:src="@drawable/ic_map_chungnam_black"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungbuk_border" />
+
+
+        <!--    5. 전북-->
+        <ImageView
+            android:id="@+id/imageView_jeonbuk_border"
+            android:layout_width="145dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="16.8dp"
+            android:layout_marginTop="83.5dp"
+            android:clickable="false"
+            android:contentDescription="5"
+            android:maxWidth="145dp"
+            android:maxHeight="120dp"
+            android:minWidth="145dp"
+            android:minHeight="120dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_map_junbuk_black"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungnam_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungnam_border" />
+
+        <!--    6. 전남-->
+        <ImageView
+            android:id="@+id/imageView_jeonnam_border"
+            android:layout_width="150dp"
+            android:layout_height="135dp"
+            android:layout_marginTop="45.5dp"
+            android:layout_marginEnd="134dp"
+            android:clickable="false"
+            android:contentDescription="6"
+            android:maxWidth="150dp"
+            android:maxHeight="135dp"
+            android:minWidth="150dp"
+            android:minHeight="135dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_map_junnam_black"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gyeongnam_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongnam_border" />
+
+        <!--        7,경북-->
+        <ImageView
+            android:id="@+id/imageView_gyeongbuk_border"
+            android:layout_width="170dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="45.5dp"
+            android:layout_marginTop="12dp"
+            android:clickable="false"
+            android:contentDescription="7"
+            android:maxWidth="170dp"
+            android:maxHeight="180dp"
+            android:minWidth="170dp"
+            android:minHeight="180dp"
+            android:src="@drawable/ic_map_gyeongbuk_black"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_chungbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_chungbuk_border" />
+
+        <!--    8. 경남-->
+        <ImageView
+            android:id="@+id/imageView_gyeongnam_border"
+            android:layout_width="175dp"
+            android:layout_height="130dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="115dp"
+            android:layout_marginEnd="12dp"
+            android:clickable="false"
+            android:contentDescription="8"
+            android:maxWidth="175dp"
+            android:maxHeight="130dp"
+            android:minWidth="175dp"
+            android:minHeight="130dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_map_gyeongnam_black"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_gyeongbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongbuk_border" />
+
+        <!--    9. 제주-->
+        <ImageView
+            android:id="@+id/imageView_jeju_border"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="16dp"
+            android:clickable="false"
+            android:contentDescription="9"
+            android:maxWidth="150dp"
+            android:maxHeight="100dp"
+            android:minWidth="150dp"
+            android:minHeight="100dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_map_jeju_black"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/imageView_jeonnam_border"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_gyeongnam_border" />
+
+        <!--    독도-->
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="36dp"
+            android:maxWidth="45dp"
+            android:maxHeight="45dp"
+            android:minWidth="45dp"
+            android:minHeight="45dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_icon_dokdo"
+            app:layout_constraintStart_toEndOf="@+id/imageView_gyeongbuk_border"
+            app:layout_constraintTop_toTopOf="@+id/imageView_gyeongbuk_border" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.gigamole.library.ShadowLayout>
