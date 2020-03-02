@@ -147,14 +147,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
-                    Log.e("LoginActivity", "isNotSuccessful()");
+                    Log.e("LoginActivity", "requestLoginAccount isNotSuccessful() : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserInfo> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
-                Log.e("LoginActivity", "onFailure : " + t.getLocalizedMessage());
+                Log.e("LoginActivity", "requestLoginAccount onFailure : " + t.getLocalizedMessage());
             }
         });
     }
