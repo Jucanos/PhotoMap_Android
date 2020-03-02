@@ -1,6 +1,7 @@
 package com.jucanos.photomap.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,7 +100,27 @@ public class MainFragmentSetting extends Fragment {
             yesNoDialog.show();
         });
 
-        return view;
+        TextView textView_policy = view.findViewById(R.id.textView_policy);
+        textView_policy.setOnClickListener(v -> {
+            YesNoDialog yesNoDialog = new YesNoDialog(getActivity(),"개인정보 처리방침 링크로 이동하시겠습니까?");
+            yesNoDialog.setDialogListener(new YesNoDialogListener() {
+                @Override
+                public void onPositiveClicked() {
+                    yesNoDialog.dismiss();
+                    Uri uri = Uri.parse("http://s3.soybeans.tech/PhotoMap_Privacy_Policy.html");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onNegativeClicked() {
+                    yesNoDialog.dismiss();
+                }
+            });
+            yesNoDialog.show();
+        });
+
+       return view;
     }
 
     private void getIntentData() {
