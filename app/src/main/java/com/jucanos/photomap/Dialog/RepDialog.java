@@ -15,12 +15,13 @@ public class RepDialog extends Dialog implements View.OnClickListener {
     private RepDialogListener longClickDialogListner;
     private static final int LAYOUT = R.layout.dialog_rep;
     private Context context;
-    private String groupName;
+    private String mTitle;
 
 
-    public RepDialog(Context context) {
+    public RepDialog(Context context,String title) {
         super(context);
         this.context = context;
+        this.mTitle = title;
     }
 
 
@@ -34,10 +35,12 @@ public class RepDialog extends Dialog implements View.OnClickListener {
         setContentView(LAYOUT);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        TextView textView_title = findViewById(R.id.textView_title);
         Button button_set = findViewById(R.id.button_set);
         Button button_delete = findViewById(R.id.button_delete);
         Button button_cancel = findViewById(R.id.button_cancel);
 
+        textView_title.setText(mTitle);
         button_set.setOnClickListener(this);
         button_delete.setOnClickListener(this);
         button_cancel.setOnClickListener(this);

@@ -450,7 +450,7 @@ public class GroupActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             longClickId = -1;
             final int regionCode = msg.what;
-            final RepDialog dialog = new RepDialog(GroupActivity.this);
+            final RepDialog dialog = new RepDialog(GroupActivity.this,globalApplication.cityKoreanInt.get(regionCode));
             dialog.setDialogListener(new RepDialogListener() {
                 @Override
                 public void onSetClicked() {
