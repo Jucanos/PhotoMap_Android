@@ -407,7 +407,7 @@ public class GroupActivity extends AppCompatActivity {
         relativeLayout_addMember.setOnClickListener(v -> {
             Log.e("[addMember]", "onClick");
             FeedTemplate params = FeedTemplate
-                    .newBuilder(ContentObject.newBuilder("님이 photoMap에 초대했습니다",
+                    .newBuilder(ContentObject.newBuilder(globalApplication.userNickName + "님이 photoMap에 초대했습니다",
                             "https://ifh.cc/g/qJZiN.png",
                             LinkObject.newBuilder()
                                     .setMobileWebUrl("https://play.google.com")
@@ -607,10 +607,10 @@ public class GroupActivity extends AppCompatActivity {
             String path = paths.get(i);
             if (path != null) {
                 Glide.with(getApplicationContext()).load(path).into(porterShapeImageViews[i]);
-                mBorders[i].setImageResource(mBlack[i]);
+                mBorders[i].setImageResource(mWhite[i]);
             } else {
                 porterShapeImageViews[i].setImageResource(mDefault[i]);
-                mBorders[i].setImageResource(mBlack[i]);
+                mBorders[i].setImageResource(mWhite[i]);
             }
         }
         box.hideAll();
