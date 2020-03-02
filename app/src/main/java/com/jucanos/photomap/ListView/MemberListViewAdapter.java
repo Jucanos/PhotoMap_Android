@@ -56,7 +56,7 @@ public class MemberListViewAdapter extends BaseAdapter {
 
         Glide.with(mContext)
                 .load(listViewItem.getThumbnail())
-                .placeholder(R.drawable.logo)
+                .placeholder(R.drawable.ic_user)
                  //.error(R.drawable.ic_icon_add_button_inside_black)
                 .dontAnimate()
                 .into(imageView_thumbnail);
