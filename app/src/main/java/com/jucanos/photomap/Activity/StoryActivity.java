@@ -188,12 +188,7 @@ public class StoryActivity extends AppCompatActivity {
                     listView_storyApater.clear();
                     // Log.e("StoryActivity", "response.isSuccessful()");
                     if (response.body() != null) {
-                        Collections.sort(response.body().getGetStoryListItems(), new Comparator<GetStoryListData>() {
-                            @Override
-                            public int compare(GetStoryListData o1, GetStoryListData o2) {
-                                return o1.getCreatedAt().compareTo(o2.getCreatedAt()) * -1;
-                            }
-                        });
+                        Collections.sort(response.body().getGetStoryListItems(), (o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
                         for (int i = 0; i < response.body().getGetStoryListItems().size(); i++) {
                             // Log.e("StoryActivity", "[createdAt] : " + response.body().getGetStoryListItems().get(i).getCreatedAt());
                             // Log.e("StoryActivity", "[updatedAt] : " + response.body().getGetStoryListItems().get(i).getUpdatedAt());

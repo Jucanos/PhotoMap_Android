@@ -87,7 +87,7 @@ public class StoryListViewAdapter extends BaseAdapter {
         // thumbnail image
         Glide.with(context)
                 .load(GlobalApplication.getGlobalApplicationContext().userThumbnail.get(listViewItem.getCreator()))
-                .placeholder(R.drawable.logo)
+                .placeholder(R.drawable.default_user)
                 .into(circleImageView_thumbnail);
 
 
