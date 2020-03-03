@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout_ab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:theme="@style/AppTheme">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_tb"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme"
+                app:contentInsetStart="0dp"
+                app:theme="@style/ToolbarColoredBackArrow">
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragmentViewPager_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:clipChildren="false"
+         />
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floatingActionMenu_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+
+            app:fab_shadowColor="#000"
+            app:fab_showShadow="true"
+
+            app:menu_backgroundColor="#99000000"
+            app:menu_colorNormal="@color/colorWhite"
+
+            app:menu_colorPressed="@color/light_gray"
+            app:menu_icon="@drawable/ic_icon_fab"
+            app:menu_labels_colorNormal="#00000000"
+
+            app:menu_labels_colorPressed="@color/light_gray"
+            app:menu_labels_ellipsize="end"
+            app:menu_labels_maxLines="-1"
+            app:menu_labels_position="left"
+            app:menu_labels_showShadow="false"
+            app:menu_labels_singleLine="true"
+            app:menu_labels_textColor="@color/colorWhite"
+            app:menu_openDirection="up">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floatingActionButton_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_icon_photo_white"
+                app:fab_colorNormal="@color/colorWhite"
+                app:fab_colorPressed="@color/light_gray"
+                app:fab_label="이미지로 저장하기"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floatingActionButton_rep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_icon_korea_white"
+                app:fab_colorNormal="@color/colorWhite"
+                app:fab_colorPressed="@color/light_gray"
+                app:fab_label="대표지도 설정"
+                app:fab_size="mini" />
+        </com.github.clans.fab.FloatingActionMenu>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_drawer"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="#FFFFFF"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/windowBackground">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/nanumsquareroundbold"
+                android:text="멤버"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_addMember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_title"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/imageView_thumbnail"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_icon_add_friend" />
+
+                <TextView
+                    android:id="@+id/textView_groupName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageView_thumbnail"
+                    android:fontFamily="@font/nanumsquareroundregular"
+                    android:text="초대 하기"
+                    android:textColor="@color/colorTextButton"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/listView_member"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout_addMember"
+            android:divider="#00000000" />
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/rl_loading"
+        layout="@layout/loading_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
+

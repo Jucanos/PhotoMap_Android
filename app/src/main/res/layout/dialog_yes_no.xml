@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_rounded_dialog"
+    android:clipChildren="false"
+    android:orientation="vertical"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/textView_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquareroundregular"
+        android:paddingTop="15dp"
+        android:paddingHorizontal="20dp"
+        android:text="title"
+        android:textColor="#000000"
+        android:textSize="16dp" />
+
+    <RelativeLayout
+        android:id="@+id/down"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_title">
+
+        <Button
+            android:id="@+id/button_cancel"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_ok"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nanumsquareroundregular"
+            android:padding="10dp"
+            android:text="취소"
+            android:textColor="@color/colorTextCancelButton" />
+
+        <Button
+            android:id="@+id/button_ok"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nanumsquareroundregular"
+            android:padding="10dp"
+            android:text="확인"
+            android:textColor="@color/colorTextButton" />
+    </RelativeLayout>
+
+</RelativeLayout>

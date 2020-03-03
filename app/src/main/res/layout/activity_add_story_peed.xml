@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_total"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".Activity.AddStoryPeedActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar"
+        style="@style/AppTheme.NoActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/windowBackground"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundextrabold"
+                android:padding="10dp"
+                android:text="취소"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/album_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/nanumsquareroundextrabold"
+                android:gravity="center_vertical"
+                android:text="피드"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/textView_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/nanumsquareroundextrabold"
+                android:padding="10dp"
+                android:text="업로드"
+                android:textColor="@color/colorTextButton" />
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tool_bar"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="16dp"
+        android:descendantFocusability="beforeDescendants"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="10dp">
+
+        <EditText
+            android:id="@+id/editText_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="제목을 입력 해주세요"
+            android:padding="15dp"
+            android:textColor="#000" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardView_title"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="16dp"
+        android:descendantFocusability="beforeDescendants"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="10dp">
+
+        <EditText
+            android:id="@+id/editText_context"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top|left"
+            android:hint="내용을 입력 해주세요"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:padding="15dp"
+            android:textColor="#000" />
+
+    </androidx.cardview.widget.CardView>
+
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/box"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:cardBackgroundColor="@color/transparent_black"-->
+<!--        app:cardElevation="10dp">-->
+
+<!--        <include-->
+<!--            layout="@layout/loading_progress"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+
+<!--    </androidx.cardview.widget.CardView>-->
+
+
+</RelativeLayout>

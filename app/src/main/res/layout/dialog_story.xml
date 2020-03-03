@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_rounded_dialog"
+    android:clipChildren="false"
+    android:orientation="vertical"
+    android:paddingVertical="10dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:text="게시글 수정"
+            android:textColor="@color/colorTextButton"
+            android:fontFamily="@font/nanumsquareroundregular"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanumsquareroundregular"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:text="게시글 삭제"
+            android:textColor="@color/colorTextButton"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/nanumsquareroundregular"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:text="취소"
+            android:textColor="@color/colorTextCancelButton"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

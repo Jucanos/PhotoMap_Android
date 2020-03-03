@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/item_refresh"
+        android:title="add"
+        android:icon="@drawable/ic_icon_refresh_white"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/item_add"
+        android:title="add"
+        android:icon="@drawable/ic_icon_plus"
+        app:showAsAction="always"
+        />
+</menu>
+
+
+
