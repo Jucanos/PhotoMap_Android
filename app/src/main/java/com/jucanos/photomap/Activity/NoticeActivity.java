@@ -116,4 +116,10 @@ public class NoticeActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_slide_in_left ,R.anim.anim_slide_out_right);
+    }
 }

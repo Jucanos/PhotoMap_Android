@@ -377,5 +377,7 @@ public class MainFragmentRep extends Fragment {
         intent.putExtra("mid", mid);
         intent.putExtra("title", title);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
+
     }
 }

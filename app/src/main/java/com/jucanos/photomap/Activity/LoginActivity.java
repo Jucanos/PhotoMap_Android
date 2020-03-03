@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         startActivity(intent);
         finish();
+        overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     /**
@@ -137,9 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         globalApplication.authorization = response.body();
-                        if(globalApplication.authorization.getUserData().getPrimary() == null)
-                            globalApplication.authorization.getUserData().setThumbnail("http://s3.soybeans.tech/default_user.png");
-
                         Log.e("getUid", globalApplication.authorization.getUserData().getUid());
                         Log.e("getThumbnail", globalApplication.authorization.getUserData().getThumbnail());
                         Log.e("getNickname", globalApplication.authorization.getUserData().getNickname());

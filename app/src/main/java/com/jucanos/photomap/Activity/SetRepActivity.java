@@ -228,6 +228,7 @@ public class SetRepActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> photoPaths = new ArrayList<>();
                     photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
+                    if(photoPaths.size() == 0) return;
                     String filePath = photoPaths.get(0);
 
                     bitMap_back = BitmapFactory.decodeFile(filePath);

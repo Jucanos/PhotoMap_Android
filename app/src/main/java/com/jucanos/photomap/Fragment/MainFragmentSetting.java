@@ -137,12 +137,14 @@ public class MainFragmentSetting extends Fragment {
     private void redirectNoticeActivity() {
         final Intent intent = new Intent(getActivity(), NoticeActivity.class);
         Objects.requireNonNull(getActivity()).startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     private void redirectLoginActivity() {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         Objects.requireNonNull(getActivity()).startActivity(intent);
         getActivity().finish();
+        getActivity().overridePendingTransition(R.anim.anim_slide_out_right ,R.anim.anim_slide_in_left);
     }
 
     private void requestSignoutAccount(String token) {
@@ -163,6 +165,7 @@ public class MainFragmentSetting extends Fragment {
                             final Intent intent = new Intent(getActivity(), LoginActivity.class);
                             Objects.requireNonNull(getActivity()).startActivity(intent);
                             getActivity().finish();
+                            getActivity().overridePendingTransition(R.anim.anim_slide_out_right ,R.anim.anim_slide_in_left);
                             super.onSuccess(result);
                         }
                     });
