@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanumsquareroundregular"
         android:paddingTop="15dp"
-        android:paddingLeft="20dp"
+        android:paddingHorizontal="20dp"
         android:text="title"
         android:textColor="#000000"
         android:textSize="16dp" />
