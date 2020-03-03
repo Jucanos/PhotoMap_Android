@@ -17,16 +17,18 @@ public class SeletedMediaInfo {
     private ImageMedia mImgMedia;
     private Integer mCropViewPos;
     private Context mContext;
+    private int mRecyclerviewPos;
+    private int mAlbumPos;
 
     SeletedMediaInfo() {
         mCount = 0;
         mCur = false;
         mLayout = null;
         mCropView = null;
-        mCropViewPos= 0;
+        mCropViewPos = 0;
     }
 
-    public SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, InstaCropperView imageCropView) {
+    public SeletedMediaInfo(Integer pos, boolean cur, MyMediaItemLayout layout, ImageMedia imageMedia, InstaCropperView imageCropView,int recyclerviewPos, int albumPos ) {
         mCount = pos;
         mCropViewPos = pos;
         mCur = cur;
@@ -42,6 +44,9 @@ public class SeletedMediaInfo {
         // mCropView.resetDisplay();
         mCropView.setImageUri(Uri.fromFile(new File(mImgMedia.getPath())));
         mCropView.setVisibility(View.VISIBLE);
+
+        this.mRecyclerviewPos = recyclerviewPos;
+        this.mAlbumPos = albumPos;
     }
 
     public void setCount(Integer count) {
@@ -107,5 +112,24 @@ public class SeletedMediaInfo {
 
         return mCropViewPos;
     }
+
+
+    public void setAlbumPos(int pos) {
+        this.mAlbumPos = pos;
+    }
+
+    public int getAlbumPos(){
+        return this.mAlbumPos;
+    }
+
+    public void setRecyclerviewPos(int pos){
+        this.mRecyclerviewPos = pos;
+    }
+
+    public int getRecyclerviewPos(){
+        return this.mRecyclerviewPos;
+    }
+
+
 
 }

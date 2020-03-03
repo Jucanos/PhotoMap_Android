@@ -124,7 +124,6 @@ public class MyBoxingMediaAdapter extends RecyclerView.Adapter {
                     vh.mItemLayout.setCurrent(false);
                 } else {
                     if (seletedMediaInfo.getCur()) {
-                        Log.e(" media.getId()", "Cur is true");
                         vh.mItemLayout.setCurrent(true);
                     } else {
                         vh.mItemLayout.setCurrent(false);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -422,7 +423,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
         private void multiImageClick(View view, BaseMedia iMedia, int pos) {
             parentLayout.switchToWhole();
-            ClickImage(view, iMedia);
+            mRecycleView.smoothScrollToPosition(pos);
+            ClickImage(view, iMedia, pos);
         }
 
         private void singleImageClick(BaseMedia media) {
@@ -453,7 +455,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
 
         @Override
         public void onChecked(View view, BaseMedia iMedia) {
-            ClickImage(view, iMedia);
+            ClickImage(view, iMedia, 0);
         }
     }
 
@@ -479,7 +481,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         }
     }
 
-    public void ClickImage(View view, BaseMedia iMedia) {
+    public void ClickImage(View view, BaseMedia iMedia, int pos) {
         if (!mIsPreview) {
 //            Log.e("[multiImageClick]", "image click");
             if (!(iMedia instanceof ImageMedia)) {
@@ -497,6 +499,7 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                 if (seletedMediaInfo.getCur()) {
 //                    Log.e("seletedMediaInfo", "getCur() is true");
                     int removeCount = seletedMediaInfo.getCount();
+                    int albumPos = seletedMediaInfo.getAlbumPos();
                     int removePos = seletedMediaInfo.clear();
                     mMediaAdapter.getPq().offer(removePos);
 
@@ -504,9 +507,17 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                     for (HashMap.Entry<String, SeletedMediaInfo> seletedMediaInfoEntry : seletedMediaInfoHashMap.entrySet()) {
                         if (seletedMediaInfoEntry.getValue().getCount() > removeCount) {
                             seletedMediaInfoEntry.getValue().setCount(seletedMediaInfoEntry.getValue().getCount() - 1);
+                            seletedMediaInfoEntry.getValue().setCur(false);
                         }
                         if (seletedMediaInfoEntry.getValue().getCount() == selectedMedias.size() - 2) {
                             seletedMediaInfoEntry.getValue().setCur(true);
+//                            Log.e("album","adapter album pos : " + mAlbumWindowAdapter.getCurrentAlbumPos());
+//                            Log.e("album","my album pos : " +seletedMediaInfoEntry.getValue().getAlbumPos());
+
+                            if(mAlbumWindowAdapter.getCurrentAlbumPos() == albumPos){
+//                                Log.e("album","pos is equal, viewPos : "+ seletedMediaInfoEntry.getValue().getRecyclerviewPos());
+                                mRecycleView.smoothScrollToPosition( seletedMediaInfoEntry.getValue().getRecyclerviewPos());
+                            }
                         }
                     }
                     photoMedia.setSelected(false);
@@ -547,8 +558,8 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
                         }
                         selectedMedias.add(photoMedia);
                         int cropViewPos = mMediaAdapter.getPq().poll();
-                        seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, instaCropperViews.get(cropViewPos)));
-//                        Log.e("nPos", Integer.toString(nPos));
+                        seletedMediaInfoHashMap.put(photoMedia.getId(), new SeletedMediaInfo(nPos, true, layout, photoMedia, instaCropperViews.get(cropViewPos),pos,mAlbumWindowAdapter.getCurrentAlbumPos()));
+//                        Log.e("info","viewPos : " + seletedMediaInfoHashMap.get(photoMedia.getId()).getRecyclerviewPos() + "/ albumPos : " + seletedMediaInfoHashMap.get(photoMedia.getId()).getAlbumPos());
                     }
                 }
             }
