@@ -196,7 +196,7 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
 
         loadingDialog.dismiss();
         startActivityForResult(intent, ADD_STORY_REQUEST);
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+       overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     @Override
@@ -222,5 +222,11 @@ public class AddStoryPreviewActivity extends AppCompatActivity implements MyRecy
                 finish();
             }
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_slide_in_left ,R.anim.anim_slide_out_right);
     }
 }

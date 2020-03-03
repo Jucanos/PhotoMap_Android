@@ -288,6 +288,7 @@ public class SetRepActivity extends AppCompatActivity {
                         intent.putExtra("path", path);
                         setResult(RESULT_OK, intent);
                         finish();
+
                     }
                 } else {
                     loadingDialog.dismiss();
@@ -303,6 +304,12 @@ public class SetRepActivity extends AppCompatActivity {
                 Log.e("SetRepActivity", "setRepRequest onFailure() : " + t.getLocalizedMessage());
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_slide_in_left ,R.anim.anim_slide_out_right);
     }
 }
 

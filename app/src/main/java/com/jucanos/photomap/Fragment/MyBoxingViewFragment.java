@@ -604,6 +604,6 @@ public class MyBoxingViewFragment extends AbsBoxingViewFragment implements View.
         intent.putExtra("cityKey", cityKey);
         loadingDialog.dismiss();
         Objects.requireNonNull(getActivity()).startActivityForResult(intent, ADD_STORY_REQUEST);
-        getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_not_move);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 }

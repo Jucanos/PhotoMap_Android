@@ -131,6 +131,7 @@ public class StoryActivity extends AppCompatActivity {
         intent.putExtra("cityKey", cityKey);
 
         startActivityForResult(intent, ADD_STORY_REQUEST);
+        overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     public void redirectEditStoryActivity(String sid, String title, String context, int pos) {
@@ -140,6 +141,7 @@ public class StoryActivity extends AppCompatActivity {
         intent.putExtra("context", context);
         intent.putExtra("pos", pos);
         startActivityForResult(intent, EDIT_STORY_REQUEST);
+        overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     @Override
@@ -277,5 +279,12 @@ public class StoryActivity extends AppCompatActivity {
             rl_noStory.setVisibility(View.VISIBLE);
         }
         box.hideAll();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_slide_in_left ,R.anim.anim_slide_out_right);
+
     }
 }

@@ -518,6 +518,7 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra("cityName", globalApplication.cityKoreanInt.get(cityKey));
 
         startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     void redirectSetRepActivity(int regionCode) {
@@ -526,6 +527,7 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra("cityKey", globalApplication.cityKeyInt.get(regionCode));
         intent.putExtra("regionCode", regionCode);
         startActivityForResult(intent, SET_REP_REQUEST);
+        overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     @Override
@@ -688,4 +690,9 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_slide_in_left ,R.anim.anim_slide_out_right);
+    }
 }

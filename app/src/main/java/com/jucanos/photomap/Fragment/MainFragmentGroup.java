@@ -169,7 +169,6 @@ public class MainFragmentGroup extends Fragment {
             dialog.setDialogListener(new YesNoDialogListener() {
                 @Override
                 public void onPositiveClicked() {
-                    Toast.makeText(getActivity(), "onPositiveClicked", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     loadingDialog.show();
                     userAddRequest(globalApplication.token, mid, -1);
@@ -177,7 +176,6 @@ public class MainFragmentGroup extends Fragment {
 
                 @Override
                 public void onNegativeClicked() {
-                    Toast.makeText(getActivity(), "onNegativeClicked", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     getMapList(globalApplication.token);
                 }
@@ -209,6 +207,7 @@ public class MainFragmentGroup extends Fragment {
         intent.putExtra("mid", mid);
         intent.putExtra("title", title);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right ,R.anim.anim_slide_out_left);
     }
 
     private void redirectAddGroupActivity() {
