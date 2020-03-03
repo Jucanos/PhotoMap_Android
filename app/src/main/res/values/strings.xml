@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">photoMap</string>
-    <string name="exit_group">정말 나가시곘습니까?</string>
-    <string name="default_url">api</string>
-    <string name="firebase_url">prod</string>
+    <string name="exit_group">정말 나가시겠습니까?</string>
+    <string name="server_url">dev</string>
+    <string name="firebase_url">dev</string>
 
 </resources>
