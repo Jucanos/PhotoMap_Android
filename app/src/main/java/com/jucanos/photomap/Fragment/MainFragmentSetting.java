@@ -1,5 +1,6 @@
 package com.jucanos.photomap.Fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -119,6 +120,24 @@ public class MainFragmentSetting extends Fragment {
             });
             yesNoDialog.show();
         });
+
+        TextView textView_review= view.findViewById(R.id.textView_review);
+        textView_review.setOnClickListener(v -> {
+            Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            // To count with Play market backstack, After pressing back button,
+            // to taken back to our application, we need to add following flags to intent.
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" +  getActivity().getPackageName())));
+            }
+        });
+
 
        return view;
     }
