@@ -6,7 +6,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkHelper {
-    private static String url = "https://soybeans.tech/dev/";
+    private static String url = "https://soybeans.tech/api/";
 
 
 
