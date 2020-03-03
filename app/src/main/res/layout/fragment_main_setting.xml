@@ -100,9 +100,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout2_1"
                 android:background="?attr/selectableItemBackground"
-                android:fontFamily="@font/nanumsquareroundregular"
                 android:drawableStart="@drawable/ic_icon_notice"
                 android:drawablePadding="5dp"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="공지사항"
                 android:textColor="#000000"
@@ -113,26 +113,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_notice"
+                android:background="?attr/selectableItemBackground"
                 android:drawableStart="@drawable/ic_icon_review"
                 android:drawablePadding="5dp"
-                android:background="?attr/selectableItemBackground"
                 android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="리뷰 작성하기"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/textView_share"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_review"
-                android:drawableStart="@drawable/ic_icon_share"
-                android:drawablePadding="5dp"
-                android:background="?attr/selectableItemBackground"
-                android:fontFamily="@font/nanumsquareroundregular"
-                android:padding="10dp"
-                android:text="앱 공유하기"
                 android:textColor="#000000"
                 android:textSize="20dp" />
 
@@ -164,10 +150,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="@font/nanumsquareroundregular"
-                    android:textStyle="bold"
                     android:text="회원정보관리"
                     android:textColor="@color/windowBackground"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -177,9 +163,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout3_1"
                 android:background="?attr/selectableItemBackground"
-                android:fontFamily="@font/nanumsquareroundregular"
                 android:drawableStart="@drawable/ic_icon_info"
                 android:drawablePadding="5dp"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="개인정보처리방침"
                 android:textColor="#000000"
@@ -189,11 +175,11 @@
                 android:id="@+id/textView_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:layout_below="@+id/textView_policy"
-                android:fontFamily="@font/nanumsquareroundregular"
+                android:background="?attr/selectableItemBackground"
                 android:drawableStart="@drawable/ic_icon_logout"
                 android:drawablePadding="5dp"
+                android:fontFamily="@font/nanumsquareroundregular"
                 android:padding="10dp"
                 android:text="로그아웃"
                 android:textColor="#000000"
