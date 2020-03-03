@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="제목을 입력 해주세요!"
+            android:hint="제목을 입력 해주세요"
             android:padding="15dp"
             android:textColor="#000" />
 
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="top|left"
-            android:hint="내용을 입력 해주세요!"
+            android:hint="내용을 입력 해주세요"
             android:inputType="textMultiLine"
             android:lines="3"
             android:padding="15dp"
