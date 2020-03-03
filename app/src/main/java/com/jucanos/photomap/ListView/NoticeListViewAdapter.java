@@ -51,7 +51,7 @@ public class NoticeListViewAdapter extends BaseAdapter {
 
         button_title.setText(listViewItem.getTitle());
         String dateString = "게시 : " + DateString.getString(listViewItem.getCreatedAt()) + "\n\n" +
-                listViewItem.getCreatedAt() + listViewItem.getContext();
+                listViewItem.getContext();
         textView_description.setText(dateString);
         return convertView;
     }
