@@ -1,12 +1,7 @@
 package com.jucanos.photomap.ListView;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,25 +23,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.jucanos.photomap.GlobalApplication;
 import com.jucanos.photomap.R;
 import com.jucanos.photomap.Structure.FirebaseUserData;
-import com.jucanos.photomap.Structure.GetMapListData;
 import com.jucanos.photomap.util.DateString;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import mehdi.sakout.dynamicbox.DynamicBox;
 
 
 public class GroupListViewAdapter extends BaseAdapter {
     private ArrayList<GroupListViewItem> listViewItemList = new ArrayList<>();
     private boolean activated = false;
-    private String LOADING_ONLY_PROGRESS = "loading_only_progress";
 
     public GroupListViewAdapter() {
     }
@@ -84,30 +66,33 @@ public class GroupListViewAdapter extends BaseAdapter {
         // get Item
         final GroupListViewItem listViewItem = listViewItemList.get(position);
 
-        // set Box
-//        final DynamicBox box = new DynamicBox(context, rl_container);
-//        View customView = ((Activity) context).getLayoutInflater().inflate(R.layout.loading_only_progress, null, false);
-//        box.addCustomView(customView, LOADING_ONLY_PROGRESS);
-        // box.showCustomView(LOADING_ONLY_PROGRESS);
-
         // title thumbnail
-        final String thumbnail_path = "https://s3.soybeans.tech/uploads/"+ context.getResources().getString(R.string.default_url) + "/" + listViewItem.getMid() + "/main.png";
+        final String thumbnail_path = "https://s3.soybeans.tech/uploads/" + context.getResources().getString(R.string.server_url) + "/" + listViewItem.getMid() + "/main.png";
 
         Glide.with(context)
                 .load(thumbnail_path)
                 .signature(new ObjectKey(listViewItem.getUserNumber()))
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.progress_circle)
+                //.skipMemoryCache(true)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.default_user)
                 .override(200, 200)
+                .centerCrop()
                 .into(imgView_thumbnail);
+
+
+        long gap = listViewItem.getCurLog() - listViewItem.getPastLog();
+        if (gap > 0) {
+            if (gap > 99) textView_log.setText("99");
+            else textView_log.setText(Long.toString(gap));
+            textView_log.setVisibility(View.VISIBLE);
+        } else {
+            textView_log.setVisibility(View.INVISIBLE);
+        }
+
 
         // set Title
         textView_groupName.setText(listViewItem.getTitle());
-
-        // set updated
         textView_lastUpdated.setText(DateString.getString(listViewItem.getUpdatedAt()));
-
-        // firebase realtime log
         listViewItem.setOnLogCb((log, own) -> {
             if (!listViewItem.isLoaded()) {
                 listViewItem.setLoad(true);
@@ -115,31 +100,17 @@ public class GroupListViewAdapter extends BaseAdapter {
                 listViewItem.setUpdatedAt(new Date(System.currentTimeMillis()));
             }
 
-//            Glide.with(context)
-//                    .load(thumbnail_path)
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .placeholder(R.drawable.progress_circle)
-//                    .override(200, 200)
-//                    .into(imgView_thumbnail);
-
             if (listViewItem.getActivated() && activated) {
                 listViewItem.setPastLog(log);
                 listViewItem.setCurLog(log);
                 globalContext.mRefUser.child(listViewItem.getMid()).setValue(listViewItem.getCurLog());
             } else {
                 if (own) listViewItem.setPastLog(log);
-                else listViewItem.setCurLog(log);
+                else {
+                    listViewItem.setCurLog(log);
+                    resort();
+                }
             }
-
-            long gap = listViewItem.getCurLog() - listViewItem.getPastLog();
-            if (gap > 0) {
-                if (gap > 99) textView_log.setText("99");
-                else textView_log.setText(Long.toString(gap));
-                textView_log.setVisibility(View.VISIBLE);
-            } else {
-                textView_log.setVisibility(View.INVISIBLE);
-            }
-            resort();
             notifyDataSetChanged();
         });
 
@@ -169,7 +140,6 @@ public class GroupListViewAdapter extends BaseAdapter {
                                     FirebaseUserData firebaseUserData = dataSnapshot.getValue(FirebaseUserData.class);
                                     Log.e("GroupListViewAdapter", "[mRefMaps] logNumber " + firebaseUserData.getLogNumber());
                                     Log.e("GroupListViewAdapter", "[mRefMaps] userNumber " + firebaseUserData.getUserNumber());
-
                                     listViewItem.setUserNumber(firebaseUserData.getUserNumber());
                                     listViewItem.setLog(firebaseUserData.getLogNumber(), false);
                                 }
@@ -221,12 +191,8 @@ public class GroupListViewAdapter extends BaseAdapter {
     }
 
     public void resort() {
-        Collections.sort(listViewItemList, new Comparator<GroupListViewItem>() {
-            @Override
-            public int compare(GroupListViewItem o1, GroupListViewItem o2) {
-                return o1.getUpdatedAt().compareTo(o2.getUpdatedAt()) * -1;
-            }
-        });
+        Collections.sort(listViewItemList, (o1, o2) ->
+                o1.getUpdatedAt().compareTo(o2.getUpdatedAt()) * -1);
     }
 
     public void clear() {

@@ -13,22 +13,22 @@
 
         <RelativeLayout
             android:id="@+id/container_thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp">
+            android:layout_margin="5dp">
 
             <ImageView
                 android:id="@+id/imageView_thumbnail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
 
             <TextView
                 android:id="@+id/textView_log"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="-15dp"
-                android:layout_toRightOf="@+id/imageView_thumbnail"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:background="@drawable/bg_rounded_red"
                 android:paddingHorizontal="5dp"
                 android:text="99"

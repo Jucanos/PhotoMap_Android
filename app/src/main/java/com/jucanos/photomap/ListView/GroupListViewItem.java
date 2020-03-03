@@ -16,6 +16,7 @@ public class GroupListViewItem {
     private ValueEventListener uesrValueEventListener, mapValueEventListener;
     private Boolean load;
     private Long userNumber;
+    private Boolean thumbnailChanged;
 
     public interface OnlogCb {
         void onSetLog(long log, boolean own);
@@ -29,10 +30,11 @@ public class GroupListViewItem {
         this.curLog = (long) 0;
         this.activated = false;
         this.loadUserRef = false;
-        uesrValueEventListener = null;
-        mapValueEventListener = null;
+        this.uesrValueEventListener = null;
+        this.mapValueEventListener = null;
         this.load = false;
-        this.userNumber = (long) 0;
+        this.userNumber = (long) -1;
+        this.thumbnailChanged = false;
     }
 
     public String getMid() {
@@ -137,5 +139,17 @@ public class GroupListViewItem {
 
     public void setUserNumber(Long userNumber) {
         this.userNumber = userNumber;
+    }
+
+    public Boolean getLoad() {
+        return load;
+    }
+
+    public Boolean getThumbnailChanged() {
+        return thumbnailChanged;
+    }
+
+    public void setThumbnailChanged(Boolean thumbnailChanged) {
+        this.thumbnailChanged = thumbnailChanged;
     }
 }
